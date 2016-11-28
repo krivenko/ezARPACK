@@ -8,3 +8,5 @@ foreach(t ${ARPACK_TESTS})
     triqs_set_rpath_for_target(${t})
     triqs_add_cpp_test(${t})
 endforeach()
+
+include_directories(${CMAKE_SOURCE_DIR}/c++ ${TRIQS_INCLUDE_ALL})
