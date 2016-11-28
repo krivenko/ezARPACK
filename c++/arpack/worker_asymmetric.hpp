@@ -21,6 +21,7 @@
 #pragma once
 
 #include <triqs/arrays/blas_lapack/dot.hpp>
+#include <triqs/arrays/math_functions.hpp>
 
 namespace triqs { namespace arrays { namespace arpack {
 
@@ -351,7 +352,8 @@ public:
  // Access eigenvalues
  // Cannot be used in ShiftAndInvertReal and ShiftAndInvertImag modes if imag(sigma) != 0.
  vector<dcomplex> eigenvalues() const {
-  assert(!((iparam[6] == ShiftAndInvertReal || iparam[6] == ShiftAndInvertImag) && sigmai != 0));
+  TRIQS_ASSERT(!((iparam[6] == ShiftAndInvertReal || iparam[6] == ShiftAndInvertImag)
+                 && sigmai != 0));
   return dr(range(nev)) + 1_j*di(range(nev));
  }
 

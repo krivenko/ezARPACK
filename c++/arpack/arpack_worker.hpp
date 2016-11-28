@@ -23,10 +23,10 @@
 #include <string>
 #include <array>
 #include <type_traits>
-#include <exception>
 #include <triqs/arrays/vector.hpp>
 #include <triqs/arrays/matrix.hpp>
 #include <triqs/utility/c14.hpp>
+#include <triqs/utility/exceptions.hpp>
 
 #include "arpack.hpp"
 

@@ -24,9 +24,9 @@
 
 namespace triqs { namespace arrays { namespace arpack {
 
- namespace f77 {
+ using dcomplex = std::complex<double>;
 
-  using dcomplex = std::complex<double>;
+ namespace f77 {
 
   // Reverse communication interface for the Implicitly Restarted Arnoldi Iteration
 
