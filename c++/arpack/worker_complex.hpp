@@ -203,7 +203,7 @@ public:
      }
      break;
     case Done: break;
-    default: TRIQS_RUNTIME_ERROR << "arpack_worker: reverse communuication interface error";
+    default: TRIQS_RUNTIME_ERROR << "arpack_worker: reverse communication interface error";
    }
   } while(ido != Done);
 
@@ -300,7 +300,7 @@ public:
      }
      break;
     case Done: break;
-    default: TRIQS_RUNTIME_ERROR << "arpack_worker: reverse communuication interface error";
+    default: TRIQS_RUNTIME_ERROR << "arpack_worker: reverse communication interface error";
    }
   } while(ido != Done);
 

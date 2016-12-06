@@ -181,7 +181,7 @@ public:
      shifts_f(workl(range(ipntr[10]-1,ipntr[10]-1+iparam[7])));
      break;
     case Done: break;
-    default: TRIQS_RUNTIME_ERROR << "arpack_worker: reverse communuication interface error";
+    default: TRIQS_RUNTIME_ERROR << "arpack_worker: reverse communication interface error";
    }
   } while(ido != Done);
 
@@ -274,7 +274,7 @@ public:
      shifts_f(workl(range(ipntr[10]-1,ipntr[10]-1+iparam[7])));
      break;
     case Done: break;
-    default: TRIQS_RUNTIME_ERROR << "arpack_worker: reverse communuication interface error";
+    default: TRIQS_RUNTIME_ERROR << "arpack_worker: reverse communication interface error";
    }
   } while(ido != Done);
 
