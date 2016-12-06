@@ -68,7 +68,7 @@ public:
   // Use a randomly generated initial residual vector
   bool random_residual_vector = true;
   // Initial residual vector
-  vector<double> init_residual_vector = {};
+  vector<dcomplex> init_residual_vector = {};
 
   // Eigenvalue shift
   dcomplex sigma = 0;
