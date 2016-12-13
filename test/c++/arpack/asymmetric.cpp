@@ -22,8 +22,6 @@
 #include "arpack.hpp"
 
 using params_t = arpack_worker<Asymmetric>::params_t;
-using ncv_map_t = std::map<decltype(params_t::eigenvalues_select),int>;
-
 
 const int N = 100;
 const double diag_coeff = 0.75;
@@ -36,6 +34,11 @@ auto A = make_sparse_matrix<Asymmetric>(N, diag_coeff, offdiag_offset, offdiag_c
 // Inner product matrix
 auto M = make_inner_prod_matrix<Asymmetric>(N);
 
+auto spectrum_parts = {params_t::LargestMagnitude,
+                       params_t::SmallestMagnitude,
+                       params_t::LargestReal, params_t::SmallestReal,
+                       params_t::LargestImag, params_t::SmallestImag };
+
 TEST(arpack_worker_symmetric, InnerProduct) {
  ASSERT_GT(eigenvalues(M)(0),.0);
 }
@@ -47,17 +50,8 @@ TEST(arpack_worker_asymmetric, Standard) {
 
  arpack_worker<Asymmetric> ar(first_dim(A));
 
- ncv_map_t ncv_map;
- ncv_map[params_t::LargestMagnitude]  = 100;
- ncv_map[params_t::SmallestMagnitude] = 100;
- ncv_map[params_t::LargestReal]       = 100;
- ncv_map[params_t::SmallestReal]      = 100;
- ncv_map[params_t::LargestImag]       = 100;
- ncv_map[params_t::SmallestImag]      = 100;
-
- for(auto e : ncv_map) {
-  params_t params(nev, e.first, params_t::Ritz);
-  params.ncv = e.second;
+ for(auto e : spectrum_parts) {
+  params_t params(nev, e, params_t::Ritz);
   ar(Aop, params);
   check_eigenvectors(ar,A);
  }
@@ -75,17 +69,9 @@ TEST(arpack_worker_asymmetric, Invert) {
 
  arpack_worker<Asymmetric> ar(first_dim(A));
 
- ncv_map_t ncv_map;
- ncv_map[params_t::LargestMagnitude]  = 30;
- ncv_map[params_t::SmallestMagnitude] = 100;
- ncv_map[params_t::LargestReal]       = 30;
- ncv_map[params_t::SmallestReal]      = 100;
- ncv_map[params_t::LargestImag]       = 30;
- ncv_map[params_t::SmallestImag]      = 100;
-
- for(auto e : ncv_map) {
-  params_t params(nev, e.first, params_t::Ritz);
-  params.ncv = e.second;
+ for(auto e : spectrum_parts) {
+  params_t params(nev, e, params_t::Ritz);
+  params.ncv = 30;
   ar(op, Bop, arpack_worker<Asymmetric>::Invert, params);
   check_eigenvectors(ar,A,M);
  }

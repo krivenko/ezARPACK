@@ -22,7 +22,6 @@
 #include "arpack.hpp"
 
 using params_t = arpack_worker<Symmetric>::params_t;
-using ncv_map_t = std::map<decltype(params_t::eigenvalues_select),int>;
 
 const int N = 100;
 const double diag_coeff = 0.75;
@@ -35,6 +34,10 @@ auto A = make_sparse_matrix<Symmetric>(N, diag_coeff, offdiag_offset, offdiag_co
 // Inner product matrix
 auto M = make_inner_prod_matrix<Symmetric>(N);
 
+auto spectrum_parts = {params_t::Smallest, params_t::Largest,
+                       params_t::SmallestMagnitude, params_t::LargestMagnitude,
+                       params_t::BothEnds};
+
 TEST(arpack_worker_symmetric, InnerProduct) {
  ASSERT_GT(eigenvalues(M)(0),.0);
 }
@@ -46,16 +49,8 @@ TEST(arpack_worker_symmetric, Standard) {
 
  arpack_worker<Symmetric> ar(first_dim(A));
 
- ncv_map_t ncv_map;
- ncv_map[params_t::Smallest]          = 30;
- ncv_map[params_t::Largest]           = 30;
- ncv_map[params_t::SmallestMagnitude] = 100;
- ncv_map[params_t::LargestMagnitude]  = 30;
- ncv_map[params_t::BothEnds]          = 30;
-
- for(auto e : ncv_map) {
-  params_t params(nev, e.first, true);
-  params.ncv = e.second;
+ for(auto e : spectrum_parts) {
+  params_t params(nev, e, true);
   ar(Aop, params);
   check_eigenvectors(ar,A);
  }
@@ -74,16 +69,8 @@ TEST(arpack_worker_symmetric, Invert) {
 
  arpack_worker<Symmetric> ar(first_dim(A));
 
- ncv_map_t ncv_map;
- ncv_map[params_t::Smallest]          = 30;
- ncv_map[params_t::Largest]           = 30;
- ncv_map[params_t::SmallestMagnitude] = 100;
- ncv_map[params_t::LargestMagnitude]  = 30;
- ncv_map[params_t::BothEnds]          = 30;
-
- for(auto e : ncv_map) {
-  params_t params(nev, e.first, true);
-  params.ncv = e.second;
+ for(auto e : spectrum_parts) {
+  params_t params(nev, e, true);
   ar(op, Bop, arpack_worker<Symmetric>::Invert, params);
   check_eigenvectors(ar,A,M);
  }
@@ -102,16 +89,8 @@ TEST(arpack_worker_symmetric, ShiftAndInvert) {
 
  arpack_worker<Symmetric> ar(first_dim(A));
 
- ncv_map_t ncv_map;
- ncv_map[params_t::Smallest]          = 30;
- ncv_map[params_t::Largest]           = 70;
- ncv_map[params_t::SmallestMagnitude] = 100;
- ncv_map[params_t::LargestMagnitude]  = 40;
- ncv_map[params_t::BothEnds]          = 40;
-
- for(auto e : ncv_map) {
-  params_t params(nev, e.first, true);
-  params.ncv = e.second;
+ for(auto e : spectrum_parts) {
+  params_t params(nev, e, true);
   params.sigma = sigma;
   ar(op, Bop, arpack_worker<Symmetric>::ShiftAndInvert, params);
   check_eigenvectors(ar,A,M);
@@ -131,16 +110,8 @@ TEST(arpack_worker_symmetric, Buckling) {
 
  arpack_worker<Symmetric> ar(first_dim(A));
 
- ncv_map_t ncv_map;
- ncv_map[params_t::Smallest]          = 30;
- ncv_map[params_t::Largest]           = 30;
- ncv_map[params_t::SmallestMagnitude] = 100;
- ncv_map[params_t::LargestMagnitude]  = 30;
- ncv_map[params_t::BothEnds]          = 30;
-
- for(auto e : ncv_map) {
-  params_t params(nev, e.first, true);
-  params.ncv = e.second;
+ for(auto e : spectrum_parts) {
+  params_t params(nev, e, true);
   params.sigma = sigma;
   ar(op, Bop, arpack_worker<Symmetric>::Buckling, params);
   check_eigenvectors(ar,A,M);
@@ -160,16 +131,8 @@ TEST(arpack_worker_symmetric, Cayley) {
 
  arpack_worker<Symmetric> ar(first_dim(A));
 
- ncv_map_t ncv_map;
- ncv_map[params_t::Smallest]          = 30;
- ncv_map[params_t::Largest]           = 30;
- ncv_map[params_t::SmallestMagnitude] = 100;
- ncv_map[params_t::LargestMagnitude]  = 30;
- ncv_map[params_t::BothEnds]          = 30;
-
- for(auto e : ncv_map) {
-  params_t params(nev, e.first, true);
-  params.ncv = e.second;
+ for(auto e : spectrum_parts) {
+  params_t params(nev, e, true);
   params.sigma = sigma;
   ar(op, Bop, arpack_worker<Symmetric>::Cayley, params);
   check_eigenvectors(ar,A,M);

@@ -22,11 +22,15 @@
 #include "arpack.hpp"
 
 using params_t = arpack_worker<Complex>::params_t;
-using ncv_map_t = std::map<decltype(params_t::eigenvalues_select),int>;
+
+auto spectrum_parts = {params_t::LargestMagnitude,
+                       params_t::SmallestMagnitude,
+                       params_t::LargestReal, params_t::SmallestReal,
+                       params_t::LargestImag, params_t::SmallestImag};
 
 const int N = 100;
 const double diag_coeff = 0.75;
-const int offdiag_offset = 3;
+const int offdiag_offset = 1;
 const dcomplex offdiag_coeff = 1_j;
 const int nev = 10;
 
@@ -46,17 +50,8 @@ TEST(arpack_worker_complex, Standard) {
 
  arpack_worker<Complex> ar(first_dim(A));
 
- ncv_map_t ncv_map;
- ncv_map[params_t::LargestMagnitude]  = 100;
- ncv_map[params_t::SmallestMagnitude] = 100;
- ncv_map[params_t::LargestReal]       = 100;
- ncv_map[params_t::SmallestReal]      = 100;
- ncv_map[params_t::LargestImag]       = 100;
- ncv_map[params_t::SmallestImag]      = 100;
-
- for(auto e : ncv_map) {
-  params_t params(nev, e.first, params_t::Ritz);
-  params.ncv = e.second;
+ for(auto e : spectrum_parts) {
+  params_t params(nev, e, params_t::Ritz);
   ar(Aop, params);
   check_eigenvectors(ar,A);
  }
@@ -74,17 +69,9 @@ TEST(arpack_worker_complex, Invert) {
 
  arpack_worker<Complex> ar(first_dim(A));
 
- ncv_map_t ncv_map;
- ncv_map[params_t::LargestMagnitude]  = 100;
- ncv_map[params_t::SmallestMagnitude] = 100;
- ncv_map[params_t::LargestReal]       = 100;
- ncv_map[params_t::SmallestReal]      = 100;
- ncv_map[params_t::LargestImag]       = 100;
- ncv_map[params_t::SmallestImag]      = 100;
-
- for(auto e : ncv_map) {
-  params_t params(nev, e.first, params_t::Ritz);
-  params.ncv = e.second;
+ for(auto e : spectrum_parts) {
+  params_t params(nev, e, params_t::Ritz);
+  params.ncv = 50;
   ar(op, Bop, arpack_worker<Complex>::Invert, params);
   check_eigenvectors(ar,A,M);
  }
@@ -103,18 +90,10 @@ TEST(arpack_worker_complex, ShiftAndInvert) {
 
  arpack_worker<Complex> ar(first_dim(A));
 
- ncv_map_t ncv_map;
- ncv_map[params_t::LargestMagnitude]  = 40;
- ncv_map[params_t::SmallestMagnitude] = 100;
- ncv_map[params_t::LargestReal]       = 100;
- ncv_map[params_t::SmallestReal]      = 60;
- ncv_map[params_t::LargestImag]       = 40;
- ncv_map[params_t::SmallestImag]      = 100;
-
- for(auto e : ncv_map) {
-  params_t params(nev, e.first, params_t::Ritz);
-  params.ncv = e.second;
+ for(auto e : spectrum_parts) {
+  params_t params(nev, e, params_t::Ritz);
   params.sigma = sigma;
+  params.ncv = 50;
   ar(op, Bop, arpack_worker<Complex>::ShiftAndInvert, params);
   check_eigenvectors(ar,A,M);
  }

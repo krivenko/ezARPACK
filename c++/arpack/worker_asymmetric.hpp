@@ -174,7 +174,7 @@ public:
 
   prepare(params);
 
-  iparam[0] = (std::is_same<ShiftsF,trivial_shifts_f>::value ? 0 : 1);
+  iparam[0] = (std::is_same<ShiftsF,trivial_shifts_f>::value ? 1 : 0);
   iparam[6] = 1; // Mode 1, standard eigenproblem
 
   vector<double> workl(3*ncv*ncv + 6*ncv);
@@ -268,7 +268,7 @@ public:
 
   prepare(params);
 
-  iparam[0] = (std::is_same<ShiftsF,trivial_shifts_f>::value ? 0 : 1);
+  iparam[0] = (std::is_same<ShiftsF,trivial_shifts_f>::value ? 1 : 0);
   iparam[6] = mode; // Modes 2-5, generalized eigenproblem
 
   vector<double> workl(3*ncv*ncv + 6*ncv);

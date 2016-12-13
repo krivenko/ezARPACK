@@ -112,7 +112,7 @@ public:
   ncv = params.ncv;
   if(ncv == -1) ncv = std::min(2*int(params.n_eigenvalues)+1, N);
   else if(ncv <= params.n_eigenvalues+1 || ncv > N)
-   TRIQS_RUNTIME_ERROR << "arpack_worker: ncv must be within ]" << params.n_eigenvalues
+   TRIQS_RUNTIME_ERROR << "arpack_worker: ncv must be within ]" << params.n_eigenvalues+1
                        << ";" << N << "]";
   v.resize(N,ncv);
 
@@ -173,7 +173,7 @@ public:
 
   prepare(params);
 
-  iparam[0] = (std::is_same<ShiftsF,trivial_shifts_f>::value ? 0 : 1);
+  iparam[0] = (std::is_same<ShiftsF,trivial_shifts_f>::value ? 1 : 0);
   iparam[6] = 1; // Mode 1, standard eigenproblem
 
   vector<dcomplex> workl(3*ncv*ncv + 5*ncv);
@@ -258,7 +258,7 @@ public:
 
   prepare(params);
 
-  iparam[0] = (std::is_same<ShiftsF,trivial_shifts_f>::value ? 0 : 1);
+  iparam[0] = (std::is_same<ShiftsF,trivial_shifts_f>::value ? 1 : 0);
   iparam[6] = mode; // Modes 2-3, generalized eigenproblem
 
   vector<dcomplex> workl(3*ncv*ncv + 5*ncv);
