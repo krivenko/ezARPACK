@@ -114,7 +114,7 @@ public:
 
   // Check ncv
   ncv = params.ncv;
-  if(ncv == -1) ncv = std::min(2*int(params.n_eigenvalues)+1, N);
+  if(ncv == -1) ncv = std::min(2*int(params.n_eigenvalues)+2, N);
   else if(ncv <= params.n_eigenvalues+2 || ncv > N)
    TRIQS_RUNTIME_ERROR << "arpack_worker: ncv must be within ]" << params.n_eigenvalues+2
                        << ";" << N << "]";
