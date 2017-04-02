@@ -1,0 +1,7 @@
+CMakeCache.txt
+CMakeFiles
+Makefile
+install_manifest.txt
+/Testing
+/c++/version.hpp
+/test/c++/arpack_*

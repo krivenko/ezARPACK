@@ -25,7 +25,7 @@
 #include <triqs/utility/c14.hpp>
 #include <triqs/arrays/linalg/eigenelements.hpp>
 
-#include "arpack/arpack_worker.hpp"
+#include "arpack_worker.hpp"
 
 using namespace triqs::arrays;
 using namespace triqs::arrays::arpack;

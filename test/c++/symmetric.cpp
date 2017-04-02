@@ -21,6 +21,10 @@
 
 #include "arpack.hpp"
 
+////////////////////////////////////////////////
+// Eigenproblems with real symmetric matrices //
+////////////////////////////////////////////////
+
 using params_t = arpack_worker<Symmetric>::params_t;
 
 const int N = 100;
@@ -42,6 +46,7 @@ TEST(arpack_worker_symmetric, InnerProduct) {
  ASSERT_GT(eigenvalues(M)(0),.0);
 }
 
+// Standard eigenproblem
 TEST(arpack_worker_symmetric, Standard) {
  auto Aop = [](vector_const_view<double> from, int, vector_view<double> to, int) {
   to = A*from;
@@ -56,6 +61,7 @@ TEST(arpack_worker_symmetric, Standard) {
  }
 }
 
+// Generalized eigenproblem: invert mode
 TEST(arpack_worker_symmetric, Invert) {
  decltype(A) invM = inverse(M);
 
@@ -76,6 +82,7 @@ TEST(arpack_worker_symmetric, Invert) {
  }
 }
 
+// Generalized eigenproblem: Shift-and-Invert mode
 TEST(arpack_worker_symmetric, ShiftAndInvert) {
  double sigma = 1.0;
  decltype(A) inv = inverse(A - sigma*M) * M;
@@ -97,6 +104,7 @@ TEST(arpack_worker_symmetric, ShiftAndInvert) {
  }
 }
 
+// Generalized eigenproblem: Buckling mode
 TEST(arpack_worker_symmetric, Buckling) {
  double sigma = 1.0;
  decltype(A) inv = inverse(A - sigma*M) * A;
@@ -118,6 +126,7 @@ TEST(arpack_worker_symmetric, Buckling) {
  }
 }
 
+// Generalized eigenproblem: Cayley transformed mode
 TEST(arpack_worker_symmetric, Cayley) {
  double sigma = 1.0;
  decltype(A) inv = inverse(A - sigma*M) * (A + sigma*M);

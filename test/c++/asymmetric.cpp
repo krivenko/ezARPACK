@@ -21,6 +21,10 @@
 
 #include "arpack.hpp"
 
+//////////////////////////////////////////////
+// Eigenproblems with general real matrices //
+//////////////////////////////////////////////
+
 using params_t = arpack_worker<Asymmetric>::params_t;
 
 const int N = 100;
@@ -43,6 +47,7 @@ TEST(arpack_worker_symmetric, InnerProduct) {
  ASSERT_GT(eigenvalues(M)(0),.0);
 }
 
+// Standard eigenproblem
 TEST(arpack_worker_asymmetric, Standard) {
  auto Aop = [](vector_const_view<double> from, int, vector_view<double> to, int) {
   to = A*from;
@@ -57,6 +62,7 @@ TEST(arpack_worker_asymmetric, Standard) {
  }
 }
 
+// Generalized eigenproblem: invert mode
 TEST(arpack_worker_asymmetric, Invert) {
  decltype(A) invMA = inverse(M) * A;
 

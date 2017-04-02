@@ -1,3 +1,12 @@
+find_package(TriqsTest)
+
+# Detect ARPACK-NG
+find_package(ARPACK REQUIRED)
+
+set(CMAKE_BUILD_TYPE Release)
+add_definitions(${TRIQS_CXX_DEFINITIONS})
+include_directories(${CMAKE_SOURCE_DIR}/c++ ${TRIQS_INCLUDE_ALL})
+
 set(ARPACK_TESTS symmetric asymmetric complex)
 
 foreach(t ${ARPACK_TESTS})
@@ -8,5 +17,3 @@ foreach(t ${ARPACK_TESTS})
     triqs_set_rpath_for_target(${t})
     triqs_add_cpp_test(${t})
 endforeach()
-
-include_directories(${CMAKE_SOURCE_DIR}/c++ ${TRIQS_INCLUDE_ALL})

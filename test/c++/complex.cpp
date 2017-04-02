@@ -21,6 +21,10 @@
 
 #include "arpack.hpp"
 
+/////////////////////////////////////////
+// Eigenproblems with complex matrices //
+/////////////////////////////////////////
+
 using params_t = arpack_worker<Complex>::params_t;
 
 auto spectrum_parts = {params_t::LargestMagnitude,
@@ -43,6 +47,7 @@ TEST(arpack_worker_symmetric, InnerProduct) {
  ASSERT_GT(eigenvalues(M)(0),.0);
 }
 
+// Standard eigenproblem
 TEST(arpack_worker_complex, Standard) {
  auto Aop = [](vector_const_view<dcomplex> from, int, vector_view<dcomplex> to, int) {
   to = A*from;
@@ -57,6 +62,7 @@ TEST(arpack_worker_complex, Standard) {
  }
 }
 
+// Generalized eigenproblem: invert mode
 TEST(arpack_worker_complex, Invert) {
  decltype(A) invMA = inverse(M) * A;
 
@@ -77,6 +83,7 @@ TEST(arpack_worker_complex, Invert) {
  }
 }
 
+// Generalized eigenproblem: Shift-and-Invert mode
 TEST(arpack_worker_complex, ShiftAndInvert) {
  dcomplex sigma = 0.5 + 0.5_j;
  decltype(A) inv = inverse(A - sigma*M) * M;
