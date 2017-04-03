@@ -1,15 +1,8 @@
 find_package(TriqsTest)
 
-# Detect ARPACK-NG
-find_package(ARPACK REQUIRED)
+set(TESTS symmetric asymmetric complex)
 
-set(CMAKE_BUILD_TYPE Release)
-add_definitions(${TRIQS_CXX_DEFINITIONS})
-include_directories(${CMAKE_SOURCE_DIR}/c++ ${TRIQS_INCLUDE_ALL})
-
-set(ARPACK_TESTS symmetric asymmetric complex)
-
-foreach(t ${ARPACK_TESTS})
+foreach(t ${TESTS})
     set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
     set(t arpack_${t})
     add_executable(${t} ${s})

@@ -13,8 +13,8 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${TRIQS_PATH}/share/triq
 # Load TRIQS, including all predefined variables from TRIQS installation
 find_package(TRIQS REQUIRED)
 
-if(NOT TRIQS_VERSION EQUAL 1.5)
-    message(FATAL_ERROR "This extension requires the TRIQS library version 1.5 (got ${TRIQS_VERSION})")
+if(NOT (TRIQS_VERSION VERSION_EQUAL 1.4 OR TRIQS_VERSION VERSION_GREATER 1.4))
+    message(FATAL_ERROR "This extension requires the TRIQS library version 1.4 or newer (got ${TRIQS_VERSION})")
 endif()
 
 # Get hash
@@ -30,11 +30,28 @@ set(CMAKE_INSTALL_PREFIX ${TRIQS_PATH})
 install(FILES cmake/FindARPACK.cmake DESTINATION share/triqs/cmake)
 
 option(Tests "Enable Tests" ON)
+option(Examples "Build examples" ON)
+
+# Do we need to build anything?
+if(Tests OR Examples)
+    # Detect ARPACK-NG
+    find_package(ARPACK REQUIRED)
+
+    set(CMAKE_BUILD_TYPE Release)
+    add_definitions(${TRIQS_CXX_DEFINITIONS})
+    include_directories(${CMAKE_SOURCE_DIR}/c++ ${TRIQS_INCLUDE_ALL})
+endif(Tests OR Examples)
 
 # Install C++ headers
 add_subdirectory(c++)
 
-if (${Tests})
+# Build automated tests
+if(Tests)
     enable_testing()
     add_subdirectory(test)
-endif()
+endif(Tests)
+
+# Build examples
+if(Examples)
+    add_subdirectory(example)
+endif(Examples)

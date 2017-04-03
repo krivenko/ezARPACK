@@ -15,7 +15,7 @@ Installation
 ------------
 
 This C++ interface is essentially a header-only wrapper.
-Only the test programs require linking to the ARPACK library.
+Only the test programs and examples require linking to the ARPACK library.
 
 Installation is done in a few simple steps, assuming that TRIQS library is installed under `/path/to/triqs`:
 
@@ -29,6 +29,8 @@ $ make install
 ```
 
 Compilation of the tests can be disabled with CMake flag `-DTests=OFF` *(not recommended)*.
+
+Examples are compiled by default, disable them with `-DExamples=OFF`.
 
 In case CMake fails to find ARPACK, you can give it a hint by passing an ARPACK installation prefix via `-DARPACK_DIR=/path/to/arpack`.
 
@@ -72,7 +74,7 @@ Documentation
 
 Not at the moment... :(
 
-For the time being you are invited to use source files in `test/c++` as examples.
+For the time being you are invited to check `example/example.cpp`.
 
 Acknowledgements
 ----------------
