@@ -19,7 +19,7 @@
  *
  ******************************************************************************/
 
-#include "arpack.hpp"
+#include "common.hpp"
 
 ////////////////////////////////////////////////
 // Eigenproblems with real symmetric matrices //
