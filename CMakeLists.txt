@@ -13,14 +13,14 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${TRIQS_PATH}/share/triq
 # Load TRIQS, including all predefined variables from TRIQS installation
 find_package(TRIQS REQUIRED)
 
-if(NOT (TRIQS_VERSION VERSION_EQUAL 1.4 OR TRIQS_VERSION VERSION_GREATER 1.4))
-    message(FATAL_ERROR "This extension requires the TRIQS library version 1.4 or newer (got ${TRIQS_VERSION})")
+if(NOT TRIQS_VERSION VERSION_EQUAL 1.4)
+    message(FATAL_ERROR "This extension requires the TRIQS library version 1.4 (got ${TRIQS_VERSION})")
 endif()
 
 # Get hash
 triqs_get_git_hash(${CMAKE_SOURCE_DIR} "TRIQS_ARPACK")
 if(${GIT_RESULT} EQUAL 0)
-    message(STATUS "Hash: ${TRIQS_ARPACK_GIT_HASH}")
+    message(STATUS "Git hash: ${TRIQS_ARPACK_GIT_HASH}")
 endif(${GIT_RESULT} EQUAL 0)
 
 # We want to be installed in the TRIQS tree

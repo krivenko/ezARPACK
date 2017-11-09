@@ -8,7 +8,7 @@ Copyright (C) 2016-2017 by I. Krivenko
 Dependencies
 ------------
 
-* TRIQS library version 1.4 or newer;
+* TRIQS library version 1.4;
 * ARPACK library, preferably the latest ARPACK-NG version [3].
 
 Installation
