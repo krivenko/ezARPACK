@@ -1,36 +1,33 @@
 # Start configuration
-cmake_minimum_required(VERSION 2.8.7)
+cmake_minimum_required(VERSION 2.8.7 FATAL_ERROR)
 
 # Version number
 project(triqs_arpack CXX)
 
-set(TRIQS_ARPACK_VERSION "0.5")
+set(TRIQS_ARPACK_VERSION "0.6")
 message(STATUS "Configuring triqs_arpack version ${TRIQS_ARPACK_VERSION}")
 
 # Append triqs installed files to the cmake load path
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${TRIQS_PATH}/share/triqs/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${TRIQS_ROOT}/share/cmake)
 
-# Load TRIQS, including all predefined variables from TRIQS installation
-find_package(TRIQS REQUIRED)
-
-if(NOT TRIQS_VERSION VERSION_EQUAL 1.4)
-    message(FATAL_ERROR "This extension requires the TRIQS library version 1.4 (got ${TRIQS_VERSION})")
-endif()
+# Load Cpp2Py and TRIQS
+find_package(Cpp2Py 1.5 EXACT REQUIRED)
+find_package(TRIQS 1.5 EXACT REQUIRED)
 
 # Get hash
-triqs_get_git_hash(${CMAKE_SOURCE_DIR} "TRIQS_ARPACK")
-if(${GIT_RESULT} EQUAL 0)
-    message(STATUS "Git hash: ${TRIQS_ARPACK_GIT_HASH}")
-endif(${GIT_RESULT} EQUAL 0)
+triqs_get_git_hash_of_source_dir(TRIQS_ARPACK_GIT_HASH)
+message(STATUS "Git hash: ${TRIQS_ARPACK_GIT_HASH}")
 
 # We want to be installed in the TRIQS tree
-set(CMAKE_INSTALL_PREFIX ${TRIQS_PATH})
+set(CMAKE_INSTALL_PREFIX ${TRIQS_ROOT})
 
 # Install FindARPACK.cmake
-install(FILES cmake/FindARPACK.cmake DESTINATION share/triqs/cmake)
+install(FILES cmake/FindARPACK.cmake DESTINATION share/cmake)
 
 option(Tests "Enable Tests" ON)
 option(Examples "Build examples" ON)
+
+add_compile_options(-std=c++14)
 
 # Do we need to build anything?
 if(Tests OR Examples)

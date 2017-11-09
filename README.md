@@ -8,7 +8,7 @@ Copyright (C) 2016-2017 by I. Krivenko
 Dependencies
 ------------
 
-* TRIQS library version 1.4;
+* TRIQS library version 1.5;
 * ARPACK library, preferably the latest ARPACK-NG version [3].
 
 Installation
@@ -43,17 +43,13 @@ Make sure to have the following lines somewhere in your `CMakeLists.txt` file.
 
 ```cmake
 # Append TRIQS-installed CMake modules to the CMake search path
-list(APPEND CMAKE_MODULE_PATH ${TRIQS_PATH}/share/triqs/cmake)
+list(APPEND CMAKE_MODULE_PATH ${TRIQS_ROOT}/share/cmake)
 
 # Detect ARPACK
 find_package(ARPACK REQUIRED)
 
-# Add TRIQS include dirs
-# triqs_arpack places its header files into the installation tree of TRIQS
-include_directories(${TRIQS_INCLUDE_ALL})
-
 # Link my_target to TRIQS and ARPACK
-target_link_libraries(my_target ${TRIQS_LIBRARY_ALL} ${ARPACK_LIB})
+target_link_libraries(my_target triqs ${ARPACK_LIB})
 ```
 
 In the C++ sources you can now include
