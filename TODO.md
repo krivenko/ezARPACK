@@ -2,7 +2,7 @@ TODO
 ====
 
 1. ~~Choose project name.~~
-2. Choose license.
+2. ~~Choose license.~~
 3. Fill in README.md and GitHub metadata.
 4. Choose the set of storage backends to be supported.
 5. Adjust directory structure to make sources directly usable without building.
