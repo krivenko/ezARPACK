@@ -3,8 +3,8 @@ TODO
 
 1. ~~Choose project name.~~
 2. ~~Choose license.~~
-3. Fill in README.md and GitHub metadata.
-4. Choose the set of storage backends to be supported.
+3. ~~Choose the set of storage backends to be supported.~~
+4. Fill in README.md and GitHub metadata.
 5. Adjust directory structure to make sources directly usable without building.
 6. Optionally download and build GTest.
 7. De-triqsify: Exceptions.
