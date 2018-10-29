@@ -49,6 +49,7 @@ TEST(arpack_worker_complex, Standard) {
 
  for(auto e : spectrum_parts) {
   params_t params(nev, e, params_t::Ritz);
+  params.ncv = 30;
   ar(Aop, params);
   check_eigenvectors(ar,A);
  }

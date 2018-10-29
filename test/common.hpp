@@ -17,7 +17,7 @@
 #include <triqs/utility/c14.hpp>
 #include <triqs/arrays/linalg/eigenelements.hpp>
 
-#include "arpack_worker.hpp"
+#include "ezarpack/arpack_worker.hpp"
 
 using namespace triqs::arrays;
 using namespace triqs::arrays::arpack;
@@ -78,7 +78,7 @@ template<typename AR, typename M> void check_eigenvectors(AR const& ar, M const&
  auto lambda = ar.eigenvalues();
  for(int i : range(lambda.size())) {
   auto vec = ar.eigenvectors()(range(), i);
-  EXPECT_CLOSE_ARRAY(A*vec, lambda(i)*vec);
+  EXPECT_ARRAY_NEAR(A*vec, lambda(i)*vec);
  }
 }
 
@@ -86,7 +86,7 @@ template<typename AR, typename MT> void check_eigenvectors(AR const& ar, MT cons
  auto lambda = ar.eigenvalues();
  for(int i : range(lambda.size())) {
   auto vec = ar.eigenvectors()(range(), i);
-  EXPECT_CLOSE_ARRAY(A*vec, lambda(i)*M*vec);
+  EXPECT_ARRAY_NEAR(A*vec, lambda(i)*M*vec);
  }
 }
 
@@ -98,6 +98,6 @@ void check_eigenvectors_rayleigh(AR const& ar, MT const& A, MT const& M) {
  auto lambda = ar.eigenvalues(Aop);
  for(int i : range(lambda.size())) {
   auto vec = ar.eigenvectors()(range(), i);
-  EXPECT_CLOSE_ARRAY(A*vec, lambda(i)*M*vec);
+  EXPECT_ARRAY_NEAR(A*vec, lambda(i)*M*vec);
  }
 }

@@ -8,11 +8,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-set(EXAMPLES example)
+set(EXAMPLES)
 
-foreach(t ${EXAMPLES})
-    set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
-    add_executable(${t} ${s})
-    target_link_libraries(${t} triqs ${ARPACK_LIB})
-    triqs_set_rpath_for_target(${t})
-endforeach()
+# TRIQS example
+if(TRIQS_FOUND)
+  set(t "triqs.example")
+  add_executable(${t} ${t}.cpp)
+  target_link_libraries(${t} triqs ${arpack_ng_LIBRARIES})
+  list(APPEND EXAMPLES ${t})
+endif(TRIQS_FOUND)
+
+if(EXAMPLES)
+  message(STATUS "Building examples:")
+  foreach(example ${EXAMPLES})
+    message(STATUS "  ${example}")
+  endforeach(example ${EXAMPLES})
+endif(EXAMPLES)

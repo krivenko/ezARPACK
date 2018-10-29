@@ -1,16 +1,18 @@
 TODO
 ====
 
-1. ~~Choose project name.~~
-2. ~~Choose license.~~
-3. ~~Choose the set of storage backends to be supported.~~
-4. Fill in README.md and GitHub metadata.
-5. Adjust directory structure to make sources directly usable without building.
-6. Optionally download and build GTest.
-7. De-triqsify: Exceptions.
-8. De-triqsify: Metaprogramming utilities.
-9. De-triqsify: TRIQS_FORTRAN_MANGLING.
-10. De-triqsify: Testing utilities.
-11. De-triqsify: Arrays.
-12. Implement storage backends.
-13. Setup Travis CI.
+* ~~Choose project name.~~
+* ~~Choose license.~~
+* ~~Choose the set of storage backends to be supported.~~
+* Fill in README.md and GitHub metadata.
+* Adjust directory structure to make sources directly usable without building.
+* Optionally download and build GTest.
+* Change API: do not pass from_n and to_n to callables. Expose those indices via methods of the workers instead.
+* Change API: remove `init_residual_vector` from `params_t` and expose `resid`.
+* De-triqsify: Exceptions.
+* De-triqsify: Metaprogramming utilities.
+* De-triqsify: TRIQS_FORTRAN_MANGLING.
+* De-triqsify: Testing utilities.
+* De-triqsify: Arrays.
+* Implement storage backends.
+* Setup Travis CI.

@@ -9,56 +9,65 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 # Start configuration
-cmake_minimum_required(VERSION 2.8.7 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.0.2 FATAL_ERROR)
 
-# Version number
-project(triqs_arpack CXX)
+# Project name and version
+set(EZARPACK_VERSION 0.1)
+project(ezARPACK VERSION ${EZARPACK_VERSION} LANGUAGES CXX)
+message(STATUS "Configuring ${PROJECT_NAME} version ${PROJECT_VERSION}")
 
-set(TRIQS_ARPACK_VERSION "0.6")
-message(STATUS "Configuring triqs_arpack version ${TRIQS_ARPACK_VERSION}")
+# find_package() should take into account <PackageName>_ROOT
+# CMake variables and environment variables
+cmake_policy(SET CMP0074 NEW)
 
-# Append triqs installed files to the cmake load path
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${TRIQS_ROOT}/share/cmake)
-
-# Load Cpp2Py and TRIQS
-find_package(Cpp2Py 1.5 EXACT REQUIRED)
-find_package(TRIQS 1.5 EXACT REQUIRED)
-
-# Get hash
-triqs_get_git_hash_of_source_dir(TRIQS_ARPACK_GIT_HASH)
-message(STATUS "Git hash: ${TRIQS_ARPACK_GIT_HASH}")
-
-# We want to be installed in the TRIQS tree
-set(CMAKE_INSTALL_PREFIX ${TRIQS_ROOT})
-
-# Install FindARPACK.cmake
-install(FILES cmake/FindARPACK.cmake DESTINATION share/cmake)
-
-option(Tests "Enable Tests" ON)
+# CMake options
+option(Tests "Build unit tests" ON)
 option(Examples "Build examples" ON)
 
-add_compile_options(-std=c++14)
-
-# Do we need to build anything?
+# Are we building any components?
 if(Tests OR Examples)
-    # Detect ARPACK-NG
-    find_package(ARPACK REQUIRED)
 
-    set(CMAKE_BUILD_TYPE Release)
-    add_definitions(${TRIQS_CXX_DEFINITIONS})
-    include_directories(${CMAKE_SOURCE_DIR}/c++ ${TRIQS_INCLUDE_ALL})
-endif(Tests OR Examples)
+  # Set default build type to Release
+  if(NOT DEFINED CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE)
+  endif(NOT DEFINED CMAKE_BUILD_TYPE)
+
+  message(STATUS "Detecting ARPACK-NG headers and libraries")
+  set(arpack-ng_DIR ${ARPACK_NG_ROOT}/lib/cmake)
+  find_package(arpack-ng 3.6.0 REQUIRED)
+  message(STATUS "  arpack_ng_INCLUDE_DIRS: ${arpack_ng_INCLUDE_DIRS}")
+  message(STATUS "  arpack_ng_LIBRARIES: ${arpack_ng_LIBRARIES}")
+
+  # Find arpack.hpp
+  find_file(ARPACK_HPP "arpack.hpp" "${arpack_ng_INCLUDE_DIRS}")
+  if(NOT ARPACK_HPP)
+    message(FATAL_ERROR "Could not locate arpack.hpp in ${arpack_ng_INCLUDE_DIRS}.\n"
+                        "Did you build ARPACK-NG with C++ bindings enabled?")
+  endif(NOT ARPACK_HPP)
+
+  # Add ARPACK-NG and ezARPACK include directories to all targets being built
+  include_directories(${CMAKE_SOURCE_DIR}/include ${arpack_ng_INCLUDE_DIRS})
+
+  # Find all storage backends
+  include(cmake/find_backends.cmake)
+endif()
+
+include_directories(include)
 
 # Install C++ headers
-add_subdirectory(c++)
+add_subdirectory(include/ezarpack)
 
-# Build automated tests
+# TODO: Install CMake configuration files for ezARPACK
+
+# Build unit tests
 if(Tests)
-    enable_testing()
-    add_subdirectory(test)
+  # FIXME: local build of Google Test conflicts with TRIQS (issue #654)
+  #include(cmake/add_gtest.cmake)
+  enable_testing()
+  add_subdirectory(test)
 endif(Tests)
 
 # Build examples
 if(Examples)
-    add_subdirectory(example)
+  add_subdirectory(example)
 endif(Examples)

@@ -14,10 +14,14 @@
 #include <iostream>
 #include <algorithm>
 
-#include <triqs/arrays/arpack/arpack_worker.hpp>
+#include <ezarpack/arpack_worker.hpp>
 
 // This example shows how to partially diagonalize a large sparse symmetric
 // matrix and find a number of its low-lying eigenvalues.
+
+// Using TRIQS arrays to manipulate matrices/vectors
+// FIXME
+using namespace triqs::arrays::arpack;
 
 // Size of the matrix
 const int N = 10000;
@@ -27,8 +31,6 @@ const int bandwidth = 5;
 
 // The number of low-lying eigenvalues we want to compute
 const int N_ev = 10;
-
-using namespace triqs::arrays::arpack;
 
 int main(int argc, char* argv[]) {
 
