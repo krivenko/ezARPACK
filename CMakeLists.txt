@@ -16,6 +16,11 @@ set(EZARPACK_VERSION 0.1)
 project(ezARPACK VERSION ${EZARPACK_VERSION} LANGUAGES CXX)
 message(STATUS "Configuring ${PROJECT_NAME} version ${PROJECT_VERSION}")
 
+# Prohibit in-source builds
+if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+  message(FATAL_ERROR "In-source builds are not allowed. Please make a separate build directory.")
+endif(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+
 # find_package() should take into account <PackageName>_ROOT
 # CMake variables and environment variables
 cmake_policy(SET CMP0074 NEW)
