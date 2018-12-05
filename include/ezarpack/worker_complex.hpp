@@ -12,7 +12,7 @@
  ******************************************************************************/
 #pragma once
 
-namespace triqs { namespace arrays { namespace arpack {
+namespace ezarpack {
 
 using namespace triqs::arrays;
 
@@ -369,4 +369,4 @@ public:
 
 };
 
-}}}
+}

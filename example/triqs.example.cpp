@@ -19,9 +19,7 @@
 // This example shows how to partially diagonalize a large sparse symmetric
 // matrix and find a number of its low-lying eigenvalues.
 
-// Using TRIQS arrays to manipulate matrices/vectors
-// FIXME
-using namespace triqs::arrays::arpack;
+using namespace ezarpack;
 
 // Size of the matrix
 const int N = 10000;

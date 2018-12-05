@@ -21,7 +21,7 @@
 
 #include "arpack.hpp"
 
-namespace triqs { namespace arrays { namespace arpack {
+namespace ezarpack {
 
 enum operator_kind {Symmetric, Asymmetric, Complex};
 
@@ -47,7 +47,7 @@ struct ncv_insufficient : public std::runtime_error {
       ncv(ncv) {}
 };
 
-}}}
+}
 
 #include "worker_symmetric.hpp"
 #include "worker_asymmetric.hpp"

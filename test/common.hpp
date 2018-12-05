@@ -20,8 +20,8 @@
 
 #include "ezarpack/arpack_worker.hpp"
 
+using namespace ezarpack;
 using namespace triqs::arrays;
-using namespace triqs::arrays::arpack;
 using triqs::arrays::linalg::eigenvalues;
 
 template<operator_kind MKind>

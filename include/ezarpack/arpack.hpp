@@ -14,7 +14,7 @@
 
 #include <triqs/arrays/blas_lapack/tools.hpp>
 
-namespace triqs { namespace arrays { namespace arpack {
+namespace ezarpack {
 
  using dcomplex = std::complex<double>;
 
@@ -209,5 +209,5 @@ namespace triqs { namespace arrays { namespace arpack {
 
  } // f77
 
-}}}
+}
 

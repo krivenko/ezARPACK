@@ -15,7 +15,7 @@
 #include <triqs/arrays/blas_lapack/dot.hpp>
 #include <triqs/arrays/math_functions.hpp>
 
-namespace triqs { namespace arrays { namespace arpack {
+namespace ezarpack {
 
 using namespace triqs::arrays;
 
@@ -406,4 +406,4 @@ public:
 
 };
 
-}}}
+}
