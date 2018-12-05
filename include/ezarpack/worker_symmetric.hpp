@@ -54,8 +54,6 @@ public:
 
   // Use a randomly generated initial residual vector
   bool random_residual_vector = true;
-  // Initial residual vector
-  vector<double> init_residual_vector = {};
 
   // Eigenvalue shift
   double sigma = 0;
@@ -113,17 +111,8 @@ public:
              << " is interpreted as machine epsilon." << std::endl;
   }
 
-  // Initial residual vector
-  if(params.random_residual_vector) {
-   info = 0;
-  } else {
-   info = 1;
-   if(params.init_residual_vector.size() != N)
-    throw std::runtime_error("arpack_worker: initial residual vector of a wrong size "
-                             + std::to_string(params.init_residual_vector.size())
-                             + " (must be " + std::to_string(N) + ")");
-    resid = params.init_residual_vector;
-  }
+  // Use random initial residual vector?
+  info = !params.random_residual_vector;
 
   iparam[2] = int(params.max_iter); // Max number of iterations
   if(iparam[2] <= 0)
@@ -327,7 +316,7 @@ public:
  matrix_view<double> eigenvectors() const { return v(range(),range(nev)); }
 
  // Access residual vector
- vector_view<double> residual_vector() const { return resid; }
+ vector_view<double> residual_vector() { return resid; }
 
  // Has B*x already been computed?
  bool Bx_available() const { return Bx_available_; }
