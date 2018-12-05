@@ -11,7 +11,7 @@ TODO
 * Change API: remove `init_residual_vector` from `params_t` and expose `resid`.
 * ~~De-triqsify: Exceptions.~~
 * ~~De-triqsify: Metaprogramming utilities.~~
-* De-triqsify: TRIQS_FORTRAN_MANGLING.
+* ~~De-triqsify: TRIQS_FORTRAN_MANGLING.~~
 * De-triqsify: Testing utilities.
 * De-triqsify: Arrays.
 * Implement storage backends.
