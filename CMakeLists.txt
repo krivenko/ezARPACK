@@ -37,27 +37,18 @@ if(Tests OR Examples)
     set(CMAKE_BUILD_TYPE Release CACHE)
   endif(NOT DEFINED CMAKE_BUILD_TYPE)
 
-  message(STATUS "Detecting ARPACK-NG headers and libraries")
+  message(STATUS "Detecting ARPACK-NG libraries")
   set(arpack-ng_DIR ${ARPACK_NG_ROOT}/lib/cmake)
   find_package(arpack-ng 3.6.0 REQUIRED)
-  message(STATUS "  arpack_ng_INCLUDE_DIRS: ${arpack_ng_INCLUDE_DIRS}")
+  message(STATUS "Found ARPACK-NG version ${arpack-ng_VERSION}")
   message(STATUS "  arpack_ng_LIBRARIES: ${arpack_ng_LIBRARIES}")
 
-  # Find arpack.hpp
-  find_file(ARPACK_HPP "arpack.hpp" "${arpack_ng_INCLUDE_DIRS}")
-  if(NOT ARPACK_HPP)
-    message(FATAL_ERROR "Could not locate arpack.hpp in ${arpack_ng_INCLUDE_DIRS}.\n"
-                        "Did you build ARPACK-NG with C++ bindings enabled?")
-  endif(NOT ARPACK_HPP)
-
-  # Add ARPACK-NG and ezARPACK include directories to all targets being built
-  include_directories(${CMAKE_SOURCE_DIR}/include ${arpack_ng_INCLUDE_DIRS})
+  # Add ezARPACK include directory to all targets that require building
+  include_directories(${CMAKE_SOURCE_DIR}/include)
 
   # Find all storage backends
   include(cmake/find_backends.cmake)
 endif()
-
-include_directories(include)
 
 # Install C++ headers
 add_subdirectory(include/ezarpack)
