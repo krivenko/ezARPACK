@@ -14,11 +14,10 @@
 
 #include <string>
 #include <array>
+#include <exception>
 #include <type_traits>
 #include <triqs/arrays/vector.hpp>
 #include <triqs/arrays/matrix.hpp>
-#include <triqs/utility/c14.hpp>
-#include <triqs/utility/exceptions.hpp>
 
 #include "arpack.hpp"
 
@@ -32,24 +31,20 @@ template<operator_kind OpKind> class arpack_worker;
 enum rci_flag : int {Init = 0, ApplyOpInit = -1, ApplyOp = 1, ApplyB = 2, Shifts = 3, Done = 99};
 
 // Exceptions
-struct maxiter_reached : public triqs::runtime_error {
- int maxiter;
- maxiter_reached(int maxiter) : maxiter(maxiter) {
-  *this << "arpack_worker: maximum number of iterations ("  << maxiter << ") taken.";
- }
- maxiter_reached(maxiter_reached const& ) = default;
- maxiter_reached& operator=(maxiter_reached const&) = default;
+struct maxiter_reached : public std::runtime_error {
+  int maxiter;
+  maxiter_reached(int maxiter)
+    : std::runtime_error("arpack_worker: maximum number of iterations ("  + std::to_string(maxiter) + ") reached"),
+      maxiter(maxiter) {}
 };
 
-struct ncv_insufficient : public triqs::runtime_error {
- int ncv;
- ncv_insufficient(int ncv) : ncv(ncv) {
-  *this << "arpack_worker: No shifts could be applied during a cycle "
-           "of the Implicitly restarted Arnoldi iteration. "
-           "Try increasing ncv (currently ncv = " << ncv << ").";
- }
- ncv_insufficient(ncv_insufficient const& ) = default;
- ncv_insufficient& operator=(ncv_insufficient const&) = default;
+struct ncv_insufficient : public std::runtime_error {
+  int ncv;
+  ncv_insufficient(int ncv)
+    : std::runtime_error("arpack_worker: No shifts could be applied during a cycle "
+                         "of the Implicitly restarted Arnoldi iteration. "
+                         "Try increasing ncv (currently ncv = " + std::to_string(ncv) + ")."),
+      ncv(ncv) {}
 };
 
 }}}

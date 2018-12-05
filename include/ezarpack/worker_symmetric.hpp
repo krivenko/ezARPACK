@@ -84,8 +84,9 @@ public:
   unsigned int nev_max = N-1;
 
   if(nev < nev_min || nev > nev_max)
-   TRIQS_RUNTIME_ERROR << "arpack_worker: n_eigenvalues must be within [" << nev_min
-                       << ";" << nev_max << "]";
+   throw std::runtime_error("arpack_worker: n_eigenvalues must be within ["
+                            + std::to_string(nev_min) + ";"
+                            + std::to_string(nev_max) + "]");
 
   // Character codes for eigenvalues_select
   static const std::array<const char*,5> wh = {"LA","SA","LM","SM","BE"};
@@ -95,8 +96,9 @@ public:
   ncv = params.ncv;
   if(ncv == -1) ncv = std::min(2*int(params.n_eigenvalues)+2, N);
   else if(ncv <= params.n_eigenvalues || ncv > N)
-   TRIQS_RUNTIME_ERROR << "arpack_worker: ncv must be within ]" << params.n_eigenvalues
-                       << ";" << N << "]";
+   throw std::runtime_error("arpack_worker: ncv must be within ]"
+                            + std::to_string(params.n_eigenvalues)
+                            + ";" + std::to_string(N) + "]");
   v.resize(N,ncv);
 
   // Eigenvectors
@@ -116,15 +118,15 @@ public:
   } else {
    info = 1;
    if(params.init_residual_vector.size() != N)
-    TRIQS_RUNTIME_ERROR << "arpack_worker: initial residual vector of a wrong size "
-                        << params.init_residual_vector.size()
-                        << " (must be " << N << ")";
+    throw std::runtime_error("arpack_worker: initial residual vector of a wrong size "
+                             + std::to_string(params.init_residual_vector.size())
+                             + " (must be " + std::to_string(N) + ")");
     resid = params.init_residual_vector;
   }
 
   iparam[2] = int(params.max_iter); // Max number of iterations
   if(iparam[2] <= 0)
-   TRIQS_RUNTIME_ERROR << "arpack_worker: maximum number of Arnoldi update iterations must be positive";
+   throw std::runtime_error("arpack_worker: maximum number of Arnoldi update iterations must be positive");
  }
 
  struct trivial_shifts_f { void operator()(vector_view<double> shifts){}};
@@ -173,7 +175,7 @@ public:
      shifts_f(workl(range(ipntr[10]-1,ipntr[10]-1+iparam[7])));
      break;
     case Done: break;
-    default: TRIQS_RUNTIME_ERROR << "arpack_worker: reverse communication interface error";
+    default: throw std::runtime_error("arpack_worker: reverse communication interface error");
    }
   } while(ido != Done);
 
@@ -181,7 +183,8 @@ public:
    case 0: break;
    case 1: throw(maxiter_reached(iparam[2]));
    case 3: throw(ncv_insufficient(ncv));
-   default: TRIQS_RUNTIME_ERROR << "arpack_worker: dsaupd failed with error code " << info;
+   default: throw std::runtime_error("arpack_worker: dsaupd failed with error code "
+                                     + std::to_string(info));
   }
 
   d.resize(nev);
@@ -196,7 +199,8 @@ public:
             workl.data_start(), workl.size(),
             info);
 
-  if(info) TRIQS_RUNTIME_ERROR << "arpack_worker: dseupd failed with error code " << info;
+  if(info) throw std::runtime_error("arpack_worker: dseupd failed with error code "
+                                    + std::to_string(info));
  }
 
  /***********************************
@@ -266,7 +270,7 @@ public:
      shifts_f(workl(range(ipntr[10]-1,ipntr[10]-1+iparam[7])));
      break;
     case Done: break;
-    default: TRIQS_RUNTIME_ERROR << "arpack_worker: reverse communication interface error";
+    default: throw std::runtime_error("arpack_worker: reverse communication interface error");
    }
   } while(ido != Done);
 
@@ -274,7 +278,8 @@ public:
    case 0: break;
    case 1: throw(maxiter_reached(iparam[2]));
    case 3: throw(ncv_insufficient(ncv));
-   default: TRIQS_RUNTIME_ERROR << "arpack_worker: dsaupd failed with error code " << info;
+   default: throw std::runtime_error("arpack_worker: dsaupd failed with error code "
+                                     + std::to_string(info));
   }
 
   d.resize(nev);
@@ -290,14 +295,15 @@ public:
             workl.data_start(), workl.size(),
             info);
 
-  if(info) TRIQS_RUNTIME_ERROR << "arpack_worker: dseupd failed with error code " << info;
+  if(info) throw std::runtime_error("arpack_worker: dseupd failed with error code "
+                                    + std::to_string(info));
  }
 
  // Get view of a workspace vector
  vector_view<double> workspace_vector(int n) const {
   if(n < 0 || n > 2)
-   TRIQS_RUNTIME_ERROR << "arpack_worker: valid indices of workspace vectors are 0, 1 and 2"
-                       << " (got " << n << ")";
+   throw std::runtime_error("arpack_worker: valid indices of workspace vectors are 0, 1 and 2"
+                            " (got " + std::to_string(n) + ")");
   return workd(range(n*N,(n+1)*N));
  }
 

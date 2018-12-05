@@ -14,7 +14,6 @@
 
 #include <triqs/test_tools/arrays.hpp>
 
-#include <triqs/utility/c14.hpp>
 #include <triqs/arrays/linalg/eigenelements.hpp>
 
 #include "ezarpack/arpack_worker.hpp"
