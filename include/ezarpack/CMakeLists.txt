@@ -14,9 +14,5 @@ install(FILES arpack.hpp
         worker_asymmetric.hpp
         worker_complex.hpp
         worker_symmetric.hpp
+        version.hpp
         DESTINATION include/ezarpack)
-
-# TODO
-# Generate and install version.hpp
-#configure_file(version.hpp.in version.hpp)
-#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/version.hpp DESTINATION include/triqs/arrays/arpack)

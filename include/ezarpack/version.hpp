@@ -12,5 +12,4 @@
  ******************************************************************************/
 #pragma once
 
-#define TRIQS_ARPACK_VERSION    "@TRIQS_ARPACK_VERSION@"
-#define TRIQS_ARPACK_GIT_HASH   "@TRIQS_ARPACK_GIT_HASH@"
+#define EZARPACK_VERSION "0.1"
