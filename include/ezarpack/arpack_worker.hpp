@@ -25,7 +25,7 @@ namespace ezarpack {
 
 enum operator_kind {Symmetric, Asymmetric, Complex};
 
-template<operator_kind OpKind> class arpack_worker;
+template<operator_kind OpKind, typename Backend> class arpack_worker;
 
 // Reverse Communuication Interface Flag
 enum rci_flag : int {Init = 0, ApplyOpInit = -1, ApplyOp = 1, ApplyB = 2, Shifts = 3, Done = 99};

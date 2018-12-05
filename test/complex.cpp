@@ -17,7 +17,8 @@
 // Eigenproblems with complex matrices //
 /////////////////////////////////////////
 
-using params_t = arpack_worker<Complex>::params_t;
+using worker_t = arpack_worker<Complex, triqs_storage>;
+using params_t = worker_t::params_t;
 
 auto spectrum_parts = {params_t::LargestMagnitude,
                        params_t::SmallestMagnitude,
@@ -45,7 +46,7 @@ TEST(arpack_worker_complex, Standard) {
   to = A*from;
  };
 
- arpack_worker<Complex> ar(first_dim(A));
+ worker_t ar(first_dim(A));
 
  for(auto e : spectrum_parts) {
   params_t params(nev, e, params_t::Ritz);
@@ -66,12 +67,12 @@ TEST(arpack_worker_complex, Invert) {
   to = M * from;
  };
 
- arpack_worker<Complex> ar(first_dim(A));
+ worker_t ar(first_dim(A));
 
  for(auto e : spectrum_parts) {
   params_t params(nev, e, params_t::Ritz);
   params.ncv = 50;
-  ar(op, Bop, arpack_worker<Complex>::Invert, params);
+  ar(op, Bop, worker_t::Invert, params);
   check_eigenvectors(ar,A,M);
  }
 }
@@ -88,13 +89,13 @@ TEST(arpack_worker_complex, ShiftAndInvert) {
   to = M * from;
  };
 
- arpack_worker<Complex> ar(first_dim(A));
+ worker_t ar(first_dim(A));
 
  for(auto e : spectrum_parts) {
   params_t params(nev, e, params_t::Ritz);
   params.sigma = sigma;
   params.ncv = 50;
-  ar(op, Bop, arpack_worker<Complex>::ShiftAndInvert, params);
+  ar(op, Bop, worker_t::ShiftAndInvert, params);
   check_eigenvectors(ar,A,M);
  }
 }

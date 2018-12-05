@@ -18,6 +18,7 @@
 
 #include <triqs/arrays/linalg/eigenelements.hpp>
 
+#include "ezarpack/storages/triqs.hpp"
 #include "ezarpack/arpack_worker.hpp"
 
 using namespace ezarpack;

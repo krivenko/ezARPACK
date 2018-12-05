@@ -14,12 +14,14 @@
 #include <iostream>
 #include <algorithm>
 
+#include <ezarpack/storages/triqs.hpp>
 #include <ezarpack/arpack_worker.hpp>
 
 // This example shows how to partially diagonalize a large sparse symmetric
 // matrix and find a number of its low-lying eigenvalues.
 
 using namespace ezarpack;
+using namespace triqs::arrays;
 
 // Size of the matrix
 const int N = 10000;
@@ -36,7 +38,7 @@ int main(int argc, char* argv[]) {
  // Other options would be
  // * `arpack_worker<Asymmetric>' for general real matrices.
  // * `arpack_worker<Complex>' for general complex matrices.
- arpack_worker<Symmetric> worker(N);
+ arpack_worker<Symmetric, triqs_storage> worker(N);
 
  // Linear operator representing multiplication of a given vector by our matrix
  auto matrix = [](vector_const_view<double> from, vector_view<double> to) {
@@ -54,7 +56,7 @@ int main(int argc, char* argv[]) {
  };
 
  // Specify parameters for the worker
- using params_t = arpack_worker<Symmetric>::params_t;
+ using params_t = arpack_worker<Symmetric, triqs_storage>::params_t;
  params_t params(N_ev,               // Number of low-lying eigenvalues
                  params_t::Smallest, // We want the smallest eigenvalues
                  true                // Yes, we want the eigenvectors (Ritz vectors) as well

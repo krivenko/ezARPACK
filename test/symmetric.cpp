@@ -17,7 +17,8 @@
 // Eigenproblems with real symmetric matrices //
 ////////////////////////////////////////////////
 
-using params_t = arpack_worker<Symmetric>::params_t;
+using worker_t = arpack_worker<Symmetric, triqs_storage>;
+using params_t = worker_t::params_t;
 
 const int N = 100;
 const double diag_coeff = 0.75;
@@ -44,7 +45,7 @@ TEST(arpack_worker_symmetric, Standard) {
   to = A*from;
  };
 
- arpack_worker<Symmetric> ar(first_dim(A));
+ worker_t ar(first_dim(A));
 
  for(auto e : spectrum_parts) {
   params_t params(nev, e, true);
@@ -65,11 +66,11 @@ TEST(arpack_worker_symmetric, Invert) {
   to = M * from;
  };
 
- arpack_worker<Symmetric> ar(first_dim(A));
+ worker_t ar(first_dim(A));
 
  for(auto e : spectrum_parts) {
   params_t params(nev, e, true);
-  ar(op, Bop, arpack_worker<Symmetric>::Invert, params);
+  ar(op, Bop, worker_t::Invert, params);
   check_eigenvectors(ar,A,M);
  }
 }
@@ -86,12 +87,12 @@ TEST(arpack_worker_symmetric, ShiftAndInvert) {
   to = M * from;
  };
 
- arpack_worker<Symmetric> ar(first_dim(A));
+ worker_t ar(first_dim(A));
 
  for(auto e : spectrum_parts) {
   params_t params(nev, e, true);
   params.sigma = sigma;
-  ar(op, Bop, arpack_worker<Symmetric>::ShiftAndInvert, params);
+  ar(op, Bop, worker_t::ShiftAndInvert, params);
   check_eigenvectors(ar,A,M);
  }
 }
@@ -108,12 +109,12 @@ TEST(arpack_worker_symmetric, Buckling) {
   to = M * from;
  };
 
- arpack_worker<Symmetric> ar(first_dim(A));
+ worker_t ar(first_dim(A));
 
  for(auto e : spectrum_parts) {
   params_t params(nev, e, true);
   params.sigma = sigma;
-  ar(op, Bop, arpack_worker<Symmetric>::Buckling, params);
+  ar(op, Bop, worker_t::Buckling, params);
   check_eigenvectors(ar,A,M);
  }
 }
@@ -130,12 +131,12 @@ TEST(arpack_worker_symmetric, Cayley) {
   to = M * from;
  };
 
- arpack_worker<Symmetric> ar(first_dim(A));
+ worker_t ar(first_dim(A));
 
  for(auto e : spectrum_parts) {
   params_t params(nev, e, true);
   params.sigma = sigma;
-  ar(op, Bop, arpack_worker<Symmetric>::Cayley, params);
+  ar(op, Bop, worker_t::Cayley, params);
   check_eigenvectors(ar,A,M);
  }
 }

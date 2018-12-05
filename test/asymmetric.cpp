@@ -17,7 +17,8 @@
 // Eigenproblems with general real matrices //
 //////////////////////////////////////////////
 
-using params_t = arpack_worker<Asymmetric>::params_t;
+using worker_t = arpack_worker<Asymmetric, triqs_storage>;
+using params_t = worker_t::params_t;
 
 const int N = 100;
 const double diag_coeff = 0.75;
@@ -45,7 +46,7 @@ TEST(arpack_worker_asymmetric, Standard) {
   to = A*from;
  };
 
- arpack_worker<Asymmetric> ar(first_dim(A));
+ worker_t ar(first_dim(A));
 
  for(auto e : spectrum_parts) {
   params_t params(nev, e, params_t::Ritz);
@@ -65,12 +66,12 @@ TEST(arpack_worker_asymmetric, Invert) {
   to = M * from;
  };
 
- arpack_worker<Asymmetric> ar(first_dim(A));
+ worker_t ar(first_dim(A));
 
  for(auto e : spectrum_parts) {
   params_t params(nev, e, params_t::Ritz);
   params.ncv = 30;
-  ar(op, Bop, arpack_worker<Asymmetric>::Invert, params);
+  ar(op, Bop, worker_t::Invert, params);
   check_eigenvectors(ar,A,M);
  }
 }
