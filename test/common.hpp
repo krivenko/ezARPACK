@@ -12,6 +12,8 @@
  ******************************************************************************/
 #pragma once
 
+#include <type_traits>
+
 #include <triqs/test_tools/arrays.hpp>
 
 #include <triqs/arrays/linalg/eigenelements.hpp>
@@ -23,7 +25,7 @@ using namespace triqs::arrays::arpack;
 using triqs::arrays::linalg::eigenvalues;
 
 template<operator_kind MKind>
-using matrix_t = matrix<std14::conditional_t<MKind==Complex,dcomplex,double>>;
+using matrix_t = matrix<typename std::conditional<MKind==Complex,dcomplex,double>::type>;
 
 // Fill diagonal
 template<operator_kind MKind> void fill_diag(matrix_t<MKind> & M, double coeff) {
@@ -31,7 +33,7 @@ template<operator_kind MKind> void fill_diag(matrix_t<MKind> & M, double coeff) 
 }
 
 // Fill off-diagonal elements
-template<operator_kind MKind> std14::enable_if_t<MKind==Symmetric,void>
+template<operator_kind MKind> typename std::enable_if<MKind==Symmetric,void>::type
 fill_offdiag(matrix_t<MKind> & M, int offdiag_offset, double coeff) {
  int N = first_dim(M);
  for(int n : range(N-offdiag_offset)) {
@@ -40,7 +42,7 @@ fill_offdiag(matrix_t<MKind> & M, int offdiag_offset, double coeff) {
  }
 }
 
-template<operator_kind MKind> std14::enable_if_t<MKind==Asymmetric,void>
+template<operator_kind MKind> typename std::enable_if<MKind==Asymmetric,void>::type
 fill_offdiag(matrix_t<MKind> & M, int offdiag_offset, double coeff) {
  int N = first_dim(M);
  for(int n : range(N-offdiag_offset)) {
@@ -49,7 +51,7 @@ fill_offdiag(matrix_t<MKind> & M, int offdiag_offset, double coeff) {
  }
 }
 
-template<operator_kind MKind> std14::enable_if_t<MKind==Complex,void>
+template<operator_kind MKind> typename std::enable_if<MKind==Complex,void>::type
 fill_offdiag(matrix_t<MKind> & M, int offdiag_offset, dcomplex coeff) {
  int N = first_dim(M);
  for(int n : range(N-offdiag_offset)) {
