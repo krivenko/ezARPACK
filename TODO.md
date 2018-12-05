@@ -7,7 +7,7 @@ TODO
 * Fill in README.md and GitHub metadata.
 * Adjust directory structure to make sources directly usable without building.
 * Optionally download and build GTest.
-* Change API: do not pass from_n and to_n to callables. Expose those indices via methods of the workers instead.
+* ~~Change API: do not pass from_n and to_n to callables. Expose those indices via methods of the workers instead.~~
 * Change API: remove `init_residual_vector` from `params_t` and expose `resid`.
 * ~~De-triqsify: Exceptions.~~
 * ~~De-triqsify: Metaprogramming utilities.~~

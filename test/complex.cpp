@@ -41,7 +41,7 @@ TEST(arpack_worker_symmetric, InnerProduct) {
 
 // Standard eigenproblem
 TEST(arpack_worker_complex, Standard) {
- auto Aop = [](vector_const_view<dcomplex> from, int, vector_view<dcomplex> to, int) {
+ auto Aop = [](vector_const_view<dcomplex> from, vector_view<dcomplex> to) {
   to = A*from;
  };
 
@@ -59,10 +59,10 @@ TEST(arpack_worker_complex, Standard) {
 TEST(arpack_worker_complex, Invert) {
  decltype(A) invMA = inverse(M) * A;
 
- auto op = [&invMA](vector_const_view<dcomplex> from, int, vector_view<dcomplex> to, int, bool) {
+ auto op = [&invMA](vector_const_view<dcomplex> from, vector_view<dcomplex> to) {
   to = invMA * from;
  };
- auto Bop = [](vector_const_view<dcomplex> from, int, vector_view<dcomplex> to, int) {
+ auto Bop = [](vector_const_view<dcomplex> from, vector_view<dcomplex> to) {
   to = M * from;
  };
 
@@ -81,10 +81,10 @@ TEST(arpack_worker_complex, ShiftAndInvert) {
  dcomplex sigma = 0.5 + 0.5_j;
  decltype(A) inv = inverse(A - sigma*M) * M;
 
- auto op = [&inv](vector_const_view<dcomplex> from, int, vector_view<dcomplex> to, int, bool) {
+ auto op = [&inv](vector_const_view<dcomplex> from, vector_view<dcomplex> to) {
   to = inv * from;
  };
- auto Bop = [](vector_const_view<dcomplex> from, int, vector_view<dcomplex> to, int) {
+ auto Bop = [](vector_const_view<dcomplex> from, vector_view<dcomplex> to) {
   to = M * from;
  };
 

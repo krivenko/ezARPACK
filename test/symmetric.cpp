@@ -40,7 +40,7 @@ TEST(arpack_worker_symmetric, InnerProduct) {
 
 // Standard eigenproblem
 TEST(arpack_worker_symmetric, Standard) {
- auto Aop = [](vector_const_view<double> from, int, vector_view<double> to, int) {
+ auto Aop = [](vector_const_view<double> from, vector_view<double> to) {
   to = A*from;
  };
 
@@ -57,11 +57,11 @@ TEST(arpack_worker_symmetric, Standard) {
 TEST(arpack_worker_symmetric, Invert) {
  decltype(A) invM = inverse(M);
 
- auto op = [&invM](vector_view<double> from, int, vector_view<double> to, int, bool) {
+ auto op = [&invM](vector_view<double> from, vector_view<double> to) {
   from = A * from;
   to = invM * from;
  };
- auto Bop = [](vector_const_view<double> from, int, vector_view<double> to, int) {
+ auto Bop = [](vector_const_view<double> from, vector_view<double> to) {
   to = M * from;
  };
 
@@ -79,10 +79,10 @@ TEST(arpack_worker_symmetric, ShiftAndInvert) {
  double sigma = 1.0;
  decltype(A) inv = inverse(A - sigma*M) * M;
 
- auto op = [&inv](vector_view<double> from, int, vector_view<double> to, int, bool) {
+ auto op = [&inv](vector_view<double> from, vector_view<double> to) {
   to = inv * from;
  };
- auto Bop = [](vector_const_view<double> from, int, vector_view<double> to, int) {
+ auto Bop = [](vector_const_view<double> from, vector_view<double> to) {
   to = M * from;
  };
 
@@ -101,10 +101,10 @@ TEST(arpack_worker_symmetric, Buckling) {
  double sigma = 1.0;
  decltype(A) inv = inverse(A - sigma*M) * A;
 
- auto op = [&inv](vector_view<double> from, int, vector_view<double> to, int, bool) {
+ auto op = [&inv](vector_view<double> from, vector_view<double> to) {
   to = inv * from;
  };
- auto Bop = [](vector_const_view<double> from, int, vector_view<double> to, int) {
+ auto Bop = [](vector_const_view<double> from, vector_view<double> to) {
   to = M * from;
  };
 
@@ -123,10 +123,10 @@ TEST(arpack_worker_symmetric, Cayley) {
  double sigma = 1.0;
  decltype(A) inv = inverse(A - sigma*M) * (A + sigma*M);
 
- auto op = [&inv](vector_view<double> from, int, vector_view<double> to, int, bool) {
+ auto op = [&inv](vector_view<double> from, vector_view<double> to) {
   to = inv * from;
  };
- auto Bop = [&](vector_const_view<double> from, int, vector_view<double> to, int) {
+ auto Bop = [&](vector_const_view<double> from, vector_view<double> to) {
   to = M * from;
  };
 

@@ -39,12 +39,7 @@ int main(int argc, char* argv[]) {
  arpack_worker<Symmetric> worker(N);
 
  // Linear operator representing multiplication of a given vector by our matrix
- // Arguments `from_index' and `to_index` provide an alternative way to access
- // the ARPACK workspace vectors:
- //  worker.workspace_vector(from_index)
- //  worker.workspace_vector(to_index)
- auto matrix = [](vector_const_view<double> from, int from_index,
-                  vector_view<double> to, int to_index) {
+ auto matrix = [](vector_const_view<double> from, vector_view<double> to) {
   to() = 0; // Clear result
 
   // to_i = \sum_j A_{ij} from_j
@@ -77,9 +72,9 @@ int main(int argc, char* argv[]) {
  auto const& v = worker.eigenvectors();
  vector<double> lhs(N), rhs(N);
 
- for(int i = 0; i < N_ev; ++i) {          // For each eigenpair ...
-  matrix(v(range(), i), 0, lhs, 0);       // calculate A*v
-  rhs = lambda(i) * v(range(), i);        // and \lambda*v
+ for(int i = 0; i < N_ev; ++i) {    // For each eigenpair ...
+  matrix(v(range(), i), lhs);       // calculate A*v
+  rhs = lambda(i) * v(range(), i);  // and \lambda*v
 
   std::cout << i << ": deviation = " << norm2_sqr(rhs - lhs) / (N*N) << std::endl;
  }

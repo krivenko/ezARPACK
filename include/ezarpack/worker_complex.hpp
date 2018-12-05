@@ -37,6 +37,7 @@ template<> class arpack_worker<Complex> {
  int rvec;                 // RVEC parameter of dseupd
  char howmny;              // HOWMNY parameter of dseupd
  vector<int> select;       // SELECT parameter of dseupd
+ bool Bx_available_ = false; // Has B*x already been computed?
 
 public:
 
@@ -152,11 +153,12 @@ public:
  * A*x = \lambda*x
  **********************************/
 
- // a: callable taking 4 arguments
- // a(vector_view<dcomplex> from, int from_n, vector_view<dcomplex> to, int to_n)
+ // a: callable taking 2 arguments
+ // a(vector_view<dcomplex> from, vector_view<dcomplex> to)
  // 'a' is expected to act on 'from' and write the result to 'to': to = A*from
- // 'from' is also indirectly available as this->workspace_vector(from_n)
- // 'to' is also indirectly available as this->workspace_vector(to_n)
+ //
+ // 'from' is also indirectly available as this->workspace_vector(this->vector_from_n())
+ // 'to' is also indirectly available as this->workspace_vector(this->vector_to_n())
  //
  // shifts_f: callable taking two arguments
  // shifts_f(vector_view<dcomplex> shifts_re, vector_view<dcomplex> shifts_im)
@@ -174,6 +176,7 @@ public:
   vector<double> rwork(ncv);
 
   rci_flag ido = Init;
+  Bx_available_ = false;
   do {
    f77::aupd((int&)ido, "I", N, which,
              nev, tol, resid.data_start(), ncv,
@@ -184,9 +187,9 @@ public:
    switch(ido) {
     case ApplyOpInit:
     case ApplyOp: {
-      int from_n = ipntr[0]-1;
-      int to_n = ipntr[1]-1;
-      a(workd(range(from_n,from_n+N)),from_n/N,workd(range(to_n,to_n+N)),to_n/N);
+      int from_pos = from_vector_n() * N;
+      int to_pos = to_vector_n() * N;
+      a(workd(range(from_pos,from_pos+N)), workd(range(to_pos,to_pos+N)));
      }
      break;
     case Shifts: {
@@ -231,17 +234,15 @@ public:
  enum Mode : int {Invert = 2,             // OP = inv[M]*A and B = M
                   ShiftAndInvert = 3 };   // OP = inv[A - sigma*M]*M and B = M
 
- // op: callable taking 5 arguments
- // op(vector_view<dcomplex> from, int from_n, vector_view<dcomplex> to, int to_n, bool Bx_available)
+ // op: callable taking 2 arguments
+ // op(vector_view<dcomplex> from, vector_view<dcomplex> to)
  // 'op' is expected to act on 'from' and write the result to 'to': to = OP*from
- // 'from' is also indirectly available as this->workspace_vector(from_n)
- // 'to' is also indirectly available as this->workspace_vector(to_n)
- // 'Bx_available' indicate whether B*x has already been computed and available as this->Bx_vector()
  //
- // b: callable taking 4 arguments
+ // b: callable taking 2 arguments
  // 'b' is expected to act on 'from' and write the result to 'to': to = B*from
- // 'from' is also indirectly available as this->workspace_vector(from_n)
- // 'to' is also indirectly available as this->workspace_vector(to_n)
+ //
+ // 'from' is also indirectly available as this->workspace_vector(this->from_vector_n())
+ // 'to' is also indirectly available as this->workspace_vector(this->to_vector_n())
  //
  // shifts_f: callable taking two arguments
  // shifts_f(vector_view<dcomplex> shifts_re, vector_view<dcomplex> shifts_im)
@@ -259,6 +260,7 @@ public:
   vector<double> rwork(ncv);
 
   rci_flag ido = Init;
+  Bx_available_ = false;
   do {
    f77::aupd((int&)ido, "G", N, which,
              nev, tol, resid.data_start(), ncv,
@@ -268,22 +270,24 @@ public:
              rwork.data_start(), info);
    switch(ido) {
     case ApplyOpInit: {
-      int from_n = ipntr[0]-1;
-      int to_n = ipntr[1]-1;
-      op(workd(range(from_n,from_n+N)),from_n/N,workd(range(to_n,to_n+N)),to_n/N,false);
+      int from_pos = from_vector_n() * N;
+      int to_pos = to_vector_n() * N;
+      Bx_available_ = false;
+      op(workd(range(from_pos,from_pos+N)), workd(range(to_pos,to_pos+N)));
      }
      break;
     case ApplyOp: {
-      int from_n = ipntr[0]-1;
-      int to_n = ipntr[1]-1;
+      int from_pos = from_vector_n() * N;
+      int to_pos = to_vector_n() * N;
       // B*x is available via Bx_vector()
-      op(workd(range(from_n,from_n+N)),from_n/N,workd(range(to_n,to_n+N)),to_n/N,true);
+      Bx_available_ = true;
+      op(workd(range(from_pos,from_pos+N)), workd(range(to_pos,to_pos+N)));
      }
      break;
     case ApplyB: {
-      int from_n = ipntr[0]-1;
-      int to_n = ipntr[1]-1;
-      b(workd(range(from_n,from_n+N)),from_n/N,workd(range(to_n,to_n+N)),to_n/N);
+      int from_pos = from_vector_n() * N;
+      int to_pos = to_vector_n() * N;
+      b(workd(range(from_pos,from_pos+N)), workd(range(to_pos,to_pos+N)));
      }
      break;
     case Shifts: {
@@ -320,6 +324,12 @@ public:
   if(info) throw std::runtime_error("arpack_worker: zneupd failed with error code " + std::to_string(info));
  }
 
+ // Index of workspace vector, which is expected to be acted on
+ inline int from_vector_n() const { return (ipntr[0]-1)/N; }
+
+ // Index of workspace vector, which will receive result of the operator action
+ inline int to_vector_n() const { return (ipntr[1]-1)/N; }
+
  // Get view of a workspace vector
  vector_view<dcomplex> workspace_vector(int n) const {
   if(n < 0 || n > 2)
@@ -336,6 +346,9 @@ public:
 
  // Access residual vector
  vector_view<dcomplex> residual_vector() const { return resid; }
+
+ // Has B*x already been computed?
+ bool Bx_available() const { return Bx_available_; }
 
  // Previously computed vector B*x
  vector_view<dcomplex> Bx_vector() const {

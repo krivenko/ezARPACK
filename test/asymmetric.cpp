@@ -41,7 +41,7 @@ TEST(arpack_worker_symmetric, InnerProduct) {
 
 // Standard eigenproblem
 TEST(arpack_worker_asymmetric, Standard) {
- auto Aop = [](vector_const_view<double> from, int, vector_view<double> to, int) {
+ auto Aop = [](vector_const_view<double> from, vector_view<double> to) {
   to = A*from;
  };
 
@@ -58,10 +58,10 @@ TEST(arpack_worker_asymmetric, Standard) {
 TEST(arpack_worker_asymmetric, Invert) {
  decltype(A) invMA = inverse(M) * A;
 
- auto op = [&invMA](vector_const_view<double> from, int, vector_view<double> to, int, bool) {
+ auto op = [&invMA](vector_const_view<double> from, vector_view<double> to) {
   to = invMA * from;
  };
- auto Bop = [](vector_const_view<double> from, int, vector_view<double> to, int) {
+ auto Bop = [](vector_const_view<double> from, vector_view<double> to) {
   to = M * from;
  };
 
