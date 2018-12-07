@@ -73,10 +73,8 @@ template<> struct storage_traits<triqs_storage> {
   }
 
   // Destructors (No-op)
-  template<typename T>
-  inline static void destroy(vector<T> &, int) {}
-  template<typename T>
-  inline static void destroy(matrix<T> &, int, int) {}
+  template<typename T> inline static void destroy(vector<T> &) {}
+  template<typename T> inline static void destroy(matrix<T> &) {}
 
   // Resize
   template<typename T>

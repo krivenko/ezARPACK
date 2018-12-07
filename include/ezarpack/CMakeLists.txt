@@ -16,3 +16,4 @@ install(FILES arpack.hpp
         worker_symmetric.hpp
         version.hpp
         DESTINATION include/ezarpack)
+install(DIRECTORY storages DESTINATION include/ezarpack)

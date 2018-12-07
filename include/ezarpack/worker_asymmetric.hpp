@@ -101,16 +101,13 @@ public:
   }
 
   ~arpack_worker() {
-    storage::destroy(resid, N);
-    storage::destroy(workd, 3*N);
-    storage::destroy(v, N, ncv);
-    if(rvec)
-      storage::destroy(z, N, nev+1);
-    else
-      storage::destroy(z, 0, 0);
-    storage::destroy(dr, nev+1);
-    storage::destroy(di, nev+1);
-    storage::destroy(select, ncv);
+    storage::destroy(resid);
+    storage::destroy(workd);
+    storage::destroy(v);
+    storage::destroy(z);
+    storage::destroy(dr);
+    storage::destroy(di);
+    storage::destroy(select);
   }
 
   arpack_worker(arpack_worker const&) = delete;
@@ -228,7 +225,7 @@ public:
         break;
         case Done: break;
         default: {
-          storage::destroy(workl, workl_size);
+          storage::destroy(workl);
           throw std::runtime_error("arpack_worker: reverse communication interface error");
         }
       }
@@ -237,15 +234,15 @@ public:
     switch(info) {
       case 0: break;
       case 1: {
-        storage::destroy(workl, workl_size);
+        storage::destroy(workl);
         throw(maxiter_reached(iparam[2]));
       }
       case 3: {
-        storage::destroy(workl, workl_size);
+        storage::destroy(workl);
         throw(ncv_insufficient(ncv));
       }
       default: {
-        storage::destroy(workl, workl_size);
+        storage::destroy(workl);
         throw std::runtime_error("arpack_worker: dnaupd failed with error code " + std::to_string(info));
       }
     }
@@ -265,7 +262,7 @@ public:
               storage::get_data_ptr(workl), workl_size,
               info);
 
-    storage::destroy(workl, workl_size);
+    storage::destroy(workl);
 
     if(info) throw std::runtime_error("arpack_worker: dneupd failed with error code " + std::to_string(info));
   }
@@ -361,7 +358,7 @@ public:
         break;
         case Done: break;
         default: {
-          storage::destroy(workl, workl_size);
+          storage::destroy(workl);
           throw std::runtime_error("arpack_worker: reverse communication interface error");
         }
       }
@@ -370,15 +367,15 @@ public:
     switch(info) {
       case 0: break;
       case 1: {
-        storage::destroy(workl, workl_size);
+        storage::destroy(workl);
         throw(maxiter_reached(iparam[2]));
       }
       case 3: {
-        storage::destroy(workl, workl_size);
+        storage::destroy(workl);
         throw(ncv_insufficient(ncv));
       }
       default: {
-        storage::destroy(workl, workl_size);
+        storage::destroy(workl);
         throw std::runtime_error("arpack_worker: dnaupd failed with error code " + std::to_string(info));
       }
     }
@@ -401,8 +398,8 @@ public:
               storage::get_data_ptr(workl), workl_size,
               info);
 
-    storage::destroy(workev, 3*ncv);
-    storage::destroy(workl, workl_size);
+    storage::destroy(workev);
+    storage::destroy(workl);
 
     if(info) throw std::runtime_error("arpack_worker: dneupd failed with error code " + std::to_string(info));
   }

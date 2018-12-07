@@ -12,12 +12,11 @@
  ******************************************************************************/
 #pragma once
 
-#include <string>
 #include <array>
+#include <iostream>
+#include <limits.h>
+#include <string>
 #include <exception>
-#include <type_traits>
-#include <triqs/arrays/vector.hpp>
-#include <triqs/arrays/matrix.hpp>
 
 #include "arpack.hpp"
 

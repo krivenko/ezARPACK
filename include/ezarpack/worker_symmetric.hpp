@@ -89,11 +89,11 @@ public:
   }
 
   ~arpack_worker() {
-    storage::destroy(resid, N);
-    storage::destroy(workd, 3*N);
-    storage::destroy(v, N, ncv);
-    storage::destroy(d, nev);
-    storage::destroy(select, ncv);
+    storage::destroy(resid);
+    storage::destroy(workd);
+    storage::destroy(v);
+    storage::destroy(d);
+    storage::destroy(select);
   }
 
   arpack_worker(arpack_worker const&) = delete;
@@ -197,7 +197,7 @@ public:
           break;
         case Done: break;
         default: {
-          storage::destroy(workl, workl_size);
+          storage::destroy(workl);
           throw std::runtime_error("arpack_worker: reverse communication interface error");
         }
       }
@@ -206,15 +206,15 @@ public:
     switch(info) {
       case 0: break;
       case 1: {
-        storage::destroy(workl, workl_size);
+        storage::destroy(workl);
         throw(maxiter_reached(iparam[2]));
       }
       case 3: {
-        storage::destroy(workl, workl_size);
+        storage::destroy(workl);
         throw(ncv_insufficient(ncv));
       }
       default: {
-        storage::destroy(workl, workl_size);
+        storage::destroy(workl);
         throw std::runtime_error("arpack_worker: dsaupd failed with error code "
                                  + std::to_string(info));
       }
@@ -232,7 +232,7 @@ public:
               storage::get_data_ptr(workl), workl_size,
               info);
 
-    storage::destroy(workl, workl_size);
+    storage::destroy(workl);
 
     if(info) throw std::runtime_error("arpack_worker: dseupd failed with error code "
                                       + std::to_string(info));
@@ -249,8 +249,12 @@ public:
                    Cayley = 5};          // OP = inv[A - sigma*M]*[A + sigma*M] and B = M
 
   // op: callable taking 2 arguments
-  // op(real_vector_const_view_t from, real_vector_view_t to)
-  // 'op' is expected to act on 'from' and write the result to 'to': to = OP*from
+  // op(real_vector_view_t from, real_vector_view_t to)
+  // In all modes except for 'Invert', 'op' is expected to act on 'from'
+  // and write the result to 'to': to = OP*from.
+  // In the 'Invert' mode, however, 'op' must do the following:
+  //  from = A * from
+  //  to = inv[M] * from
   //
   // b: callable taking 2 arguments
   // b(real_vector_const_view_t from, real_vector_view_t to)
@@ -289,7 +293,7 @@ public:
           int from_pos = from_vector_n() * N;
           int to_pos = to_vector_n() * N;
           Bx_available_ = false;
-          op(storage::make_vector_const_view(workd, from_pos, N),
+          op(storage::make_vector_view(workd, from_pos, N),
              storage::make_vector_view(workd, to_pos, N)
           );
         }
@@ -299,7 +303,7 @@ public:
           int to_pos = to_vector_n() * N;
           // B*x is available via Bx_vector()
           Bx_available_ = true;
-          op(storage::make_vector_const_view(workd, from_pos, N),
+          op(storage::make_vector_view(workd, from_pos, N),
              storage::make_vector_view(workd, to_pos, N)
           );
         }
@@ -317,7 +321,7 @@ public:
         break;
         case Done: break;
         default: {
-          storage::destroy(workl, workl_size);
+          storage::destroy(workl);
           throw std::runtime_error("arpack_worker: reverse communication interface error");
         }
       }
@@ -326,15 +330,15 @@ public:
     switch(info) {
       case 0: break;
       case 1: {
-        storage::destroy(workl, workl_size);
+        storage::destroy(workl);
         throw(maxiter_reached(iparam[2]));
       }
       case 3: {
-        storage::destroy(workl, workl_size);
+        storage::destroy(workl);
         throw(ncv_insufficient(ncv));
       }
       default: {
-        storage::destroy(workl, workl_size);
+        storage::destroy(workl);
         throw std::runtime_error("arpack_worker: dsaupd failed with error code "
                                  + std::to_string(info));
       }
@@ -353,7 +357,7 @@ public:
               storage::get_data_ptr(workl), workl_size,
               info);
 
-    storage::destroy(workl, workl_size);
+    storage::destroy(workl);
 
     if(info) throw std::runtime_error("arpack_worker: dseupd failed with error code "
                                       + std::to_string(info));

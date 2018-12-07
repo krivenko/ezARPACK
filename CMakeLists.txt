@@ -57,8 +57,6 @@ add_subdirectory(include/ezarpack)
 
 # Build unit tests
 if(Tests)
-  # FIXME: local build of Google Test conflicts with TRIQS (issue #654)
-  #include(cmake/add_gtest.cmake)
   enable_testing()
   add_subdirectory(test)
 endif(Tests)

@@ -12,8 +12,6 @@
  ******************************************************************************/
 #pragma once
 
-#include <utility>
-
 namespace ezarpack {
 
 /************************************************
@@ -39,7 +37,6 @@ template<typename Backend> class arpack_worker<Complex, Backend> {
   complex_vector_t resid;      // Residual vector
   int ncv = 0;                 // Number of Lanczos vectors to be generated
   complex_matrix_t v;          // Matrix with Arnoldi basis vectors
-  std::pair<int, int> z_dims = std::pair<int, int>(0, 0); // Dimensions of matrix 'z'
   complex_matrix_t z;          // Matrix with Ritz vectors
   complex_vector_t d;          // Ritz values (real and imaginary parts)
   int iparam[11];              // Various input/output parameters
@@ -94,20 +91,20 @@ public:
     : N(N),
       resid(storage::make_complex_vector(N)),
       workd(storage::make_complex_vector(3*N)),
-      v(storage::make_complex_matrix(N,0)),
-      z(storage::make_complex_matrix(z_dims.first, z_dims.second)),
+      v(storage::make_complex_matrix(N, 0)),
+      z(storage::make_complex_matrix(0, 0)),
       d(storage::make_complex_vector(nev+1)),
       select(storage::make_int_vector(0)) {
     iparam[3] = 1;
   }
 
   ~arpack_worker() {
-    storage::destroy(resid, N);
-    storage::destroy(workd, 3*N);
-    storage::destroy(v, N, ncv);
-    storage::destroy(z, z_dims.first, z_dims.second);
-    storage::destroy(d, nev+1);
-    storage::destroy(select, ncv);
+    storage::destroy(resid);
+    storage::destroy(workd);
+    storage::destroy(v);
+    storage::destroy(z);
+    storage::destroy(d);
+    storage::destroy(select);
   }
 
   arpack_worker(arpack_worker const&) = delete;
@@ -144,10 +141,9 @@ public:
     howmny = params.compute_vectors == params_t::Schur ? 'P' : 'A';
     storage::resize(select, ncv);
     if(rvec && params.compute_vectors == params_t::Ritz)
-      z_dims = std::make_pair(N, nev+1);
+      storage::resize(z, N, nev+1);
     else
-      z_dims = std::make_pair(1, nev+1);
-    storage::resize(z, z_dims.first, z_dims.second);
+      storage::resize(z, 1, nev+1);
 
     // Tolerance
     tol = std::max(.0, params.tolerance);
@@ -226,8 +222,8 @@ public:
         break;
         case Done: break;
         default: {
-          storage::destroy(rwork, ncv);
-          storage::destroy(workl, workl_size);
+          storage::destroy(rwork);
+          storage::destroy(workl);
           throw std::runtime_error("arpack_worker: reverse communication interface error");
         }
       }
@@ -236,18 +232,18 @@ public:
     switch(info) {
       case 0: break;
       case 1: {
-        storage::destroy(rwork, ncv);
-        storage::destroy(workl, workl_size);
+        storage::destroy(rwork);
+        storage::destroy(workl);
         throw(maxiter_reached(iparam[2]));
       }
       case 3: {
-        storage::destroy(rwork, ncv);
-        storage::destroy(workl, workl_size);
+        storage::destroy(rwork);
+        storage::destroy(workl);
         throw(ncv_insufficient(ncv));
       }
       default: {
-        storage::destroy(rwork, ncv);
-        storage::destroy(workl, workl_size);
+        storage::destroy(rwork);
+        storage::destroy(workl);
         throw std::runtime_error("arpack_worker: znaupd failed with error code " + std::to_string(info));
       }
     }
@@ -256,7 +252,8 @@ public:
     complex_vector_t workev = storage::make_complex_vector(2*ncv);
 
     f77::eupd(rvec, &howmny, storage::get_data_ptr(select),
-              storage::get_data_ptr(d), storage::get_data_ptr(z), z_dims.first,
+              storage::get_data_ptr(d), storage::get_data_ptr(z),
+              (rvec && params.compute_vectors == params_t::Ritz ? N : 1),
               params.sigma, storage::get_data_ptr(workev),
               "I", N, which, nev, tol, storage::get_data_ptr(resid), ncv,
               storage::get_data_ptr(v), N,
@@ -264,9 +261,9 @@ public:
               storage::get_data_ptr(workl), workl_size,
               storage::get_data_ptr(rwork), info);
 
-    storage::destroy(workev, 2*ncv);
-    storage::destroy(rwork, ncv);
-    storage::destroy(workl, workl_size);
+    storage::destroy(workev);
+    storage::destroy(rwork);
+    storage::destroy(workl);
 
     if(info) throw std::runtime_error("arpack_worker: zneupd failed with error code " + std::to_string(info));
   }
@@ -354,8 +351,8 @@ public:
         break;
         case Done: break;
         default: {
-          storage::destroy(rwork, ncv);
-          storage::destroy(workl, workl_size);
+          storage::destroy(rwork);
+          storage::destroy(workl);
           throw std::runtime_error("arpack_worker: reverse communication interface error");
         }
       }
@@ -364,18 +361,18 @@ public:
     switch(info) {
       case 0: break;
       case 1: {
-        storage::destroy(rwork, ncv);
-        storage::destroy(workl, workl_size);
+        storage::destroy(rwork);
+        storage::destroy(workl);
         throw(maxiter_reached(iparam[2]));
       }
       case 3: {
-        storage::destroy(rwork, ncv);
-        storage::destroy(workl, workl_size);
+        storage::destroy(rwork);
+        storage::destroy(workl);
         throw(ncv_insufficient(ncv));
       }
       default: {
-        storage::destroy(rwork, ncv);
-        storage::destroy(workl, workl_size);
+        storage::destroy(rwork);
+        storage::destroy(workl);
         throw std::runtime_error("arpack_worker: znaupd failed with error code " + std::to_string(info));
       }
     }
@@ -384,7 +381,8 @@ public:
     complex_vector_t workev = storage::make_complex_vector(2*ncv);
 
     f77::eupd(rvec, &howmny, storage::get_data_ptr(select),
-              storage::get_data_ptr(d), storage::get_data_ptr(z), z_dims.first,
+              storage::get_data_ptr(d), storage::get_data_ptr(z),
+              (rvec && params.compute_vectors == params_t::Ritz ? N : 1),
               params.sigma, storage::get_data_ptr(workev),
               "G", N, which, nev, tol, storage::get_data_ptr(resid), ncv,
               storage::get_data_ptr(v), N,
@@ -392,9 +390,9 @@ public:
               storage::get_data_ptr(workl), workl_size,
               storage::get_data_ptr(rwork), info);
 
-    storage::destroy(workev, 2*ncv);
-    storage::destroy(rwork, ncv);
-    storage::destroy(workl, workl_size);
+    storage::destroy(workev);
+    storage::destroy(rwork);
+    storage::destroy(workl);
 
     if(info) throw std::runtime_error("arpack_worker: zneupd failed with error code " + std::to_string(info));
   }

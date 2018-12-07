@@ -17,8 +17,9 @@
 #include <ezarpack/storages/triqs.hpp>
 #include <ezarpack/arpack_worker.hpp>
 
-// This example shows how to partially diagonalize a large sparse symmetric
-// matrix and find a number of its low-lying eigenvalues.
+// This example shows how to use ezARPACK and the TRIQS storage backend
+// to partially diagonalize a large sparse symmetric matrix
+// and find a number of its low-lying eigenvalues.
 
 using namespace ezarpack;
 using namespace triqs::arrays;
@@ -35,17 +36,18 @@ const int N_ev = 10;
 int main(int argc, char* argv[]) {
 
  // Construct a worker object for the symmetric case.
- // Other options would be
- // * `arpack_worker<Asymmetric>' for general real matrices.
- // * `arpack_worker<Complex>' for general complex matrices.
+ // For the TRIQS storage backend, other options would be
+ // * `arpack_worker<Asymmetric, triqs_storage>' for general real matrices;
+ // * `arpack_worker<Complex, triqs_storage>' for general complex matrices.
  arpack_worker<Symmetric, triqs_storage> worker(N);
 
- // Linear operator representing multiplication of a given vector by our matrix
- auto matrix = [](vector_const_view<double> from, vector_view<double> to) {
+ // Linear operator representing multiplication of a given vector by our matrix.
+ // The operator must act on the 'from' vector and store results in 'to'.
+ auto matrix_op = [](vector_const_view<double> from, vector_view<double> to) {
   to() = 0; // Clear result
 
   // to_i = \sum_j A_{ij} from_j
-  // A_ij = |i-j| / (1 + i + j), |i-j| <= bandwidth, zero otherwise
+  // A_{ij} = |i-j| / (1 + i + j), if |i-j| <= bandwidth, zero otherwise
   for(int i = 0; i < N; ++i) {
    int j_min = std::max(0, i - bandwidth);
    int j_max = std::min(N, i + bandwidth);
@@ -63,7 +65,7 @@ int main(int argc, char* argv[]) {
                 );
 
  // Run diagonalization!
- worker(matrix, params);
+ worker(matrix_op, params);
 
  // Print found eigenvalues
  std::cout << "Eigenvalues (Ritz values):" << std::endl;
@@ -75,7 +77,7 @@ int main(int argc, char* argv[]) {
  vector<double> lhs(N), rhs(N);
 
  for(int i = 0; i < N_ev; ++i) {    // For each eigenpair ...
-  matrix(v(range(), i), lhs);       // calculate A*v
+  matrix_op(v(range(), i), lhs);    // calculate A*v
   rhs = lambda(i) * v(range(), i);  // and \lambda*v
 
   std::cout << i << ": deviation = " << norm2_sqr(rhs - lhs) / (N*N) << std::endl;

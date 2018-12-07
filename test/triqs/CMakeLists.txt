@@ -8,9 +8,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-include_directories(.)
-
-# Tests of TRIQS storage backend
-if(TRIQS_FOUND)
-  add_subdirectory(triqs)
-endif(TRIQS_FOUND)
+foreach(t symmetric asymmetric complex)
+    set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
+    set(t triqs.worker_${t})
+    add_executable(${t} ${s})
+    target_compile_options(${t} PRIVATE "-std=c++17")
+    target_link_libraries(${t} PRIVATE triqs ${arpack_ng_LIBRARIES})
+    triqs_set_rpath_for_target(${t})
+    add_test(NAME ${t} COMMAND ${t})
+endforeach()
