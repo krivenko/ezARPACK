@@ -51,9 +51,38 @@ if(Tests OR Examples)
 endif()
 
 # Install C++ headers
-add_subdirectory(include/ezarpack)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include
+        DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-# TODO: Install CMake configuration files for ezARPACK
+# Define interface library target
+add_library(ezarpack INTERFACE)
+target_include_directories(ezarpack INTERFACE
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+# Write config version file
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+  "${PROJECT_BINARY_DIR}/ezARPACKConfigVersion.cmake"
+  VERSION ${EZARPACK_VERSION}
+  COMPATIBILITY AnyNewerVersion
+)
+
+# Install CMake files
+install(TARGETS ezarpack
+  EXPORT ezARPACKTargets
+  PUBLIC_HEADER DESTINATION include COMPONENT Development
+)
+configure_package_config_file(
+    "${PROJECT_SOURCE_DIR}/cmake/ezARPACKConfig.cmake.in"
+    "${PROJECT_BINARY_DIR}/ezARPACKConfig.cmake"
+    INSTALL_DESTINATION lib/cmake
+)
+install(EXPORT ezARPACKTargets DESTINATION lib/cmake)
+install(FILES "${PROJECT_BINARY_DIR}/ezARPACKConfigVersion.cmake"
+              "${PROJECT_BINARY_DIR}/ezARPACKConfig.cmake"
+        DESTINATION lib/cmake)
 
 # Build unit tests
 if(Tests)

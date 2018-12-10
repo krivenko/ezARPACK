@@ -12,7 +12,7 @@ set(EXAMPLES)
 
 # Raw memory example
 add_executable(raw.example raw.example.cpp)
-target_link_libraries(raw.example ${arpack_ng_LIBRARIES})
+target_link_libraries(raw.example ezarpack ${arpack_ng_LIBRARIES})
 list(APPEND EXAMPLES raw.example)
 
 # TRIQS example
@@ -20,7 +20,7 @@ if(TRIQS_FOUND)
   set(t "triqs.example")
   add_executable(${t} triqs.example.cpp)
   target_compile_options(${t} PRIVATE "-std=c++17")
-  target_link_libraries(${t} triqs ${arpack_ng_LIBRARIES})
+  target_link_libraries(${t} ezarpack triqs ${arpack_ng_LIBRARIES})
   list(APPEND EXAMPLES ${t})
 endif(TRIQS_FOUND)
 

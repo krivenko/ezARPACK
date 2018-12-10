@@ -8,12 +8,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-# TODO
 foreach(t symmetric asymmetric complex)
     set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
     set(t raw.worker_${t})
     add_executable(${t} ${s})
-    target_link_libraries(${t} PRIVATE catch2 ${arpack_ng_LIBRARIES})
+    target_include_directories(${t} PRIVATE ${CMAKE_SOURCE_DIR}/test)
+    target_link_libraries(${t} PRIVATE ezarpack catch2 ${arpack_ng_LIBRARIES})
     triqs_set_rpath_for_target(${t})
     add_test(NAME ${t} COMMAND ${t})
 endforeach()
