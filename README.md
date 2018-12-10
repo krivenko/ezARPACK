@@ -1,28 +1,60 @@
-triqs_arpack
-============
+ezARPACK
+========
 
-C++ interface between ARPACK [1] and TRIQS arrays library [2].
+ezARPACK is a C++11 wrapper around ARPACK-NG [1] that can be used in conjunction with
+a number of C++ vector/matrix algebra libraries. It allows for solving large scale
+eigenproblems for symmetric, asymmetric and complex matrices with a minimal amount
+of boilerplate code.
 
-Copyright (C) 2016-2017 by I. Krivenko
+When used directly, ARPACK-NG does not force the user to stick to a predefined storage
+format of the matrix being diagonalized. Instead, on each iteration of the
+Arnoldi/Lanczos algorithm the user code is expected to apply the corresponding linear
+operator to the vector (memory buffer) passed to it and store the result in another buffer.
+ezARPACK retains this idea allowing to use any callable C++ object as the linear operator.
+
+Another important feature of ezARPACK is its extensibility with respect to compatible
+matrix algebra libraries. Currently, it supports the following libraries (storage backends):
+
+* Raw memory buffers *(not recommended for general use)*;
+* TRIQS arrays [2].
+
+One can easily add support for her favorite vector/matrix framework by defining
+a new instance of the `storage_traits` structure (see, for example, `include/storages/triqs.hpp`).
+
+Copyright (C) 2016-2018 by I. Krivenko
 
 Dependencies
 ------------
 
-* TRIQS library version 1.5;
-* ARPACK library, preferably the latest ARPACK-NG version [3].
+ezARPACK is a header-only library that has no external dependencies.
+
+However, one will need a working installation of ARPACK-NG 3.6.0 or newer [1] in order to compile
+examples and unit tests. Futhermore, specific examples and tests will only be built if the
+respective matrix algebra library is detected by CMake (does not apply to the raw memory storage
+backend).
 
 Installation
 ------------
 
-This C++ interface is essentially a header-only wrapper.
-Only the test programs and examples require linking to the ARPACK library.
+ezARPACK is usable without installation, just add `-I/<path_to_ezARPACK_sources>/include`
+to the compiler command line and `-L/<ARPACK-NG_installation_prefix>/lib -larpack` to
+the linker command line.
 
-Installation is done in a few simple steps, assuming that TRIQS library is installed under `/path/to/triqs`:
+You will need CMake version 3.0.2 or newer [3] to build examples/unit tests and to install ezARPACK
+such that it can be used from other CMake projects.
+
+Assuming that ezARPACK is to be installed in `<ezARPACK_installation_prefix>`, the installation
+normally proceeds in a few simple steps.
 
 ```
-$ git clone https://github.com/krivenko/triqs_arpack.git triqs_arpack.git
-$ cd triqs_arpack.git
-$ cmake -DTRIQS_PATH=/path/to/triqs .
+$ git clone https://github.com/krivenko/ezARPACK.git ezARPACK.git
+$ mkdir ezARPACK.build && cd ezARPACK.build
+$ cmake ../ezARPACK.git                                 \
+$ -DCMAKE_INSTALL_PREFIX=<ezARPACK_installation_prefix> \
+  -DARPACK_NG_ROOT=<ARPACK-NG_installation_prefix>      \
+  -DTRIQS_ROOT=<TRIQS_installation_prefix>              \
+  -DExamples=ON                                         \
+  -DTests=ON
 $ make
 $ make test
 $ make install
@@ -32,51 +64,51 @@ Compilation of the tests can be disabled with CMake flag `-DTests=OFF` *(not rec
 
 Examples are compiled by default, disable them with `-DExamples=OFF`.
 
-In case CMake fails to find ARPACK, you can give it a hint by passing an ARPACK installation prefix via `-DARPACK_DIR=/path/to/arpack`.
+CMake options specific to individual storage backends (`TRIQS_ROOT`) can be omitted if
+the respective libraries are installed in the standard system locations. If some of the
+libraries are not found, CMake will skip the corresponding examples and unit tests.
 
 Usage
 -----
 
-Once **triqs_arpack** is installed, you can use it to build your TRIQS application.
-
-Make sure to have the following lines somewhere in your `CMakeLists.txt` file.
+Once ezARPACK is installed, you can use it in your CMake project. Here is a minimal
+example of an application `CMakeLists.txt` file.
 
 ```cmake
-# Append TRIQS-installed CMake modules to the CMake search path
-list(APPEND CMAKE_MODULE_PATH ${TRIQS_ROOT}/share/cmake)
+cmake_minimum_required(VERSION 3.0.2 FATAL_ERROR)
 
-# Detect ARPACK
-find_package(ARPACK REQUIRED)
+project(myproject LANGUAGES CXX)
 
-# Link my_target to TRIQS and ARPACK
-target_link_libraries(my_target triqs ${ARPACK_LIB})
-```
+# ARPACK_NG_ROOT and EZARPACK_ROOT are installation prefixes of
+# ARPACK-NG and ezARPACK respectively
+set(arpack-ng_DIR ${ARPACK_NG_ROOT}/lib/cmake)
+set(ezARPACK_DIR ${EZARPACK_ROOT}/lib/cmake)
 
-In the C++ sources you can now include
+# Import ARPACK-NG targets
+find_package(arpack-ng 3.6.0 REQUIRED)
+# Import ezARPACK targets
+find_package(ezARPACK 0.2 CONFIG REQUIRED)
 
-```c++
-// Version information of triqs_arpack
-#include <triqs/arrays/arpack/version.hpp>
+# Build an executable called 'test'
+add_executable(test test.cpp)
 
-// C++ wrappers around FORTRAN procedures *aupd and *eupd
-#include <triqs/arrays/arpack/arpack.hpp>
-
-// arpack_worker: high level C++ interface to ARPACK
-#include <triqs/arrays/arpack/arpack_worker.hpp>
+# Make ezARPACK headers visible to the compiler
+# and link to ARPACK-NG libraries
+target_link_libraries(test ezarpack arpack)
 ```
 
 Documentation
 -------------
 
-Not at the moment... :(
+For now, I only provide a few examples in the `example` directory.
 
-For the time being you are invited to check `example/example.cpp`.
+License
+-------
 
-Acknowledgements
-----------------
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-Special thanks to Michael Danilov <mike.d.ft402 (at) gmail ! com> for his contribution of `FindARPACK.cmake`.
-
-[1]: http://www.caam.rice.edu/software/ARPACK/
-[2]: https://triqs.ipht.cnrs.fr/1.x/index.html
-[3]: https://github.com/opencollab/arpack-ng
+[1]: https://github.com/opencollab/arpack-ng
+[2]: https://triqs.github.io/triqs/master
+[3]: https://cmake.org/download

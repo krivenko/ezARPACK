@@ -3,6 +3,5 @@ CMakeFiles
 Makefile
 install_manifest.txt
 /Testing
-/include/ezarpack/version.hpp
-/test/c++/arpack_*
-/example/*.example
+*~
+*.bak

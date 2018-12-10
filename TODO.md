@@ -4,7 +4,7 @@ TODO
 * ~~Choose project name.~~
 * ~~Choose license.~~
 * ~~Choose the set of storage backends to be supported.~~
-* Fill in README.md and GitHub metadata.
+* ~~Fill in README.md and GitHub metadata.~~
 * ~~Adjust directory structure to make sources directly usable without building.~~
 * ~~Port tests to Catch2.~~
 * ~~Change API: do not pass from_n and to_n to callables. Expose those indices via methods of the workers instead.~~
