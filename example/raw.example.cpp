@@ -14,15 +14,14 @@
 #include <iostream>
 #include <algorithm>
 
-// This example shows how to use ezARPACK and the TRIQS storage backend
+// This example shows how to use ezARPACK and the raw memory storage backend
 // to partially diagonalize a large sparse symmetric matrix
 // and find a number of its low-lying eigenvalues.
 
-#include <ezarpack/storages/triqs.hpp>
+#include <ezarpack/storages/raw.hpp>
 #include <ezarpack/arpack_worker.hpp>
 
 using namespace ezarpack;
-using namespace triqs::arrays;
 
 // Size of the matrix
 const int N = 10000;
@@ -36,15 +35,15 @@ const int N_ev = 10;
 int main(int argc, char* argv[]) {
 
  // Construct a worker object for the symmetric case.
- // For the TRIQS storage backend, other options would be
- // * `arpack_worker<Asymmetric, triqs_storage>' for general real matrices;
- // * `arpack_worker<Complex, triqs_storage>' for general complex matrices.
- arpack_worker<Symmetric, triqs_storage> worker(N);
+ // For the raw memory storage backend, other options would be
+ // * `arpack_worker<Asymmetric, raw_storage>' for general real matrices;
+ // * `arpack_worker<Complex, raw_storage>' for general complex matrices.
+ arpack_worker<Symmetric, raw_storage> worker(N);
 
  // Linear operator representing multiplication of a given vector by our matrix.
  // The operator must act on the 'from' vector and store results in 'to'.
- auto matrix_op = [](vector_const_view<double> from, vector_view<double> to) {
-  to() = 0; // Clear result
+ auto matrix_op = [](double const* from, double * to) {
+  std::fill(to, to + N, 0); // Clear result
 
   // to_i = \sum_j A_{ij} from_j
   // A_{ij} = |i-j| / (1 + i + j), if |i-j| <= bandwidth, zero otherwise
@@ -52,13 +51,13 @@ int main(int argc, char* argv[]) {
    int j_min = std::max(0, i - bandwidth);
    int j_max = std::min(N, i + bandwidth);
    for(int j = j_min; j <= j_max; ++j) {
-    to(i) += double(std::abs(i - j)) / (1 + i + j) * from(j);
+    to[i] += double(std::abs(i - j)) / (1 + i + j) * from[j];
    }
   }
  };
 
  // Specify parameters for the worker
- using params_t = arpack_worker<Symmetric, triqs_storage>::params_t;
+ using params_t = arpack_worker<Symmetric, raw_storage>::params_t;
  params_t params(N_ev,               // Number of low-lying eigenvalues
                  params_t::Smallest, // We want the smallest eigenvalues
                  true                // Yes, we want the eigenvectors (Ritz vectors) as well
@@ -68,20 +67,37 @@ int main(int argc, char* argv[]) {
  worker(matrix_op, params);
 
  // Print found eigenvalues
- std::cout << "Eigenvalues (Ritz values):" << std::endl;
- std::cout << worker.eigenvalues() << std::endl;
+ auto const& lambda = worker.eigenvalues();
+ std::cout << "Eigenvalues (Ritz values):\n[";
+ for(int i = 0; i < N_ev - 1; ++i) {
+   std::cout << lambda[i] << ",";
+ }
+ std::cout << lambda[N_ev - 1] << "]" << std::endl;
 
  // Check A*v = \lambda*v
- auto const& lambda = worker.eigenvalues();
+ // NB: Eigenvectors are stored in the column major order
  auto const& v = worker.eigenvectors();
- vector<double> lhs(N), rhs(N);
 
- for(int i = 0; i < N_ev; ++i) {    // For each eigenpair ...
-  matrix_op(v(range(), i), lhs);    // calculate A*v
-  rhs = lambda(i) * v(range(), i);  // and \lambda*v
+ double * lhs = new double[N];
+ double * rhs = new double[N];
 
-  std::cout << i << ": deviation = " << norm2_sqr(rhs - lhs) / (N*N) << std::endl;
+ for(int i = 0; i < N_ev; ++i) {                      // For each eigenpair ...
+  matrix_op(v + N*i, lhs);                            // calculate A*v
+  std::transform(v + N*i, v + N*(i+1), rhs,           // and \lambda*v
+                 [&](double x) { return lambda[i]*x;}
+                );
+
+  double deviation = 0;
+  for(int j = 0; j < N; ++j) {
+    double d = rhs[j] - lhs[j];
+    deviation += d * d;
+  }
+  deviation /= N*N;
+  std::cout << i << ": deviation = " << deviation << std::endl;
  }
+
+ delete[] lhs;
+ delete[] rhs;
 
  // Print some computation statistics
  auto stats = worker.stats();

@@ -22,16 +22,16 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
   using worker_t = arpack_worker<Complex, triqs_storage>;
   using params_t = worker_t::params_t;
 
-  auto spectrum_parts = {params_t::LargestMagnitude,
-                         params_t::SmallestMagnitude,
-                         params_t::LargestReal, params_t::SmallestReal,
-                         params_t::LargestImag, params_t::SmallestImag};
-
   const int N = 100;
   const dcomplex diag_coeff = 0.75;
   const int offdiag_offset = 1;
   const dcomplex offdiag_coeff = 1_j;
   const int nev = 10;
+
+  auto spectrum_parts = {params_t::LargestMagnitude,
+                         params_t::SmallestMagnitude,
+                         params_t::LargestReal, params_t::SmallestReal,
+                         params_t::LargestImag, params_t::SmallestImag};
 
   // Hermitian matrix A
   auto A = make_sparse_matrix<Complex>(N, diag_coeff, offdiag_offset, offdiag_coeff);

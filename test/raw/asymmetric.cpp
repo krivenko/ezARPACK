@@ -13,13 +13,45 @@
 
 #include "common.hpp"
 
+///////////////////
+// Test invert() //
+///////////////////
+TEST_CASE("Asymmetric matrix is inverted", "[invert_asymmetric]") {
+  const int N = 100;
+  const double diag_coeff = 0.75;
+  const int offdiag_offset = 3;
+  const double offdiag_coeff = 1.0;
+
+  auto A = make_sparse_matrix<Asymmetric>(N, diag_coeff, offdiag_offset, offdiag_coeff);
+
+  auto invA = make_buffer<double>(N * N);
+  invert(A.get(), invA.get(), N);
+
+  auto id = make_buffer<double>(N * N);
+  for(int i = 0; i < N; ++i) {
+    for(int j = 0; j < N; ++j) {
+      id[i + j*N] = i == j;
+    }
+  }
+
+  auto prod = make_buffer<double>(N * N);
+
+  // A * A^{-1}
+  mm_product(A.get(), invA.get(), prod.get(), N);
+  CHECK_THAT(prod.get(), IsCloseTo(id.get(), N * N));
+
+  // A^{-1} * A
+  mm_product(invA.get(), A.get(), prod.get(), N);
+  CHECK_THAT(prod.get(), IsCloseTo(id.get(), N * N));
+}
+
 //////////////////////////////////////////////
 // Eigenproblems with general real matrices //
 //////////////////////////////////////////////
 
 TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
 
-  using worker_t = arpack_worker<Asymmetric, triqs_storage>;
+  using worker_t = arpack_worker<Asymmetric, raw_storage>;
   using params_t = worker_t::params_t;
 
   const int N = 100;
@@ -39,36 +71,37 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
   auto M = make_inner_prod_matrix<Asymmetric>(N);
 
   SECTION("Standard eigenproblem") {
-    auto Aop = [&](vector_const_view<double> from, vector_view<double> to) {
-      to = A * from;
-    };
+    auto Aop = [&](double const* from, double * to) { mv_product(A.get(), from, to, N); };
 
-    worker_t ar(first_dim(A));
+    worker_t ar(N);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
       ar(Aop, params);
-      check_eigenvectors(ar, A);
+      check_eigenvectors(ar, A.get(), N, nev);
     }
   }
 
   SECTION("Generalized eigenproblem: invert mode") {
-    decltype(A) op_matrix = inverse(M) * A;
+    auto invM = make_buffer<double>(N * N);
+    invert(M.get(), invM.get(), N);
+    auto op_matrix = make_buffer<double>(N * N);
+    mm_product(invM.get(), A.get(), op_matrix.get(), N);
 
-    auto op = [&](vector_const_view<double> from, vector_view<double> to) {
-      to = op_matrix * from;
+    auto op = [&](double const* from, double * to) {
+      mv_product(op_matrix.get(), from, to, N);
     };
-    auto Bop = [&](vector_const_view<double> from, vector_view<double> to) {
-      to = M * from;
+    auto Bop = [&](double const* from, double * to) {
+      mv_product(M.get(), from, to, N);
     };
 
-    worker_t ar(first_dim(A));
+    worker_t ar(N);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
       params.ncv = 30;
       ar(op, Bop, worker_t::Invert, params);
-      check_eigenvectors(ar, A, M);
+      check_eigenvectors(ar, A.get(), M.get(), N, nev);
     }
   }
 }

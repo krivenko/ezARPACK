@@ -8,15 +8,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-# Build Catch2 main object file
-add_library(catch2 OBJECT catch2/catch2-main.cpp)
-
-include_directories(.)
-
-# Tests of raw memory storage backend
-add_subdirectory(raw)
-
-# Tests of TRIQS storage backend
-if(TRIQS_FOUND)
-  add_subdirectory(triqs)
-endif(TRIQS_FOUND)
+# TODO
+foreach(t symmetric asymmetric complex)
+    set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
+    set(t raw.worker_${t})
+    add_executable(${t} ${s})
+    target_link_libraries(${t} PRIVATE catch2 ${arpack_ng_LIBRARIES})
+    triqs_set_rpath_for_target(${t})
+    add_test(NAME ${t} COMMAND ${t})
+endforeach()

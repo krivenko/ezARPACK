@@ -28,14 +28,14 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   const double offdiag_coeff = 1.0;
   const int nev = 10;
 
+  auto spectrum_parts = {params_t::Smallest, params_t::Largest,
+                         params_t::SmallestMagnitude, params_t::LargestMagnitude,
+                         params_t::BothEnds};
+
   // Symmetric matrix A
   auto A = make_sparse_matrix<Symmetric>(N, diag_coeff, offdiag_offset, offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<Symmetric>(N);
-
-  auto spectrum_parts = {params_t::Smallest, params_t::Largest,
-                         params_t::SmallestMagnitude, params_t::LargestMagnitude,
-                         params_t::BothEnds};
 
   SECTION("Standard eigenproblem") {
     auto Aop = [&](vector_const_view<double> from, vector_view<double> to) {

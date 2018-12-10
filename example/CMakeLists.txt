@@ -10,6 +10,11 @@
 
 set(EXAMPLES)
 
+# Raw memory example
+add_executable(raw.example raw.example.cpp)
+target_link_libraries(raw.example ${arpack_ng_LIBRARIES})
+list(APPEND EXAMPLES raw.example)
+
 # TRIQS example
 if(TRIQS_FOUND)
   set(t "triqs.example")

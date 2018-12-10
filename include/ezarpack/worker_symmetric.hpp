@@ -344,7 +344,7 @@ public:
       }
     }
 
-    d.resize(nev);
+    storage::resize(d, nev);
     double sigma;
     if(mode != Invert) sigma = params.sigma;
 
