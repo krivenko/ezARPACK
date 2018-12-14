@@ -15,6 +15,14 @@ add_executable(raw.example raw.example.cpp)
 target_link_libraries(raw.example ezarpack ${arpack_ng_LIBRARIES})
 list(APPEND EXAMPLES raw.example)
 
+# Eigen3 example
+if(EIGEN3_FOUND)
+  set(t "eigen.example")
+  add_executable(${t} eigen.example.cpp)
+  target_link_libraries(${t} ezarpack Eigen3::Eigen ${arpack_ng_LIBRARIES})
+  list(APPEND EXAMPLES ${t})
+endif(EIGEN3_FOUND)
+
 # TRIQS example
 if(TRIQS_FOUND)
   set(t "triqs.example")

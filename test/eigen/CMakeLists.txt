@@ -8,18 +8,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-# Build Catch2 main object file
-add_library(catch2 OBJECT catch2/catch2-main.cpp)
-
-# Tests of raw memory storage backend
-add_subdirectory(raw)
-
-# Tests of Eigen3 storage backend
-if(Eigen3_FOUND)
-  add_subdirectory(eigen)
-endif(Eigen3_FOUND)
-
-# Tests of TRIQS storage backend
-if(TRIQS_FOUND)
-  add_subdirectory(triqs)
-endif(TRIQS_FOUND)
+foreach(t symmetric asymmetric complex)
+    set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
+    set(t eigen.worker_${t})
+    add_executable(${t} ${s})
+    target_include_directories(${t} PRIVATE ${CMAKE_SOURCE_DIR}/test)
+    target_link_libraries(${t} PRIVATE ezarpack catch2 Eigen3::Eigen ${arpack_ng_LIBRARIES})
+    add_test(NAME ${t} COMMAND ${t})
+endforeach()
