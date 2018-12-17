@@ -12,4 +12,4 @@
  ******************************************************************************/
 #pragma once
 
-#define EZARPACK_VERSION "0.3"
+#define EZARPACK_VERSION "0.4"

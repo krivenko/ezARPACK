@@ -100,8 +100,9 @@ template<typename AR, typename M> void check_eigenvectors(AR const& ar, M const&
 // Check that 'ar' contains the correct solution of a generalized eigenproblem
 template<typename AR, typename MT> void check_eigenvectors(AR const& ar, MT const& A, MT const& M) {
   auto lambda = ar.eigenvalues();
+  auto vecs = ar.eigenvectors();
   for(int i : range(lambda.size())) {
-    auto vec = ar.eigenvectors()(range(), i);
+    auto vec = vecs(range(), i);
     CHECK_THAT(A * vec, IsCloseTo(lambda(i) * M * vec));
   }
 }

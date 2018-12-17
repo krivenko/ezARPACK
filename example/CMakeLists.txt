@@ -23,6 +23,14 @@ if(EIGEN3_FOUND)
   list(APPEND EXAMPLES ${t})
 endif(EIGEN3_FOUND)
 
+# Blaze example
+if(blaze_FOUND)
+  set(t "blaze.example")
+  add_executable(${t} blaze.example.cpp)
+  target_link_libraries(${t} ezarpack blaze::blaze ${arpack_ng_LIBRARIES})
+  list(APPEND EXAMPLES ${t})
+endif(blaze_FOUND)
+
 # TRIQS example
 if(TRIQS_FOUND)
   set(t "triqs.example")

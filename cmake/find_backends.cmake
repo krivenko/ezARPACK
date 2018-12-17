@@ -6,6 +6,12 @@ if(Eigen3_FOUND)
   message(STATUS "Found Eigen3 version ${Eigen3_VERSION}")
 endif(Eigen3_FOUND)
 
+# Find Blaze
+find_package(blaze 3.0 QUIET CONFIG)
+if(blaze_FOUND)
+  message(STATUS "Found Blaze version ${blaze_VERSION}")
+endif(blaze_FOUND)
+
 # Find TRIQS
 find_package(Cpp2Py CONFIG)
 find_package(TRIQS CONFIG)

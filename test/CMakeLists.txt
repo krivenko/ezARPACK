@@ -19,6 +19,11 @@ if(Eigen3_FOUND)
   add_subdirectory(eigen)
 endif(Eigen3_FOUND)
 
+# Tests of Blaze storage backend
+if(blaze_FOUND)
+  add_subdirectory(blaze)
+endif(blaze_FOUND)
+
 # Tests of TRIQS storage backend
 if(TRIQS_FOUND)
   add_subdirectory(triqs)

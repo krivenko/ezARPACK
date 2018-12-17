@@ -16,8 +16,9 @@ Another important feature of ezARPACK is its extensibility with respect to compa
 matrix algebra libraries. Currently, it supports the following libraries (storage backends):
 
 * Raw memory buffers *(not recommended for general use)*;
-* Eigen3 [2].
-* TRIQS arrays [3];
+* Eigen3 [2];
+* Blaze [3];
+* TRIQS arrays [4].
 
 One can easily add support for her favorite vector/matrix framework by defining
 a new instance of the `storage_traits` structure (see, for example, `include/storages/eigen.hpp`).
@@ -41,7 +42,7 @@ ezARPACK is usable without installation, just add `-I/<path_to_ezARPACK_sources>
 to the compiler command line and `-L/<ARPACK-NG_installation_prefix>/lib -larpack` to
 the linker command line.
 
-You will need CMake version 3.0.2 or newer [4] to build examples/unit tests and to install ezARPACK
+You will need CMake version 3.0.2 or newer [5] to build examples/unit tests and to install ezARPACK
 such that it can be used from other CMake projects.
 
 Assuming that ezARPACK is to be installed in `<ezARPACK_installation_prefix>`, the installation
@@ -54,6 +55,7 @@ $ cmake ../ezARPACK.git                                 \
 $ -DCMAKE_INSTALL_PREFIX=<ezARPACK_installation_prefix> \
   -DARPACK_NG_ROOT=<ARPACK-NG_installation_prefix>      \
   -DEigen3_ROOT=<Eigen3_installation_prefix>            \
+  -Dblaze_ROOT=<Blaze_installation_prefix>              \
   -DTRIQS_ROOT=<TRIQS_installation_prefix>              \
   -DExamples=ON                                         \
   -DTests=ON
@@ -66,8 +68,8 @@ Compilation of the tests can be disabled with CMake flag `-DTests=OFF` *(not rec
 
 Examples are compiled by default, disable them with `-DExamples=OFF`.
 
-CMake options specific to individual storage backends (`Eigen3_ROOT`, `TRIQS_ROOT`) can be
-omitted if the respective libraries are installed in the standard system locations.
+CMake options specific to individual storage backends (`Eigen3_ROOT`, `blaze_ROOT`, `TRIQS_ROOT`)
+can be omitted if the respective libraries are installed in the standard system locations.
 If some of the libraries are not found, CMake will skip the corresponding examples and unit tests.
 
 Usage
@@ -113,5 +115,6 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 [1]: https://github.com/opencollab/arpack-ng
 [2]: http://eigen.tuxfamily.org
-[3]: https://triqs.github.io/triqs/master
-[4]: https://cmake.org/download
+[3]: https://bitbucket.org/blaze-lib/blaze
+[4]: https://triqs.github.io/triqs/master
+[5]: https://cmake.org/download
