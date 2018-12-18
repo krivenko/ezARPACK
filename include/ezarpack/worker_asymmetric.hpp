@@ -51,6 +51,9 @@ template<typename Backend> class arpack_worker<Asymmetric, Backend> {
 
 public:
 
+  using vector_view_t = real_vector_view_t;
+  using vector_const_view_t = real_vector_const_view_t;
+
   struct params_t {
     // Number of eigenvalues (Ritz values) to compute
     unsigned int n_eigenvalues;
@@ -174,14 +177,14 @@ public:
   **********************************/
 
   // a: callable taking 2 arguments
-  // a(real_vector_const_view_t from, real_vector_view_t to)
+  // a(vector_const_view_t from, vector_view_t to)
   // 'a' is expected to act on 'from' and write the result to 'to': to = A*from
   //
   // 'from' is also indirectly available as this->workspace_vector(this->vector_from_n())
   // 'to' is also indirectly available as this->workspace_vector(this->vector_to_n())
   //
   // shifts_f: callable taking two arguments
-  // shifts_f(real_vector_view_t shifts_re, real_vector_view_t shifts_im)
+  // shifts_f(vector_view_t shifts_re, vector_view_t shifts_im)
   // 'shifts_f' is expected to place real and imaginary parts of the shifts for implicit restart
   // into 'shifts_re' and 'shifts_im' respectively.
   template<typename A, typename ShiftsF = trivial_shifts_f>
@@ -277,11 +280,11 @@ public:
                    ShiftAndInvertImag = 4};  // OP = Imaginary_Part{ inv[A - sigma*M]*M } and B = M
 
   // op: callable taking 2 arguments
-  // op(real_vector_const_view_t from, real_vector_view_t to)
+  // op(vector_const_view_t from, vector_view_t to)
   // 'op' is expected to act on 'from' and write the result to 'to': to = OP*from
   //
   // b: callable taking 2 arguments
-  // b(real_vector_const_view_t from, real_vector_view_t to)
+  // b(vector_const_view_t from, vector_view_t to)
   // 'b' is expected to act on 'from' and write the result to 'to': to = B*from
   //
   // 'from' is also indirectly available as this->workspace_vector(this->from_vector_n())
@@ -290,7 +293,7 @@ public:
   // this->Bx_available() indicates whether B*x has already been computed and available as this->Bx_vector()
   //
   // shifts_f: callable taking two arguments
-  // shifts_f(real_vector_view_t shifts_re, real_vector_view_t shifts_im)
+  // shifts_f(vector_view_t shifts_re, vector_view_t shifts_im)
   // 'shifts_f' is expected to place real and imaginary parts of the shifts for implicit restart
   // into 'shifts_re' and 'shifts_im' respectively.
   template<typename OP, typename B, typename ShiftsF = trivial_shifts_f>

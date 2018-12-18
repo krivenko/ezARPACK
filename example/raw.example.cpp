@@ -44,9 +44,12 @@ int main(int argc, char* argv[]) {
   // * `arpack_worker<Complex, raw_storage>' for general complex matrices.
   arpack_worker<Symmetric, raw_storage> worker(N);
 
+  using vector_view_t = arpack_worker<Symmetric, raw_storage>::vector_view_t;
+  using vector_const_view_t = arpack_worker<Symmetric, raw_storage>::vector_const_view_t;
+
   // Linear operator representing multiplication of a given vector by our matrix.
   // The operator must act on the 'from' vector and store results in 'to'.
-  auto matrix_op = [](double const* from, double * to) {
+  auto matrix_op = [](vector_const_view_t from, vector_view_t to) {
     std::fill(to, to + N, 0); // Clear result
 
     // to_i = \sum_j A_{ij} from_j

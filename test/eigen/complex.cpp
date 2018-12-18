@@ -38,8 +38,11 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
   // Inner product matrix
   auto M = make_inner_prod_matrix<ezarpack::Complex>(N);
 
+  using vector_view_t = worker_t::vector_view_t;
+  using vector_const_view_t = worker_t::vector_const_view_t;
+
   SECTION("Standard eigenproblem") {
-    auto Aop = [&](vector_const_view<dcomplex> from, vector_view<dcomplex> to) {
+    auto Aop = [&](vector_const_view_t from, vector_view_t to) {
       to = A * from;
     };
 
@@ -56,10 +59,10 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
   SECTION("Generalized eigenproblem: invert mode") {
     decltype(A) op_matrix = M.inverse() * A;
 
-    auto op = [&](vector_const_view<dcomplex> from, vector_view<dcomplex> to) {
+    auto op = [&](vector_const_view_t from, vector_view_t to) {
       to = op_matrix * from;
     };
-    auto Bop = [&](vector_const_view<dcomplex> from, vector_view<dcomplex> to) {
+    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
       to = M * from;
     };
 
@@ -77,10 +80,10 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
     dcomplex sigma(0.5, 0.5);
     decltype(A) op_matrix = (A - sigma*M).inverse() * M;
 
-    auto op = [&](vector_const_view<dcomplex> from, vector_view<dcomplex> to) {
+    auto op = [&](vector_const_view_t from, vector_view_t to) {
       to = op_matrix * from;
     };
-    auto Bop = [&](vector_const_view<dcomplex> from, vector_view<dcomplex> to) {
+    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
       to = M * from;
     };
 

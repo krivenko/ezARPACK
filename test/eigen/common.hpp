@@ -31,9 +31,6 @@ using scalar_t = typename std::conditional<MKind==Complex, dcomplex, double>::ty
 template<typename T> using vector = Matrix<T, Dynamic, 1>;
 template<typename T> using matrix = Matrix<T, Dynamic, Dynamic>;
 
-template<typename T> using vector_view = VectorBlock<vector<T>, Dynamic>;
-template<typename T> using vector_const_view = VectorBlock<const vector<T>, Dynamic>;
-
 template<operator_kind MKind> scalar_t<MKind> reflect_coeff(scalar_t<MKind> x);
 template<> double reflect_coeff<ezarpack::Symmetric>(double x) { return x; }
 template<> double reflect_coeff<ezarpack::Asymmetric>(double x) { return -x; }

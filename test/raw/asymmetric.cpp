@@ -70,8 +70,13 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
   // Inner product matrix
   auto M = make_inner_prod_matrix<Asymmetric>(N);
 
+  using vector_view_t = worker_t::vector_view_t;
+  using vector_const_view_t = worker_t::vector_const_view_t;
+
   SECTION("Standard eigenproblem") {
-    auto Aop = [&](double const* from, double * to) { mv_product(A.get(), from, to, N); };
+    auto Aop = [&](vector_const_view_t from, vector_view_t to) {
+      mv_product(A.get(), from, to, N);
+    };
 
     worker_t ar(N);
 
@@ -88,10 +93,10 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
     auto op_matrix = make_buffer<double>(N * N);
     mm_product(invM.get(), A.get(), op_matrix.get(), N);
 
-    auto op = [&](double const* from, double * to) {
+    auto op = [&](vector_const_view_t from, vector_view_t to) {
       mv_product(op_matrix.get(), from, to, N);
     };
-    auto Bop = [&](double const* from, double * to) {
+    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
       mv_product(M.get(), from, to, N);
     };
 

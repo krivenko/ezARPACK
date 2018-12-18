@@ -29,9 +29,6 @@ using scalar_t = typename std::conditional<MKind==Complex, dcomplex, double>::ty
 template<typename T> using vector = DynamicVector<T>;
 template<typename T> using matrix = DynamicMatrix<T, columnMajor>;
 
-template<typename T> using vector_view = Subvector<vector<T>>;
-template<typename T> using vector_const_view = Subvector<const vector<T>>;
-
 template<operator_kind MKind> scalar_t<MKind> reflect_coeff(scalar_t<MKind> x);
 template<> double reflect_coeff<Symmetric>(double x) { return x; }
 template<> double reflect_coeff<Asymmetric>(double x) { return -x; }

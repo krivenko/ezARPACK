@@ -47,6 +47,9 @@ template<typename Backend> class arpack_worker<Symmetric, Backend> {
 
 public:
 
+  using vector_view_t = real_vector_view_t;
+  using vector_const_view_t = real_vector_const_view_t;
+
   struct params_t {
     // Number of eigenvalues (Ritz values) to compute
     unsigned int n_eigenvalues;
@@ -153,14 +156,14 @@ public:
   **********************************/
 
   // a: callable taking 2 arguments
-  // a(real_vector_const_view_t from, real_vector_view_t to)
+  // a(vector_const_view_t from, vector_view_t to)
   // 'a' is expected to act on 'from' and write the result to 'to': to = A*from
   //
   // 'from' is also indirectly available as this->workspace_vector(this->from_vector_n())
   // 'to' is also indirectly available as this->workspace_vector(this->to_vector_n())
   //
   // shifts_f: callable taking one argument
-  // shifts_f(real_vector_view_t shifts)
+  // shifts_f(vector_view_t shifts)
   // 'shifts_f' is expected to place the shifts for implicit restart into 'shifts'
   template<typename A, typename ShiftsF = trivial_shifts_f>
   void operator()(A a, params_t const& params, ShiftsF shifts_f = {}) {
@@ -249,7 +252,7 @@ public:
                    Cayley = 5};          // OP = inv[A - sigma*M]*[A + sigma*M] and B = M
 
   // op: callable taking 2 arguments
-  // op(real_vector_view_t from, real_vector_view_t to)
+  // op(vector_view_t from, vector_view_t to)
   // In all modes except for 'Invert', 'op' is expected to act on 'from'
   // and write the result to 'to': to = OP*from.
   // In the 'Invert' mode, however, 'op' must do the following:
@@ -257,7 +260,7 @@ public:
   //  to = inv[M] * from
   //
   // b: callable taking 2 arguments
-  // b(real_vector_const_view_t from, real_vector_view_t to)
+  // b(vector_const_view_t from, vector_view_t to)
   // 'b' is expected to act on 'from' and write the result to 'to': to = B*from
   //
   // 'from' is also indirectly available as this->workspace_vector(this->vector_from_n())
@@ -266,7 +269,7 @@ public:
   // this->Bx_available() indicates whether B*x has already been computed and available as this->Bx_vector()
   //
   // shifts_f: callable taking one argument
-  // shifts_f(real_vector_view_t shifts)
+  // shifts_f(vector_view_t shifts)
   // 'shifts_f' is expected to place the shifts for implicit restart into 'shifts'
   template<typename OP, typename B, typename ShiftsF = trivial_shifts_f>
   void operator()(OP op, B b, Mode mode, params_t const& params, ShiftsF shifts_f = {}) {
