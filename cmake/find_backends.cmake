@@ -12,6 +12,9 @@ if(blaze_FOUND)
   message(STATUS "Found Blaze version ${blaze_VERSION}")
 endif(blaze_FOUND)
 
+# Armadillo
+find_package(Armadillo CONFIG)
+
 # Find TRIQS
 find_package(Cpp2Py CONFIG)
 find_package(TRIQS CONFIG)

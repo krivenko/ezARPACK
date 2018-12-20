@@ -31,6 +31,14 @@ if(blaze_FOUND)
   list(APPEND EXAMPLES ${t})
 endif(blaze_FOUND)
 
+# Armadillo example
+if(Armadillo_FOUND)
+  set(t "armadillo.example")
+  add_executable(${t} armadillo.example.cpp)
+  target_link_libraries(${t} ezarpack armadillo ${arpack_ng_LIBRARIES})
+  list(APPEND EXAMPLES ${t})
+endif(Armadillo_FOUND)
+
 # TRIQS example
 if(TRIQS_FOUND)
   set(t "triqs.example")

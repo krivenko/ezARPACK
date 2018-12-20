@@ -80,6 +80,7 @@ template<> struct storage_traits<raw_storage> {
   template<typename T>
   inline static T const* make_vector_const_view(std::unique_ptr<T[]> const& v) { return v.get(); }
 
+  // Make subvector view
   template<typename T>
   inline static T* make_vector_view(std::unique_ptr<T[]> & v, int start, int /* size */) {
     return v.get() + start;
@@ -95,6 +96,7 @@ template<> struct storage_traits<raw_storage> {
   template<typename T>
   inline static T const* make_matrix_const_view(std::unique_ptr<T[]> const& m) { return m.get(); }
 
+  // Make submatrix view including 'cols' leftmost columns
   template<typename T>
   inline static T* make_matrix_view(T * m, int /* rows */, int /* cols */) { return m; }
   template<typename T>

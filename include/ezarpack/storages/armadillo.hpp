@@ -13,25 +13,28 @@
 #pragma once
 
 #include <complex>
-#include <blaze/Math.h>
+#include <cmath>
+#include <armadillo>
 
 #include "base.hpp"
 
 namespace ezarpack {
 
-/// Blaze storage backend tag
-struct blaze_storage {};
+/// Armadillo storage backend tag
+struct armadillo_storage {};
 
-/// Traits of the Blaze storage backend
-template<> struct storage_traits<blaze_storage> {
+/// Traits of the Armadillo storage backend
+template<> struct storage_traits<armadillo_storage> {
 
-  template<typename T> using vector = blaze::DynamicVector<T>;
-  template<typename T> using matrix = blaze::DynamicMatrix<T, blaze::columnMajor>;
+  template<typename T> using vector = arma::Col<T>;
+  template<typename T> using matrix = arma::Mat<T>;
 
-  template<typename T> using vector_view = blaze::Subvector<vector<T>>;
-  template<typename T> using vector_const_view = blaze::Subvector<const vector<T>>;
-  template<typename T> using matrix_view = blaze::Submatrix<matrix<T>>;
-  template<typename T> using matrix_const_view = blaze::Submatrix<const matrix<T>>;
+  template<typename T> using vector_view = arma::subview_col<T>;
+  template<typename T> using vector_const_view = const arma::subview_col<T>;
+  template<typename T> using matrix_view = arma::subview<T>;
+  template<typename T> using matrix_const_view = const arma::subview<T>;
+
+  using span = arma::span;
 
   // Storage types
   using real_vector_type = vector<double>;
@@ -81,55 +84,47 @@ template<> struct storage_traits<blaze_storage> {
 
   // Get pointer to data array
   template<typename T>
-  inline static T* get_data_ptr(vector<T> &v) { return v.data(); }
+  inline static T* get_data_ptr(vector<T> &v) { return v.memptr(); }
   template<typename T>
-  inline static T* get_data_ptr(matrix<T> &m) { return m.data(); }
+  inline static T* get_data_ptr(matrix<T> &m) { return m.memptr(); }
 
   // Make vector view
   template<typename T>
-  inline static vector_view<T> make_vector_view(vector<T> & v) {
-    return blaze::subvector(v, 0, v.size(), blaze::unchecked);
-  }
+  inline static vector_view<T> make_vector_view(vector<T> & v) { return v(span::all); }
   template<typename T>
-  inline static vector_const_view<T> make_vector_const_view(vector<T> const& v) {
-    return blaze::subvector(v, 0, v.size(), blaze::unchecked);
-  }
+  inline static vector_const_view<T> make_vector_const_view(vector<T> const& v) { return v(span::all); }
 
   // Make subvector view
   template<typename T>
   inline static vector_view<T> make_vector_view(vector<T> & v, int start, int size) {
-    return blaze::subvector(v, start, size, blaze::unchecked);
+    return v.subvec(start, start + size - 1);
   }
   template<typename T>
   inline static vector_const_view<T> make_vector_const_view(vector<T> const& v, int start, int size) {
-    return blaze::subvector(v, start, size, blaze::unchecked);
+    return v.subvec(start, start + size - 1);
   }
 
   // Make matrix view
   template<typename T>
-  inline static matrix_view<T> make_matrix_view(matrix<T> & m) {
-    return blaze::submatrix(m, 0, 0, m.rows(), m.columns(), blaze::unchecked);
-  }
+  inline static matrix_view<T> make_matrix_view(matrix<T> & m) { return m(span::all, span::all); }
   template<typename T>
-  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m) {
-    return blaze::submatrix(m, 0, 0, m.rows(), m.columns(), blaze::unchecked);
-  }
+  inline static matrix_view<T> make_matrix_const_view(matrix<T> const& m) { return m(span::all, span::all); }
 
   // Make submatrix view including 'cols' leftmost columns
   template<typename T>
-  inline static matrix_view<T> make_matrix_view(matrix<T> & m, int rows, int cols) {
-    return blaze::submatrix(m, 0, 0, rows, cols, blaze::unchecked);
+  inline static matrix_view<T> make_matrix_view(matrix<T> & m, int /* rows */, int cols) {
+    return m.head_cols(cols);
   }
   template<typename T>
-  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m, int rows, int cols) {
-    return blaze::submatrix(m, 0, 0, rows, cols, blaze::unchecked);
+  inline static matrix_view<T> make_matrix_const_view(matrix<T> const& m, int /* rows */, int cols) {
+    return m.head_cols(cols);
   }
 
   // Combine two real vectors to form one complex
   inline static complex_vector_type combine_re_im(real_vector_type const& re,
                                                   real_vector_type const& im,
                                                   int size) {
-    return blaze::subvector(re, 0, size) + std::complex<double>(0, 1) * blaze::subvector(im, 0, size);
+    return re.head(size) + std::complex<double>(0, 1) * im.head(size);
   }
 
   // Extract Ritz/Schur vectors from the 'z' matrix
@@ -138,15 +133,15 @@ template<> struct storage_traits<blaze_storage> {
                                                          int N,
                                                          int nev) {
     complex_matrix_type res(N, nev);
+    std::complex<double> one(1);
     std::complex<double> I(0, 1);
-    using namespace blaze;
     for(int i = 0; i < nev; ++i) {
       if(di[i] == 0) {
-        column(res, i) = column(z, i);
+        res.col(i) = one * z.col(i);
       } else {
-        column(res, i) = column(z, i) + I*std::copysign(1.0, di[i])*column(z, i+1);
+        res.col(i) = z.col(i) + I*std::copysign(1.0, di[i])*z.col(i+1);
         if(i < nev-1) {
-          column(res, i+1) = conj(column(res, i));
+          res.col(i+1) = arma::conj(res.col(i));
           ++i;
         }
       }

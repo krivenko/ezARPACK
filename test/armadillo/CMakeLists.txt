@@ -10,9 +10,9 @@
 
 foreach(t symmetric asymmetric complex)
     set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
-    set(t raw.worker_${t})
+    set(t armadillo.worker_${t})
     add_executable(${t} ${s})
     target_include_directories(${t} PRIVATE ${CMAKE_SOURCE_DIR}/test)
-    target_link_libraries(${t} PRIVATE ezarpack catch2 ${arpack_ng_LIBRARIES})
+    target_link_libraries(${t} PRIVATE ezarpack catch2 armadillo ${arpack_ng_LIBRARIES})
     add_test(NAME ${t} COMMAND ${t})
 endforeach()

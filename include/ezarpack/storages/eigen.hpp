@@ -95,6 +95,7 @@ template<> struct storage_traits<eigen_storage> {
     return v.head(v.size());
   }
 
+  // Make subvector view
   template<typename T>
   inline static vector_view<T> make_vector_view(vector<T> & v, int start, int size) {
     return v.segment(start, size);
@@ -114,6 +115,7 @@ template<> struct storage_traits<eigen_storage> {
     return m.leftCols(m.cols());
   }
 
+  // Make submatrix view including 'cols' leftmost columns
   template<typename T>
   inline static matrix_view<T> make_matrix_view(matrix<T> & m, int /* rows */, int cols) {
     return m.leftCols(cols);

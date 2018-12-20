@@ -24,6 +24,11 @@ if(blaze_FOUND)
   add_subdirectory(blaze)
 endif(blaze_FOUND)
 
+# Tests of Armadillo storage backend
+if(Armadillo_FOUND)
+  add_subdirectory(armadillo)
+endif(Armadillo_FOUND)
+
 # Tests of TRIQS storage backend
 if(TRIQS_FOUND)
   add_subdirectory(triqs)
