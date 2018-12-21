@@ -108,6 +108,15 @@ Documentation
 
 For now, I only provide a few examples in the `example` directory.
 
+Known issues
+------------
+
+* ezARPACK is still beta, use with caution!
+* Parallel ARPACK routines (PARPACK) are not supported.
+* `arpack_worker<Asymmetric, ...>` will refuse to run in `ShiftAndInvertReal` and
+  `ShiftAndInvertImag` modes (`dnaupd` modes 3 and 4). This is a temporary
+  workaround for [a `dneupd` issue](http://forge.scilab.org/index.php/p/arpack-ng/issues/1315/).
+
 License
 -------
 
