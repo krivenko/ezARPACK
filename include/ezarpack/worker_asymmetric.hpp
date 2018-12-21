@@ -308,7 +308,7 @@ public:
     prepare(params);
 
     iparam[0] = (std::is_same<ShiftsF,trivial_shifts_f>::value ? 1 : 0);
-    iparam[6] = mode; // Modes 2-5, generalized eigenproblem
+    iparam[6] = mode; // Modes 2-4, generalized eigenproblem
 
     const int workl_size = 3*ncv*ncv + 6*ncv;
     real_vector_t workl = storage::make_real_vector(workl_size);
@@ -425,7 +425,7 @@ public:
   // Cannot be used in ShiftAndInvertReal and ShiftAndInvertImag modes if imag(sigma) != 0.
   complex_vector_t eigenvalues() const {
     assert(!((iparam[6] == ShiftAndInvertReal || iparam[6] == ShiftAndInvertImag) && sigmai != 0));
-    return storage::combine_re_im(dr, di, nev);
+    return storage::make_asymm_eigenvalues(dr, di, nev);
   }
 
   // Access Ritz/Schur vectors
@@ -433,7 +433,7 @@ public:
     if(iparam[4] < nev)
       std::cerr << "arpack_worker: only " << iparam[4] << " out of " << nev
                 << " Ritz vectors have converged.";
-    return storage::extract_eigenvectors(z, di, N, nev);
+    return storage::make_asymm_eigenvectors(z, di, N, nev);
   }
 
   // Access residual vector

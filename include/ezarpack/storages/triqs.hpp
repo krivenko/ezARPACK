@@ -120,18 +120,18 @@ template<> struct storage_traits<triqs_storage> {
     return m(range(), range(cols));
   }
 
-  // Combine two real vectors to form one complex
-  inline static complex_vector_type combine_re_im(real_vector_type const& re,
-                                                  real_vector_type const& im,
-                                                  int size) {
-    return re(range(size)) + std::complex<double>(0, 1) * im(range(size));
+  // worker_asymmetric: Extract Ritz values from 'dr' and 'di' vectors
+  inline static complex_vector_type make_asymm_eigenvalues(real_vector_type const& dr,
+                                                           real_vector_type const& di,
+                                                           int nev) {
+    return dr(range(nev)) + std::complex<double>(0, 1)*di(range(nev));
   }
 
-  // Extract Ritz/Schur vectors from the 'z' matrix
-  inline static complex_matrix_type extract_eigenvectors(real_matrix_type const& z,
-                                                         real_vector_type const& di,
-                                                         int N,
-                                                         int nev) {
+  // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
+  inline static complex_matrix_type make_asymm_eigenvectors(real_matrix_type const& z,
+                                                            real_vector_type const& di,
+                                                            int N,
+                                                            int nev) {
     complex_matrix_type res(N, nev);
     auto _ = range();
     std::complex<double> I(0, 1);

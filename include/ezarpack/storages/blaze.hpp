@@ -125,18 +125,18 @@ template<> struct storage_traits<blaze_storage> {
     return blaze::submatrix(m, 0, 0, rows, cols, blaze::unchecked);
   }
 
-  // Combine two real vectors to form one complex
-  inline static complex_vector_type combine_re_im(real_vector_type const& re,
-                                                  real_vector_type const& im,
-                                                  int size) {
-    return blaze::subvector(re, 0, size) + std::complex<double>(0, 1) * blaze::subvector(im, 0, size);
+  // worker_asymmetric: Extract Ritz values from 'dr' and 'di' vectors
+  inline static complex_vector_type make_asymm_eigenvalues(real_vector_type const& dr,
+                                                           real_vector_type const& di,
+                                                           int nev) {
+    return blaze::subvector(dr, 0, nev) + std::complex<double>(0, 1) * blaze::subvector(di, 0, nev);
   }
 
-  // Extract Ritz/Schur vectors from the 'z' matrix
-  inline static complex_matrix_type extract_eigenvectors(real_matrix_type const& z,
-                                                         real_vector_type const& di,
-                                                         int N,
-                                                         int nev) {
+  // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
+  inline static complex_matrix_type make_asymm_eigenvectors(real_matrix_type const& z,
+                                                            real_vector_type const& di,
+                                                            int N,
+                                                            int nev) {
     complex_matrix_type res(N, nev);
     std::complex<double> I(0, 1);
     using namespace blaze;

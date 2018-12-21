@@ -104,21 +104,21 @@ template<> struct storage_traits<raw_storage> {
     return m.get();
   }
 
-  // Combine two real vectors to form one complex
+  // worker_asymmetric: Extract Ritz values from 'dr' and 'di' vectors
   inline static complex_vector_type
-  combine_re_im(real_vector_type const& re, real_vector_type const& im, int size) {
-    complex_vector_type res(new std::complex<double>[size]);
-    for(int n = 0; n < size; ++n) {
-      res[n] = std::complex<double>(re[n], im[n]);
+  make_asymm_eigenvalues(real_vector_type const& dr, real_vector_type const& di, int nev) {
+    complex_vector_type res(new std::complex<double>[nev]);
+    for(int n = 0; n < nev; ++n) {
+      res[n] = std::complex<double>(dr[n], di[n]);
     }
     return res;
   }
 
-  // Extract Ritz/Schur vectors from the 'z' matrix
-  inline static complex_matrix_type extract_eigenvectors(real_vector_type const& z,
-                                                         real_vector_type const& di,
-                                                         int N,
-                                                         int nev) {
+  // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
+  inline static complex_matrix_type make_asymm_eigenvectors(real_vector_type const& z,
+                                                            real_vector_type const& di,
+                                                            int N,
+                                                            int nev) {
     complex_matrix_type res(new std::complex<double>[N * nev]);
     std::complex<double> I(0, 1);
     for(int i = 0; i < nev; ++i) {
