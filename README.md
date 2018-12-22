@@ -16,11 +16,11 @@ Another important feature of ezARPACK is its extensibility with respect to compa
 matrix algebra libraries. Currently, it supports the following libraries (storage backends):
 
 * Raw memory buffers *(not recommended for general use)*;
-* Eigen3 [2];
-* Blaze [3];
+* Eigen >= 3.3 [2];
+* Blaze >= 3 [3];
 * Armadillo [4];
-* Boost uBLAS [5];
-* TRIQS arrays [6].
+* Boost uBLAS >= 1.58 [5];
+* TRIQS arrays >= 2.0 [6].
 
 One can easily add support for her favorite vector/matrix framework by defining
 a new instance of the `storage_traits` structure (see, for example, `include/storages/eigen.hpp`).
