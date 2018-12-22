@@ -14,27 +14,28 @@
 
 #include <complex>
 #include <cmath>
-#include <armadillo>
+#include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/vector_proxy.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/matrix_proxy.hpp>
 
 #include "base.hpp"
 
 namespace ezarpack {
 
-/// Armadillo storage backend tag
-struct armadillo_storage {};
+/// uBLAS storage backend tag
+struct ublas_storage {};
 
-/// Traits of the Armadillo storage backend
-template<> struct storage_traits<armadillo_storage> {
+/// Traits of the uBLAS storage backend
+template<> struct storage_traits<ublas_storage> {
 
-  template<typename T> using vector = arma::Col<T>;
-  template<typename T> using matrix = arma::Mat<T>;
+  template<typename T> using vector = boost::numeric::ublas::vector<T>;
+  template<typename T> using matrix = boost::numeric::ublas::matrix<T, boost::numeric::ublas::column_major>;
 
-  template<typename T> using vector_view = arma::subview_col<T>;
-  template<typename T> using vector_const_view = const arma::subview_col<T>;
-  template<typename T> using matrix_view = arma::subview<T>;
-  template<typename T> using matrix_const_view = const arma::subview<T>;
-
-  using span = arma::span;
+  template<typename T> using vector_view = boost::numeric::ublas::vector_range<vector<T>>;
+  template<typename T> using vector_const_view = const boost::numeric::ublas::vector_range<const vector<T>>;
+  template<typename T> using matrix_view = boost::numeric::ublas::matrix_range<matrix<T>>;
+  template<typename T> using matrix_const_view = const boost::numeric::ublas::matrix_range<const matrix<T>>;
 
   // Storage types
   using real_vector_type = vector<double>;
@@ -78,53 +79,68 @@ template<> struct storage_traits<armadillo_storage> {
 
   // Resize
   template<typename T>
-  inline static void resize(vector<T> &v, int size) { v.resize(size); }
+  inline static void resize(vector<T> &v, int size) { v.resize(size, false); }
   template<typename T>
-  inline static void resize(matrix<T> &m, int rows, int cols) { m.resize(rows, cols); }
+  inline static void resize(matrix<T> &m, int rows, int cols) { m.resize(rows, cols, false); }
 
   // Get pointer to data array
   template<typename T>
-  inline static T* get_data_ptr(vector<T> &v) { return v.memptr(); }
+  inline static T* get_data_ptr(vector<T> &v) { return &v(0); }
   template<typename T>
-  inline static T* get_data_ptr(matrix<T> &m) { return m.memptr(); }
+  inline static T* get_data_ptr(matrix<T> &m) { return &m(0, 0); }
 
   // Make vector view
   template<typename T>
-  inline static vector_view<T> make_vector_view(vector<T> & v) { return v(span::all); }
+  inline static vector_view<T> make_vector_view(vector<T> & v) {
+    return boost::numeric::ublas::subrange(v, 0, v.size());
+  }
   template<typename T>
-  inline static vector_const_view<T> make_vector_const_view(vector<T> const& v) { return v(span::all); }
+  inline static vector_const_view<T> make_vector_const_view(vector<T> const& v) {
+    return boost::numeric::ublas::subrange(v, 0, v.size());
+  }
 
   // Make subvector view
   template<typename T>
   inline static vector_view<T> make_vector_view(vector<T> & v, int start, int size) {
-    return v.subvec(start, start + size - 1);
+    return boost::numeric::ublas::subrange(v, start, start + size);
   }
   template<typename T>
   inline static vector_const_view<T> make_vector_const_view(vector<T> const& v, int start, int size) {
-    return v.subvec(start, start + size - 1);
+    return boost::numeric::ublas::subrange(v, start, start + size);
   }
 
   // Make matrix view
   template<typename T>
-  inline static matrix_view<T> make_matrix_view(matrix<T> & m) { return m(span::all, span::all); }
+  inline static matrix_view<T> make_matrix_view(matrix<T> & m) {
+    using namespace boost::numeric::ublas;
+    return project(m, range(0, m.size1()), range(0, m.size2()));
+  }
   template<typename T>
-  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m) { return m(span::all, span::all); }
+  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m) {
+    using namespace boost::numeric::ublas;
+    return project(m, range(0, m.size1()), range(0, m.size2()));
+  }
 
   // Make submatrix view including 'cols' leftmost columns
   template<typename T>
   inline static matrix_view<T> make_matrix_view(matrix<T> & m, int /* rows */, int cols) {
-    return m.head_cols(cols);
+    using namespace boost::numeric::ublas;
+    return project(m, range(0, m.size1()), range(0, cols));
   }
   template<typename T>
   inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m, int /* rows */, int cols) {
-    return m.head_cols(cols);
+    using namespace boost::numeric::ublas;
+    return project(m, range(0, m.size1()), range(0, cols));
   }
 
   // worker_asymmetric: Extract Ritz values from 'dr' and 'di' vectors
   inline static complex_vector_type make_asymm_eigenvalues(real_vector_type const& dr,
                                                            real_vector_type const& di,
                                                            int nev) {
-    return dr.head(nev) + std::complex<double>(0, 1) * di.head(nev);
+    complex_vector_type res(subrange(di, 0, nev));
+    res *= std::complex<double>(0, 1);
+    res += subrange(dr, 0, nev);
+    return res;
   }
 
   // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
@@ -133,15 +149,16 @@ template<> struct storage_traits<armadillo_storage> {
                                                             int N,
                                                             int nev) {
     complex_matrix_type res(N, nev);
-    std::complex<double> one(1);
     std::complex<double> I(0, 1);
     for(int i = 0; i < nev; ++i) {
-      if(di[i] == 0) {
-        res.col(i) = one * z.col(i);
+      if(di(i) == 0) {
+        column(res, i) = column(z, i);
       } else {
-        res.col(i) = z.col(i) + I*std::copysign(1.0, di[i])*z.col(i+1);
+        column(res, i) = std::copysign(1.0, di(i))*column(z, i+1);
+        column(res, i) *= I;
+        column(res, i) += column(z, i);
         if(i < nev-1) {
-          res.col(i+1) = arma::conj(res.col(i));
+          column(res, i+1) = conj(column(res, i));
           ++i;
         }
       }

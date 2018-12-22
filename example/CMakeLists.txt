@@ -39,6 +39,15 @@ if(Armadillo_FOUND)
   list(APPEND EXAMPLES ${t})
 endif(Armadillo_FOUND)
 
+# uBLAS example
+if(Boost_FOUND)
+  set(t "ublas.example")
+  add_executable(${t} ublas.example.cpp)
+  target_include_directories(${t} PRIVATE ${Boost_INCLUDE_DIRS})
+  target_link_libraries(${t} ezarpack ${arpack_ng_LIBRARIES})
+  list(APPEND EXAMPLES ${t})
+endif(Boost_FOUND)
+
 # TRIQS example
 if(TRIQS_FOUND)
   set(t "triqs.example")

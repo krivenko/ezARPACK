@@ -29,6 +29,11 @@ if(Armadillo_FOUND)
   add_subdirectory(armadillo)
 endif(Armadillo_FOUND)
 
+# Tests of uBLAS storage backend
+if(Boost_FOUND)
+  add_subdirectory(ublas)
+endif(Boost_FOUND)
+
 # Tests of TRIQS storage backend
 if(TRIQS_FOUND)
   add_subdirectory(triqs)

@@ -108,7 +108,7 @@ template<> struct storage_traits<triqs_storage> {
   template<typename T>
   inline static matrix_view<T> make_matrix_view(matrix<T> & m) { return m; }
   template<typename T>
-  inline static matrix_view<T> make_matrix_const_view(matrix<T> const& m) { return m; }
+  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m) { return m; }
 
   // Make submatrix view including 'cols' leftmost columns
   template<typename T>
@@ -116,7 +116,7 @@ template<> struct storage_traits<triqs_storage> {
     return m(range(), range(cols));
   }
   template<typename T>
-  inline static matrix_view<T> make_matrix_const_view(matrix<T> const& m, int /* rows */, int cols) {
+  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m, int /* rows */, int cols) {
     return m(range(), range(cols));
   }
 

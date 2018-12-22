@@ -15,6 +15,9 @@ endif(blaze_FOUND)
 # Armadillo
 find_package(Armadillo CONFIG)
 
+# Boost uBLAS
+find_package(Boost 1.58)
+
 # Find TRIQS
 find_package(Cpp2Py CONFIG)
 find_package(TRIQS CONFIG)
