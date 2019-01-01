@@ -12,6 +12,8 @@ foreach(t symmetric asymmetric complex)
     set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
     set(t triqs.worker_${t})
     add_executable(${t} ${s})
+    # FIXME: Setting CXX_STANDARD to 17 would require CMake >= 3.8,
+    # which is too new to ask for.
     target_compile_options(${t} PRIVATE "-std=c++17")
     target_include_directories(${t} PRIVATE ${CMAKE_SOURCE_DIR}/test)
     target_link_libraries(${t} PRIVATE ezarpack catch2 triqs ${arpack_ng_LIBRARIES})

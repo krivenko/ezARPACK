@@ -16,7 +16,7 @@ Another important feature of ezARPACK is its extensibility with respect to compa
 matrix algebra libraries. Currently, it supports the following libraries (storage backends):
 
 * Raw memory buffers *(not recommended for general use)*;
-* Eigen >= 3.3 [2];
+* Eigen 3 [2];
 * Blaze >= 3 [3];
 * Armadillo [4];
 * Boost uBLAS >= 1.58 [5];

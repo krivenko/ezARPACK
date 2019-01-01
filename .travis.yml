@@ -1,0 +1,57 @@
+language: cpp
+sudo: required
+dist: xenial
+cache: bundler
+
+compiler:
+  - gcc
+  - clang
+
+branches:
+  only:
+    - master
+    - travis
+
+addons:
+  apt:
+    packages:
+    - libopenblas-dev
+    - libboost-dev
+    - libeigen3-dev
+#    - libarmadillo-dev
+
+install: true
+
+script:
+  # Stop on first error
+  - set -e
+
+  - cd $TRAVIS_BUILD_DIR/..
+
+  # Build and install ARPACK-NG
+  - git clone https://github.com/opencollab/arpack-ng.git arpack-ng
+  - mkdir arpack-ng.installed
+  - pushd arpack-ng
+  - |
+    cmake .                                                         \
+    -DCMAKE_BUILD_TYPE=Release                                      \
+    -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/../arpack-ng.installed \
+    -DBUILD_SHARED_LIBS=ON
+  - make -j3
+  - make test
+  - make install
+  - popd
+
+  # Build ezARPACK
+  - mkdir ezARPACK.installed
+  - mkdir ezARPACK.build && pushd ezARPACK.build
+  - |
+    cmake ../ezARPACK                                               \
+    -DCMAKE_BUILD_TYPE=Release                                      \
+    -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/../ezARPACK.installed  \
+    -DARPACK_NG_ROOT=$TRAVIS_BUILD_DIR/../arpack-ng.installed       \
+    -DArmadillo_FOUND=ON
+  - make -j3
+  - make test
+  - make install
+  - popd

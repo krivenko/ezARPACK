@@ -71,7 +71,7 @@ template<> struct storage_traits<eigen_storage> {
 
   // Destructors (No-op)
   template<typename T> inline static void destroy(vector<T> &) {}
- template<typename T> inline static void destroy(matrix<T> &) {}
+  template<typename T> inline static void destroy(matrix<T> &) {}
 
   // Resize
   template<typename T>
@@ -129,7 +129,11 @@ template<> struct storage_traits<eigen_storage> {
   inline static complex_vector_type make_asymm_eigenvalues(real_vector_type const& dr,
                                                            real_vector_type const& di,
                                                            int nev) {
+#ifdef EIGEN_CAN_MIX_REAL_COMPLEX_EXPR
     return dr.head(nev) + std::complex<double>(0, 1) * di.head(nev);
+#else
+    return dr.head(nev).cast<std::complex<double>>() + std::complex<double>(0, 1) * di.head(nev);
+#endif
   }
 
   // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
@@ -141,9 +145,17 @@ template<> struct storage_traits<eigen_storage> {
     std::complex<double> I(0, 1);
     for(int i = 0; i < nev; ++i) {
       if(di(i) == 0) {
+#ifdef EIGEN_CAN_MIX_REAL_COMPLEX_EXPR
         res.col(i) = z.col(i);
+#else
+        res.col(i) = z.col(i).cast<std::complex<double>>();
+#endif
       } else {
+#ifdef EIGEN_CAN_MIX_REAL_COMPLEX_EXPR
         res.col(i) = z.col(i) + I*std::copysign(1.0, di(i))*z.col(i+1);
+#else
+        res.col(i) = z.col(i).cast<std::complex<double>>() + I*std::copysign(1.0, di(i))*z.col(i+1);
+#endif
         if(i < nev-1) {
           res.col(i+1) = res.col(i).conjugate();
           ++i;

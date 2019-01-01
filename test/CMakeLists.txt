@@ -10,6 +10,7 @@
 
 # Build Catch2 main object file
 add_library(catch2 OBJECT catch2/catch2-main.cpp)
+set_property(TARGET catch2 PROPERTY CXX_STANDARD 11)
 
 # Tests of raw memory storage backend
 add_subdirectory(raw)

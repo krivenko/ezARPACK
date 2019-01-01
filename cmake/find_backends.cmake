@@ -1,9 +1,19 @@
 message(STATUS "Detecting matrix algebra backends")
 
 # Find Eigen3
-find_package(Eigen3 3.3 CONFIG)
+find_package(Eigen3 CONFIG)
 if(Eigen3_FOUND)
-  message(STATUS "Found Eigen3 version ${Eigen3_VERSION}")
+  if(Eigen3_VERSION)
+    message(STATUS "Found Eigen3 version ${Eigen3_VERSION}")
+    if(NOT ${Eigen3_VERSION} VERSION_LESS "3.3.0")
+      add_compile_definitions(EIGEN_CAN_MIX_REAL_COMPLEX_EXPR)
+    endif(NOT ${Eigen3_VERSION} VERSION_LESS "3.3.0")
+  else(Eigen3_VERSION)
+    message(STATUS "Found Eigen3 version ${EIGEN3_VERSION_STRING}")
+    if(NOT ${EIGEN3_VERSION_STRING} VERSION_LESS "3.3.0")
+      add_compile_definitions(EIGEN_CAN_MIX_REAL_COMPLEX_EXPR)
+    endif(NOT ${EIGEN3_VERSION_STRING} VERSION_LESS "3.3.0")
+  endif(Eigen3_VERSION)
 endif(Eigen3_FOUND)
 
 # Find Blaze
