@@ -258,47 +258,42 @@ end user license agreements (excluding distributors and resellers) which
 have been validly granted by You or Your distributors under this License
 prior to termination shall survive termination.
 
-************************************************************************
-*                                                                      *
-*  6. Disclaimer of Warranty                                           *
-*  -------------------------                                           *
-*                                                                      *
-*  Covered Software is provided under this License on an "as is"       *
-*  basis, without warranty of any kind, either expressed, implied, or  *
-*  statutory, including, without limitation, warranties that the       *
-*  Covered Software is free of defects, merchantable, fit for a        *
-*  particular purpose or non-infringing. The entire risk as to the     *
-*  quality and performance of the Covered Software is with You.        *
-*  Should any Covered Software prove defective in any respect, You     *
-*  (not any Contributor) assume the cost of any necessary servicing,   *
-*  repair, or correction. This disclaimer of warranty constitutes an   *
-*  essential part of this License. No use of any Covered Software is   *
-*  authorized under this License except under this disclaimer.         *
-*                                                                      *
-************************************************************************
 
-************************************************************************
-*                                                                      *
-*  7. Limitation of Liability                                          *
-*  --------------------------                                          *
-*                                                                      *
-*  Under no circumstances and under no legal theory, whether tort      *
-*  (including negligence), contract, or otherwise, shall any           *
-*  Contributor, or anyone who distributes Covered Software as          *
-*  permitted above, be liable to You for any direct, indirect,         *
-*  special, incidental, or consequential damages of any character      *
-*  including, without limitation, damages for lost profits, loss of    *
-*  goodwill, work stoppage, computer failure or malfunction, or any    *
-*  and all other commercial damages or losses, even if such party      *
-*  shall have been informed of the possibility of such damages. This   *
-*  limitation of liability shall not apply to liability for death or   *
-*  personal injury resulting from such party's negligence to the       *
-*  extent applicable law prohibits such limitation. Some               *
-*  jurisdictions do not allow the exclusion or limitation of           *
-*  incidental or consequential damages, so this exclusion and          *
-*  limitation may not apply to You.                                    *
-*                                                                      *
-************************************************************************
+6. DISCLAIMER OF WARRANTY
+-------------------------
+
+COVERED SOFTWARE IS PROVIDED UNDER THIS LICENSE ON AN "AS IS"
+BASIS, WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED, IMPLIED, OR
+STATUTORY, INCLUDING, WITHOUT LIMITATION, WARRANTIES THAT THE
+COVERED SOFTWARE IS FREE OF DEFECTS, MERCHANTABLE, FIT FOR A
+PARTICULAR PURPOSE OR NON-INFRINGING. THE ENTIRE RISK AS TO THE
+QUALITY AND PERFORMANCE OF THE COVERED SOFTWARE IS WITH YOU.
+SHOULD ANY COVERED SOFTWARE PROVE DEFECTIVE IN ANY RESPECT, YOU
+(NOT ANY CONTRIBUTOR) ASSUME THE COST OF ANY NECESSARY SERVICING,
+REPAIR, OR CORRECTION. THIS DISCLAIMER OF WARRANTY CONSTITUTES AN
+ESSENTIAL PART OF THIS LICENSE. NO USE OF ANY COVERED SOFTWARE IS
+AUTHORIZED UNDER THIS LICENSE EXCEPT UNDER THIS DISCLAIMER.
+
+
+7. LIMITATION OF LIABILITY
+--------------------------
+
+UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL THEORY, WHETHER TORT
+(INCLUDING NEGLIGENCE), CONTRACT, OR OTHERWISE, SHALL ANY
+CONTRIBUTOR, OR ANYONE WHO DISTRIBUTES COVERED SOFTWARE AS
+PERMITTED ABOVE, BE LIABLE TO YOU FOR ANY DIRECT, INDIRECT,
+SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES OF ANY CHARACTER
+INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOST PROFITS, LOSS OF
+GOODWILL, WORK STOPPAGE, COMPUTER FAILURE OR MALFUNCTION, OR ANY
+AND ALL OTHER COMMERCIAL DAMAGES OR LOSSES, EVEN IF SUCH PARTY
+SHALL HAVE BEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGES. THIS
+LIMITATION OF LIABILITY SHALL NOT APPLY TO LIABILITY FOR DEATH OR
+PERSONAL INJURY RESULTING FROM SUCH PARTY'S NEGLIGENCE TO THE
+EXTENT APPLICABLE LAW PROHIBITS SUCH LIMITATION. SOME
+JURISDICTIONS DO NOT ALLOW THE EXCLUSION OR LIMITATION OF
+INCIDENTAL OR CONSEQUENTIAL DAMAGES, SO THIS EXCLUSION AND
+LIMITATION MAY NOT APPLY TO YOU.
+
 
 8. Litigation
 -------------
