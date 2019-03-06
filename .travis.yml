@@ -3,26 +3,40 @@ sudo: required
 dist: xenial
 cache: bundler
 
-compiler:
-  - gcc
-  - clang
-
 branches:
   only:
     - master
     - travis
 
-addons:
-  apt:
-    packages:
-    - libopenblas-dev
-    - libboost-dev
-    - libeigen3-dev
-#    - libarmadillo-dev
+matrix:
+  include:
+  - compiler: clang
+    addons:
+      apt:
+        packages:
+        - libopenblas-dev
+        - libboost-dev
+        - libeigen3-dev
+#       - libarmadillo-dev # TODO
+  - compiler: gcc
+    addons:
+      apt:
+        sources:
+        - sourceline: 'ppa:ubuntu-toolchain-r/test'
+        packages:
+        - g++-7
+        - gfortran-7
+        - libopenblas-dev
+        - libboost-dev
+        - libeigen3-dev
+#       - libarmadillo-dev # TODO
+    before_install:
+      - |
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 \
+        --slave /usr/bin/g++ g++ /usr/bin/g++-7                               \
+        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-7
 
-install: true
-
-script:
+before_script:
   # Stop on first error
   - set -e
 
@@ -42,6 +56,18 @@ script:
   - make install
   - popd
 
+  # Download and install Blaze
+  - git clone https://bitbucket.org/blaze-lib/blaze.git blaze
+  - mkdir blaze.installed
+  - pushd blaze
+  - |
+    cmake .                                                         \
+    -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/../blaze.installed     \
+    -DBLAZE_SHARED_MEMORY_PARALLELIZATION=OFF
+  - make install
+  - popd
+
+script:
   # Build ezARPACK
   - mkdir ezARPACK.installed
   - mkdir ezARPACK.build && pushd ezARPACK.build
@@ -50,7 +76,8 @@ script:
     -DCMAKE_BUILD_TYPE=Release                                      \
     -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/../ezARPACK.installed  \
     -DARPACK_NG_ROOT=$TRAVIS_BUILD_DIR/../arpack-ng.installed       \
-    -DArmadillo_FOUND=ON
+    -Dblaze_ROOT=$TRAVIS_BUILD_DIR/../blaze.installed               \
+    -DCMAKE_CXX_FLAGS="-Wno-ignored-attributes"
   - make -j3
   - make test
   - make install
