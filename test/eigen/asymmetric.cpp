@@ -23,9 +23,9 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
   using params_t = worker_t::params_t;
 
   const int N = 100;
-  const double diag_coeff = 0.75;
+  const double diag_coeff = 1.5;
   const int offdiag_offset = 3;
-  const double offdiag_coeff = 1.0;
+  const double offdiag_coeff = 0.1;
   const int nev = 10;
 
   auto spectrum_parts = {params_t::LargestMagnitude,
@@ -37,6 +37,10 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
   auto A = make_sparse_matrix<ezarpack::Asymmetric>(N, diag_coeff, offdiag_offset, offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<ezarpack::Asymmetric>(N);
+
+  auto set_init_residual_vector = [N](worker_t & ar) {
+    for(int i = 0; i < N; ++i) ar.residual_vector()[i] = double(i) / N;
+  };
 
   using vector_view_t = worker_t::vector_view_t;
   using vector_const_view_t = worker_t::vector_const_view_t;
@@ -50,6 +54,8 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
+      params.random_residual_vector = false;
+      set_init_residual_vector(ar);
       ar(Aop, params);
       check_eigenvectors(ar, A);
     }
@@ -69,7 +75,8 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
-      params.ncv = 30;
+      params.random_residual_vector = false;
+      set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Invert, params);
       check_eigenvectors(ar, A, M);
     }

@@ -18,9 +18,9 @@
 ///////////////////
 TEST_CASE("Symmetric matrix is inverted", "[invert_symmetric]") {
   const int N = 100;
-  const double diag_coeff = 0.5;
+  const double diag_coeff = 1.5;
   const int offdiag_offset = 3;
-  const double offdiag_coeff = 1.0;
+  const double offdiag_coeff = 0.5;
 
   auto A = make_sparse_matrix<Symmetric>(N, diag_coeff, offdiag_offset, offdiag_coeff);
 
@@ -55,9 +55,9 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   using params_t = worker_t::params_t;
 
   const int N = 100;
-  const double diag_coeff = 0.5;
+  const double diag_coeff = 1.5;
   const int offdiag_offset = 3;
-  const double offdiag_coeff = 1.0;
+  const double offdiag_coeff = 0.5;
   const int nev = 10;
 
   auto spectrum_parts = {params_t::Smallest, params_t::Largest,
@@ -68,6 +68,10 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   auto A = make_sparse_matrix<Symmetric>(N, diag_coeff, offdiag_offset, offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<Symmetric>(N);
+
+  auto set_init_residual_vector = [N](worker_t & ar) {
+    for(int i = 0; i < N; ++i) ar.residual_vector()[i] = double(i) / N;
+  };
 
   using vector_view_t = worker_t::vector_view_t;
   using vector_const_view_t = worker_t::vector_const_view_t;
@@ -81,6 +85,8 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
+      params.random_residual_vector = false;
+      set_init_residual_vector(ar);
       ar(Aop, params);
       check_eigenvectors(ar, A.get(), N, nev);
     }
@@ -105,7 +111,8 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
-      params.ncv = 30;
+      params.random_residual_vector = false;
+      set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Invert, params);
       check_eigenvectors(ar, A.get(), M.get(), N, nev);
     }
@@ -137,6 +144,8 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
       params.sigma = sigma;
+      params.random_residual_vector = false;
+      set_init_residual_vector(ar);
       ar(op, Bop, worker_t::ShiftAndInvert, params);
       check_eigenvectors(ar, A.get(), M.get(), N, nev);
     }
@@ -168,6 +177,8 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
       params.sigma = sigma;
+      params.random_residual_vector = false;
+      set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Buckling, params);
       check_eigenvectors(ar, M.get(), A.get(), N, nev);
     }
@@ -201,6 +212,8 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
       params.sigma = sigma;
+      params.random_residual_vector = false;
+      set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Cayley, params);
       check_eigenvectors(ar, A.get(), M.get(), N, nev);
     }
