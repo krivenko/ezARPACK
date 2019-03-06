@@ -105,6 +105,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
+      params.ncv = 30;
       ar(op, Bop, worker_t::Invert, params);
       check_eigenvectors(ar, A.get(), M.get(), N, nev);
     }
