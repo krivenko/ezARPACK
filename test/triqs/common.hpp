@@ -91,8 +91,9 @@ inline IsCloseToMatcher<typename T::value_type> IsCloseTo(T && ref, double tol =
 // Check that 'ar' contains the correct solution of a standard eigenproblem
 template<typename AR, typename M> void check_eigenvectors(AR const& ar, M const& A) {
   auto lambda = ar.eigenvalues();
+  auto vecs = ar.eigenvectors();
   for(int i : range(lambda.size())) {
-    auto vec = ar.eigenvectors()(range(), i);
+    auto vec = vecs(range(), i);
     CHECK_THAT(A * vec, IsCloseTo(lambda(i) * vec));
   }
 }
