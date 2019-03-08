@@ -18,6 +18,29 @@ matrix:
         - libboost-dev
         - libeigen3-dev
 #       - libarmadillo-dev # TODO
+        - libboost-all-dev
+        - libgfortran3
+        - gfortran
+        # TRIQS dependencies
+        - libgmp-dev
+        - openmpi-bin
+        - openmpi-common
+        - openmpi-doc
+        - libopenmpi-dev
+        - libblas-dev
+        - liblapack-dev
+        - libfftw3-dev
+        - libgmp-dev
+        - hdf5-tools
+        - libhdf5-serial-dev
+        - python-dev
+        - python-h5py
+        - python-numpy
+        - python-scipy
+        - python-jinja2
+        - python-matplotlib
+        - python-mpi4py
+        - python-mako
   - compiler: gcc
     addons:
       apt:
@@ -30,6 +53,26 @@ matrix:
         - libboost-dev
         - libeigen3-dev
 #       - libarmadillo-dev # TODO
+        # TRIQS dependencies
+        - libgmp-dev
+        - openmpi-bin
+        - openmpi-common
+        - openmpi-doc
+        - libopenmpi-dev
+        - libblas-dev
+        - liblapack-dev
+        - libfftw3-dev
+        - libgmp-dev
+        - hdf5-tools
+        - libhdf5-serial-dev
+        - python-dev
+        - python-h5py
+        - python-numpy
+        - python-scipy
+        - python-jinja2
+        - python-matplotlib
+        - python-mpi4py
+        - python-mako
     before_install:
       - |
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 \
@@ -39,6 +82,13 @@ matrix:
 before_script:
   # Stop on first error
   - set -e
+
+  # Force CLang to use libc++
+  - |
+    if [[ "${CXX}" == "clang++" ]]; then                                        \
+      CMAKE_CXX_FLAGS="-stdlib=libc++ -D_LIBCPP_ENABLE_CXX17_REMOVED_AUTO_PTR"; \
+      export LD_LIBRARY_PATH=/usr/local/clang-7.0.0/lib:$LD_LIBRARY_PATH;       \
+    fi
 
   - cd $TRAVIS_BUILD_DIR/..
 
@@ -67,6 +117,22 @@ before_script:
   - make install
   - popd
 
+  # Build and install TRIQS
+  - git clone https://github.com/TRIQS/triqs.git triqs.git
+  - pushd triqs.git && git checkout master && popd
+  - mkdir triqs.build && pushd triqs.build
+  - |
+    cmake ../triqs.git                                              \
+    -DCMAKE_BUILD_TYPE=Release                                      \
+    -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/../triqs.installed     \
+    -DCMAKE_CXX_COMPILER=${CXX}                                     \
+    -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}"                          \
+    -DBuild_Documentation=OFF                                       \
+    -DBuild_Tests=OFF
+  - make -j3 install
+  - popd
+  - source $TRAVIS_BUILD_DIR/../triqs.installed/share/triqsvars.sh
+
 script:
   # Build ezARPACK
   - mkdir ezARPACK.installed
@@ -77,7 +143,8 @@ script:
     -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/../ezARPACK.installed  \
     -DARPACK_NG_ROOT=$TRAVIS_BUILD_DIR/../arpack-ng.installed       \
     -Dblaze_ROOT=$TRAVIS_BUILD_DIR/../blaze.installed               \
-    -DCMAKE_CXX_FLAGS="-Wno-ignored-attributes"
+    -DTRIQS_ROOT=$TRAVIS_BUILD_DIR/../triqs.installed               \
+    -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -Wno-ignored-attributes"
   - make -j3
   - make test
   - make install
