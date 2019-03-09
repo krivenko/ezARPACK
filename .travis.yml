@@ -17,7 +17,7 @@ matrix:
         - libopenblas-dev
         - libboost-dev
         - libeigen3-dev
-#       - libarmadillo-dev # TODO
+        - libarmadillo-dev
         - libboost-all-dev
         - libgfortran3
         - gfortran
@@ -52,7 +52,7 @@ matrix:
         - libopenblas-dev
         - libboost-dev
         - libeigen3-dev
-#       - libarmadillo-dev # TODO
+        - libarmadillo-dev
         # TRIQS dependencies
         - libgmp-dev
         - openmpi-bin

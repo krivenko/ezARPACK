@@ -23,7 +23,25 @@ if(blaze_FOUND)
 endif(blaze_FOUND)
 
 # Armadillo
-find_package(Armadillo CONFIG)
+find_package(Armadillo QUIET CONFIG)
+if(NOT Armadillo_FOUND)
+  if(Armadillo_ROOT)
+    find_library(ARMADILLO_LIBRARY NAMES armadillo PATHS ${Armadillo_ROOT}/lib NO_DEFAULT_PATH)
+  else(Armadillo_ROOT)
+    find_library(ARMADILLO_LIBRARY NAMES armadillo)
+  endif(Armadillo_ROOT)
+
+  if(ARMADILLO_LIBRARY)
+    set(Armadillo_FOUND TRUE)
+    get_filename_component(ARMADILLO_PREFIX ${ARMADILLO_LIBRARY} DIRECTORY)
+    add_library(armadillo INTERFACE)
+    target_include_directories(armadillo INTERFACE ${ARMADILLO_PREFIX}/include)
+    target_link_libraries(armadillo INTERFACE ${ARMADILLO_LIBRARY})
+  endif(ARMADILLO_LIBRARY)
+endif(NOT Armadillo_FOUND)
+if(Armadillo_FOUND)
+  message(STATUS "Found Armadillo")
+endif(Armadillo_FOUND)
 
 # Boost uBLAS
 find_package(Boost 1.58)

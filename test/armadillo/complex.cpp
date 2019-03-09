@@ -76,7 +76,7 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
-      params.ncv = 50;
+      params.ncv = 60;
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Invert, params);
