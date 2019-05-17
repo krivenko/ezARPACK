@@ -35,13 +35,13 @@ template<typename Backend> class arpack_worker<Complex, Backend> {
   int nev = 0;                 // Number of eigenvalues
   int tol;                     // Relative tolerance for Ritz value convergence
   complex_vector_t resid;      // Residual vector
+  complex_vector_t workd;      // Working space
   int ncv = 0;                 // Number of Lanczos vectors to be generated
   complex_matrix_t v;          // Matrix with Arnoldi basis vectors
   complex_matrix_t z;          // Matrix with Ritz vectors
   complex_vector_t d;          // Ritz values (real and imaginary parts)
   int iparam[11];              // Various input/output parameters
   int ipntr[14];               // Pointer to mark the starting locations in the workd and workl
-  complex_vector_t workd;      // Working space
   int info = 0;                // !=0 to use resid, 0 otherwise
   int rvec;                    // RVEC parameter of dseupd
   char howmny;                 // HOWMNY parameter of dseupd
@@ -118,8 +118,8 @@ public:
 
     // Check n_eigenvalues
     nev = params.n_eigenvalues;
-    unsigned int nev_min = 1;
-    unsigned int nev_max = N-2;
+    int nev_min = 1;
+    int nev_max = N-2;
 
     if(nev < nev_min || nev > nev_max)
       throw std::runtime_error("arpack_worker: n_eigenvalues must be within ["
@@ -133,7 +133,7 @@ public:
     // Check ncv
     ncv = params.ncv;
     if(ncv == -1) ncv = std::min(2*int(params.n_eigenvalues)+2, N);
-    else if(ncv <= params.n_eigenvalues+1 || ncv > N)
+    else if(ncv <= int(params.n_eigenvalues+1) || ncv > N)
       throw std::runtime_error("arpack_worker: ncv must be within ]"
                                + std::to_string(params.n_eigenvalues+1)
                                + ";" + std::to_string(N) + "]");

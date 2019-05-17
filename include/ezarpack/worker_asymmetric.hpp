@@ -30,24 +30,24 @@ template<typename Backend> class arpack_worker<Asymmetric, Backend> {
   using real_vector_view_t = typename storage::real_vector_view_type;
   using real_vector_const_view_t = typename storage::real_vector_const_view_type;
 
-  int N;                       // Matrix size
-  const char* which;           // WHICH parameter
-  int nev = 0;                 // Number of eigenvalues
-  int tol;                     // Relative tolerance for Ritz value convergence
-  real_vector_t resid;         // Residual vector
-  int ncv = 0;                 // Number of Lanczos vectors to be generated
-  real_matrix_t v;             // Matrix with Arnoldi basis vectors
-  real_matrix_t z;             // Matrix with Ritz vectors
-  real_vector_t dr, di;        // Ritz values (real and imaginary parts)
-  int iparam[11];              // Various input/output parameters
-  int ipntr[14];               // Pointer to mark the starting locations in the workd and workl
-  real_vector_t workd;         // Working space
-  int info = 0;                // !=0 to use resid, 0 otherwise
-  int rvec = false;            // RVEC parameter of dseupd
-  char howmny;                 // HOWMNY parameter of dseupd
-  int_vector_t select;         // SELECT parameter of dseupd
-  double sigmar, sigmai;       // SIGMAR and SIGMAI parameters of dseupd
-  bool Bx_available_ = false;  // Has B*x already been computed?
+  int N;                          // Matrix size
+  const char* which;              // WHICH parameter
+  int nev = 0;                    // Number of eigenvalues
+  int tol;                        // Relative tolerance for Ritz value convergence
+  real_vector_t resid;            // Residual vector
+  real_vector_t workd;            // Working space
+  int ncv = 0;                    // Number of Lanczos vectors to be generated
+  real_matrix_t v;                // Matrix with Arnoldi basis vectors
+  real_matrix_t z;                // Matrix with Ritz vectors
+  real_vector_t dr, di;           // Ritz values (real and imaginary parts)
+  int iparam[11];                 // Various input/output parameters
+  int ipntr[14];                  // Pointer to mark the starting locations in the workd and workl
+  int info = 0;                   // !=0 to use resid, 0 otherwise
+  int rvec = false;               // RVEC parameter of dseupd
+  char howmny;                    // HOWMNY parameter of dseupd
+  int_vector_t select;            // SELECT parameter of dseupd
+  double sigmar = 0, sigmai = 0;  // SIGMAR and SIGMAI parameters of dseupd
+  bool Bx_available_ = false;     // Has B*x already been computed?
 
 public:
 
@@ -121,8 +121,8 @@ public:
 
     // Check n_eigenvalues
     nev = params.n_eigenvalues;
-    unsigned int nev_min = 1;
-    unsigned int nev_max = N-2;
+    int nev_min = 1;
+    int nev_max = N-2;
 
     if(nev < nev_min || nev > nev_max)
       throw std::runtime_error("arpack_worker: n_eigenvalues must be within ["
@@ -136,7 +136,7 @@ public:
     // Check ncv
     ncv = params.ncv;
     if(ncv == -1) ncv = std::min(2*int(params.n_eigenvalues)+2, N);
-    else if(ncv <= params.n_eigenvalues+2 || ncv > N)
+    else if(ncv <= int(params.n_eigenvalues+2) || ncv > N)
       throw std::runtime_error("arpack_worker: ncv must be within ]"
                                + std::to_string(params.n_eigenvalues+2) + ";"
                                + std::to_string(N) + "]");
@@ -252,7 +252,6 @@ public:
 
     storage::resize(dr, nev+1);
     storage::resize(di, nev+1);
-    double sigmar, sigmai;
     real_vector_t workev = storage::make_real_vector(3*ncv);
 
     f77::eupd(rvec, &howmny, storage::get_data_ptr(select),

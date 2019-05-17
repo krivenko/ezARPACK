@@ -34,12 +34,12 @@ template<typename Backend> class arpack_worker<Symmetric, Backend> {
   int nev = 0;                 // Number of eigenvalues
   int tol;                     // Relative tolerance for Ritz value convergence
   real_vector_t resid;         // Residual vector
+  real_vector_t workd;         // Working space
   int ncv = 0;                 // Number of Lanczos vectors to be generated
   real_matrix_t v;             // Matrix with Lanczos basis vectors
   real_vector_t d;             // Ritz values
   int iparam[11];              // Various input/output parameters
   int ipntr[11];               // Pointer to mark the starting locations in the workd and workl
-  real_vector_t workd;         // Working space
   int info = 0;                // !=0 to use resid, 0 otherwise
   int rvec;                    // RVEC parameter of dseupd
   int_vector_t select;         // SELECT parameter of dseupd
@@ -107,8 +107,8 @@ public:
 
     // Check n_eigenvalues
     nev = params.n_eigenvalues;
-    unsigned int nev_min = params.eigenvalues_select == params_t::BothEnds ? 2 : 1;
-    unsigned int nev_max = N-1;
+    int nev_min = params.eigenvalues_select == params_t::BothEnds ? 2 : 1;
+    int nev_max = N-1;
 
     if(nev < nev_min || nev > nev_max)
       throw std::runtime_error("arpack_worker: n_eigenvalues must be within ["
@@ -122,7 +122,7 @@ public:
     // Check ncv
     ncv = params.ncv;
     if(ncv == -1) ncv = std::min(2*int(params.n_eigenvalues)+2, N);
-    else if(ncv <= params.n_eigenvalues || ncv > N)
+    else if(ncv <= int(params.n_eigenvalues) || ncv > N)
       throw std::runtime_error("arpack_worker: ncv must be within ]"
                                + std::to_string(params.n_eigenvalues)
                                + ";" + std::to_string(N) + "]");
@@ -224,11 +224,10 @@ public:
     }
 
     storage::resize(d, nev);
-    double sigma;
 
     f77::eupd(rvec, "A", storage::get_data_ptr(select),
               storage::get_data_ptr(d), storage::get_data_ptr(v), N,
-              sigma, "I", N, which,
+              params.sigma, "I", N, which,
               nev, tol, storage::get_data_ptr(resid), ncv,
               storage::get_data_ptr(v), N,
               iparam, ipntr, storage::get_data_ptr(workd),
@@ -348,8 +347,7 @@ public:
     }
 
     storage::resize(d, nev);
-    double sigma;
-    if(mode != Invert) sigma = params.sigma;
+    double sigma = (mode != Invert) ? params.sigma : 0;
 
     f77::eupd(rvec, "A", storage::get_data_ptr(select),
               storage::get_data_ptr(d), storage::get_data_ptr(v), N,

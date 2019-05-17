@@ -111,7 +111,7 @@ inline IsCloseToMatcher<typename T::value_type> IsCloseTo(T && ref, double tol =
 template<typename AR, typename M> void check_eigenvectors(AR const& ar, M const& A) {
   auto lambda = ar.eigenvalues();
   auto vecs = ar.eigenvectors();
-  for(int i = 0; i < lambda.size(); ++i) {
+  for(int i = 0; i < int(lambda.size()); ++i) {
     auto vec = column(vecs, i);
     CHECK_THAT(prod(A, vec), IsCloseTo(lambda[i] * vec));
   }
@@ -121,7 +121,7 @@ template<typename AR, typename M> void check_eigenvectors(AR const& ar, M const&
 template<typename AR, typename MT> void check_eigenvectors(AR const& ar, MT const& A, MT const& M) {
   auto lambda = ar.eigenvalues();
   auto vecs = ar.eigenvectors();
-  for(int i = 0; i < lambda.size(); ++i) {
+  for(int i = 0; i < int(lambda.size()); ++i) {
     auto vec = column(vecs, i);
     CHECK_THAT(prod(A, vec), IsCloseTo(lambda[i] * prod(M, vec)));
   }
