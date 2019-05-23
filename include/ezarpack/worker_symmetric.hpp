@@ -179,7 +179,7 @@ public:
     rci_flag ido = Init;
     Bx_available_ = false;
     do {
-      f77::aupd<true>((int&)ido, "I", N, which,
+      f77::aupd<true>(ido, "I", N, which,
                       nev, tol, storage::get_data_ptr(resid), ncv,
                       storage::get_data_ptr(v), N,
                       iparam, ipntr, storage::get_data_ptr(workd),
@@ -284,7 +284,7 @@ public:
     rci_flag ido = Init;
     Bx_available_ = false;
     do {
-      f77::aupd<true>((int&)ido, "G", N, which,
+      f77::aupd<true>(ido, "G", N, which,
                       nev, tol, storage::get_data_ptr(resid), ncv,
                       storage::get_data_ptr(v), N,
                       iparam, ipntr, storage::get_data_ptr(workd),

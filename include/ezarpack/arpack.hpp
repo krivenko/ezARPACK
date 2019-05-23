@@ -18,6 +18,14 @@ namespace ezarpack {
 
  using dcomplex = std::complex<double>;
 
+ // Reverse Communuication Interface Flag
+ enum rci_flag : int {Init = 0,
+                      ApplyOpInit = -1,
+                      ApplyOp = 1,
+                      ApplyB = 2,
+                      Shifts = 3,
+                      Done = 99};
+
  namespace f77 {
 
   // Reverse communication interface for the Implicitly Restarted Arnoldi Iteration
@@ -60,39 +68,39 @@ namespace ezarpack {
                 int &);           // INFO
 
    // https://github.com/opencollab/arpack-ng/blob/master/SRC/znaupd.f
-   void znaupd_(int &,                  // IDO
-                const char *,           // BMAT
-                const int &,            // N
-                const char *,           // WHICH
-                const int &,            // NEV
-                const double &,         // TOL
-                dcomplex *, // RESID
-                const int &,            // NCV
-                dcomplex *, // V
-                const int &,            // LDV
-                int [],                 // IPARAM
-                int [],                 // IPNTR
-                dcomplex *, // WORKD
-                dcomplex *, // WORKL
-                const int &,            // LWORKL
-                double [],              // RWORK
-                int &);                 // INFO
+   void znaupd_(int &,            // IDO
+                const char *,     // BMAT
+                const int &,      // N
+                const char *,     // WHICH
+                const int &,      // NEV
+                const double &,   // TOL
+                dcomplex *,       // RESID
+                const int &,      // NCV
+                dcomplex *,       // V
+                const int &,      // LDV
+                int [],           // IPARAM
+                int [],           // IPNTR
+                dcomplex *,       // WORKD
+                dcomplex *,       // WORKL
+                const int &,      // LWORKL
+                double [],        // RWORK
+                int &);           // INFO
 
   } // extern "C"
 
   template<bool Symmetric = false>
-  inline void aupd(int & ido, const char * bmat, int n, const char * which, int nev, double tol,
+  inline void aupd(rci_flag & ido, const char * bmat, int n, const char * which, int nev, double tol,
                    double * resid, int ncv, double * v, int ldv, int * iparam, int * ipntr,
                    double * workd, double * workl, int lworkl, int & info) {
    if(Symmetric)
-    dsaupd_(ido,bmat,n,which,nev,tol,resid,ncv,v,ldv,iparam,ipntr,workd,workl,lworkl,info);
+    dsaupd_((int&)ido,bmat,n,which,nev,tol,resid,ncv,v,ldv,iparam,ipntr,workd,workl,lworkl,info);
    else
-    dnaupd_(ido,bmat,n,which,nev,tol,resid,ncv,v,ldv,iparam,ipntr,workd,workl,lworkl,info);
+    dnaupd_((int&)ido,bmat,n,which,nev,tol,resid,ncv,v,ldv,iparam,ipntr,workd,workl,lworkl,info);
   }
-  inline void aupd(int & ido, const char * bmat, int n, const char * which, int nev, double tol,
+  inline void aupd(rci_flag & ido, const char * bmat, int n, const char * which, int nev, double tol,
                    dcomplex * resid, int ncv, dcomplex * v, int ldv, int * iparam, int * ipntr,
                    dcomplex * workd, dcomplex * workl, int lworkl, double * rwork, int & info) {
-   znaupd_(ido,bmat,n,which,nev,tol,resid,ncv,v,ldv,iparam,ipntr,workd,workl,lworkl,rwork,info);
+   znaupd_((int&)ido,bmat,n,which,nev,tol,resid,ncv,v,ldv,iparam,ipntr,workd,workl,lworkl,rwork,info);
   }
 
   /* This subroutine returns the converged approximations to eigenvalues
@@ -207,6 +215,6 @@ namespace ezarpack {
             bmat,n,which,nev,tol,resid,ncv,v,ldv,iparam,ipntr,workd,workl,lworkl,rwork,info);
   }
 
-} // f77
+} // namespace f77
 
-} // ezarpack
+} // namespace ezarpack
