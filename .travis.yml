@@ -119,7 +119,7 @@ before_script:
 
   # Build and install TRIQS
   - git clone https://github.com/TRIQS/triqs.git triqs.git
-  - pushd triqs.git && git checkout master && popd
+  - pushd triqs.git && git checkout 2.1.x && popd
   - mkdir triqs.build && pushd triqs.build
   - |
     cmake ../triqs.git                                              \
