@@ -125,9 +125,11 @@ public:
     int nev_max = N-2;
 
     if(nev < nev_min || nev > nev_max)
-      throw std::runtime_error("arpack_worker: n_eigenvalues must be within ["
-                               + std::to_string(nev_min) + ";"
-                               + std::to_string(nev_max) + "]");
+      throw ARPACK_WORKER_ERROR(
+        "n_eigenvalues must be within [" +
+        std::to_string(nev_min) + ";" +
+        std::to_string(nev_max) + "]"
+      );
 
     // Character codes for eigenvalues_select
     static const std::array<const char*,6> wh = {"LM","SM","LR","SR","LI","SI"};
@@ -137,9 +139,11 @@ public:
     ncv = params.ncv;
     if(ncv == -1) ncv = std::min(2*int(params.n_eigenvalues)+2, N);
     else if(ncv <= int(params.n_eigenvalues+2) || ncv > N)
-      throw std::runtime_error("arpack_worker: ncv must be within ]"
-                               + std::to_string(params.n_eigenvalues+2) + ";"
-                               + std::to_string(N) + "]");
+      throw ARPACK_WORKER_ERROR(
+        "ncv must be within ]" +
+        std::to_string(params.n_eigenvalues+2) + ";" +
+        std::to_string(N) + "]"
+      );
 
     storage::resize(v, N, ncv);
 
@@ -164,7 +168,9 @@ public:
 
     iparam[2] = int(params.max_iter); // Max number of iterations
     if(iparam[2] <= 0)
-      throw std::runtime_error("arpack_worker: maximum number of Arnoldi update iterations must be positive");
+      throw ARPACK_WORKER_ERROR(
+        "Maximum number of Arnoldi update iterations must be positive"
+      );
   }
 
   struct trivial_shifts_f {
@@ -229,26 +235,12 @@ public:
         case Done: break;
         default: {
           storage::destroy(workl);
-          throw std::runtime_error("arpack_worker: reverse communication interface error");
+          throw ARPACK_WORKER_ERROR("Reverse communication interface error");
         }
       }
     } while(ido != Done);
 
-    switch(info) {
-      case 0: break;
-      case 1: {
-        storage::destroy(workl);
-        throw(maxiter_reached(iparam[2]));
-      }
-      case 3: {
-        storage::destroy(workl);
-        throw(ncv_insufficient(ncv));
-      }
-      default: {
-        storage::destroy(workl);
-        throw std::runtime_error("arpack_worker: dnaupd failed with error code " + std::to_string(info));
-      }
-    }
+    handle_aupd_error_codes(info, workl);
 
     storage::resize(dr, nev+1);
     storage::resize(di, nev+1);
@@ -266,7 +258,7 @@ public:
 
     storage::destroy(workl);
 
-    if(info) throw std::runtime_error("arpack_worker: dneupd failed with error code " + std::to_string(info));
+    handle_eupd_error_codes(info);
   }
 
   /***********************************
@@ -301,8 +293,10 @@ public:
     // https://github.com/opencollab/arpack-ng/issues/3
     // http://forge.scilab.org/index.php/p/arpack-ng/issues/1315/
     if(mode == ShiftAndInvertReal || mode == ShiftAndInvertImag)
-      throw std::runtime_error("arpack_worker: ShiftAndInvertReal and ShiftAndInvertImag modes "
-                               "are disabled due to potential problems with dneupd");
+      throw ARPACK_WORKER_ERROR(
+        "ShiftAndInvertReal and ShiftAndInvertImag modes "
+        "are disabled due to potential problems with dneupd"
+      );
 
     prepare(params);
 
@@ -361,26 +355,12 @@ public:
         case Done: break;
         default: {
           storage::destroy(workl);
-          throw std::runtime_error("arpack_worker: reverse communication interface error");
+          throw ARPACK_WORKER_ERROR("Reverse communication interface error");
         }
       }
     } while(ido != Done);
 
-    switch(info) {
-      case 0: break;
-      case 1: {
-        storage::destroy(workl);
-        throw(maxiter_reached(iparam[2]));
-      }
-      case 3: {
-        storage::destroy(workl);
-        throw(ncv_insufficient(ncv));
-      }
-      default: {
-        storage::destroy(workl);
-        throw std::runtime_error("arpack_worker: dnaupd failed with error code " + std::to_string(info));
-      }
-    }
+    handle_aupd_error_codes(info, workl);
 
     storage::resize(dr, nev+1);
     storage::resize(di, nev+1);
@@ -403,7 +383,7 @@ public:
     storage::destroy(workev);
     storage::destroy(workl);
 
-    if(info) throw std::runtime_error("arpack_worker: dneupd failed with error code " + std::to_string(info));
+    handle_eupd_error_codes(info);
   }
 
   // Index of workspace vector, which is expected to be acted on
@@ -415,8 +395,11 @@ public:
   // Get view of a workspace vector
   real_vector_view_t workspace_vector(int n) const {
     if(n < 0 || n > 2)
-      throw std::runtime_error("arpack_worker: valid indices of workspace vectors are 0, 1 and 2"
-                               " (got " + std::to_string(n) + ")");
+      throw ARPACK_WORKER_ERROR(
+        "Valid indices of workspace vectors are 0, 1 and 2 (got " +
+        std::to_string(n) +
+        ")"
+      );
     return storage::make_vector_view(workd, n*N, N);
   }
 
@@ -469,6 +452,60 @@ public:
     s.n_b_x_operations = iparam[9];
     s.n_reorth_steps = iparam[10];
     return s;
+  }
+
+private:
+
+  // Error handling
+
+  void handle_aupd_error_codes(int info, real_vector_t & workl) {
+    if(info == 0) return;
+
+    storage::destroy(workl);
+    switch(info) {
+      case 1: throw(maxiter_reached(iparam[2]));
+      case 3: throw(ncv_insufficient(ncv));
+      case -8:
+        throw ARPACK_WORKER_ERROR("Error in LAPACK eigenvalue calculation");
+      case -9:
+        throw ARPACK_WORKER_ERROR("Starting vector is zero");
+      case -9999:
+        throw ARPACK_WORKER_ERROR(
+          "Could not build an Arnoldi factorization. "
+          "The size of the current Arnoldi factorization is " +
+          std::to_string(iparam[4])
+        );
+      default:
+        throw ARPACK_WORKER_ERROR(
+          "dnaupd failed with error code " + std::to_string(info)
+        );
+    }
+  }
+  void handle_eupd_error_codes(int info) {
+    switch(info) {
+      case 0: return;
+      case 1:
+        throw ARPACK_WORKER_ERROR(
+          "The Schur form computed by LAPACK routine dlahqr "
+          "could not be reordered by LAPACK routine dtrsen"
+        );
+      case -8:
+        throw ARPACK_WORKER_ERROR(
+          "Error in LAPACK calculation of a real Schur form (dlahqr)"
+        );
+      case -9:
+        throw ARPACK_WORKER_ERROR(
+          "Error in LAPACK calculation of eigenvectors (dtrevc)"
+        );
+      case -14:
+        throw ARPACK_WORKER_ERROR(
+          "dnaupd did not find any eigenvalues to sufficient accuracy"
+        );
+      default:
+        throw ARPACK_WORKER_ERROR(
+          "dneupd failed with error code " + std::to_string(info)
+        );
+    }
   }
 };
 
