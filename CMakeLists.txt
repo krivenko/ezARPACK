@@ -29,19 +29,24 @@ cmake_policy(SET CMP0074 NEW)
 option(Tests "Build unit tests" ON)
 option(Examples "Build examples" ON)
 
+# Detect ARPACK-NG as an optional dependency
+message(STATUS "Detecting ARPACK-NG libraries")
+set(arpack-ng_DIR ${ARPACK_NG_ROOT}/lib/cmake)
+find_package(arpack-ng CONFIG 3.6.0)
+if(arpack-ng_FOUND)
+  message(STATUS "Found ARPACK-NG version ${arpack-ng_VERSION}")
+  message(STATUS "  arpack_ng_LIBRARIES: ${arpack_ng_LIBRARIES}")
+else(arpack-ng_FOUND)
+  message(STATUS "ARPACK-NG not found. Disabling compilation of examples and unit tests.")
+endif(arpack-ng_FOUND)
+
 # Are we building any components?
-if(Tests OR Examples)
+if(arpack-ng_FOUND AND (Tests OR Examples))
 
   # Set default build type to Release
   if(NOT DEFINED CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE)
   endif(NOT DEFINED CMAKE_BUILD_TYPE)
-
-  message(STATUS "Detecting ARPACK-NG libraries")
-  set(arpack-ng_DIR ${ARPACK_NG_ROOT}/lib/cmake)
-  find_package(arpack-ng 3.6.0 REQUIRED)
-  message(STATUS "Found ARPACK-NG version ${arpack-ng_VERSION}")
-  message(STATUS "  arpack_ng_LIBRARIES: ${arpack_ng_LIBRARIES}")
 
   # Add ezARPACK include directory to all targets that require building
   include_directories(${CMAKE_SOURCE_DIR}/include)
@@ -60,6 +65,11 @@ target_include_directories(ezarpack INTERFACE
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
+
+# Optionally add the ARPACK-NG libraries to our interface library
+if(arpack-ng_FOUND)
+  target_link_libraries(ezarpack INTERFACE ${arpack_ng_LIBRARIES})
+endif(arpack-ng_FOUND)
 
 # Write config version file
 include(CMakePackageConfigHelpers)
@@ -85,12 +95,12 @@ install(FILES "${PROJECT_BINARY_DIR}/ezARPACKConfigVersion.cmake"
         DESTINATION lib/cmake)
 
 # Build unit tests
-if(Tests)
+if(arpack-ng_FOUND AND Tests)
   enable_testing()
   add_subdirectory(test)
-endif(Tests)
+endif(arpack-ng_FOUND AND Tests)
 
 # Build examples
-if(Examples)
+if(arpack-ng_FOUND AND Examples)
   add_subdirectory(example)
-endif(Examples)
+endif(arpack-ng_FOUND AND Examples)
