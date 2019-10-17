@@ -35,7 +35,7 @@ template<typename Backend> class arpack_worker<Complex, Backend> {
   int N;                       // Matrix size
   const char* which;           // WHICH parameter
   int nev = 0;                 // Number of eigenvalues
-  int tol;                     // Relative tolerance for Ritz value convergence
+  double tol;                  // Relative tolerance for Ritz value convergence
   complex_vector_t resid;      // Residual vector
   complex_vector_t workd;      // Working space
   int ncv = 0;                 // Number of Lanczos vectors to be generated

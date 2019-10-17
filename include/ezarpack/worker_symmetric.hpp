@@ -34,7 +34,7 @@ template<typename Backend> class arpack_worker<Symmetric, Backend> {
   int N;                       // Matrix size
   const char * which;          // WHICH parameter
   int nev = 0;                 // Number of eigenvalues
-  int tol;                     // Relative tolerance for Ritz value convergence
+  double tol;                  // Relative tolerance for Ritz value convergence
   real_vector_t resid;         // Residual vector
   real_vector_t workd;         // Working space
   int ncv = 0;                 // Number of Lanczos vectors to be generated

@@ -32,11 +32,11 @@ template<typename Backend> class arpack_worker<Asymmetric, Backend> {
   using real_vector_const_view_t =
     typename storage::real_vector_const_view_type;
 
-  int N;                        // Matrix size
-  const char* which;            // WHICH parameter
-  int nev = 0;                  // Number of eigenvalues
-  int tol;                      // Relative tolerance for Ritz value convergence
-  real_vector_t resid;          // Residual vector
+  int N;                       // Matrix size
+  const char* which;           // WHICH parameter
+  int nev = 0;                 // Number of eigenvalues
+  double tol;                  // Relative tolerance for Ritz value convergence
+  real_vector_t resid;         // Residual vector
   real_vector_t workd;         // Working space
   int ncv = 0;                 // Number of Lanczos vectors to be generated
   real_matrix_t v;             // Matrix with Arnoldi basis vectors
