@@ -76,8 +76,8 @@ int main(int argc, char* argv[]) {
   using params_t = arpack_worker<Symmetric, ublas_storage>::params_t;
   params_t params(N_ev,               // Number of low-lying eigenvalues
                   params_t::Smallest, // We want the smallest eigenvalues
-                  true                // Yes, we want the eigenvectors (Ritz vectors) as well
-                  );
+                  true);              // Yes, we want the eigenvectors
+                                      // (Ritz vectors) as well
 
   // Run diagonalization!
   worker(matrix_op, params);
@@ -95,16 +95,21 @@ int main(int argc, char* argv[]) {
     matrix_op(column(v, i), subrange(lhs, 0,N));    // calculate A*v
     rhs = lambda(i) * column(v, i);  // and \lambda*v
 
-    std::cout << i << ": deviation = " << std::pow(norm_2(rhs - lhs), 2) / (N*N) << std::endl;
+    std::cout << i << ": deviation = "
+              << std::pow(norm_2(rhs - lhs), 2) / (N*N) << std::endl;
   }
 
   // Print some computation statistics
   auto stats = worker.stats();
 
-  std::cout << "Number of Arnoldi update iterations: " << stats.n_iter << std::endl;
-  std::cout << "Number of 'converged' Ritz values: " << stats.n_converged << std::endl;
-  std::cout << "Total number of OP*x operations: " << stats.n_op_x_operations << std::endl;
-  std::cout << "Total number of steps of re-orthogonalization: " << stats.n_reorth_steps << std::endl;
+  std::cout << "Number of Arnoldi update iterations: "
+            << stats.n_iter << std::endl;
+  std::cout << "Number of 'converged' Ritz values: "
+            << stats.n_converged << std::endl;
+  std::cout << "Total number of OP*x operations: "
+            << stats.n_op_x_operations << std::endl;
+  std::cout << "Total number of steps of re-orthogonalization: "
+            << stats.n_reorth_steps << std::endl;
 
   return 0;
 }

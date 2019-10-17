@@ -22,7 +22,10 @@ TEST_CASE("Symmetric matrix is inverted", "[invert_symmetric]") {
   const int offdiag_offset = 3;
   const double offdiag_coeff = 0.5;
 
-  auto A = make_sparse_matrix<Symmetric>(N, diag_coeff, offdiag_offset, offdiag_coeff);
+  auto A = make_sparse_matrix<Symmetric>(N,
+                                         diag_coeff,
+                                         offdiag_offset,
+                                         offdiag_coeff);
 
   auto invA = make_buffer<double>(N * N);
   invert(A.get(), invA.get(), N);
@@ -60,12 +63,17 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   const double offdiag_coeff = 0.5;
   const int nev = 10;
 
-  auto spectrum_parts = {params_t::Smallest, params_t::Largest,
-                         params_t::SmallestMagnitude, params_t::LargestMagnitude,
+  auto spectrum_parts = {params_t::Smallest,
+                         params_t::Largest,
+                         params_t::SmallestMagnitude,
+                         params_t::LargestMagnitude,
                          params_t::BothEnds};
 
   // Symmetric matrix A
-  auto A = make_sparse_matrix<Symmetric>(N, diag_coeff, offdiag_offset, offdiag_coeff);
+  auto A = make_sparse_matrix<Symmetric>(N,
+                                         diag_coeff,
+                                         offdiag_offset,
+                                         offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<Symmetric>(N);
 

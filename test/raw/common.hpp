@@ -23,10 +23,11 @@
 
 using namespace ezarpack;
 
-//////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 template<operator_kind MKind>
-using scalar_t = typename std::conditional<MKind==Complex, dcomplex, double>::type;
+using scalar_t =
+  typename std::conditional<MKind==Complex, dcomplex, double>::type;
 
 template<operator_kind MKind> scalar_t<MKind> reflect_coeff(scalar_t<MKind> x);
 template<> double reflect_coeff<Symmetric>(double x) { return x; }
@@ -35,11 +36,16 @@ template<> dcomplex reflect_coeff<Complex>(dcomplex x) { return std::conj(x); }
 
 // Make memory buffer ro accommodate N elements of type T
 template<typename T>
-std::unique_ptr<T[]> make_buffer(int N) { return std::unique_ptr<T[]>(new T[N]); }
+std::unique_ptr<T[]> make_buffer(int N) {
+  return std::unique_ptr<T[]>(new T[N]);
+}
 
 // Make a test sparse matrix
 template<operator_kind MKind, typename T = scalar_t<MKind>>
-std::unique_ptr<T[]> make_sparse_matrix(int N, T diag_coeff, int offdiag_offset, T offdiag_coeff) {
+std::unique_ptr<T[]> make_sparse_matrix(int N,
+                                        T diag_coeff,
+                                        int offdiag_offset,
+                                        T offdiag_coeff) {
   auto refl_offdiag_coeff = reflect_coeff<MKind>(offdiag_coeff);
   auto M = make_buffer<T>(N * N);
   for(int i = 0; i < N; ++i) {
@@ -70,7 +76,7 @@ std::unique_ptr<T[]> make_inner_prod_matrix(int N) {
   return M;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // Matrix-vector product m * v
 template<typename M, typename V, typename O>
@@ -172,7 +178,7 @@ void invert(T const* m, T * out, int N) {
   }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // Catch2 matcher class that checks proximity of two raw memory arrays
 template<typename Scalar>
@@ -182,7 +188,8 @@ class IsCloseToMatcher : public Catch::MatcherBase<Scalar const*> {
   double tol;
 
 public:
-  IsCloseToMatcher(Scalar const* ref, int N, double tol) : ref(ref), N(N), tol(tol) {}
+  IsCloseToMatcher(Scalar const* ref, int N, double tol)
+    : ref(ref), N(N), tol(tol) {}
 
   virtual bool match(Scalar const* const& x) const override {
     double max_diff = 0;
@@ -202,18 +209,29 @@ public:
 };
 
 template<typename Scalar>
-inline IsCloseToMatcher<Scalar> IsCloseTo(Scalar const* ref, int N, double tol = 1e-10) {
+inline IsCloseToMatcher<Scalar> IsCloseTo(Scalar const* ref,
+                                          int N,
+                                          double tol = 1e-10) {
   return IsCloseToMatcher<Scalar>(ref, N, tol);
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-template<typename T> T const* get_ptr(T const* x) { return x; };
-template<typename T> T const* get_ptr(std::unique_ptr<T[]> const& x) { return x.get(); };
+template<typename T> T const* get_ptr(T const* x) { return x; }
+template<typename T> T const* get_ptr(std::unique_ptr<T[]> const& x) {
+  return x.get();
+}
 
 // Check that 'ar' contains the correct solution of a standard eigenproblem
-template<operator_kind MKind, typename M, typename T = typename std::conditional<MKind==Symmetric, double, dcomplex>::type>
-void check_eigenvectors(arpack_worker<MKind, raw_storage> const& ar, M const* m, int N, int nev) {
+template<operator_kind MKind,
+         typename M,
+         typename T =
+           typename std::conditional<MKind==Symmetric, double, dcomplex>::type
+        >
+void check_eigenvectors(arpack_worker<MKind, raw_storage> const& ar,
+                        M const* m,
+                        int N,
+                        int nev) {
   auto eigenvalues = ar.eigenvalues();
   auto eigenvectors = ar.eigenvectors();
   for(int i = 0; i < nev; ++i) {
@@ -229,8 +247,16 @@ void check_eigenvectors(arpack_worker<MKind, raw_storage> const& ar, M const* m,
 }
 
 // Check that 'ar' contains the correct solution of a generalized eigenproblem
-template<operator_kind MKind, typename M, typename T = typename std::conditional<MKind==Symmetric, double, dcomplex>::type>
-void check_eigenvectors(arpack_worker<MKind, raw_storage> const& ar, M const* a, M const* m, int N, int nev) {
+template<operator_kind MKind,
+         typename M,
+         typename T =
+           typename std::conditional<MKind==Symmetric, double, dcomplex>::type
+        >
+void check_eigenvectors(arpack_worker<MKind, raw_storage> const& ar,
+                        M const* a,
+                        M const* m,
+                        int N,
+                        int nev) {
   auto eigenvalues = ar.eigenvalues();
   auto eigenvectors = ar.eigenvectors();
   for(int i = 0; i < nev; ++i) {

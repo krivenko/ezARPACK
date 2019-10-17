@@ -66,16 +66,18 @@ int main(int argc, char* argv[]) {
 
   // Construct a worker object for the symmetric case.
   // For the Blaze storage backend, other options would be
-  // * `arpack_worker<ezarpack::Asymmetric, blaze_storage>' for general real matrices;
-  // * `arpack_worker<ezarpack::Complex, blaze_storage>' for general complex matrices.
+  // * `arpack_worker<ezarpack::Asymmetric, blaze_storage>' for general
+  //   real matrices;
+  // * `arpack_worker<ezarpack::Complex, blaze_storage>' for general
+  //   complex matrices.
   arpack_worker<ezarpack::Symmetric, blaze_storage> worker(N);
 
   // Specify parameters for the worker
   using params_t = arpack_worker<ezarpack::Symmetric, blaze_storage>::params_t;
   params_t params(N_ev,               // Number of low-lying eigenvalues
                   params_t::Smallest, // We want the smallest eigenvalues
-                  true                // Yes, we want the eigenvectors (Ritz vectors) as well
-                  );
+                  true);              // Yes, we want the eigenvectors
+                                      // (Ritz vectors) as well
 
   // Run diagonalization!
   worker(matrix_op, params);
@@ -89,20 +91,25 @@ int main(int argc, char* argv[]) {
   auto const& v = worker.eigenvectors();
   DynamicVector<double> lhs(N), rhs(N);
 
-  for(int i = 0; i < N_ev; ++i) {                       // For each eigenpair ...
-    matrix_op(column(v, i), subvector(lhs, 0, N));      // calculate A*v
-    rhs = lambda[i] * column(v, i);                     // and \lambda*v
+  for(int i = 0; i < N_ev; ++i) {                     // For each eigenpair ...
+    matrix_op(column(v, i), subvector(lhs, 0, N));    // calculate A*v
+    rhs = lambda[i] * column(v, i);                   // and \lambda*v
 
-    std::cout << i << ": deviation = " << dot(rhs - lhs, rhs - lhs) / (N*N) << std::endl;
+    std::cout << i << ": deviation = "
+              << dot(rhs - lhs, rhs - lhs) / (N*N) << std::endl;
   }
 
   // Print some computation statistics
   auto stats = worker.stats();
 
-  std::cout << "Number of Arnoldi update iterations: " << stats.n_iter << std::endl;
-  std::cout << "Number of 'converged' Ritz values: " << stats.n_converged << std::endl;
-  std::cout << "Total number of OP*x operations: " << stats.n_op_x_operations << std::endl;
-  std::cout << "Total number of steps of re-orthogonalization: " << stats.n_reorth_steps << std::endl;
+  std::cout << "Number of Arnoldi update iterations: "
+            << stats.n_iter << std::endl;
+  std::cout << "Number of 'converged' Ritz values: "
+            << stats.n_converged << std::endl;
+  std::cout << "Total number of OP*x operations: "
+            << stats.n_op_x_operations << std::endl;
+  std::cout << "Total number of steps of re-orthogonalization: "
+            << stats.n_reorth_steps << std::endl;
 
   return 0;
 }

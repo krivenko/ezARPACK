@@ -27,27 +27,30 @@ template<typename Backend> class arpack_worker<Asymmetric, Backend> {
   using complex_matrix_t = typename storage::complex_matrix_type;
   using int_vector_t = typename storage::int_vector_type;
 
-  using real_vector_view_t = typename storage::real_vector_view_type;
-  using real_vector_const_view_t = typename storage::real_vector_const_view_type;
+  using real_vector_view_t =
+    typename storage::real_vector_view_type;
+  using real_vector_const_view_t =
+    typename storage::real_vector_const_view_type;
 
-  int N;                          // Matrix size
-  const char* which;              // WHICH parameter
-  int nev = 0;                    // Number of eigenvalues
-  int tol;                        // Relative tolerance for Ritz value convergence
-  real_vector_t resid;            // Residual vector
-  real_vector_t workd;            // Working space
-  int ncv = 0;                    // Number of Lanczos vectors to be generated
-  real_matrix_t v;                // Matrix with Arnoldi basis vectors
-  real_matrix_t z;                // Matrix with Ritz vectors
-  real_vector_t dr, di;           // Ritz values (real and imaginary parts)
-  int iparam[11];                 // Various input/output parameters
-  int ipntr[14];                  // Pointer to mark the starting locations in the workd and workl
-  int info = 0;                   // !=0 to use resid, 0 otherwise
-  int rvec = false;               // RVEC parameter of dseupd
-  char howmny;                    // HOWMNY parameter of dseupd
-  int_vector_t select;            // SELECT parameter of dseupd
-  double sigmar = 0, sigmai = 0;  // SIGMAR and SIGMAI parameters of dseupd
-  bool Bx_available_ = false;     // Has B*x already been computed?
+  int N;                        // Matrix size
+  const char* which;            // WHICH parameter
+  int nev = 0;                  // Number of eigenvalues
+  int tol;                      // Relative tolerance for Ritz value convergence
+  real_vector_t resid;          // Residual vector
+  real_vector_t workd;         // Working space
+  int ncv = 0;                 // Number of Lanczos vectors to be generated
+  real_matrix_t v;             // Matrix with Arnoldi basis vectors
+  real_matrix_t z;             // Matrix with Ritz vectors
+  real_vector_t dr, di;        // Ritz values (real and imaginary parts)
+  int iparam[11];              // Various input/output parameters
+  int ipntr[14];               // Starting locations in workd and workl
+  int info = 0;                // !=0 to use resid, 0 otherwise
+  int rvec = false;            // RVEC parameter of dseupd
+  char howmny;                 // HOWMNY parameter of dseupd
+  int_vector_t select;         // SELECT parameter of dseupd
+  double sigmar = 0;           // SIGMAR parameter of dseupd
+  double sigmai = 0;           // SIGMAI parameter of dseupd
+  bool Bx_available_ = false;  // Has B*x already been computed?
 
 public:
 
@@ -58,8 +61,13 @@ public:
     // Number of eigenvalues (Ritz values) to compute
     unsigned int n_eigenvalues;
     // Which of the Ritz values to compute
-    enum {LargestMagnitude, SmallestMagnitude,
-          LargestReal, SmallestReal, LargestImag, SmallestImag} eigenvalues_select;
+    enum {LargestMagnitude,
+          SmallestMagnitude,
+          LargestReal,
+          SmallestReal,
+          LargestImag,
+          SmallestImag}
+          eigenvalues_select;
 
     // Expert option: number of Lanczos vectors to be generated
     // default: min(2*n_eigenvalues+1, N)
@@ -68,7 +76,8 @@ public:
     // Compute Ritz/Schur vectors?
     // None: do not compute anything;
     // Ritz: compute eigenvectors of A;
-    // Schur: compute orthogonal basis vectors of the n_eigenvalues-dimensional subspace.
+    // Schur: compute orthogonal basis vectors of
+    // the n_eigenvalues-dimensional subspace.
     enum {None, Ritz, Schur} compute_vectors;
 
     // Use a randomly generated initial residual vector
@@ -174,7 +183,9 @@ public:
   }
 
   struct trivial_shifts_f {
-    void operator()(real_vector_view_t shifts_re, real_vector_view_t shifts_im){}
+    void operator()(real_vector_view_t shifts_re,
+                    real_vector_view_t shifts_im) {
+    }
   };
 
   /**********************************
@@ -186,13 +197,15 @@ public:
   // a(vector_const_view_t from, vector_view_t to)
   // 'a' is expected to act on 'from' and write the result to 'to': to = A*from
   //
-  // 'from' is also indirectly available as this->workspace_vector(this->vector_from_n())
-  // 'to' is also indirectly available as this->workspace_vector(this->vector_to_n())
+  // 'from' is also indirectly available as
+  // this->workspace_vector(this->vector_from_n())
+  // 'to' is also indirectly available as
+  // this->workspace_vector(this->vector_to_n())
   //
   // shifts_f: callable taking two arguments
   // shifts_f(vector_view_t shifts_re, vector_view_t shifts_im)
-  // 'shifts_f' is expected to place real and imaginary parts of the shifts for implicit restart
-  // into 'shifts_re' and 'shifts_im' respectively.
+  // 'shifts_f' is expected to place real and imaginary parts of the shifts
+  // for implicit restart into 'shifts_re' and 'shifts_im' respectively.
   template<typename A, typename ShiftsF = trivial_shifts_f>
   void operator()(A a, params_t const& params, ShiftsF shifts_f = {}) {
 
@@ -267,28 +280,38 @@ public:
   ************************************/
 
   enum Mode : int {Invert = 2,               // OP = inv[M]*A and B = M
-                   ShiftAndInvertReal = 3,   // OP = Real_Part{ inv[A - sigma*M]*M } and B = M
-                   ShiftAndInvertImag = 4};  // OP = Imaginary_Part{ inv[A - sigma*M]*M } and B = M
+                   ShiftAndInvertReal = 3,   // OP = Re { inv[A - sigma*M]*M }
+                                             // and B = M
+                   ShiftAndInvertImag = 4};  // OP = Im { inv[A - sigma*M]*M }
+                                             // and B = M
 
   // op: callable taking 2 arguments
   // op(vector_const_view_t from, vector_view_t to)
-  // 'op' is expected to act on 'from' and write the result to 'to': to = OP*from
+  // 'op' is expected to act on 'from' and write the result to 'to':
+  // to = OP*from
   //
   // b: callable taking 2 arguments
   // b(vector_const_view_t from, vector_view_t to)
   // 'b' is expected to act on 'from' and write the result to 'to': to = B*from
   //
-  // 'from' is also indirectly available as this->workspace_vector(this->from_vector_n())
-  // 'to' is also indirectly available as this->workspace_vector(this->to_vector_n())
+  // 'from' is also indirectly available as
+  // this->workspace_vector(this->from_vector_n())
+  // 'to' is also indirectly available as
+  // this->workspace_vector(this->to_vector_n())
   //
-  // this->Bx_available() indicates whether B*x has already been computed and available as this->Bx_vector()
+  // this->Bx_available() indicates whether B*x has already been computed
+  // and available as this->Bx_vector()
   //
   // shifts_f: callable taking two arguments
   // shifts_f(vector_view_t shifts_re, vector_view_t shifts_im)
-  // 'shifts_f' is expected to place real and imaginary parts of the shifts for implicit restart
-  // into 'shifts_re' and 'shifts_im' respectively.
+  // 'shifts_f' is expected to place real and imaginary parts of the shifts
+  // for implicit restart into 'shifts_re' and 'shifts_im' respectively.
   template<typename OP, typename B, typename ShiftsF = trivial_shifts_f>
-  void operator()(OP op, B b, Mode mode, params_t const& params, ShiftsF shifts_f = {}) {
+  void operator()(OP op,
+                  B b,
+                  Mode mode,
+                  params_t const& params,
+                  ShiftsF shifts_f = {}) {
 
     // https://github.com/opencollab/arpack-ng/issues/3
     // http://forge.scilab.org/index.php/p/arpack-ng/issues/1315/
@@ -404,9 +427,12 @@ public:
   }
 
   // Access eigenvalues
-  // Cannot be used in ShiftAndInvertReal and ShiftAndInvertImag modes if imag(sigma) != 0.
+  // Cannot be used in ShiftAndInvertReal and ShiftAndInvertImag modes
+  // if imag(sigma) != 0.
   complex_vector_t eigenvalues() const {
-    assert(!((iparam[6] == ShiftAndInvertReal || iparam[6] == ShiftAndInvertImag) && sigmai != 0));
+    assert(!((iparam[6] == ShiftAndInvertReal ||
+              iparam[6] == ShiftAndInvertImag) &&
+              sigmai != 0));
     return storage::make_asymm_eigenvalues(dr, di, nev);
   }
 
@@ -419,7 +445,9 @@ public:
   }
 
   // Access residual vector
-  real_vector_view_t residual_vector() { return storage::make_vector_view(resid); }
+  real_vector_view_t residual_vector() {
+    return storage::make_vector_view(resid);
+  }
 
   // Has B*x already been computed?
   bool Bx_available() const { return Bx_available_; }

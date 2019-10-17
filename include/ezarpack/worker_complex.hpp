@@ -27,8 +27,10 @@ template<typename Backend> class arpack_worker<Complex, Backend> {
   using int_vector_t = typename storage::int_vector_type;
 
   using complex_vector_view_t = typename storage::complex_vector_view_type;
-  using complex_vector_const_view_t = typename storage::complex_vector_const_view_type;
-  using complex_matrix_const_view_t = typename storage::complex_matrix_const_view_type;
+  using complex_vector_const_view_t =
+    typename storage::complex_vector_const_view_type;
+  using complex_matrix_const_view_t =
+    typename storage::complex_matrix_const_view_type;
 
   int N;                       // Matrix size
   const char* which;           // WHICH parameter
@@ -41,7 +43,7 @@ template<typename Backend> class arpack_worker<Complex, Backend> {
   complex_matrix_t z;          // Matrix with Ritz vectors
   complex_vector_t d;          // Ritz values (real and imaginary parts)
   int iparam[11];              // Various input/output parameters
-  int ipntr[14];               // Pointer to mark the starting locations in the workd and workl
+  int ipntr[14];               // Starting locations in workd and workl
   int info = 0;                // !=0 to use resid, 0 otherwise
   int rvec;                    // RVEC parameter of dseupd
   char howmny;                 // HOWMNY parameter of dseupd
@@ -57,8 +59,13 @@ public:
     // Number of eigenvalues (Ritz values) to compute
     unsigned int n_eigenvalues;
     // Which of the Ritz values to compute
-    enum {LargestMagnitude, SmallestMagnitude,
-          LargestReal, SmallestReal, LargestImag, SmallestImag} eigenvalues_select;
+    enum {LargestMagnitude,
+          SmallestMagnitude,
+          LargestReal,
+          SmallestReal,
+          LargestImag,
+          SmallestImag}
+          eigenvalues_select;
 
     // Expert option: number of Lanczos vectors to be generated
     // default: min(2*n_eigenvalues+1, N)
@@ -67,7 +74,8 @@ public:
     // Compute Ritz/Schur vectors?
     // None: do not compute anything;
     // Ritz: compute eigenvectors of A;
-    // Schur: compute orthogonal basis vectors of the n_eigenvalues-dimensional subspace.
+    // Schur: compute orthogonal basis vectors of
+    // the n_eigenvalues-dimensional subspace.
     enum {None, Ritz, Schur} compute_vectors;
 
     // Use a randomly generated initial residual vector
@@ -170,7 +178,9 @@ public:
   }
 
   struct trivial_shifts_f {
-    void operator()(complex_vector_view_t shifts_re, complex_vector_view_t shifts_im){}
+    void operator()(complex_vector_view_t shifts_re,
+                    complex_vector_view_t shifts_im) {
+    }
   };
 
   /**********************************
@@ -182,13 +192,15 @@ public:
   // a(vector_const_view_t from, vector_view_t to)
   // 'a' is expected to act on 'from' and write the result to 'to': to = A*from
   //
-  // 'from' is also indirectly available as this->workspace_vector(this->vector_from_n())
-  // 'to' is also indirectly available as this->workspace_vector(this->vector_to_n())
+  // 'from' is also indirectly available as
+  // this->workspace_vector(this->vector_from_n())
+  // 'to' is also indirectly available as
+  // this->workspace_vector(this->vector_to_n())
   //
   // shifts_f: callable taking two arguments
   // shifts_f(vector_view_t shifts_re, vector_view_t shifts_im)
-  // 'shifts_f' is expected to place real and imaginary parts of the shifts for implicit restart
-  // into 'shifts_re' and 'shifts_im' respectively.
+  // 'shifts_f' is expected to place real and imaginary parts of the shifts
+  // for implicit restart into 'shifts_re' and 'shifts_im' respectively.
   template<typename A, typename ShiftsF = trivial_shifts_f>
   void operator()(A a, params_t const& params, ShiftsF shifts_f = {}) {
 
@@ -270,21 +282,28 @@ public:
 
   // op: callable taking 2 arguments
   // op(vector_const_view_t from, vector_view_t to)
-  // 'op' is expected to act on 'from' and write the result to 'to': to = OP*from
+  // 'op' is expected to act on 'from' and write the result to 'to':
+  // to = OP*from
   //
   // b: callable taking 2 arguments
   // b(vector_const_view_t from, vector_view_t to)
   // 'b' is expected to act on 'from' and write the result to 'to': to = B*from
   //
-  // 'from' is also indirectly available as this->workspace_vector(this->from_vector_n())
-  // 'to' is also indirectly available as this->workspace_vector(this->to_vector_n())
+  // 'from' is also indirectly available as
+  // this->workspace_vector(this->from_vector_n())
+  // 'to' is also indirectly available as
+  // this->workspace_vector(this->to_vector_n())
   //
   // shifts_f: callable taking two arguments
   // shifts_f(vector_view_t shifts_re, vector_view_t shifts_im)
-  // 'shifts_f' is expected to place real and imaginary parts of the shifts for implicit restart
-  // into 'shifts_re' and 'shifts_im' respectively.
+  // 'shifts_f' is expected to place real and imaginary parts of the shifts
+  // for implicit restart into 'shifts_re' and 'shifts_im' respectively.
   template<typename OP, typename B, typename ShiftsF = trivial_shifts_f>
-  void operator()(OP op, B b, Mode mode, params_t const& params, ShiftsF shifts_f = {}) {
+  void operator()(OP op,
+                  B b,
+                  Mode mode,
+                  params_t const& params,
+                  ShiftsF shifts_f = {}) {
 
     prepare(params);
 

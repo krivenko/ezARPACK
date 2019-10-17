@@ -28,12 +28,17 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   const double offdiag_coeff = 0.5;
   const int nev = 10;
 
-  auto spectrum_parts = {params_t::Smallest, params_t::Largest,
-                         params_t::SmallestMagnitude, params_t::LargestMagnitude,
+  auto spectrum_parts = {params_t::Smallest,
+                         params_t::Largest,
+                         params_t::SmallestMagnitude,
+                         params_t::LargestMagnitude,
                          params_t::BothEnds};
 
   // Symmetric matrix A
-  auto A = make_sparse_matrix<ezarpack::Symmetric>(N, diag_coeff, offdiag_offset, offdiag_coeff);
+  auto A = make_sparse_matrix<ezarpack::Symmetric>(N,
+                                                   diag_coeff,
+                                                   offdiag_offset,
+                                                   offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<ezarpack::Symmetric>(N);
 

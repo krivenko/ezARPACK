@@ -14,12 +14,16 @@
 
 namespace ezarpack {
 
-template<typename T> constexpr bool unsupportedStorageBackend() { return false; }
+template<typename T> constexpr bool unsupportedStorageBackend() {
+  return false;
+}
 
 /// Storage traits of a general type 'Backend' are undefined,
 /// unless the relevant specialization is present.
 template<typename Backend> struct storage_traits {
-  static_assert(unsupportedStorageBackend<Backend>(), "Storage backend is unsupported");
+  static_assert(unsupportedStorageBackend<Backend>(),
+                "Storage backend is unsupported"
+               );
 };
 
 }

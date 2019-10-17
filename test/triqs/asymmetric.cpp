@@ -30,11 +30,16 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
 
   auto spectrum_parts = {params_t::LargestMagnitude,
                          params_t::SmallestMagnitude,
-                         params_t::LargestReal, params_t::SmallestReal,
-                         params_t::LargestImag, params_t::SmallestImag};
+                         params_t::LargestReal,
+                         params_t::SmallestReal,
+                         params_t::LargestImag,
+                         params_t::SmallestImag};
 
   // Asymmetric matrix A
-  auto A = make_sparse_matrix<Asymmetric>(N, diag_coeff, offdiag_offset, offdiag_coeff);
+  auto A = make_sparse_matrix<Asymmetric>(N,
+                                          diag_coeff,
+                                          offdiag_offset,
+                                          offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<Asymmetric>(N);
 

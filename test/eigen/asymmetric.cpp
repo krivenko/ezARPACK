@@ -34,7 +34,10 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
                          params_t::LargestImag, params_t::SmallestImag};
 
   // Asymmetric matrix A
-  auto A = make_sparse_matrix<ezarpack::Asymmetric>(N, diag_coeff, offdiag_offset, offdiag_coeff);
+  auto A = make_sparse_matrix<ezarpack::Asymmetric>(N,
+                                                    diag_coeff,
+                                                    offdiag_offset,
+                                                    offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<ezarpack::Asymmetric>(N);
 

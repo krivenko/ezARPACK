@@ -22,7 +22,10 @@ TEST_CASE("Complex matrix is inverted", "[invert_asymmetric]") {
   const int offdiag_offset = 1;
   const dcomplex offdiag_coeff(0, 0.1);
 
-  auto A = make_sparse_matrix<Complex>(N, diag_coeff, offdiag_offset, offdiag_coeff);
+  auto A = make_sparse_matrix<Complex>(N,
+                                       diag_coeff,
+                                       offdiag_offset,
+                                       offdiag_coeff);
 
   auto invA = make_buffer<dcomplex>(N * N);
   invert(A.get(), invA.get(), N);
@@ -66,7 +69,10 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
                          params_t::LargestImag, params_t::SmallestImag};
 
   // Hermitian matrix A
-  auto A = make_sparse_matrix<Complex>(N, diag_coeff, offdiag_offset, offdiag_coeff);
+  auto A = make_sparse_matrix<Complex>(N,
+                                       diag_coeff,
+                                       offdiag_offset,
+                                       offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<Complex>(N);
 

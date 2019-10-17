@@ -22,10 +22,11 @@
 using namespace ezarpack;
 using namespace triqs::arrays;
 
-//////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 template<operator_kind MKind>
-using scalar_t = typename std::conditional<MKind==Complex, dcomplex, double>::type;
+using scalar_t =
+  typename std::conditional<MKind==Complex, dcomplex, double>::type;
 
 template<operator_kind MKind> scalar_t<MKind> reflect_coeff(scalar_t<MKind> x);
 template<> double reflect_coeff<Symmetric>(double x) { return x; }
@@ -34,7 +35,10 @@ template<> dcomplex reflect_coeff<Complex>(dcomplex x) { return std::conj(x); }
 
 // Make a test sparse matrix
 template<operator_kind MKind, typename T = scalar_t<MKind>>
-matrix<T> make_sparse_matrix(int N, T diag_coeff, int offdiag_offset, T offdiag_coeff) {
+matrix<T> make_sparse_matrix(int N,
+                             T diag_coeff,
+                             int offdiag_offset,
+                             T offdiag_coeff) {
   auto refl_offdiag_coeff = reflect_coeff<MKind>(offdiag_coeff);
   matrix<T> M(N, N);
   assign_foreach(M, [&](int i, int j) {
@@ -58,7 +62,7 @@ matrix<T> make_inner_prod_matrix(int N) {
   return M;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // Catch2 Matcher class that checks proximity of two TRIQS vectors
 template<typename Scalar>
@@ -68,7 +72,8 @@ class IsCloseToMatcher : public Catch::MatcherBase<vector<Scalar>> {
 
 public:
   template<typename T>
-  IsCloseToMatcher(T && ref, double tol) : ref(triqs::clef::eval(ref)), tol(tol) {}
+  IsCloseToMatcher(T && ref, double tol) :
+    ref(triqs::clef::eval(ref)), tol(tol) {}
 
   virtual bool match(vector<Scalar> const& x) const override {
     return max_element(abs(x - ref)) < tol;
@@ -82,14 +87,16 @@ public:
 };
 
 template<typename T>
-inline IsCloseToMatcher<typename T::value_type> IsCloseTo(T && ref, double tol = 1e-10) {
+inline IsCloseToMatcher<typename T::value_type> IsCloseTo(T && ref,
+                                                          double tol = 1e-10) {
   return IsCloseToMatcher<typename T::value_type>(ref, tol);
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // Check that 'ar' contains the correct solution of a standard eigenproblem
-template<typename AR, typename M> void check_eigenvectors(AR const& ar, M const& A) {
+template<typename AR, typename M> void check_eigenvectors(AR const& ar,
+                                                          M const& A) {
   auto lambda = ar.eigenvalues();
   auto vecs = ar.eigenvectors();
   for(int i : range(lambda.size())) {
@@ -99,7 +106,9 @@ template<typename AR, typename M> void check_eigenvectors(AR const& ar, M const&
 }
 
 // Check that 'ar' contains the correct solution of a generalized eigenproblem
-template<typename AR, typename MT> void check_eigenvectors(AR const& ar, MT const& A, MT const& M) {
+template<typename AR, typename MT> void check_eigenvectors(AR const& ar,
+                                                           MT const& A,
+                                                           MT const& M) {
   auto lambda = ar.eigenvalues();
   auto vecs = ar.eigenvectors();
   for(int i : range(lambda.size())) {

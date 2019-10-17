@@ -30,30 +30,33 @@ template<> struct storage_traits<triqs_storage> {
   template<typename T> using matrix = triqs::arrays::matrix<T>;
 
   template<typename T> using vector_view = triqs::arrays::vector_view<T>;
-  template<typename T> using vector_const_view = triqs::arrays::vector_const_view<T>;
+  template<typename T> using vector_const_view =
+    triqs::arrays::vector_const_view<T>;
   template<typename T> using matrix_view = triqs::arrays::matrix_view<T>;
-  template<typename T> using matrix_const_view = triqs::arrays::matrix_const_view<T>;
+  template<typename T> using matrix_const_view =
+    triqs::arrays::matrix_const_view<T>;
 
+  using dcomplex = std::complex<double>;
   using range = triqs::arrays::range;
 
   // Storage types
   using real_vector_type = vector<double>;
-  using complex_vector_type = vector<std::complex<double>>;
+  using complex_vector_type = vector<dcomplex>;
   using int_vector_type = vector<int>;
 
   using real_matrix_type = matrix<double>;
-  using complex_matrix_type = matrix<std::complex<double>>;
+  using complex_matrix_type = matrix<dcomplex>;
 
   // View types
   using real_vector_view_type = vector_view<double>;
   using real_vector_const_view_type = vector_const_view<double>;
-  using complex_vector_view_type = vector_view<std::complex<double>>;
-  using complex_vector_const_view_type = vector_const_view<std::complex<double>>;
+  using complex_vector_view_type = vector_view<dcomplex>;
+  using complex_vector_const_view_type = vector_const_view<dcomplex>;
 
   using real_matrix_view_type = matrix_view<double>;
   using real_matrix_const_view_type = matrix_const_view<double>;
-  using complex_matrix_view_type = matrix_view<std::complex<double>>;
-  using complex_matrix_const_view_type = matrix_const_view<std::complex<double>>;
+  using complex_matrix_view_type = matrix_view<dcomplex>;
+  using complex_matrix_const_view_type = matrix_const_view<dcomplex>;
 
   // Factories
   inline static real_vector_type make_real_vector(int size) {
@@ -80,7 +83,9 @@ template<> struct storage_traits<triqs_storage> {
   template<typename T>
   inline static void resize(vector<T> &v, int size) { v.resize(size); }
   template<typename T>
-  inline static void resize(matrix<T> &m, int rows, int cols) { m.resize(rows, cols); }
+  inline static void resize(matrix<T> &m, int rows, int cols) {
+    m.resize(rows, cols);
+  }
 
   // Get pointer to data array
   template<typename T>
@@ -92,15 +97,20 @@ template<> struct storage_traits<triqs_storage> {
   template<typename T>
   inline static vector_view<T> make_vector_view(vector<T> & v) { return v; }
   template<typename T>
-  inline static vector_const_view<T> make_vector_const_view(vector<T> const& v) { return v; }
+  inline static
+  vector_const_view<T> make_vector_const_view(vector<T> const& v) { return v; }
 
   // Make subvector view
   template<typename T>
-  inline static vector_view<T> make_vector_view(vector<T> & v, int start, int size) {
+  inline static vector_view<T> make_vector_view(vector<T> & v,
+                                                int start,
+                                                int size) {
     return v(range(start, start + size));
   }
   template<typename T>
-  inline static vector_const_view<T> make_vector_const_view(vector<T> const& v, int start, int size) {
+  inline static vector_const_view<T> make_vector_const_view(vector<T> const& v,
+                                                            int start,
+                                                            int size) {
     return v(range(start, start + size));
   }
 
@@ -108,33 +118,40 @@ template<> struct storage_traits<triqs_storage> {
   template<typename T>
   inline static matrix_view<T> make_matrix_view(matrix<T> & m) { return m; }
   template<typename T>
-  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m) { return m; }
+  inline static
+  matrix_const_view<T> make_matrix_const_view(matrix<T> const& m) { return m; }
 
   // Make submatrix view including 'cols' leftmost columns
   template<typename T>
-  inline static matrix_view<T> make_matrix_view(matrix<T> & m, int /* rows */, int cols) {
+  inline static matrix_view<T> make_matrix_view(matrix<T> & m,
+                                                int /* rows */,
+                                                int cols) {
     return m(range(), range(cols));
   }
   template<typename T>
-  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m, int /* rows */, int cols) {
+  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m,
+                                                            int /* rows */,
+                                                            int cols) {
     return m(range(), range(cols));
   }
 
   // worker_asymmetric: Extract Ritz values from 'dr' and 'di' vectors
-  inline static complex_vector_type make_asymm_eigenvalues(real_vector_type const& dr,
-                                                           real_vector_type const& di,
-                                                           int nev) {
-    return dr(range(nev)) + std::complex<double>(0, 1)*di(range(nev));
+  inline static
+  complex_vector_type make_asymm_eigenvalues(real_vector_type const& dr,
+                                             real_vector_type const& di,
+                                             int nev) {
+    return dr(range(nev)) + dcomplex(0, 1)*di(range(nev));
   }
 
   // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
-  inline static complex_matrix_type make_asymm_eigenvectors(real_matrix_type const& z,
-                                                            real_vector_type const& di,
-                                                            int N,
-                                                            int nev) {
+  inline static
+  complex_matrix_type make_asymm_eigenvectors(real_matrix_type const& z,
+                                              real_vector_type const& di,
+                                              int N,
+                                              int nev) {
     complex_matrix_type res(N, nev);
     auto _ = range();
-    std::complex<double> I(0, 1);
+    dcomplex I(0, 1);
     for(int i = 0; i < nev; ++i) {
       if(di(i) == 0) {
         res(_, i) = z(_, i);

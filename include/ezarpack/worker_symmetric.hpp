@@ -26,8 +26,10 @@ template<typename Backend> class arpack_worker<Symmetric, Backend> {
   using int_vector_t = typename storage::int_vector_type;
 
   using real_vector_view_t = typename storage::real_vector_view_type;
-  using real_vector_const_view_t = typename storage::real_vector_const_view_type;
-  using real_matrix_const_view_t = typename storage::real_matrix_const_view_type;
+  using real_vector_const_view_t =
+    typename storage::real_vector_const_view_type;
+  using real_matrix_const_view_t =
+    typename storage::real_matrix_const_view_type;
 
   int N;                       // Matrix size
   const char * which;          // WHICH parameter
@@ -39,7 +41,7 @@ template<typename Backend> class arpack_worker<Symmetric, Backend> {
   real_matrix_t v;             // Matrix with Lanczos basis vectors
   real_vector_t d;             // Ritz values
   int iparam[11];              // Various input/output parameters
-  int ipntr[11];               // Pointer to mark the starting locations in the workd and workl
+  int ipntr[11];               // Starting locations in workd and workl
   int info = 0;                // !=0 to use resid, 0 otherwise
   int rvec;                    // RVEC parameter of dseupd
   int_vector_t select;         // SELECT parameter of dseupd
@@ -54,7 +56,12 @@ public:
     // Number of eigenvalues (Ritz values) to compute
     unsigned int n_eigenvalues;
     // Which of the Ritz values to compute
-    enum {Largest, Smallest, LargestMagnitude, SmallestMagnitude, BothEnds} eigenvalues_select;
+    enum {Largest,
+          Smallest,
+          LargestMagnitude,
+          SmallestMagnitude,
+          BothEnds}
+          eigenvalues_select;
 
     // Expert option: number of Lanczos vectors to be generated
     // default: min(2*n_eigenvalues, N)
@@ -74,7 +81,9 @@ public:
     // Maximum number of Arnoldi update iterations
     unsigned int max_iter = INT_MAX;
 
-    params_t(unsigned int n_eigenvalues, decltype(eigenvalues_select) ev_select, bool compute_eigenvectors)
+    params_t(unsigned int n_eigenvalues,
+             decltype(eigenvalues_select) ev_select,
+             bool compute_eigenvectors)
       : n_eigenvalues(n_eigenvalues),
         eigenvalues_select(ev_select),
         compute_eigenvectors(compute_eigenvectors)
@@ -165,12 +174,15 @@ public:
   // a(vector_const_view_t from, vector_view_t to)
   // 'a' is expected to act on 'from' and write the result to 'to': to = A*from
   //
-  // 'from' is also indirectly available as this->workspace_vector(this->from_vector_n())
-  // 'to' is also indirectly available as this->workspace_vector(this->to_vector_n())
+  // 'from' is also indirectly available as
+  // this->workspace_vector(this->from_vector_n())
+  // 'to' is also indirectly available as
+  // this->workspace_vector(this->to_vector_n())
   //
   // shifts_f: callable taking one argument
   // shifts_f(vector_view_t shifts)
-  // 'shifts_f' is expected to place the shifts for implicit restart into 'shifts'
+  // 'shifts_f' is expected to place the shifts for implicit restart
+  // into 'shifts'
   template<typename A, typename ShiftsF = trivial_shifts_f>
   void operator()(A a, params_t const& params, ShiftsF shifts_f = {}) {
 
@@ -238,7 +250,8 @@ public:
   enum Mode : int {Invert = 2,           // OP = inv[M]*A and B = M
                    ShiftAndInvert = 3,   // OP = (inv[A - sigma*M])*M and B = M
                    Buckling = 4,         // OP = (inv[A - sigma*M])*A and B = A
-                   Cayley = 5};          // OP = inv[A - sigma*M]*[A + sigma*M] and B = M
+                   Cayley = 5};          // OP = inv[A - sigma*M]*[A + sigma*M]
+                                         // and B = M
 
   // op: callable taking 2 arguments
   // op(vector_view_t from, vector_view_t to)
@@ -252,16 +265,24 @@ public:
   // b(vector_const_view_t from, vector_view_t to)
   // 'b' is expected to act on 'from' and write the result to 'to': to = B*from
   //
-  // 'from' is also indirectly available as this->workspace_vector(this->vector_from_n())
-  // 'to' is also indirectly available as this->workspace_vector(this->vector_to_n())
+  // 'from' is also indirectly available as
+  // this->workspace_vector(this->vector_from_n())
+  // 'to' is also indirectly available as
+  // this->workspace_vector(this->vector_to_n())
   //
-  // this->Bx_available() indicates whether B*x has already been computed and available as this->Bx_vector()
+  // this->Bx_available() indicates whether B*x has already been computed
+  // and available as this->Bx_vector()
   //
   // shifts_f: callable taking one argument
   // shifts_f(vector_view_t shifts)
-  // 'shifts_f' is expected to place the shifts for implicit restart into 'shifts'
+  // 'shifts_f' is expected to place the shifts for implicit restart
+  // into 'shifts'
   template<typename OP, typename B, typename ShiftsF = trivial_shifts_f>
-  void operator()(OP op, B b, Mode mode, params_t const& params, ShiftsF shifts_f = {}) {
+  void operator()(OP op,
+                  B b,
+                  Mode mode,
+                  params_t const& params,
+                  ShiftsF shifts_f = {}) {
 
     prepare(params);
 
@@ -356,13 +377,19 @@ public:
   }
 
   // Access eigenvalues
-  real_vector_const_view_t eigenvalues() const { return storage::make_vector_const_view(d); }
+  real_vector_const_view_t eigenvalues() const {
+    return storage::make_vector_const_view(d);
+  }
 
   // Access eigenvectors
-  real_matrix_const_view_t eigenvectors() const { return storage::make_matrix_const_view(v, N, nev); }
+  real_matrix_const_view_t eigenvectors() const {
+    return storage::make_matrix_const_view(v, N, nev);
+  }
 
   // Access residual vector
-  real_vector_view_t residual_vector() { return storage::make_vector_view(resid); }
+  real_vector_view_t residual_vector() {
+    return storage::make_vector_view(resid);
+  }
 
   // Has B*x already been computed?
   bool Bx_available() const { return Bx_available_; }

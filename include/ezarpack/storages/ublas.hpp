@@ -30,31 +30,38 @@ struct ublas_storage {};
 template<> struct storage_traits<ublas_storage> {
 
   template<typename T> using vector = boost::numeric::ublas::vector<T>;
-  template<typename T> using matrix = boost::numeric::ublas::matrix<T, boost::numeric::ublas::column_major>;
+  template<typename T> using matrix =
+    boost::numeric::ublas::matrix<T, boost::numeric::ublas::column_major>;
 
-  template<typename T> using vector_view = boost::numeric::ublas::vector_range<vector<T>>;
-  template<typename T> using vector_const_view = const boost::numeric::ublas::vector_range<const vector<T>>;
-  template<typename T> using matrix_view = boost::numeric::ublas::matrix_range<matrix<T>>;
-  template<typename T> using matrix_const_view = const boost::numeric::ublas::matrix_range<const matrix<T>>;
+  template<typename T> using vector_view =
+    boost::numeric::ublas::vector_range<vector<T>>;
+  template<typename T> using vector_const_view =
+    const boost::numeric::ublas::vector_range<const vector<T>>;
+  template<typename T> using matrix_view =
+    boost::numeric::ublas::matrix_range<matrix<T>>;
+  template<typename T> using matrix_const_view =
+    const boost::numeric::ublas::matrix_range<const matrix<T>>;
+
+  using dcomplex = std::complex<double>;
 
   // Storage types
   using real_vector_type = vector<double>;
-  using complex_vector_type = vector<std::complex<double>>;
+  using complex_vector_type = vector<dcomplex>;
   using int_vector_type = vector<int>;
 
   using real_matrix_type = matrix<double>;
-  using complex_matrix_type = matrix<std::complex<double>>;
+  using complex_matrix_type = matrix<dcomplex>;
 
   // View types
   using real_vector_view_type = vector_view<double>;
   using real_vector_const_view_type = vector_const_view<double>;
-  using complex_vector_view_type = vector_view<std::complex<double>>;
-  using complex_vector_const_view_type = vector_const_view<std::complex<double>>;
+  using complex_vector_view_type = vector_view<dcomplex>;
+  using complex_vector_const_view_type = vector_const_view<dcomplex>;
 
   using real_matrix_view_type = matrix_view<double>;
   using real_matrix_const_view_type = matrix_const_view<double>;
-  using complex_matrix_view_type = matrix_view<std::complex<double>>;
-  using complex_matrix_const_view_type = matrix_const_view<std::complex<double>>;
+  using complex_matrix_view_type = matrix_view<dcomplex>;
+  using complex_matrix_const_view_type = matrix_const_view<dcomplex>;
 
   // Factories
   inline static real_vector_type make_real_vector(int size) {
@@ -81,7 +88,9 @@ template<> struct storage_traits<ublas_storage> {
   template<typename T>
   inline static void resize(vector<T> &v, int size) { v.resize(size, false); }
   template<typename T>
-  inline static void resize(matrix<T> &m, int rows, int cols) { m.resize(rows, cols, false); }
+  inline static void resize(matrix<T> &m, int rows, int cols) {
+    m.resize(rows, cols, false);
+  }
 
   // Get pointer to data array
   template<typename T>
@@ -95,17 +104,22 @@ template<> struct storage_traits<ublas_storage> {
     return boost::numeric::ublas::subrange(v, 0, v.size());
   }
   template<typename T>
-  inline static vector_const_view<T> make_vector_const_view(vector<T> const& v) {
+  inline static
+  vector_const_view<T> make_vector_const_view(vector<T> const& v) {
     return boost::numeric::ublas::subrange(v, 0, v.size());
   }
 
   // Make subvector view
   template<typename T>
-  inline static vector_view<T> make_vector_view(vector<T> & v, int start, int size) {
+  inline static vector_view<T> make_vector_view(vector<T> & v,
+                                                int start,
+                                                int size) {
     return boost::numeric::ublas::subrange(v, start, start + size);
   }
   template<typename T>
-  inline static vector_const_view<T> make_vector_const_view(vector<T> const& v, int start, int size) {
+  inline static vector_const_view<T> make_vector_const_view(vector<T> const& v,
+                                                            int start,
+                                                            int size) {
     return boost::numeric::ublas::subrange(v, start, start + size);
   }
 
@@ -116,40 +130,47 @@ template<> struct storage_traits<ublas_storage> {
     return project(m, range(0, m.size1()), range(0, m.size2()));
   }
   template<typename T>
-  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m) {
+  inline static
+  matrix_const_view<T> make_matrix_const_view(matrix<T> const& m) {
     using namespace boost::numeric::ublas;
     return project(m, range(0, m.size1()), range(0, m.size2()));
   }
 
   // Make submatrix view including 'cols' leftmost columns
   template<typename T>
-  inline static matrix_view<T> make_matrix_view(matrix<T> & m, int /* rows */, int cols) {
+  inline static matrix_view<T> make_matrix_view(matrix<T> & m,
+                                                int /* rows */,
+                                                int cols) {
     using namespace boost::numeric::ublas;
     return project(m, range(0, m.size1()), range(0, cols));
   }
   template<typename T>
-  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m, int /* rows */, int cols) {
+  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m,
+                                                            int /* rows */,
+                                                            int cols) {
     using namespace boost::numeric::ublas;
     return project(m, range(0, m.size1()), range(0, cols));
   }
 
   // worker_asymmetric: Extract Ritz values from 'dr' and 'di' vectors
-  inline static complex_vector_type make_asymm_eigenvalues(real_vector_type const& dr,
-                                                           real_vector_type const& di,
-                                                           int nev) {
+  inline static
+  complex_vector_type make_asymm_eigenvalues(real_vector_type const& dr,
+                                             real_vector_type const& di,
+                                             int nev) {
     complex_vector_type res(subrange(di, 0, nev));
-    res *= std::complex<double>(0, 1);
+    res *= dcomplex(0, 1);
     res += subrange(dr, 0, nev);
     return res;
   }
 
   // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
-  inline static complex_matrix_type make_asymm_eigenvectors(real_matrix_type const& z,
-                                                            real_vector_type const& di,
-                                                            int N,
-                                                            int nev) {
+  inline static
+  complex_matrix_type make_asymm_eigenvectors(real_matrix_type const& z,
+                                              real_vector_type const& di,
+                                              int N,
+                                              int nev) {
     complex_matrix_type res(N, nev);
-    std::complex<double> I(0, 1);
+    dcomplex I(0, 1);
     for(int i = 0; i < nev; ++i) {
       if(di(i) == 0) {
         column(res, i) = column(z, i);

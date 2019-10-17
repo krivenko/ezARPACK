@@ -34,7 +34,10 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
                          params_t::LargestImag, params_t::SmallestImag};
 
   // Hermitian matrix A
-  auto A = make_sparse_matrix<ezarpack::Complex>(N, diag_coeff, offdiag_offset, offdiag_coeff);
+  auto A = make_sparse_matrix<ezarpack::Complex>(N,
+                                                 diag_coeff,
+                                                 offdiag_offset,
+                                                 offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<ezarpack::Complex>(N);
 
