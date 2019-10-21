@@ -92,7 +92,7 @@ int main(int argc, char* argv[]) {
   vector<double> lhs(N), rhs(N);
 
   for(int i = 0; i < N_ev; ++i) {    // For each eigenpair ...
-    matrix_op(column(v, i), subrange(lhs, 0,N));    // calculate A*v
+    matrix_op(column(v, i), subrange(lhs, 0, N));    // calculate A*v
     rhs = lambda(i) * column(v, i);  // and \lambda*v
 
     std::cout << i << ": deviation = "

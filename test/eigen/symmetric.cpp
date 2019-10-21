@@ -42,7 +42,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   // Inner product matrix
   auto M = make_inner_prod_matrix<ezarpack::Symmetric>(N);
 
-  auto set_init_residual_vector = [N](worker_t & ar) {
+  auto set_init_residual_vector = [](worker_t & ar) {
     for(int i = 0; i < N; ++i) ar.residual_vector()[i] = double(i) / N;
   };
 
