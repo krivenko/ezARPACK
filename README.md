@@ -103,9 +103,11 @@ find_package(ezARPACK 0.6 CONFIG REQUIRED)
 # Build an executable called 'test'
 add_executable(test test.cpp)
 
-# Make ezARPACK headers visible to the compiler
-# and link to ARPACK-NG libraries
-target_link_libraries(test ezarpack arpack)
+# Make ezARPACK headers visible to the compiler and link to ARPACK-NG libraries.
+#
+# NB: If no usable ARPACK-NG has been detected by ezARPACK during installation,
+# you will have to link 'test' to ARPACK-NG libraries explicitly.
+target_link_libraries(test ezarpack)
 ```
 
 Here is how `test.cpp` could look like.

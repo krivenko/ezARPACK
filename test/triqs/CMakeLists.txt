@@ -16,7 +16,7 @@ foreach(t symmetric asymmetric complex)
     # which is too new to ask for.
     target_compile_options(${t} PRIVATE "-std=c++17")
     target_include_directories(${t} PRIVATE ${CMAKE_SOURCE_DIR}/test)
-    target_link_libraries(${t} PRIVATE ezarpack catch2 triqs ${arpack_ng_LIBRARIES})
+    target_link_libraries(${t} PRIVATE ezarpack catch2 triqs)
     triqs_set_rpath_for_target(${t})
     add_test(NAME ${t} COMMAND ${t})
 endforeach()
