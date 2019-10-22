@@ -39,3 +39,8 @@ endif(Boost_FOUND)
 if(TRIQS_FOUND)
   add_subdirectory(triqs)
 endif(TRIQS_FOUND)
+
+# Tests of xtensor storage backend
+if(xtensor_FOUND AND xtensor-blas_FOUND)
+  add_subdirectory(xtensor)
+endif(xtensor_FOUND AND xtensor-blas_FOUND)

@@ -70,6 +70,16 @@ if(TRIQS_FOUND)
   list(APPEND EXAMPLES ${t})
 endif(TRIQS_FOUND)
 
+# xtensor example
+if(xtensor_FOUND AND xtensor-blas_FOUND)
+  set(t "xtensor.example")
+  add_executable(${t} xtensor.example.cpp)
+  target_include_directories(${t} PRIVATE ${xtensor_INCLUDE_DIRS})
+  target_link_libraries(${t} ezarpack xtensor)
+  set_property(TARGET ${t} PROPERTY CXX_STANDARD 14)
+  list(APPEND EXAMPLES ${t})
+endif(xtensor_FOUND AND xtensor-blas_FOUND)
+
 if(EXAMPLES)
   message(STATUS "Building examples:")
   foreach(example ${EXAMPLES})

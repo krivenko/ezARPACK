@@ -1,21 +1,24 @@
 ezARPACK
 ========
 
-[![Build Status](https://travis-ci.org/krivenko/ezARPACK.svg?branch=master)](https://travis-ci.org/krivenko/ezARPACK)
+[![Build Status](https://travis-ci.org/krivenko/ezARPACK.svg?branch=master)](
+https://travis-ci.org/krivenko/ezARPACK)
 
-ezARPACK is a C++11 wrapper around ARPACK-NG [1] that can be used in conjunction with
-a number of C++ vector/matrix algebra libraries. It allows for solving large scale
-eigenproblems for symmetric, asymmetric and complex matrices with a minimal amount
-of boilerplate code.
+ezARPACK is a C++11 wrapper around ARPACK-NG [1] that can be used in conjunction
+with a number of C++ vector/matrix algebra libraries. It allows for solving
+large scale eigenproblems for symmetric, asymmetric and complex matrices with
+a minimal amount of boilerplate code.
 
-When used directly, ARPACK-NG does not force the user to stick to a predefined storage
-format of the matrix being diagonalized. Instead, on each iteration of the
-Arnoldi/Lanczos algorithm the user code is expected to apply the corresponding linear
-operator to the vector (memory buffer) passed to it and store the result in another buffer.
-ezARPACK retains this idea allowing to use any callable C++ object as the linear operator.
+When used directly, ARPACK-NG does not force the user to stick to a predefined
+storage format of the matrix being diagonalized. Instead, on each iteration of
+the Arnoldi/Lanczos algorithm the user code is expected to apply the
+corresponding linear operator to the vector (memory buffer) passed to it and
+store the result in another buffer. ezARPACK retains this idea allowing to use
+any callable C++ object as the linear operator.
 
-Another important feature of ezARPACK is its extensibility with respect to compatible
-matrix algebra libraries. Currently, it supports the following libraries (storage backends):
+Another important feature of ezARPACK is its extensibility with respect to
+compatible matrix algebra libraries. Currently, it supports the following
+libraries (storage backends):
 
 * Raw memory buffers *(not recommended for general use)*;
 * Eigen 3 [2];
@@ -23,9 +26,11 @@ matrix algebra libraries. Currently, it supports the following libraries (storag
 * Armadillo [4];
 * Boost uBLAS >= 1.58 [5];
 * TRIQS arrays >= 2.0 [6].
+* xtensor >= 0.20.0 [7].
 
 One can easily add support for her favorite vector/matrix framework by defining
-a new instance of the `storage_traits` structure (see, for example, `include/storages/eigen.hpp`).
+a new instance of the `storage_traits` structure (see, for example,
+`include/storages/eigen.hpp`).
 
 Copyright (C) 2016-2019 Igor Krivenko <igor.s.krivenko @ gmail.com>
 
@@ -34,59 +39,63 @@ Dependencies
 
 ezARPACK is a header-only library that has no external dependencies.
 
-However, one will need a working installation of ARPACK-NG 3.6.0 or newer [1] in order to compile
-examples and unit tests. Futhermore, specific examples and tests will only be built if the
-respective matrix algebra library is detected by CMake (does not apply to the raw memory storage
-backend).
+However, one will need a working installation of ARPACK-NG 3.6.0 or newer [1]
+in order to compile examples and unit tests. Futhermore, specific examples and
+tests will only be built if the respective matrix algebra library is detected by
+CMake (does not apply to the raw memory storage backend).
 
 Installation
 ------------
 
-ezARPACK is usable without installation, just add `-I/<path_to_ezARPACK_sources>/include`
-to the compiler command line and `-L/<ARPACK-NG_installation_prefix>/lib -larpack` to
-the linker command line.
+ezARPACK is usable without installation, just add
+`-I/<path_to_ezARPACK_sources>/include` to the compiler command line and
+`-L/<ARPACK-NG_installation_prefix>/lib -larpack` to the linker command line.
 
-You will need CMake version 3.0.2 or newer [7] to build examples/unit tests and to install ezARPACK
-such that it can be used from other CMake projects.
+You will need CMake version 3.1.0 or newer [8] to build examples/unit tests and
+to install ezARPACK such that it can be used from other CMake projects.
 
-Assuming that ezARPACK is to be installed in `<ezARPACK_installation_prefix>`, the installation
-normally proceeds in a few simple steps.
+Assuming that ezARPACK is to be installed in `<ezARPACK_installation_prefix>`,
+the installation normally proceeds in a few simple steps.
 
 ```
 $ git clone https://github.com/krivenko/ezARPACK.git ezARPACK.git
 $ mkdir ezARPACK.build && cd ezARPACK.build
-$ cmake ../ezARPACK.git                                 \
-$ -DCMAKE_INSTALL_PREFIX=<ezARPACK_installation_prefix> \
-  -DARPACK_NG_ROOT=<ARPACK-NG_installation_prefix>      \
-  -DEigen3_ROOT=<Eigen3_installation_prefix>            \
-  -Dblaze_ROOT=<Blaze_installation_prefix>              \
-  -DArmadillo_ROOT=<Armadillo_installation_prefix>      \
-  -DBOOST_ROOT=<Boost_installation_prefix>              \
-  -DTRIQS_ROOT=<TRIQS_installation_prefix>              \
-  -DExamples=ON                                         \
+$ cmake ../ezARPACK.git                                   \
+$ -DCMAKE_INSTALL_PREFIX=<ezARPACK_installation_prefix>   \
+  -DARPACK_NG_ROOT=<ARPACK-NG_installation_prefix>        \
+  -DEigen3_ROOT=<Eigen3_installation_prefix>              \
+  -Dblaze_ROOT=<Blaze_installation_prefix>                \
+  -DArmadillo_ROOT=<Armadillo_installation_prefix>        \
+  -DBOOST_ROOT=<Boost_installation_prefix>                \
+  -DTRIQS_ROOT=<TRIQS_installation_prefix>                \
+  -Dxtensor_ROOT=<xtensor_installation_prefix>            \
+  -Dxtensor-blas_ROOT=<xtensor-blas_installation_prefix>  \
+  -DExamples=ON                                           \
   -DTests=ON
 $ make
 $ make test
 $ make install
 ```
 
-Compilation of the tests can be disabled with CMake flag `-DTests=OFF` *(not recommended)*.
+Compilation of the tests can be disabled with CMake flag `-DTests=OFF`
+*(not recommended)*.
 
 Examples are compiled by default, disable them with `-DExamples=OFF`.
 
-CMake options specific to individual storage backends (`Eigen3_ROOT`, `blaze_ROOT`, `Armadillo_ROOT`,
-`BOOST_ROOT`, `TRIQS_ROOT`) can be omitted if the respective libraries are installed in the
-standard system locations. If some of the libraries are not found, CMake will skip the corresponding
-examples and unit tests.
+CMake options specific to individual storage backends (`Eigen3_ROOT`,
+`blaze_ROOT`, `Armadillo_ROOT`, `BOOST_ROOT`, `TRIQS_ROOT`,
+`xtensor_ROOT`/`xtensor-blas_ROOT`) can be omitted if the respective libraries
+are installed in the standard system locations. If some of the libraries are not
+found, CMake will skip the corresponding examples and unit tests.
 
 Usage
 -----
 
-Once ezARPACK is installed, you can use it in your CMake project. Here is a minimal
-example of an application `CMakeLists.txt` file.
+Once ezARPACK is installed, you can use it in your CMake project. Here is
+a minimal example of an application `CMakeLists.txt` file.
 
 ```cmake
-cmake_minimum_required(VERSION 3.0.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 
 project(myproject LANGUAGES CXX)
 
@@ -166,16 +175,19 @@ int main(int argc, char* argv[]) {
 
   // Construct a worker object for the symmetric case.
   // For the Eigen3 storage backend, other options would be
-  // * `arpack_worker<ezarpack::Asymmetric, eigen_storage>' for general real matrices;
-  // * `arpack_worker<ezarpack::Complex, eigen_storage>' for general complex matrices.
+  // * `arpack_worker<ezarpack::Asymmetric, eigen_storage>' for general
+  //   real matrices;
+  // * `arpack_worker<ezarpack::Complex, eigen_storage>' for general
+  //   complex matrices.
   arpack_worker<ezarpack::Symmetric, eigen_storage> worker(N);
 
   // Specify parameters for the worker
   using params_t = arpack_worker<ezarpack::Symmetric, eigen_storage>::params_t;
   params_t params(N_ev,               // Number of low-lying eigenvalues
                   params_t::Smallest, // We want the smallest eigenvalues
-                  true                // Yes, we want the eigenvectors (Ritz vectors) as well
-                  );
+                  true);              // Yes, we want the eigenvectors
+                                      // (Ritz vectors) as well
+
 
   // Run diagonalization!
   worker(matrix_op, params);
@@ -193,16 +205,21 @@ int main(int argc, char* argv[]) {
     matrix_op(v.col(i), lhs.head(N)); // calculate A*v
     rhs = lambda(i) * v.col(i);       // and \lambda*v
 
-    std::cout << i << ": deviation = " << (rhs - lhs).squaredNorm() / (N*N) << std::endl;
+    std::cout << i << ": deviation = "
+              << (rhs - lhs).squaredNorm() / (N*N) << std::endl;
   }
 
   // Print some computation statistics
   auto stats = worker.stats();
 
-  std::cout << "Number of Arnoldi update iterations: " << stats.n_iter << std::endl;
-  std::cout << "Number of 'converged' Ritz values: " << stats.n_converged << std::endl;
-  std::cout << "Total number of OP*x operations: " << stats.n_op_x_operations << std::endl;
-  std::cout << "Total number of steps of re-orthogonalization: " << stats.n_reorth_steps << std::endl;
+  std::cout << "Number of Arnoldi update iterations: "
+            << stats.n_iter << std::endl;
+  std::cout << "Number of 'converged' Ritz values: "
+            << stats.n_converged << std::endl;
+  std::cout << "Total number of OP*x operations: "
+            << stats.n_op_x_operations << std::endl;
+  std::cout << "Total number of steps of re-orthogonalization: "
+            << stats.n_reorth_steps << std::endl;
 
   return 0;
 }
@@ -218,9 +235,10 @@ Known issues
 
 * ezARPACK is still beta, use with caution!
 * Parallel ARPACK routines (PARPACK) are not supported.
-* `arpack_worker<Asymmetric, ...>` will refuse to run in `ShiftAndInvertReal` and
-  `ShiftAndInvertImag` modes (`dnaupd` modes 3 and 4). This is a temporary
-  workaround for [a `dneupd` issue](http://forge.scilab.org/index.php/p/arpack-ng/issues/1315/).
+* `arpack_worker<Asymmetric, ...>` will refuse to run in `ShiftAndInvertReal`
+  and `ShiftAndInvertImag` modes (`dnaupd` modes 3 and 4).
+  This is a temporary workaround for [a `dneupd` issue](
+  http://forge.scilab.org/index.php/p/arpack-ng/issues/1315/).
 
 License
 -------
@@ -235,4 +253,5 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 [4]: http://arma.sourceforge.net
 [5]: https://www.boost.org/doc/libs/1_58_0/libs/numeric/ublas/doc
 [6]: https://triqs.github.io/triqs/master
-[7]: https://cmake.org/download
+[7]: https://quantstack.net/xtensor.html
+[8]: https://cmake.org/download

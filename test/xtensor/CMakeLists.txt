@@ -10,10 +10,13 @@
 
 foreach(t symmetric asymmetric complex)
   set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
-  set(t armadillo.worker_${t})
+  set(t xtensor.worker_${t})
   add_executable(${t} ${s})
-  target_include_directories(${t} PRIVATE ${CMAKE_SOURCE_DIR}/test)
-  target_link_libraries(${t} PRIVATE ezarpack catch2 armadillo)
-  set_property(TARGET ${t} PROPERTY CXX_STANDARD 11)
+  target_include_directories(${t} PRIVATE ${CMAKE_SOURCE_DIR}/test
+                                          ${xtensor_INCLUDE_DIRS}
+                                          ${xtensor_blas_INCLUDE_DIR})
+  target_link_libraries(${t} PRIVATE ezarpack catch2)
+  target_compile_definitions(${t} PRIVATE -DXTENSOR_USE_FLENS_BLAS)
+  set_property(TARGET ${t} PROPERTY CXX_STANDARD 14)
   add_test(NAME ${t} COMMAND ${t})
 endforeach()

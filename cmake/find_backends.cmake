@@ -49,3 +49,11 @@ find_package(Boost 1.58)
 # Find TRIQS
 find_package(Cpp2Py CONFIG)
 find_package(TRIQS CONFIG)
+
+# Find xtensor
+find_package(xtensor CONFIG 0.20)
+find_package(xtensor-blas CONFIG 0.16)
+if(xtensor_FOUND AND xtensor-blas_FOUND)
+  message(STATUS "Found xtensor version ${xtensor_VERSION}")
+  message(STATUS "Found xtensor-blas version ${xtensor-blas_VERSION}")
+endif(xtensor_FOUND AND xtensor-blas_FOUND)

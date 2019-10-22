@@ -98,7 +98,7 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
       to = M * from;
     };
 
-    worker_t ar(N);
+    worker_t ar(A.rows());
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);

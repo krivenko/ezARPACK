@@ -12,13 +12,14 @@
 cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 
 # Project name and version
-set(EZARPACK_VERSION 0.6)
+set(EZARPACK_VERSION 0.7)
 project(ezARPACK VERSION ${EZARPACK_VERSION} LANGUAGES CXX)
 message(STATUS "Configuring ${PROJECT_NAME} version ${PROJECT_VERSION}")
 
 # Prohibit in-source builds
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-  message(FATAL_ERROR "In-source builds are not allowed. Please make a separate build directory.")
+  message(FATAL_ERROR "In-source builds are not allowed."
+                      "Please make a separate build directory.")
 endif(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 
 # find_package() should take into account <PackageName>_ROOT
@@ -37,7 +38,8 @@ if(arpack-ng_FOUND)
   message(STATUS "Found ARPACK-NG version ${arpack-ng_VERSION}")
   message(STATUS "  arpack_ng_LIBRARIES: ${arpack_ng_LIBRARIES}")
 else(arpack-ng_FOUND)
-  message(STATUS "ARPACK-NG not found. Disabling compilation of examples and unit tests.")
+  message(STATUS "ARPACK-NG not found."
+                 "Disabling compilation of examples and unit tests.")
 endif(arpack-ng_FOUND)
 
 # Are we building any components?

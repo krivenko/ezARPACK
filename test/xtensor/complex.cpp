@@ -19,7 +19,10 @@
 
 TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
 
-  using worker_t = arpack_worker<Complex, blaze_storage>;
+  using xt::linalg::dot;
+  using xt::linalg::inv;
+
+  using worker_t = arpack_worker<ezarpack::Complex, xtensor_storage>;
   using params_t = worker_t::params_t;
 
   const int N = 100;
@@ -34,12 +37,12 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
                          params_t::LargestImag, params_t::SmallestImag};
 
   // Hermitian matrix A
-  auto A = make_sparse_matrix<Complex>(N,
-                                       diag_coeff,
-                                       offdiag_offset,
-                                       offdiag_coeff);
+  auto A = make_sparse_matrix<ezarpack::Complex>(N,
+                                                 diag_coeff,
+                                                 offdiag_offset,
+                                                 offdiag_coeff);
   // Inner product matrix
-  auto M = make_inner_prod_matrix<Complex>(N);
+  auto M = make_inner_prod_matrix<ezarpack::Complex>(N);
 
   auto set_init_residual_vector = [](worker_t & ar) {
     for(int i = 0; i < N; ++i) ar.residual_vector()[i] = double(i) / N;
@@ -50,10 +53,10 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
 
   SECTION("Standard eigenproblem") {
     auto Aop = [&](vector_const_view_t from, vector_view_t to) {
-      to = A * from;
+      to = dot(A, from);
     };
 
-    worker_t ar(A.rows());
+    worker_t ar(A.shape(0));
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
@@ -66,16 +69,16 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
   }
 
   SECTION("Generalized eigenproblem: invert mode") {
-    decltype(A) op_matrix = inv(M) * A;
+    decltype(A) op_matrix = dot(inv(M), A);
 
     auto op = [&](vector_const_view_t from, vector_view_t to) {
-      to = op_matrix * from;
+      to = dot(op_matrix, from);
     };
     auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      to = M * from;
+      to = dot(M, from);
     };
 
-    worker_t ar(A.rows());
+    worker_t ar(A.shape(0));
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
@@ -89,16 +92,16 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode") {
     dcomplex sigma(0.5, 0.5);
-    decltype(A) op_matrix = inv(A - sigma*M) * M;
+    decltype(A) op_matrix = dot(inv(xt::eval(A - sigma*M)), M);
 
     auto op = [&](vector_const_view_t from, vector_view_t to) {
-      to = op_matrix * from;
+      to = dot(op_matrix, from);
     };
     auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      to = M * from;
+      to = dot(M, from);
     };
 
-    worker_t ar(A.rows());
+    worker_t ar(A.shape(0));
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);

@@ -13,19 +13,22 @@
 
 #include "common.hpp"
 
-/////////////////////////////////////////
-// Eigenproblems with complex matrices //
-/////////////////////////////////////////
+//////////////////////////////////////////////
+// Eigenproblems with general real matrices //
+//////////////////////////////////////////////
 
-TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
+TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
 
-  using worker_t = arpack_worker<Complex, blaze_storage>;
+  using xt::linalg::dot;
+  using xt::linalg::inv;
+
+  using worker_t = arpack_worker<ezarpack::Asymmetric, xtensor_storage>;
   using params_t = worker_t::params_t;
 
   const int N = 100;
-  const dcomplex diag_coeff = 1.5;
-  const int offdiag_offset = 1;
-  const dcomplex offdiag_coeff(0, 0.1);
+  const double diag_coeff = 1.5;
+  const int offdiag_offset = 3;
+  const double offdiag_coeff = 0.1;
   const int nev = 10;
 
   auto spectrum_parts = {params_t::LargestMagnitude,
@@ -33,13 +36,13 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
                          params_t::LargestReal, params_t::SmallestReal,
                          params_t::LargestImag, params_t::SmallestImag};
 
-  // Hermitian matrix A
-  auto A = make_sparse_matrix<Complex>(N,
-                                       diag_coeff,
-                                       offdiag_offset,
-                                       offdiag_coeff);
+  // Asymmetric matrix A
+  auto A = make_sparse_matrix<ezarpack::Asymmetric>(N,
+                                                    diag_coeff,
+                                                    offdiag_offset,
+                                                    offdiag_coeff);
   // Inner product matrix
-  auto M = make_inner_prod_matrix<Complex>(N);
+  auto M = make_inner_prod_matrix<ezarpack::Asymmetric>(N);
 
   auto set_init_residual_vector = [](worker_t & ar) {
     for(int i = 0; i < N; ++i) ar.residual_vector()[i] = double(i) / N;
@@ -50,14 +53,13 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
 
   SECTION("Standard eigenproblem") {
     auto Aop = [&](vector_const_view_t from, vector_view_t to) {
-      to = A * from;
+      to = dot(A, from);
     };
 
-    worker_t ar(A.rows());
+    worker_t ar(A.shape(0));
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
-      params.ncv = 50;
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(Aop, params);
@@ -66,47 +68,22 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
   }
 
   SECTION("Generalized eigenproblem: invert mode") {
-    decltype(A) op_matrix = inv(M) * A;
+    decltype(A) op_matrix = dot(inv(M), A);
 
     auto op = [&](vector_const_view_t from, vector_view_t to) {
-      to = op_matrix * from;
+      to = dot(op_matrix, from);
     };
     auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      to = M * from;
+      to = dot(M, from);
     };
 
-    worker_t ar(A.rows());
+    worker_t ar(A.shape(0));
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
-      params.ncv = 50;
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Invert, params);
-      check_eigenvectors(ar, A, M);
-    }
-  }
-
-  SECTION("Generalized eigenproblem: Shift-and-Invert mode") {
-    dcomplex sigma(0.5, 0.5);
-    decltype(A) op_matrix = inv(A - sigma*M) * M;
-
-    auto op = [&](vector_const_view_t from, vector_view_t to) {
-      to = op_matrix * from;
-    };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      to = M * from;
-    };
-
-    worker_t ar(A.rows());
-
-    for(auto e : spectrum_parts) {
-      params_t params(nev, e, params_t::Ritz);
-      params.sigma = sigma;
-      params.ncv = 50;
-      params.random_residual_vector = false;
-      set_init_residual_vector(ar);
-      ar(op, Bop, worker_t::ShiftAndInvert, params);
       check_eigenvectors(ar, A, M);
     }
   }
