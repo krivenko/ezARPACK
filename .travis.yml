@@ -85,9 +85,9 @@ before_script:
 
   # Force CLang to use libc++
   - |
-    if [[ "${CXX}" == "clang++" ]]; then                                        \
-      CMAKE_CXX_FLAGS="-stdlib=libc++ -D_LIBCPP_ENABLE_CXX17_REMOVED_AUTO_PTR"; \
-      export LD_LIBRARY_PATH=/usr/local/clang-7.0.0/lib:$LD_LIBRARY_PATH;       \
+    if [[ "${CXX}" == "clang++" ]]; then                                       \
+      CMAKE_CXX_FLAGS="-stdlib=libc++ -D_LIBCPP_ENABLE_CXX17_REMOVED_AUTO_PTR";\
+      export LD_LIBRARY_PATH=/usr/local/clang-7.0.0/lib:$LD_LIBRARY_PATH;      \
     fi
 
   - cd $TRAVIS_BUILD_DIR/..
@@ -133,6 +133,29 @@ before_script:
   - popd
   - source $TRAVIS_BUILD_DIR/../triqs.installed/share/triqsvars.sh
 
+  # Install xtl, xtensor and xtensor-blas
+  - git clone https://github.com/xtensor-stack/xtl.git xtl.git
+  - pushd xtl.git
+  - cmake . -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/../xtensor.installed
+  - make install
+  - popd
+  - git clone https://github.com/xtensor-stack/xtensor.git xtensor.git
+  - mkdir xtensor.build && pushd xtensor.build
+  - |
+    cmake ../xtensor.git                                            \
+    -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/../xtensor.installed   \
+    -Dxtl_DIR=$TRAVIS_BUILD_DIR/../xtensor.installed
+  - make install
+  - popd
+  - git clone https://github.com/xtensor-stack/xtensor-blas.git xtensor-blas.git
+  - mkdir xtensor-blas.build && pushd xtensor-blas.build
+  - |
+    cmake ../xtensor-blas.git                                       \
+    -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/../xtensor.installed   \
+    -Dxtensor_DIR=$TRAVIS_BUILD_DIR/../xtensor.installed
+  - make install
+  - popd
+
 script:
   # Build ezARPACK
   - mkdir ezARPACK.installed
@@ -144,6 +167,8 @@ script:
     -DARPACK_NG_ROOT=$TRAVIS_BUILD_DIR/../arpack-ng.installed       \
     -Dblaze_ROOT=$TRAVIS_BUILD_DIR/../blaze.installed               \
     -DTRIQS_ROOT=$TRAVIS_BUILD_DIR/../triqs.installed               \
+    -Dxtensor_ROOT=$TRAVIS_BUILD_DIR/../xtensor.installed           \
+    -Dxtensor-blas_ROOT=$TRAVIS_BUILD_DIR/../xtensor.installed      \
     -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -Wno-ignored-attributes"
   - make -j3
   - make test
