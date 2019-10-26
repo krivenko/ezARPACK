@@ -31,6 +31,7 @@ endif(POLICY CMP0074)
 # CMake options
 option(Tests "Build unit tests" ON)
 option(Examples "Build examples" ON)
+option(Documentation "Build documentation" OFF)
 
 # Detect ARPACK-NG as an optional dependency
 message(STATUS "Detecting ARPACK-NG libraries")
@@ -97,6 +98,13 @@ install(EXPORT ezARPACKTargets DESTINATION lib/cmake)
 install(FILES "${PROJECT_BINARY_DIR}/ezARPACKConfigVersion.cmake"
               "${PROJECT_BINARY_DIR}/ezARPACKConfig.cmake"
         DESTINATION lib/cmake)
+
+# Build documentation
+if(Documentation)
+  message(STATUS "Building documentation")
+  find_package(Doxygen REQUIRED)
+  add_subdirectory(doc)
+endif(Documentation)
 
 # Build unit tests
 if(arpack-ng_FOUND AND Tests)
