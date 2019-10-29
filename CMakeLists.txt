@@ -57,7 +57,7 @@ if(arpack-ng_FOUND AND (Tests OR Examples))
   include_directories(${CMAKE_SOURCE_DIR}/include)
 
   # Find all storage backends
-  include(cmake/find_backends.cmake)
+  include(cmake/FindBackends.cmake)
 endif()
 
 # Install C++ headers
@@ -102,7 +102,14 @@ install(FILES "${PROJECT_BINARY_DIR}/ezARPACKConfigVersion.cmake"
 # Build documentation
 if(Documentation)
   message(STATUS "Building documentation")
+
+  # Detect Doxygen, Sphinx and Breathe
+  list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
   find_package(Doxygen REQUIRED)
+  find_package(PythonInterp 3 REQUIRED)
+  find_package(Sphinx 2.0.0 REQUIRED)
+  find_package(Breathe 4.13.0 REQUIRED)
+
   add_subdirectory(doc)
 endif(Documentation)
 

@@ -9,8 +9,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 file(GLOB_RECURSE ALL_HEADERS ${CMAKE_SOURCE_DIR}/include/*.hpp)
-# FIXME
-message(STATUS "headers: ${ALL_HEADERS}")
 
 set(DOXYGEN_INPUT_DIR ${PROJECT_SOURCE_DIR}/include)
 set(DOXYGEN_INDEX_FILE ${CMAKE_CURRENT_BINARY_DIR}/html/index.html)
