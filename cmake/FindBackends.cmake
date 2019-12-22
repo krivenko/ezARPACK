@@ -2,7 +2,7 @@
 # This file is part of ezARPACK, an easy-to-use C++ wrapper for
 # the ARPACK-NG FORTRAN library.
 #
-# Copyright (C) 2016-2019 Igor Krivenko <igor.s.krivenko@gmail.com>
+# Copyright (C) 2016-2020 Igor Krivenko <igor.s.krivenko@gmail.com>
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -45,7 +45,9 @@ endif(NOT POLICY CMP0074)
 find_package(Armadillo QUIET CONFIG)
 if(NOT Armadillo_FOUND)
   if(Armadillo_ROOT)
-    find_library(ARMADILLO_LIBRARY NAMES armadillo PATHS ${Armadillo_ROOT}/lib NO_DEFAULT_PATH)
+    find_library(ARMADILLO_LIBRARY NAMES armadillo
+                 PATHS ${Armadillo_ROOT}/lib
+                 NO_DEFAULT_PATH)
   else(Armadillo_ROOT)
     find_library(ARMADILLO_LIBRARY NAMES armadillo)
   endif(Armadillo_ROOT)

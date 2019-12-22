@@ -248,6 +248,6 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 [3]: https://bitbucket.org/blaze-lib/blaze
 [4]: http://arma.sourceforge.net
 [5]: https://www.boost.org/doc/libs/1_58_0/libs/numeric/ublas/doc
-[6]: https://triqs.github.io/triqs/master
-[7]: https://quantstack.net/xtensor.html
+[6]: https://triqs.github.io/triqs/latest
+[7]: https://github.com/xtensor-stack/xtensor
 [8]: https://cmake.org/download
