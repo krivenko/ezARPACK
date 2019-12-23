@@ -23,8 +23,10 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 
 # find_package() should take into account <PackageName>_ROOT
-# CMake variables and environment variables
-cmake_policy(SET CMP0074 NEW)
+# CMake variables and environment variables. Requires CMake 3.12 or newer.
+if(POLICY CMP0074)
+  cmake_policy(SET CMP0074 NEW)
+endif(POLICY CMP0074)
 
 # CMake options
 option(Tests "Build unit tests" ON)
