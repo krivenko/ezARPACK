@@ -9,7 +9,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 # Build Catch2 main object file
-add_library(catch2 OBJECT catch2/catch2-main.cpp)
+add_library(catch2 STATIC catch2/catch2-main.cpp)
 set_property(TARGET catch2 PROPERTY CXX_STANDARD 11)
 
 # Tests of raw memory storage backend
