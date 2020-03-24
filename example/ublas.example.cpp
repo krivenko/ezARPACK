@@ -11,15 +11,15 @@
  *
  ******************************************************************************/
 
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
 // This example shows how to use ezARPACK and the uBLAS storage backend
 // to partially diagonalize a large sparse symmetric matrix
 // and find a number of its low-lying eigenvalues.
 
-#include <ezarpack/storages/ublas.hpp>
 #include <ezarpack/arpack_worker.hpp>
+#include <ezarpack/storages/ublas.hpp>
 #include <ezarpack/version.hpp>
 
 #include <boost/numeric/ublas/io.hpp>
@@ -91,23 +91,24 @@ int main(int argc, char* argv[]) {
   auto const& v = worker.eigenvectors();
   vector<double> lhs(N), rhs(N);
 
-  for(int i = 0; i < N_ev; ++i) {    // For each eigenpair ...
-    matrix_op(column(v, i), subrange(lhs, 0, N));    // calculate A*v
-    rhs = lambda(i) * column(v, i);  // and \lambda*v
+  for(int i = 0; i < N_ev; ++i) {                 // For each eigenpair ...
+    matrix_op(column(v, i), subrange(lhs, 0, N)); // calculate A*v
+    rhs = lambda(i) * column(v, i);               // and \lambda*v
 
-    std::cout << i << ": deviation = "
-              << std::pow(norm_2(rhs - lhs), 2) / (N*N) << std::endl;
+    std::cout << i
+              << ": deviation = " << std::pow(norm_2(rhs - lhs), 2) / (N * N)
+              << std::endl;
   }
 
   // Print some computation statistics
   auto stats = worker.stats();
 
-  std::cout << "Number of Arnoldi update iterations: "
-            << stats.n_iter << std::endl;
-  std::cout << "Number of 'converged' Ritz values: "
-            << stats.n_converged << std::endl;
-  std::cout << "Total number of OP*x operations: "
-            << stats.n_op_x_operations << std::endl;
+  std::cout << "Number of Arnoldi update iterations: " << stats.n_iter
+            << std::endl;
+  std::cout << "Number of 'converged' Ritz values: " << stats.n_converged
+            << std::endl;
+  std::cout << "Total number of OP*x operations: " << stats.n_op_x_operations
+            << std::endl;
   std::cout << "Total number of steps of re-orthogonalization: "
             << stats.n_reorth_steps << std::endl;
 

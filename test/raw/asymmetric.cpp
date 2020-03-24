@@ -22,9 +22,7 @@ TEST_CASE("Asymmetric matrix is inverted", "[invert_asymmetric]") {
   const int offdiag_offset = 3;
   const double offdiag_coeff = 0.1;
 
-  auto A = make_sparse_matrix<Asymmetric>(N,
-                                          diag_coeff,
-                                          offdiag_offset,
+  auto A = make_sparse_matrix<Asymmetric>(N, diag_coeff, offdiag_offset,
                                           offdiag_coeff);
 
   auto invA = make_buffer<double>(N * N);
@@ -33,7 +31,7 @@ TEST_CASE("Asymmetric matrix is inverted", "[invert_asymmetric]") {
   auto id = make_buffer<double>(N * N);
   for(int i = 0; i < N; ++i) {
     for(int j = 0; j < N; ++j) {
-      id[i + j*N] = i == j;
+      id[i + j * N] = i == j;
     }
   }
 
@@ -63,21 +61,20 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
   const double offdiag_coeff = 0.1;
   const int nev = 10;
 
-  auto spectrum_parts = {params_t::LargestMagnitude,
-                         params_t::SmallestMagnitude,
-                         params_t::LargestReal, params_t::SmallestReal,
-                         params_t::LargestImag, params_t::SmallestImag};
+  auto spectrum_parts = {
+      params_t::LargestMagnitude, params_t::SmallestMagnitude,
+      params_t::LargestReal,      params_t::SmallestReal,
+      params_t::LargestImag,      params_t::SmallestImag};
 
   // Asymmetric matrix A
-  auto A = make_sparse_matrix<Asymmetric>(N,
-                                          diag_coeff,
-                                          offdiag_offset,
+  auto A = make_sparse_matrix<Asymmetric>(N, diag_coeff, offdiag_offset,
                                           offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<Asymmetric>(N);
 
-  auto set_init_residual_vector = [](worker_t & ar) {
-    for(int i = 0; i < N; ++i) ar.residual_vector()[i] = double(i) / N;
+  auto set_init_residual_vector = [](worker_t& ar) {
+    for(int i = 0; i < N; ++i)
+      ar.residual_vector()[i] = double(i) / N;
   };
 
   using vector_view_t = worker_t::vector_view_t;

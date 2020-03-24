@@ -12,8 +12,9 @@
  ******************************************************************************/
 #pragma once
 
-#include <complex>
 #include <cmath>
+#include <complex>
+
 #include <triqs/arrays.hpp>
 
 #include "base.hpp"
@@ -30,11 +31,11 @@ template<> struct storage_traits<triqs_storage> {
   template<typename T> using matrix = triqs::arrays::matrix<T>;
 
   template<typename T> using vector_view = triqs::arrays::vector_view<T>;
-  template<typename T> using vector_const_view =
-    triqs::arrays::vector_const_view<T>;
+  template<typename T>
+  using vector_const_view = triqs::arrays::vector_const_view<T>;
   template<typename T> using matrix_view = triqs::arrays::matrix_view<T>;
-  template<typename T> using matrix_const_view =
-    triqs::arrays::matrix_const_view<T>;
+  template<typename T>
+  using matrix_const_view = triqs::arrays::matrix_const_view<T>;
 
   using dcomplex = std::complex<double>;
   using range = triqs::arrays::range;
@@ -76,79 +77,86 @@ template<> struct storage_traits<triqs_storage> {
   }
 
   // Destructors (No-op)
-  template<typename T> inline static void destroy(vector<T> &) {}
-  template<typename T> inline static void destroy(matrix<T> &) {}
+  template<typename T> inline static void destroy(vector<T>&) {}
+  template<typename T> inline static void destroy(matrix<T>&) {}
 
   // Resize
+  template<typename T> inline static void resize(vector<T>& v, int size) {
+    v.resize(size);
+  }
   template<typename T>
-  inline static void resize(vector<T> &v, int size) { v.resize(size); }
-  template<typename T>
-  inline static void resize(matrix<T> &m, int rows, int cols) {
+  inline static void resize(matrix<T>& m, int rows, int cols) {
     m.resize(rows, cols);
   }
 
   // Get pointer to data array
-  template<typename T>
-  inline static T* get_data_ptr(vector<T> &v) { return v.data_start(); }
-  template<typename T>
-  inline static T* get_data_ptr(matrix<T> &m) { return m.data_start(); }
+  template<typename T> inline static T* get_data_ptr(vector<T>& v) {
+    return v.data_start();
+  }
+  template<typename T> inline static T* get_data_ptr(matrix<T>& m) {
+    return m.data_start();
+  }
 
   // Make vector view
   template<typename T>
-  inline static vector_view<T> make_vector_view(vector<T> & v) { return v; }
+  inline static vector_view<T> make_vector_view(vector<T>& v) {
+    return v;
+  }
   template<typename T>
-  inline static
-  vector_const_view<T> make_vector_const_view(vector<T> const& v) { return v; }
+  inline static vector_const_view<T>
+  make_vector_const_view(vector<T> const& v) {
+    return v;
+  }
 
   // Make subvector view
   template<typename T>
-  inline static vector_view<T> make_vector_view(vector<T> & v,
-                                                int start,
-                                                int size) {
+  inline static vector_view<T>
+  make_vector_view(vector<T>& v, int start, int size) {
     return v(range(start, start + size));
   }
   template<typename T>
-  inline static vector_const_view<T> make_vector_const_view(vector<T> const& v,
-                                                            int start,
-                                                            int size) {
+  inline static vector_const_view<T>
+  make_vector_const_view(vector<T> const& v, int start, int size) {
     return v(range(start, start + size));
   }
 
   // Make matrix view
   template<typename T>
-  inline static matrix_view<T> make_matrix_view(matrix<T> & m) { return m; }
+  inline static matrix_view<T> make_matrix_view(matrix<T>& m) {
+    return m;
+  }
   template<typename T>
-  inline static
-  matrix_const_view<T> make_matrix_const_view(matrix<T> const& m) { return m; }
+  inline static matrix_const_view<T>
+  make_matrix_const_view(matrix<T> const& m) {
+    return m;
+  }
 
   // Make submatrix view including 'cols' leftmost columns
   template<typename T>
-  inline static matrix_view<T> make_matrix_view(matrix<T> & m,
-                                                int /* rows */,
-                                                int cols) {
+  inline static matrix_view<T>
+  make_matrix_view(matrix<T>& m, int /* rows */, int cols) {
     return m(range(), range(cols));
   }
   template<typename T>
-  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m,
-                                                            int /* rows */,
-                                                            int cols) {
+  inline static matrix_const_view<T>
+  make_matrix_const_view(matrix<T> const& m, int /* rows */, int cols) {
     return m(range(), range(cols));
   }
 
   // worker_asymmetric: Extract Ritz values from 'dr' and 'di' vectors
-  inline static
-  complex_vector_type make_asymm_eigenvalues(real_vector_type const& dr,
-                                             real_vector_type const& di,
-                                             int nev) {
-    return dr(range(nev)) + dcomplex(0, 1)*di(range(nev));
+  inline static complex_vector_type
+  make_asymm_eigenvalues(real_vector_type const& dr,
+                         real_vector_type const& di,
+                         int nev) {
+    return dr(range(nev)) + dcomplex(0, 1) * di(range(nev));
   }
 
   // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
-  inline static
-  complex_matrix_type make_asymm_eigenvectors(real_matrix_type const& z,
-                                              real_vector_type const& di,
-                                              int N,
-                                              int nev) {
+  inline static complex_matrix_type
+  make_asymm_eigenvectors(real_matrix_type const& z,
+                          real_vector_type const& di,
+                          int N,
+                          int nev) {
     complex_matrix_type res(N, nev);
     auto _ = range();
     dcomplex I(0, 1);
@@ -156,9 +164,9 @@ template<> struct storage_traits<triqs_storage> {
       if(di(i) == 0) {
         res(_, i) = z(_, i);
       } else {
-        res(_, i) = z(_, i) + I*std::copysign(1.0, di(i))*z(_, i+1);
-        if(i < nev-1) {
-          res(_, i+1) = conj(res(_, i));
+        res(_, i) = z(_, i) + I * std::copysign(1.0, di(i)) * z(_, i + 1);
+        if(i < nev - 1) {
+          res(_, i + 1) = conj(res(_, i));
           ++i;
         }
       }

@@ -13,6 +13,7 @@
 #pragma once
 
 #include <complex>
+
 #include <Eigen/Core>
 
 #include "base.hpp"
@@ -26,17 +27,19 @@ struct eigen_storage {};
 template<> struct storage_traits<eigen_storage> {
 
   template<typename T> using vector = Eigen::Matrix<T, Eigen::Dynamic, 1>;
-  template<typename T> using matrix =
-    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>;
+  template<typename T>
+  using matrix = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>;
 
-  template<typename T> using vector_view =
-    Eigen::VectorBlock<vector<T>, Eigen::Dynamic>;
-  template<typename T> using vector_const_view =
-    Eigen::VectorBlock<const vector<T>, Eigen::Dynamic>;
-  template<typename T> using matrix_view =
-    Eigen::Block<matrix<T>, Eigen::Dynamic, Eigen::Dynamic, true>;
-  template<typename T> using matrix_const_view =
-    Eigen::Block<const matrix<T>, Eigen::Dynamic, Eigen::Dynamic, true>;
+  template<typename T>
+  using vector_view = Eigen::VectorBlock<vector<T>, Eigen::Dynamic>;
+  template<typename T>
+  using vector_const_view = Eigen::VectorBlock<const vector<T>, Eigen::Dynamic>;
+  template<typename T>
+  using matrix_view =
+      Eigen::Block<matrix<T>, Eigen::Dynamic, Eigen::Dynamic, true>;
+  template<typename T>
+  using matrix_const_view =
+      Eigen::Block<const matrix<T>, Eigen::Dynamic, Eigen::Dynamic, true>;
 
   using dcomplex = std::complex<double>;
 
@@ -77,78 +80,77 @@ template<> struct storage_traits<eigen_storage> {
   }
 
   // Destructors (No-op)
-  template<typename T> inline static void destroy(vector<T> &) {}
-  template<typename T> inline static void destroy(matrix<T> &) {}
+  template<typename T> inline static void destroy(vector<T>&) {}
+  template<typename T> inline static void destroy(matrix<T>&) {}
 
   // Resize
+  template<typename T> inline static void resize(vector<T>& v, int size) {
+    v.resize(size);
+  }
   template<typename T>
-  inline static void resize(vector<T> &v, int size) { v.resize(size); }
-  template<typename T>
-  inline static void resize(matrix<T> &m, int rows, int cols) {
+  inline static void resize(matrix<T>& m, int rows, int cols) {
     m.resize(rows, cols);
   }
 
   // Get pointer to data array
-  template<typename T>
-  inline static T* get_data_ptr(vector<T> &v) { return v.data(); }
-  template<typename T>
-  inline static T* get_data_ptr(matrix<T> &m) { return m.data(); }
+  template<typename T> inline static T* get_data_ptr(vector<T>& v) {
+    return v.data();
+  }
+  template<typename T> inline static T* get_data_ptr(matrix<T>& m) {
+    return m.data();
+  }
 
   // Make vector view
   template<typename T>
-  inline static vector_view<T> make_vector_view(vector<T> & v) {
+  inline static vector_view<T> make_vector_view(vector<T>& v) {
     return v.head(v.size());
   }
   template<typename T>
-  inline static
-  vector_const_view<T> make_vector_const_view(vector<T> const& v) {
+  inline static vector_const_view<T>
+  make_vector_const_view(vector<T> const& v) {
     return v.head(v.size());
   }
 
   // Make subvector view
   template<typename T>
-  inline static vector_view<T> make_vector_view(vector<T> & v,
-                                                int start,
-                                                int size) {
+  inline static vector_view<T>
+  make_vector_view(vector<T>& v, int start, int size) {
     return v.segment(start, size);
   }
   template<typename T>
-  inline static vector_const_view<T> make_vector_const_view(vector<T> const& v,
-                                                            int start,
-                                                            int size) {
+  inline static vector_const_view<T>
+  make_vector_const_view(vector<T> const& v, int start, int size) {
     return v.segment(start, size);
   }
 
   // Make matrix view
   template<typename T>
-  inline static matrix_view<T> make_matrix_view(matrix<T> & m) {
+  inline static matrix_view<T> make_matrix_view(matrix<T>& m) {
     return m.leftCols(m.cols());
   }
   template<typename T>
-  inline static
-  matrix_const_view<T> make_matrix_const_view(matrix<T> const& m) {
+  inline static matrix_const_view<T>
+  make_matrix_const_view(matrix<T> const& m) {
     return m.leftCols(m.cols());
   }
 
   // Make submatrix view including 'cols' leftmost columns
   template<typename T>
-  inline static matrix_view<T> make_matrix_view(matrix<T> & m,
-                                                int /* rows */,
-                                                int cols) {
+  inline static matrix_view<T>
+  make_matrix_view(matrix<T>& m, int /* rows */, int cols) {
     return m.leftCols(cols);
   }
   template<typename T>
-  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m,
-                                                            int /* rows */,
-                                                            int cols) {
+  inline static matrix_const_view<T>
+  make_matrix_const_view(matrix<T> const& m, int /* rows */, int cols) {
     return m.leftCols(cols);
   }
 
   // worker_asymmetric: Extract Ritz values from 'dr' and 'di' vectors
-  inline static
-  complex_vector_type make_asymm_eigenvalues(real_vector_type const& dr,
-                                             real_vector_type const& di,
-                                             int nev) {
+  inline static complex_vector_type
+  make_asymm_eigenvalues(real_vector_type const& dr,
+                         real_vector_type const& di,
+                         int nev) {
 #ifdef EIGEN_CAN_MIX_REAL_COMPLEX_EXPR
     return dr.head(nev) + dcomplex(0, 1) * di.head(nev);
 #else
@@ -157,11 +159,11 @@ template<> struct storage_traits<eigen_storage> {
   }
 
   // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
-  inline static
-  complex_matrix_type make_asymm_eigenvectors(real_matrix_type const& z,
-                                              real_vector_type const& di,
-                                              int N,
-                                              int nev) {
+  inline static complex_matrix_type
+  make_asymm_eigenvectors(real_matrix_type const& z,
+                          real_vector_type const& di,
+                          int N,
+                          int nev) {
     complex_matrix_type res(N, nev);
     dcomplex I(0, 1);
     for(int i = 0; i < nev; ++i) {
@@ -173,13 +175,13 @@ template<> struct storage_traits<eigen_storage> {
 #endif
       } else {
 #ifdef EIGEN_CAN_MIX_REAL_COMPLEX_EXPR
-        res.col(i) = z.col(i) + I*std::copysign(1.0, di(i))*z.col(i+1);
+        res.col(i) = z.col(i) + I * std::copysign(1.0, di(i)) * z.col(i + 1);
 #else
         res.col(i) = z.col(i).cast<dcomplex>() +
-                     I*std::copysign(1.0, di(i))*z.col(i+1);
+                     I * std::copysign(1.0, di(i)) * z.col(i + 1);
 #endif
-        if(i < nev-1) {
-          res.col(i+1) = res.col(i).conjugate();
+        if(i < nev - 1) {
+          res.col(i + 1) = res.col(i).conjugate();
           ++i;
         }
       }

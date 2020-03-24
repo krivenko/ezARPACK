@@ -13,6 +13,7 @@
 #pragma once
 
 #include <complex>
+
 #include <blaze/Math.h>
 
 #include "base.hpp"
@@ -26,15 +27,15 @@ struct blaze_storage {};
 template<> struct storage_traits<blaze_storage> {
 
   template<typename T> using vector = blaze::DynamicVector<T>;
-  template<typename T> using matrix =
-    blaze::DynamicMatrix<T, blaze::columnMajor>;
+  template<typename T>
+  using matrix = blaze::DynamicMatrix<T, blaze::columnMajor>;
 
   template<typename T> using vector_view = blaze::Subvector<vector<T>>;
-  template<typename T> using vector_const_view =
-    blaze::Subvector<const vector<T>>;
+  template<typename T>
+  using vector_const_view = blaze::Subvector<const vector<T>>;
   template<typename T> using matrix_view = blaze::Submatrix<matrix<T>>;
-  template<typename T> using matrix_const_view =
-    blaze::Submatrix<const matrix<T>>;
+  template<typename T>
+  using matrix_const_view = blaze::Submatrix<const matrix<T>>;
 
   using dcomplex = std::complex<double>;
 
@@ -75,87 +76,87 @@ template<> struct storage_traits<blaze_storage> {
   }
 
   // Destructors (No-op)
-  template<typename T> inline static void destroy(vector<T> &) {}
-  template<typename T> inline static void destroy(matrix<T> &) {}
+  template<typename T> inline static void destroy(vector<T>&) {}
+  template<typename T> inline static void destroy(matrix<T>&) {}
 
   // Resize
+  template<typename T> inline static void resize(vector<T>& v, int size) {
+    v.resize(size);
+  }
   template<typename T>
-  inline static void resize(vector<T> &v, int size) { v.resize(size); }
-  template<typename T>
-  inline static void resize(matrix<T> &m, int rows, int cols) {
+  inline static void resize(matrix<T>& m, int rows, int cols) {
     m.resize(rows, cols);
   }
 
   // Get pointer to data array
-  template<typename T>
-  inline static T* get_data_ptr(vector<T> &v) { return v.data(); }
-  template<typename T>
-  inline static T* get_data_ptr(matrix<T> &m) { return m.data(); }
+  template<typename T> inline static T* get_data_ptr(vector<T>& v) {
+    return v.data();
+  }
+  template<typename T> inline static T* get_data_ptr(matrix<T>& m) {
+    return m.data();
+  }
 
   // Make vector view
   template<typename T>
-  inline static vector_view<T> make_vector_view(vector<T> & v) {
+  inline static vector_view<T> make_vector_view(vector<T>& v) {
     return blaze::subvector(v, 0, v.size(), blaze::unchecked);
   }
   template<typename T>
-  inline static
-  vector_const_view<T> make_vector_const_view(vector<T> const& v) {
+  inline static vector_const_view<T>
+  make_vector_const_view(vector<T> const& v) {
     return blaze::subvector(v, 0, v.size(), blaze::unchecked);
   }
 
   // Make subvector view
   template<typename T>
-  inline static vector_view<T> make_vector_view(vector<T> & v,
-                                                int start,
-                                                int size) {
+  inline static vector_view<T>
+  make_vector_view(vector<T>& v, int start, int size) {
     return blaze::subvector(v, start, size, blaze::unchecked);
   }
   template<typename T>
-  inline static vector_const_view<T> make_vector_const_view(vector<T> const& v,
-                                                            int start,
-                                                            int size) {
+  inline static vector_const_view<T>
+  make_vector_const_view(vector<T> const& v, int start, int size) {
     return blaze::subvector(v, start, size, blaze::unchecked);
   }
 
   // Make matrix view
   template<typename T>
-  inline static matrix_view<T> make_matrix_view(matrix<T> & m) {
+  inline static matrix_view<T> make_matrix_view(matrix<T>& m) {
     return blaze::submatrix(m, 0, 0, m.rows(), m.columns(), blaze::unchecked);
   }
   template<typename T>
-  inline static
-  matrix_const_view<T> make_matrix_const_view(matrix<T> const& m) {
+  inline static matrix_const_view<T>
+  make_matrix_const_view(matrix<T> const& m) {
     return blaze::submatrix(m, 0, 0, m.rows(), m.columns(), blaze::unchecked);
   }
 
   // Make submatrix view including 'cols' leftmost columns
   template<typename T>
-  inline static
-  matrix_view<T> make_matrix_view(matrix<T> & m, int rows, int cols) {
+  inline static matrix_view<T>
+  make_matrix_view(matrix<T>& m, int rows, int cols) {
     return blaze::submatrix(m, 0, 0, rows, cols, blaze::unchecked);
   }
   template<typename T>
-  inline static matrix_const_view<T> make_matrix_const_view(matrix<T> const& m,
-                                                            int rows,
-                                                            int cols) {
+  inline static matrix_const_view<T>
+  make_matrix_const_view(matrix<T> const& m, int rows, int cols) {
     return blaze::submatrix(m, 0, 0, rows, cols, blaze::unchecked);
   }
 
   // worker_asymmetric: Extract Ritz values from 'dr' and 'di' vectors
-  inline static
-  complex_vector_type make_asymm_eigenvalues(real_vector_type const& dr,
-                                             real_vector_type const& di,
-                                             int nev) {
+  inline static complex_vector_type
+  make_asymm_eigenvalues(real_vector_type const& dr,
+                         real_vector_type const& di,
+                         int nev) {
     return blaze::subvector(dr, 0, nev) +
            dcomplex(0, 1) * blaze::subvector(di, 0, nev);
   }
 
   // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
-  inline static
-  complex_matrix_type make_asymm_eigenvectors(real_matrix_type const& z,
-                                              real_vector_type const& di,
-                                              int N,
-                                              int nev) {
+  inline static complex_matrix_type
+  make_asymm_eigenvectors(real_matrix_type const& z,
+                          real_vector_type const& di,
+                          int N,
+                          int nev) {
     complex_matrix_type res(N, nev);
     dcomplex I(0, 1);
     using namespace blaze;
@@ -163,10 +164,10 @@ template<> struct storage_traits<blaze_storage> {
       if(di[i] == 0) {
         column(res, i) = column(z, i);
       } else {
-        column(res, i) = column(z, i) +
-                         I*std::copysign(1.0, di[i])*column(z, i+1);
-        if(i < nev-1) {
-          column(res, i+1) = conj(column(res, i));
+        column(res, i) =
+            column(z, i) + I * std::copysign(1.0, di[i]) * column(z, i + 1);
+        if(i < nev - 1) {
+          column(res, i + 1) = conj(column(res, i));
           ++i;
         }
       }

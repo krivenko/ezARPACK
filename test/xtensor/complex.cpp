@@ -31,21 +31,20 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
   const dcomplex offdiag_coeff(0, 0.1);
   const int nev = 10;
 
-  auto spectrum_parts = {params_t::LargestMagnitude,
-                         params_t::SmallestMagnitude,
-                         params_t::LargestReal, params_t::SmallestReal,
-                         params_t::LargestImag, params_t::SmallestImag};
+  auto spectrum_parts = {
+      params_t::LargestMagnitude, params_t::SmallestMagnitude,
+      params_t::LargestReal,      params_t::SmallestReal,
+      params_t::LargestImag,      params_t::SmallestImag};
 
   // Hermitian matrix A
-  auto A = make_sparse_matrix<ezarpack::Complex>(N,
-                                                 diag_coeff,
-                                                 offdiag_offset,
+  auto A = make_sparse_matrix<ezarpack::Complex>(N, diag_coeff, offdiag_offset,
                                                  offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<ezarpack::Complex>(N);
 
-  auto set_init_residual_vector = [](worker_t & ar) {
-    for(int i = 0; i < N; ++i) ar.residual_vector()[i] = double(i) / N;
+  auto set_init_residual_vector = [](worker_t& ar) {
+    for(int i = 0; i < N; ++i)
+      ar.residual_vector()[i] = double(i) / N;
   };
 
   using vector_view_t = worker_t::vector_view_t;
@@ -92,7 +91,7 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode") {
     dcomplex sigma(0.5, 0.5);
-    decltype(A) op_matrix = dot(inv(xt::eval(A - sigma*M)), M);
+    decltype(A) op_matrix = dot(inv(xt::eval(A - sigma * M)), M);
 
     auto op = [&](vector_const_view_t from, vector_view_t to) {
       to = dot(op_matrix, from);

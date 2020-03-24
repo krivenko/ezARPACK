@@ -11,15 +11,15 @@
  *
  ******************************************************************************/
 
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
 // This example shows how to use ezARPACK and the Eigen3 storage backend
 // to partially diagonalize a large sparse symmetric matrix
 // and find a number of its low-lying eigenvalues.
 
-#include <ezarpack/storages/eigen.hpp>
 #include <ezarpack/arpack_worker.hpp>
+#include <ezarpack/storages/eigen.hpp>
 #include <ezarpack/version.hpp>
 
 using namespace ezarpack;
@@ -95,19 +95,19 @@ int main(int argc, char* argv[]) {
     matrix_op(v.col(i), lhs.head(N)); // calculate A*v
     rhs = lambda(i) * v.col(i);       // and \lambda*v
 
-    std::cout << i << ": deviation = "
-              << (rhs - lhs).squaredNorm() / (N*N) << std::endl;
+    std::cout << i << ": deviation = " << (rhs - lhs).squaredNorm() / (N * N)
+              << std::endl;
   }
 
   // Print some computation statistics
   auto stats = worker.stats();
 
-  std::cout << "Number of Arnoldi update iterations: "
-            << stats.n_iter << std::endl;
-  std::cout << "Number of 'converged' Ritz values: "
-            << stats.n_converged << std::endl;
-  std::cout << "Total number of OP*x operations: "
-            << stats.n_op_x_operations << std::endl;
+  std::cout << "Number of Arnoldi update iterations: " << stats.n_iter
+            << std::endl;
+  std::cout << "Number of 'converged' Ritz values: " << stats.n_converged
+            << std::endl;
+  std::cout << "Total number of OP*x operations: " << stats.n_op_x_operations
+            << std::endl;
   std::cout << "Total number of steps of re-orthogonalization: "
             << stats.n_reorth_steps << std::endl;
 

@@ -16,11 +16,11 @@
 
 #include <catch2/catch.hpp>
 
-#include "ezarpack/storages/ublas.hpp"
-#include "ezarpack/arpack_worker.hpp"
-
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/numeric/ublas/lu.hpp>
+
+#include "ezarpack/arpack_worker.hpp"
+#include "ezarpack/storages/ublas.hpp"
 
 using namespace ezarpack;
 using namespace boost::numeric::ublas;
@@ -29,7 +29,7 @@ using namespace boost::numeric::ublas;
 
 template<operator_kind MKind>
 using scalar_t =
-  typename std::conditional<MKind==Complex, dcomplex, double>::type;
+    typename std::conditional<MKind == Complex, dcomplex, double>::type;
 
 template<operator_kind MKind> scalar_t<MKind> reflect_coeff(scalar_t<MKind> x);
 template<> double reflect_coeff<Symmetric>(double x) { return x; }
@@ -38,10 +38,8 @@ template<> dcomplex reflect_coeff<Complex>(dcomplex x) { return std::conj(x); }
 
 // Make a test sparse matrix
 template<operator_kind MKind, typename T = scalar_t<MKind>>
-matrix<T> make_sparse_matrix(int N,
-                             T diag_coeff,
-                             int offdiag_offset,
-                             T offdiag_coeff) {
+matrix<T>
+make_sparse_matrix(int N, T diag_coeff, int offdiag_offset, T offdiag_coeff) {
   auto refl_offdiag_coeff = reflect_coeff<MKind>(offdiag_coeff);
   matrix<T> M(N, N);
   for(int i = 0; i < N; ++i) {
@@ -65,7 +63,7 @@ matrix<T> make_inner_prod_matrix(int N) {
   matrix<T> M(N, N);
   for(int i = 0; i < N; ++i) {
     for(int j = 0; j < N; ++j) {
-      M(i, j) = std::exp(-(i-j)*(i-j)/2.0);
+      M(i, j) = std::exp(-(i - j) * (i - j) / 2.0);
     }
   }
   return M;
@@ -91,7 +89,7 @@ class IsCloseToMatcher : public Catch::MatcherBase<vector<Scalar>> {
 
 public:
   template<typename T>
-  IsCloseToMatcher(T && ref, double tol) : ref(ref), tol(tol) {}
+  IsCloseToMatcher(T&& ref, double tol) : ref(ref), tol(tol) {}
 
   virtual bool match(vector<Scalar> const& x) const override {
     return norm_inf(x - ref) < tol;
@@ -105,7 +103,7 @@ public:
 };
 
 template<typename T>
-inline IsCloseToMatcher<typename T::value_type> IsCloseTo(T && ref,
+inline IsCloseToMatcher<typename T::value_type> IsCloseTo(T&& ref,
                                                           double tol = 1e-10) {
   return IsCloseToMatcher<typename T::value_type>(ref, tol);
 }
@@ -113,8 +111,8 @@ inline IsCloseToMatcher<typename T::value_type> IsCloseTo(T && ref,
 ////////////////////////////////////////////////////////////////////////////////
 
 // Check that 'ar' contains the correct solution of a standard eigenproblem
-template<typename AR, typename M> void check_eigenvectors(AR const& ar,
-                                                          M const& A) {
+template<typename AR, typename M>
+void check_eigenvectors(AR const& ar, M const& A) {
   auto lambda = ar.eigenvalues();
   auto vecs = ar.eigenvectors();
   for(int i = 0; i < int(lambda.size()); ++i) {
@@ -124,9 +122,8 @@ template<typename AR, typename M> void check_eigenvectors(AR const& ar,
 }
 
 // Check that 'ar' contains the correct solution of a generalized eigenproblem
-template<typename AR, typename MT> void check_eigenvectors(AR const& ar,
-                                                           MT const& A,
-                                                           MT const& M) {
+template<typename AR, typename MT>
+void check_eigenvectors(AR const& ar, MT const& A, MT const& M) {
   auto lambda = ar.eigenvalues();
   auto vecs = ar.eigenvectors();
   for(int i = 0; i < int(lambda.size()); ++i) {

@@ -22,9 +22,7 @@ TEST_CASE("Symmetric matrix is inverted", "[invert_symmetric]") {
   const int offdiag_offset = 3;
   const double offdiag_coeff = 0.5;
 
-  auto A = make_sparse_matrix<Symmetric>(N,
-                                         diag_coeff,
-                                         offdiag_offset,
+  auto A = make_sparse_matrix<Symmetric>(N, diag_coeff, offdiag_offset,
                                          offdiag_coeff);
 
   auto invA = make_buffer<double>(N * N);
@@ -33,7 +31,7 @@ TEST_CASE("Symmetric matrix is inverted", "[invert_symmetric]") {
   auto id = make_buffer<double>(N * N);
   for(int i = 0; i < N; ++i) {
     for(int j = 0; j < N; ++j) {
-      id[i + j*N] = i == j;
+      id[i + j * N] = i == j;
     }
   }
 
@@ -63,22 +61,19 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   const double offdiag_coeff = 0.5;
   const int nev = 10;
 
-  auto spectrum_parts = {params_t::Smallest,
-                         params_t::Largest,
+  auto spectrum_parts = {params_t::Smallest, params_t::Largest,
                          params_t::SmallestMagnitude,
-                         params_t::LargestMagnitude,
-                         params_t::BothEnds};
+                         params_t::LargestMagnitude, params_t::BothEnds};
 
   // Symmetric matrix A
-  auto A = make_sparse_matrix<Symmetric>(N,
-                                         diag_coeff,
-                                         offdiag_offset,
+  auto A = make_sparse_matrix<Symmetric>(N, diag_coeff, offdiag_offset,
                                          offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<Symmetric>(N);
 
-  auto set_init_residual_vector = [](worker_t & ar) {
-    for(int i = 0; i < N; ++i) ar.residual_vector()[i] = double(i) / N;
+  auto set_init_residual_vector = [](worker_t& ar) {
+    for(int i = 0; i < N; ++i)
+      ar.residual_vector()[i] = double(i) / N;
   };
 
   using vector_view_t = worker_t::vector_view_t;
@@ -132,7 +127,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
     auto AmM = make_buffer<double>(N * N);
     for(int i = 0; i < N; ++i) {
       for(int j = 0; j < N; ++j) {
-        AmM[i + j*N] = A[i + j*N] - sigma * M[i + j*N];
+        AmM[i + j * N] = A[i + j * N] - sigma * M[i + j * N];
       }
     }
     auto invAmM = make_buffer<double>(N * N);
@@ -165,7 +160,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
     auto MmA = make_buffer<double>(N * N);
     for(int i = 0; i < N; ++i) {
       for(int j = 0; j < N; ++j) {
-        MmA[i + j*N] = M[i + j*N] - sigma * A[i + j*N];
+        MmA[i + j * N] = M[i + j * N] - sigma * A[i + j * N];
       }
     }
     auto invMmA = make_buffer<double>(N * N);
@@ -199,8 +194,8 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
     auto ApM = make_buffer<double>(N * N);
     for(int i = 0; i < N; ++i) {
       for(int j = 0; j < N; ++j) {
-        AmM[i + j*N] = A[i + j*N] - sigma * M[i + j*N];
-        ApM[i + j*N] = A[i + j*N] + sigma * M[i + j*N];
+        AmM[i + j * N] = A[i + j * N] - sigma * M[i + j * N];
+        ApM[i + j * N] = A[i + j * N] + sigma * M[i + j * N];
       }
     }
     auto invAmM = make_buffer<double>(N * N);

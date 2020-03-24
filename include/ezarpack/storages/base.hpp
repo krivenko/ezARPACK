@@ -22,8 +22,7 @@ template<typename T> constexpr bool unsupportedStorageBackend() {
 /// unless the relevant specialization is present.
 template<typename Backend> struct storage_traits {
   static_assert(unsupportedStorageBackend<Backend>(),
-                "Storage backend is unsupported"
-               );
+                "Storage backend is unsupported");
 };
 
-}
+} // namespace ezarpack

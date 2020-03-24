@@ -12,8 +12,8 @@
  ******************************************************************************/
 #pragma once
 
-#include <complex>
 #include <cmath>
+#include <complex>
 #include <memory>
 
 #include "base.hpp"
@@ -65,26 +65,26 @@ template<> struct storage_traits<raw_storage> {
   }
 
   // Destructors (No-op)
-  template<typename T> inline static void destroy(std::unique_ptr<T[]> & p) { }
+  template<typename T> inline static void destroy(std::unique_ptr<T[]>& p) {}
 
   // Resize
   template<typename T>
-  inline static void resize(std::unique_ptr<T[]> & v, int size) {
+  inline static void resize(std::unique_ptr<T[]>& v, int size) {
     v.reset(new T[size]);
   }
   template<typename T>
-  inline static void resize(std::unique_ptr<T[]> & m, int rows, int cols) {
+  inline static void resize(std::unique_ptr<T[]>& m, int rows, int cols) {
     m.reset(new T[rows * cols]);
   }
 
   // Get pointer to data array
-  template<typename T> inline static T* get_data_ptr(std::unique_ptr<T[]> & p) {
+  template<typename T> inline static T* get_data_ptr(std::unique_ptr<T[]>& p) {
     return p.get();
   }
 
   // Make vector view
   template<typename T>
-  inline static T* make_vector_view(std::unique_ptr<T[]> & v) {
+  inline static T* make_vector_view(std::unique_ptr<T[]>& v) {
     return v.get();
   }
   template<typename T>
@@ -94,9 +94,8 @@ template<> struct storage_traits<raw_storage> {
 
   // Make subvector view
   template<typename T>
-  inline static T* make_vector_view(std::unique_ptr<T[]> & v,
-                                    int start,
-                                    int /* size */) {
+  inline static T*
+  make_vector_view(std::unique_ptr<T[]>& v, int start, int /* size */) {
     return v.get() + start;
   }
   template<typename T>
@@ -108,7 +107,7 @@ template<> struct storage_traits<raw_storage> {
 
   // Make matrix view
   template<typename T>
-  inline static T* make_matrix_view(std::unique_ptr<T[]> & m) {
+  inline static T* make_matrix_view(std::unique_ptr<T[]>& m) {
     return m.get();
   }
   template<typename T>
@@ -118,7 +117,7 @@ template<> struct storage_traits<raw_storage> {
 
   // Make submatrix view including 'cols' leftmost columns
   template<typename T>
-  inline static T* make_matrix_view(T * m, int /* rows */, int /* cols */) {
+  inline static T* make_matrix_view(T* m, int /* rows */, int /* cols */) {
     return m;
   }
   template<typename T>
@@ -129,10 +128,10 @@ template<> struct storage_traits<raw_storage> {
   }
 
   // worker_asymmetric: Extract Ritz values from 'dr' and 'di' vectors
-  inline static
-  complex_vector_type make_asymm_eigenvalues(real_vector_type const& dr,
-                                             real_vector_type const& di,
-                                             int nev) {
+  inline static complex_vector_type
+  make_asymm_eigenvalues(real_vector_type const& dr,
+                         real_vector_type const& di,
+                         int nev) {
     complex_vector_type res(new dcomplex[nev]);
     for(int n = 0; n < nev; ++n) {
       res[n] = dcomplex(dr[n], di[n]);
@@ -141,24 +140,25 @@ template<> struct storage_traits<raw_storage> {
   }
 
   // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
-  inline static
-  complex_matrix_type make_asymm_eigenvectors(real_vector_type const& z,
-                                              real_vector_type const& di,
-                                              int N,
-                                              int nev) {
+  inline static complex_matrix_type
+  make_asymm_eigenvectors(real_vector_type const& z,
+                          real_vector_type const& di,
+                          int N,
+                          int nev) {
     complex_matrix_type res(new dcomplex[N * nev]);
     dcomplex I(0, 1);
     for(int i = 0; i < nev; ++i) {
       if(di[i] == 0) {
-        for(int n = 0; n < N; ++n) res[n + N*i] = z[n + N*i];
+        for(int n = 0; n < N; ++n)
+          res[n + N * i] = z[n + N * i];
       } else {
         for(int n = 0; n < N; ++n) {
-          res[n + N*i] = z[n + N*i] +
-                         I*std::copysign(1.0, di[i])*z[n + N*(i+1)];
+          res[n + N * i] =
+              z[n + N * i] + I * std::copysign(1.0, di[i]) * z[n + N * (i + 1)];
         }
-        if(i < nev-1) {
+        if(i < nev - 1) {
           for(int n = 0; n < N; ++n) {
-            res[n + N*(i+1)] = std::conj(res[n + N*i]);
+            res[n + N * (i + 1)] = std::conj(res[n + N * i]);
           }
           ++i;
         }

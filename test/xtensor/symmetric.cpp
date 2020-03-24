@@ -31,22 +31,19 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   const double offdiag_coeff = 0.5;
   const int nev = 10;
 
-  auto spectrum_parts = {params_t::Smallest,
-                         params_t::Largest,
+  auto spectrum_parts = {params_t::Smallest, params_t::Largest,
                          params_t::SmallestMagnitude,
-                         params_t::LargestMagnitude,
-                         params_t::BothEnds};
+                         params_t::LargestMagnitude, params_t::BothEnds};
 
   // Symmetric matrix A
-  auto A = make_sparse_matrix<ezarpack::Symmetric>(N,
-                                                   diag_coeff,
-                                                   offdiag_offset,
-                                                   offdiag_coeff);
+  auto A = make_sparse_matrix<ezarpack::Symmetric>(
+      N, diag_coeff, offdiag_offset, offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<ezarpack::Symmetric>(N);
 
-  auto set_init_residual_vector = [](worker_t & ar) {
-    for(int i = 0; i < N; ++i) ar.residual_vector()[i] = double(i) / N;
+  auto set_init_residual_vector = [](worker_t& ar) {
+    for(int i = 0; i < N; ++i)
+      ar.residual_vector()[i] = double(i) / N;
   };
 
   using vector_view_t = worker_t::vector_view_t;
@@ -92,7 +89,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode") {
     double sigma = 1.0;
-    decltype(A) op_matrix = dot(inv(xt::eval(A - sigma*M)), M);
+    decltype(A) op_matrix = dot(inv(xt::eval(A - sigma * M)), M);
 
     auto op = [&](vector_view_t from, vector_view_t to) {
       to = dot(op_matrix, from);
@@ -115,7 +112,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
 
   SECTION("Generalized eigenproblem: Buckling mode") {
     double sigma = 1.0;
-    decltype(A) op_matrix = dot(inv(xt::eval(M - sigma*A)), M);
+    decltype(A) op_matrix = dot(inv(xt::eval(M - sigma * A)), M);
 
     auto op = [&](vector_view_t from, vector_view_t to) {
       to = dot(op_matrix, from);
@@ -138,7 +135,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
 
   SECTION("Generalized eigenproblem: Cayley transformed mode") {
     double sigma = 1.0;
-    decltype(A) op_matrix = dot(inv(xt::eval(A - sigma*M)), (A + sigma*M));
+    decltype(A) op_matrix = dot(inv(xt::eval(A - sigma * M)), (A + sigma * M));
 
     auto op = [&](vector_view_t from, vector_view_t to) {
       to = dot(op_matrix, from);

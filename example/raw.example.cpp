@@ -11,15 +11,15 @@
  *
  ******************************************************************************/
 
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
 // This example shows how to use ezARPACK and the raw memory storage backend
 // to partially diagonalize a large sparse symmetric matrix
 // and find a number of its low-lying eigenvalues.
 
-#include <ezarpack/storages/raw.hpp>
 #include <ezarpack/arpack_worker.hpp>
+#include <ezarpack/storages/raw.hpp>
 #include <ezarpack/version.hpp>
 
 using namespace ezarpack;
@@ -44,10 +44,9 @@ int main(int argc, char* argv[]) {
   // * `arpack_worker<Complex, raw_storage>' for general complex matrices.
   arpack_worker<Symmetric, raw_storage> worker(N);
 
-  using vector_view_t =
-    arpack_worker<Symmetric, raw_storage>::vector_view_t;
+  using vector_view_t = arpack_worker<Symmetric, raw_storage>::vector_view_t;
   using vector_const_view_t =
-    arpack_worker<Symmetric, raw_storage>::vector_const_view_t;
+      arpack_worker<Symmetric, raw_storage>::vector_const_view_t;
 
   // Linear operator representing multiplication of a given vector by our matrix
   // The operator must act on the 'from' vector and store results in 'to'.
@@ -87,21 +86,20 @@ int main(int argc, char* argv[]) {
   // NB: Eigenvectors are stored in the column major order
   auto const& v = worker.eigenvectors();
 
-  double * lhs = new double[N];
-  double * rhs = new double[N];
+  double* lhs = new double[N];
+  double* rhs = new double[N];
 
-  for(int i = 0; i < N_ev; ++i) {                      // For each eigenpair ...
-    matrix_op(v + N*i, lhs);                           // calculate A*v
-    std::transform(v + N*i, v + N*(i+1), rhs,          // and \lambda*v
-                  [&](double x) { return lambda[i]*x;}
-                  );
+  for(int i = 0; i < N_ev; ++i) {                   // For each eigenpair ...
+    matrix_op(v + N * i, lhs);                      // calculate A*v
+    std::transform(v + N * i, v + N * (i + 1), rhs, // and \lambda*v
+                   [&](double x) { return lambda[i] * x; });
 
     double deviation = 0;
     for(int j = 0; j < N; ++j) {
       double d = rhs[j] - lhs[j];
       deviation += d * d;
     }
-    deviation /= N*N;
+    deviation /= N * N;
     std::cout << i << ": deviation = " << deviation << std::endl;
   }
 
@@ -111,12 +109,12 @@ int main(int argc, char* argv[]) {
   // Print some computation statistics
   auto stats = worker.stats();
 
-  std::cout << "Number of Arnoldi update iterations: "
-            << stats.n_iter << std::endl;
-  std::cout << "Number of 'converged' Ritz values: "
-            << stats.n_converged << std::endl;
-  std::cout << "Total number of OP*x operations: "
-            << stats.n_op_x_operations << std::endl;
+  std::cout << "Number of Arnoldi update iterations: " << stats.n_iter
+            << std::endl;
+  std::cout << "Number of 'converged' Ritz values: " << stats.n_converged
+            << std::endl;
+  std::cout << "Total number of OP*x operations: " << stats.n_op_x_operations
+            << std::endl;
   std::cout << "Total number of steps of re-orthogonalization: "
             << stats.n_reorth_steps << std::endl;
 

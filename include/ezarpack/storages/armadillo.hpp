@@ -12,8 +12,9 @@
  ******************************************************************************/
 #pragma once
 
-#include <complex>
 #include <cmath>
+#include <complex>
+
 #include <armadillo>
 
 #include "base.hpp"
@@ -74,88 +75,86 @@ template<> struct storage_traits<armadillo_storage> {
   }
 
   // Destructors (No-op)
-  template<typename T> inline static void destroy(vector<T> &) {}
-  template<typename T> inline static void destroy(matrix<T> &) {}
+  template<typename T> inline static void destroy(vector<T>&) {}
+  template<typename T> inline static void destroy(matrix<T>&) {}
 
   // Resize
+  template<typename T> inline static void resize(vector<T>& v, int size) {
+    v.resize(size);
+  }
   template<typename T>
-  inline static void resize(vector<T> &v, int size) { v.resize(size); }
-  template<typename T>
-  inline static void resize(matrix<T> &m, int rows, int cols) {
+  inline static void resize(matrix<T>& m, int rows, int cols) {
     m.resize(rows, cols);
   }
 
   // Get pointer to data array
-  template<typename T>
-  inline static T* get_data_ptr(vector<T> &v) { return v.memptr(); }
-  template<typename T>
-  inline static T* get_data_ptr(matrix<T> &m) { return m.memptr(); }
+  template<typename T> inline static T* get_data_ptr(vector<T>& v) {
+    return v.memptr();
+  }
+  template<typename T> inline static T* get_data_ptr(matrix<T>& m) {
+    return m.memptr();
+  }
 
   // Make vector view
   template<typename T>
-  inline static vector_view<T> make_vector_view(vector<T> & v) {
+  inline static vector_view<T> make_vector_view(vector<T>& v) {
     return v(span::all);
   }
   template<typename T>
-  inline static
-  vector_const_view<T> make_vector_const_view(vector<T> const& v) {
+  inline static vector_const_view<T>
+  make_vector_const_view(vector<T> const& v) {
     return v(span::all);
   }
 
   // Make subvector view
   template<typename T>
-  inline static
-  vector_view<T> make_vector_view(vector<T> & v, int start, int size) {
+  inline static vector_view<T>
+  make_vector_view(vector<T>& v, int start, int size) {
     return v.subvec(start, start + size - 1);
   }
   template<typename T>
-  inline static
-  vector_const_view<T> make_vector_const_view(vector<T> const& v,
-                                              int start,
-                                              int size) {
+  inline static vector_const_view<T>
+  make_vector_const_view(vector<T> const& v, int start, int size) {
     return v.subvec(start, start + size - 1);
   }
 
   // Make matrix view
   template<typename T>
-  inline static
-  matrix_view<T> make_matrix_view(matrix<T> & m) {
+  inline static matrix_view<T> make_matrix_view(matrix<T>& m) {
     return m(span::all, span::all);
   }
   template<typename T>
-  inline static
-  matrix_const_view<T> make_matrix_const_view(matrix<T> const& m) {
+  inline static matrix_const_view<T>
+  make_matrix_const_view(matrix<T> const& m) {
     return m(span::all, span::all);
   }
 
   // Make submatrix view including 'cols' leftmost columns
   template<typename T>
-  inline static
-  matrix_view<T> make_matrix_view(matrix<T> & m, int /* rows */, int cols) {
+  inline static matrix_view<T>
+  make_matrix_view(matrix<T>& m, int /* rows */, int cols) {
     return m.head_cols(cols);
   }
   template<typename T>
-  inline static
-  matrix_const_view<T> make_matrix_const_view(matrix<T> const& m,
-                                              int /* rows */,
-                                              int cols) {
+  inline static matrix_const_view<T>
+  make_matrix_const_view(matrix<T> const& m, int /* rows */, int cols) {
     return m.head_cols(cols);
   }
 
   // worker_asymmetric: Extract Ritz values from 'dr' and 'di' vectors
-  inline static
-  complex_vector_type make_asymm_eigenvalues(real_vector_type const& dr,
-                                             real_vector_type const& di,
-                                             int nev) {
+  inline static complex_vector_type
+  make_asymm_eigenvalues(real_vector_type const& dr,
+                         real_vector_type const& di,
+                         int nev) {
     return dr.head(nev) + dcomplex(0, 1) * di.head(nev);
   }
 
   // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
-  inline static
-  complex_matrix_type make_asymm_eigenvectors(real_matrix_type const& z,
-                                              real_vector_type const& di,
-                                              int N,
-                                              int nev) {
+  inline static complex_matrix_type
+  make_asymm_eigenvectors(real_matrix_type const& z,
+                          real_vector_type const& di,
+                          int N,
+                          int nev) {
     complex_matrix_type res(N, nev);
     dcomplex one(1);
     dcomplex I(0, 1);
@@ -163,9 +162,9 @@ template<> struct storage_traits<armadillo_storage> {
       if(di[i] == 0) {
         res.col(i) = one * z.col(i);
       } else {
-        res.col(i) = z.col(i) + I*std::copysign(1.0, di[i])*z.col(i+1);
-        if(i < nev-1) {
-          res.col(i+1) = arma::conj(res.col(i));
+        res.col(i) = z.col(i) + I * std::copysign(1.0, di[i]) * z.col(i + 1);
+        if(i < nev - 1) {
+          res.col(i + 1) = arma::conj(res.col(i));
           ++i;
         }
       }
