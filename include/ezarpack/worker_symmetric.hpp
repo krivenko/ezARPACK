@@ -361,12 +361,12 @@ public:
 
   // Access eigenvalues
   real_vector_const_view_t eigenvalues() const {
-    return storage::make_vector_const_view(d);
+    return storage::make_vector_const_view(d, 0, iparam[4]);
   }
 
   // Access eigenvectors
   real_matrix_const_view_t eigenvectors() const {
-    return storage::make_matrix_const_view(v, N, nev);
+    return storage::make_matrix_const_view(v, N, iparam[4]);
   }
 
   // Access residual vector

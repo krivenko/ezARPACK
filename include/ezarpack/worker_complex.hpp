@@ -387,12 +387,12 @@ public:
 
   // Access eigenvalues
   complex_vector_const_view_t eigenvalues() const {
-    return storage::make_vector_const_view(d, 0, nev);
+    return storage::make_vector_const_view(d, 0, iparam[4]);
   }
 
   // Access Ritz/Schur vectors
   complex_matrix_const_view_t eigenvectors() const {
-    return storage::make_matrix_const_view(z);
+    return storage::make_matrix_const_view(z, N, iparam[4]);
   }
 
   // Access residual vector

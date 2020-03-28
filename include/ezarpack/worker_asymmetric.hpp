@@ -408,15 +408,12 @@ public:
     assert(!(
         (iparam[6] == ShiftAndInvertReal || iparam[6] == ShiftAndInvertImag) &&
         sigmai != 0));
-    return storage::make_asymm_eigenvalues(dr, di, nev);
+    return storage::make_asymm_eigenvalues(dr, di, iparam[4]);
   }
 
   // Access Ritz/Schur vectors
   complex_matrix_t eigenvectors() const {
-    if(iparam[4] < nev)
-      std::cerr << "arpack_worker: only " << iparam[4] << " out of " << nev
-                << " Ritz vectors have converged.";
-    return storage::make_asymm_eigenvectors(z, di, N, nev);
+    return storage::make_asymm_eigenvectors(z, di, N, iparam[4]);
   }
 
   // Access residual vector
