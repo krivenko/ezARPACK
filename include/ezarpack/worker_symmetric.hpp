@@ -181,7 +181,7 @@ public:
   // 'shifts_f' is expected to place the shifts for implicit restart
   // into 'shifts'
   template<typename A, typename ShiftsF = trivial_shifts_f>
-  void operator()(A a, params_t const& params, ShiftsF shifts_f = {}) {
+  void operator()(A&& a, params_t const& params, ShiftsF shifts_f = {}) {
 
     prepare(params);
 
@@ -272,8 +272,8 @@ public:
   // 'shifts_f' is expected to place the shifts for implicit restart
   // into 'shifts'
   template<typename OP, typename B, typename ShiftsF = trivial_shifts_f>
-  void operator()(OP op,
-                  B b,
+  void operator()(OP&& op,
+                  B&& b,
                   Mode mode,
                   params_t const& params,
                   ShiftsF shifts_f = {}) {
