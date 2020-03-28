@@ -159,10 +159,6 @@ public:
 
     // Tolerance
     tol = std::max(.0, params.tolerance);
-    if(params.tolerance < 0) {
-      std::cerr << "arpack_worker: negative tolerance " << params.tolerance
-                << " is interpreted as machine epsilon." << std::endl;
-    }
 
     // Use random initial residual vector?
     info = !params.random_residual_vector;

@@ -13,7 +13,6 @@
 #pragma once
 
 #include <array>
-#include <iostream>
 #include <limits.h>
 #include <stdexcept>
 #include <string>
