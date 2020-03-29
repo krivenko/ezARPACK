@@ -159,29 +159,62 @@ template<> struct storage_traits<ublas_storage> {
   inline static complex_vector_type
   make_asymm_eigenvalues(real_vector_type const& dr,
                          real_vector_type const& di,
-                         int nev) {
-    complex_vector_type res(subrange(di, 0, nev));
+                         int nconv) {
+    complex_vector_type res(subrange(di, 0, nconv));
     res *= dcomplex(0, 1);
-    res += subrange(dr, 0, nev);
+    res += subrange(dr, 0, nconv);
     return res;
+  }
+
+  // worker_asymmetric: Compute Ritz values from Ritz vectors
+  template<typename A>
+  inline static complex_vector_type
+  make_asymm_eigenvalues(real_vector_type const& z,
+                         real_vector_type const& di,
+                         A&& a,
+                         int N,
+                         int nconv) {
+    complex_vector_type lambda(nconv);
+    real_vector_type Ax1(N), Ax2(N);
+    auto to1 = make_vector_view(Ax1);
+    auto to2 = make_vector_view(Ax2);
+    for(int i = 0; i < nconv; ++i) {
+      if(di(i) == 0) {
+        auto from1 = make_vector_const_view(z, i * N, N);
+        a(from1, to1);
+        lambda(i) = inner_prod(from1, to1);
+      } else {
+        auto from1 = make_vector_const_view(z, i * N, N);
+        auto from2 = make_vector_const_view(z, (i + 1) * N, N);
+        a(from1, to1);
+        a(from2, to2);
+        lambda(i) = dcomplex(inner_prod(from1, to1) + inner_prod(from2, to2),
+                             inner_prod(from1, to2) - inner_prod(from2, to1));
+        ++i;
+        lambda(i) = std::conj(lambda(i - 1));
+      }
+    }
+    return lambda;
   }
 
   // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
   inline static complex_matrix_type
-  make_asymm_eigenvectors(real_matrix_type const& z,
+  make_asymm_eigenvectors(real_vector_type const& z,
                           real_vector_type const& di,
                           int N,
-                          int nev) {
-    complex_matrix_type res(N, nev);
+                          int nconv) {
+    complex_matrix_type res(N, nconv);
     dcomplex I(0, 1);
-    for(int i = 0; i < nev; ++i) {
+    using boost::numeric::ublas::subrange;
+    for(int i = 0; i < nconv; ++i) {
       if(di(i) == 0) {
-        column(res, i) = column(z, i);
+        column(res, i) = subrange(z, i * N, (i + 1) * N);
       } else {
-        column(res, i) = std::copysign(1.0, di(i)) * column(z, i + 1);
+        column(res, i) =
+            std::copysign(1.0, di(i)) * subrange(z, (i + 1) * N, (i + 2) * N);
         column(res, i) *= I;
-        column(res, i) += column(z, i);
-        if(i < nev - 1) {
+        column(res, i) += subrange(z, i * N, (i + 1) * N);
+        if(i < nconv - 1) {
           column(res, i + 1) = conj(column(res, i));
           ++i;
         }

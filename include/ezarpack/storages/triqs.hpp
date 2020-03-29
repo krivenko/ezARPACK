@@ -16,6 +16,7 @@
 #include <complex>
 
 #include <triqs/arrays.hpp>
+#include <triqs/arrays/blas_lapack/dot.hpp>
 
 #include "base.hpp"
 
@@ -147,25 +148,59 @@ template<> struct storage_traits<triqs_storage> {
   inline static complex_vector_type
   make_asymm_eigenvalues(real_vector_type const& dr,
                          real_vector_type const& di,
-                         int nev) {
-    return dr(range(nev)) + dcomplex(0, 1) * di(range(nev));
+                         int nconv) {
+    return dr(range(nconv)) + dcomplex(0, 1) * di(range(nconv));
+  }
+
+  // worker_asymmetric: Compute Ritz values from Ritz vectors
+  template<typename A>
+  inline static complex_vector_type
+  make_asymm_eigenvalues(real_vector_type const& z,
+                         real_vector_type const& di,
+                         A&& a,
+                         int N,
+                         int nconv) {
+    complex_vector_type lambda(nconv);
+    real_vector_type Ax1(N), Ax2(N);
+    auto to1 = make_vector_view(Ax1);
+    auto to2 = make_vector_view(Ax2);
+    using triqs::arrays::dot;
+    for(int i = 0; i < nconv; ++i) {
+      if(di(i) == 0) {
+        auto from1 = make_vector_const_view(z, i * N, N);
+        a(from1, to1);
+        lambda(i) = dot(from1, to1);
+      } else {
+        auto from1 = make_vector_const_view(z, i * N, N);
+        auto from2 = make_vector_const_view(z, (i + 1) * N, N);
+        a(from1, to1);
+        a(from2, to2);
+        lambda(i) = dcomplex(dot(from1, to1) + dot(from2, to2),
+                             dot(from1, to2) - dot(from2, to1));
+        ++i;
+        lambda(i) = std::conj(lambda(i - 1));
+      }
+    }
+    return lambda;
   }
 
   // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
   inline static complex_matrix_type
-  make_asymm_eigenvectors(real_matrix_type const& z,
+  make_asymm_eigenvectors(real_vector_type const& z,
                           real_vector_type const& di,
                           int N,
-                          int nev) {
-    complex_matrix_type res(N, nev);
+                          int nconv) {
+    complex_matrix_type res(N, nconv);
     auto _ = range();
     dcomplex I(0, 1);
-    for(int i = 0; i < nev; ++i) {
+    for(int i = 0; i < nconv; ++i) {
       if(di(i) == 0) {
-        res(_, i) = z(_, i);
+        res(_, i) = z(range(i * N, (i + 1) * N));
       } else {
-        res(_, i) = z(_, i) + I * std::copysign(1.0, di(i)) * z(_, i + 1);
-        if(i < nev - 1) {
+        res(_, i) =
+            z(range(i * N, (i + 1) * N)) +
+            I * std::copysign(1.0, di(i)) * z(range((i + 1) * N, (i + 2) * N));
+        if(i < nconv - 1) {
           res(_, i + 1) = conj(res(_, i));
           ++i;
         }

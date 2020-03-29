@@ -121,4 +121,82 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
       check_eigenvectors(ar, A.get(), M.get(), N, nev);
     }
   }
+
+  SECTION("Generalized eigenproblem: Shift-and-Invert mode (real part)") {
+    dcomplex sigma(1.0, -0.1);
+
+    auto AmM = make_buffer<dcomplex>(N * N);
+    for(int i = 0; i < N; ++i) {
+      for(int j = 0; j < N; ++j) {
+        AmM[i + j * N] = A[i + j * N] - sigma * M[i + j * N];
+      }
+    }
+    auto invAmM = make_buffer<dcomplex>(N * N);
+    invert(AmM.get(), invAmM.get(), N);
+    auto op_matrix = make_buffer<dcomplex>(N * N);
+    mm_product(invAmM.get(), M.get(), op_matrix.get(), N);
+    auto op_matrix_re = make_buffer<double>(N * N);
+    for(int i = 0; i < N; ++i) {
+      for(int j = 0; j < N; ++j) {
+        op_matrix_re[i + j * N] = op_matrix[i + j * N].real();
+      }
+    }
+
+    auto op = [&](vector_const_view_t from, vector_view_t to) {
+      mv_product(op_matrix_re.get(), from, to, N);
+    };
+    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
+      mv_product(M.get(), from, to, N);
+    };
+
+    worker_t ar(N);
+
+    for(auto e : spectrum_parts) {
+      params_t params(nev, e, params_t::Ritz);
+      params.random_residual_vector = false;
+      params.sigma = sigma;
+      set_init_residual_vector(ar);
+      ar(op, Bop, worker_t::ShiftAndInvertReal, params);
+      check_eigenvectors_shift_and_invert(ar, A.get(), M.get(), N, nev);
+    }
+  }
+
+  SECTION("Generalized eigenproblem: Shift-and-Invert mode (imaginary part)") {
+    dcomplex sigma(-0.1, 1.0);
+
+    auto AmM = make_buffer<dcomplex>(N * N);
+    for(int i = 0; i < N; ++i) {
+      for(int j = 0; j < N; ++j) {
+        AmM[i + j * N] = A[i + j * N] - sigma * M[i + j * N];
+      }
+    }
+    auto invAmM = make_buffer<dcomplex>(N * N);
+    invert(AmM.get(), invAmM.get(), N);
+    auto op_matrix = make_buffer<dcomplex>(N * N);
+    mm_product(invAmM.get(), M.get(), op_matrix.get(), N);
+    auto op_matrix_im = make_buffer<double>(N * N);
+    for(int i = 0; i < N; ++i) {
+      for(int j = 0; j < N; ++j) {
+        op_matrix_im[i + j * N] = op_matrix[i + j * N].imag();
+      }
+    }
+
+    auto op = [&](vector_const_view_t from, vector_view_t to) {
+      mv_product(op_matrix_im.get(), from, to, N);
+    };
+    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
+      mv_product(M.get(), from, to, N);
+    };
+
+    worker_t ar(N);
+
+    for(auto e : spectrum_parts) {
+      params_t params(nev, e, params_t::Ritz);
+      params.random_residual_vector = false;
+      params.sigma = sigma;
+      set_init_residual_vector(ar);
+      ar(op, Bop, worker_t::ShiftAndInvertImag, params);
+      check_eigenvectors_shift_and_invert(ar, A.get(), M.get(), N, nev);
+    }
+  }
 }

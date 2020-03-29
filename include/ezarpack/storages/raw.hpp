@@ -131,12 +131,50 @@ template<> struct storage_traits<raw_storage> {
   inline static complex_vector_type
   make_asymm_eigenvalues(real_vector_type const& dr,
                          real_vector_type const& di,
-                         int nev) {
-    complex_vector_type res(new dcomplex[nev]);
-    for(int n = 0; n < nev; ++n) {
+                         int nconv) {
+    complex_vector_type res(new dcomplex[nconv]);
+    for(int n = 0; n < nconv; ++n) {
       res[n] = dcomplex(dr[n], di[n]);
     }
     return res;
+  }
+
+  // worker_asymmetric: Compute Ritz values from Ritz vectors
+  template<typename A>
+  inline static complex_vector_type
+  make_asymm_eigenvalues(real_vector_type const& z,
+                         real_vector_type const& di,
+                         A&& a,
+                         int N,
+                         int nconv) {
+    complex_vector_type lambda(new dcomplex[nconv]);
+    real_vector_type Ax1(new double[N]), Ax2(new double[N]);
+    auto to1 = make_vector_view(Ax1);
+    auto to2 = make_vector_view(Ax2);
+    auto dot = [&](real_vector_const_view_type v1,
+                   real_vector_const_view_type v2) {
+      double s = 0;
+      for(int i = 0; i < N; ++i)
+        s += v1[i] * v2[i];
+      return s;
+    };
+    for(int i = 0; i < nconv; ++i) {
+      if(di[i] == 0) {
+        auto from1 = make_vector_const_view(z, i * N, N);
+        a(from1, to1);
+        lambda[i] = dot(from1, to1);
+      } else {
+        auto from1 = make_vector_const_view(z, i * N, N);
+        auto from2 = make_vector_const_view(z, (i + 1) * N, N);
+        a(from1, to1);
+        a(from2, to2);
+        lambda[i] = dcomplex(dot(from1, to1) + dot(from2, to2),
+                             dot(from1, to2) - dot(from2, to1));
+        ++i;
+        lambda[i] = std::conj(lambda[i - 1]);
+      }
+    }
+    return lambda;
   }
 
   // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
@@ -144,10 +182,10 @@ template<> struct storage_traits<raw_storage> {
   make_asymm_eigenvectors(real_vector_type const& z,
                           real_vector_type const& di,
                           int N,
-                          int nev) {
-    complex_matrix_type res(new dcomplex[N * nev]);
+                          int nconv) {
+    complex_matrix_type res(new dcomplex[N * nconv]);
     dcomplex I(0, 1);
-    for(int i = 0; i < nev; ++i) {
+    for(int i = 0; i < nconv; ++i) {
       if(di[i] == 0) {
         for(int n = 0; n < N; ++n)
           res[n + N * i] = z[n + N * i];
@@ -156,7 +194,7 @@ template<> struct storage_traits<raw_storage> {
           res[n + N * i] =
               z[n + N * i] + I * std::copysign(1.0, di[i]) * z[n + N * (i + 1)];
         }
-        if(i < nev - 1) {
+        if(i < nconv - 1) {
           for(int n = 0; n < N; ++n) {
             res[n + N * (i + 1)] = std::conj(res[n + N * i]);
           }

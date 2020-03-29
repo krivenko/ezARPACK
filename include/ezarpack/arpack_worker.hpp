@@ -16,6 +16,7 @@
 #include <limits.h>
 #include <stdexcept>
 #include <string>
+#include <utility>
 
 #include "arpack.hpp"
 

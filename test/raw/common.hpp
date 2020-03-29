@@ -269,3 +269,37 @@ void check_eigenvectors(arpack_worker<MKind, raw_storage> const& ar,
     CHECK_THAT(rhs.get(), IsCloseTo(lhs.get(), N));
   }
 }
+
+// Check that 'ar' contains the correct solution of a generalized eigenproblem
+// (Shift-and-Invert modes)
+template<
+    operator_kind MKind,
+    typename M,
+    typename T =
+        typename std::conditional<MKind == Symmetric, double, dcomplex>::type>
+void check_eigenvectors_shift_and_invert(
+    arpack_worker<MKind, raw_storage> const& ar,
+    M const* a,
+    M const* m,
+    int N,
+    int nev) {
+  using worker_t = arpack_worker<ezarpack::Asymmetric, raw_storage>;
+  using vector_view_t = worker_t::vector_view_t;
+  using vector_const_view_t = worker_t::vector_const_view_t;
+  auto Aop = [&](vector_const_view_t from, vector_view_t to) {
+    mv_product(a, from, to, N);
+  };
+  auto eigenvalues = ar.eigenvalues(Aop);
+  auto eigenvectors = ar.eigenvectors();
+  for(int i = 0; i < nev; ++i) {
+    // RHS
+    auto rhs = make_buffer<T>(N);
+    mv_product(m, get_ptr(eigenvectors) + i * N, rhs.get(), N);
+    scale(rhs.get(), eigenvalues[i], rhs.get(), N);
+    // LHS
+    auto lhs = make_buffer<T>(N);
+    mv_product(a, get_ptr(eigenvectors) + i * N, lhs.get(), N);
+
+    CHECK_THAT(rhs.get(), IsCloseTo(lhs.get(), N));
+  }
+}

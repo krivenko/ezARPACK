@@ -39,16 +39,16 @@ template<typename Backend> class arpack_worker<Asymmetric, Backend> {
   real_vector_t workd;        // Working space
   int ncv = 0;                // Number of Lanczos vectors to be generated
   real_matrix_t v;            // Matrix with Arnoldi basis vectors
-  real_matrix_t z;            // Matrix with Ritz vectors
+  real_vector_t z;            // Flattened matrix with Ritz vectors
   real_vector_t dr, di;       // Ritz values (real and imaginary parts)
   int iparam[11];             // Various input/output parameters
   int ipntr[14];              // Starting locations in workd and workl
   int info = 0;               // !=0 to use resid, 0 otherwise
-  int rvec = false;           // RVEC parameter of dseupd
-  char howmny;                // HOWMNY parameter of dseupd
-  int_vector_t select;        // SELECT parameter of dseupd
-  double sigmar = 0;          // SIGMAR parameter of dseupd
-  double sigmai = 0;          // SIGMAI parameter of dseupd
+  int rvec = false;           // RVEC parameter of dneupd
+  char howmny;                // HOWMNY parameter of dneupd
+  int_vector_t select;        // SELECT parameter of dneupd
+  double sigmar = 0;          // SIGMAR parameter of dneupd
+  double sigmai = 0;          // SIGMAI parameter of dneupd
   bool Bx_available_ = false; // Has B*x already been computed?
 
 public:
@@ -103,7 +103,7 @@ public:
         resid(storage::make_real_vector(N)),
         workd(storage::make_real_vector(3 * N)),
         v(storage::make_real_matrix(N, 0)),
-        z(storage::make_real_matrix(0, 0)),
+        z(storage::make_real_vector(0)),
         dr(storage::make_real_vector(nev + 1)),
         di(storage::make_real_vector(nev + 1)),
         select(storage::make_int_vector(0)) {
@@ -157,9 +157,9 @@ public:
     howmny = params.compute_vectors == params_t::Schur ? 'P' : 'A';
     storage::resize(select, ncv);
     if(rvec)
-      storage::resize(z, N, nev + 1);
+      storage::resize(z, N * (nev + 1));
     else
-      storage::resize(z, 0, 0);
+      storage::resize(z, 0);
 
     // Tolerance
     tol = std::max(.0, params.tolerance);
@@ -298,13 +298,6 @@ public:
                   params_t const& params,
                   ShiftsF shifts_f = {}) {
 
-    // https://github.com/opencollab/arpack-ng/issues/3
-    // http://forge.scilab.org/index.php/p/arpack-ng/issues/1315/
-    if(mode == ShiftAndInvertReal || mode == ShiftAndInvertImag)
-      throw ARPACK_WORKER_ERROR(
-          "ShiftAndInvertReal and ShiftAndInvertImag modes "
-          "are disabled due to potential problems with dneupd");
-
     prepare(params);
 
     iparam[0] = (std::is_same<ShiftsF, trivial_shifts_f>::value ? 1 : 0);
@@ -399,12 +392,20 @@ public:
 
   // Access eigenvalues
   // Cannot be used in ShiftAndInvertReal and ShiftAndInvertImag modes
-  // if imag(sigma) != 0.
   complex_vector_t eigenvalues() const {
-    assert(!(
-        (iparam[6] == ShiftAndInvertReal || iparam[6] == ShiftAndInvertImag) &&
-        sigmai != 0));
+    if(iparam[6] == ShiftAndInvertReal || iparam[6] == ShiftAndInvertImag)
+      throw ARPACK_WORKER_ERROR("This method is invalid in ShiftAndInvertReal "
+                                "or ShiftAndInvertImag mode");
     return storage::make_asymm_eigenvalues(dr, di, iparam[4]);
+  }
+
+  // Compute eigenvalues from eigenvectors as x^+ * A * x
+  template<typename A> complex_vector_t eigenvalues(A&& a) const {
+    if((!rvec) || (howmny != 'A'))
+      throw ARPACK_WORKER_ERROR(
+          "Invalid method call: Ritz vectors have not been computed");
+    return storage::make_asymm_eigenvalues(z, di, std::forward<A>(a), N,
+                                           iparam[4]);
   }
 
   // Access Ritz/Schur vectors

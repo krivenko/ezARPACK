@@ -150,37 +150,69 @@ template<> struct storage_traits<eigen_storage> {
   inline static complex_vector_type
   make_asymm_eigenvalues(real_vector_type const& dr,
                          real_vector_type const& di,
-                         int nev) {
+                         int nconv) {
 #ifdef EIGEN_CAN_MIX_REAL_COMPLEX_EXPR
-    return dr.head(nev) + dcomplex(0, 1) * di.head(nev);
+    return dr.head(nconv) + dcomplex(0, 1) * di.head(nconv);
 #else
-    return dr.head(nev).cast<dcomplex>() + dcomplex(0, 1) * di.head(nev);
+    return dr.head(nconv).cast<dcomplex>() + dcomplex(0, 1) * di.head(nconv);
 #endif
+  }
+
+  // worker_asymmetric: Compute Ritz values from Ritz vectors
+  template<typename A>
+  inline static complex_vector_type
+  make_asymm_eigenvalues(real_vector_type const& z,
+                         real_vector_type const& di,
+                         A&& a,
+                         int N,
+                         int nconv) {
+    complex_vector_type lambda(nconv);
+    real_vector_type Ax1(N), Ax2(N);
+    auto to1 = make_vector_view(Ax1);
+    auto to2 = make_vector_view(Ax2);
+    for(int i = 0; i < nconv; ++i) {
+      if(di(i) == 0) {
+        auto from1 = make_vector_const_view(z, i * N, N);
+        a(from1, to1);
+        lambda(i) = from1.dot(to1);
+      } else {
+        auto from1 = make_vector_const_view(z, i * N, N);
+        auto from2 = make_vector_const_view(z, (i + 1) * N, N);
+        a(from1, to1);
+        a(from2, to2);
+        lambda(i) = dcomplex(from1.dot(to1) + from2.dot(to2),
+                             from1.dot(to2) - from2.dot(to1));
+        ++i;
+        lambda(i) = std::conj(lambda(i - 1));
+      }
+    }
+    return lambda;
   }
 
   // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
   inline static complex_matrix_type
-  make_asymm_eigenvectors(real_matrix_type const& z,
+  make_asymm_eigenvectors(real_vector_type const& z,
                           real_vector_type const& di,
                           int N,
-                          int nev) {
-    complex_matrix_type res(N, nev);
+                          int nconv) {
+    complex_matrix_type res(N, nconv);
     dcomplex I(0, 1);
-    for(int i = 0; i < nev; ++i) {
+    for(int i = 0; i < nconv; ++i) {
       if(di(i) == 0) {
 #ifdef EIGEN_CAN_MIX_REAL_COMPLEX_EXPR
-        res.col(i) = z.col(i);
+        res.col(i) = z.segment(i * N, N);
 #else
-        res.col(i) = z.col(i).cast<dcomplex>();
+        res.col(i) = z.segment(i * N, N).cast<dcomplex>();
 #endif
       } else {
 #ifdef EIGEN_CAN_MIX_REAL_COMPLEX_EXPR
-        res.col(i) = z.col(i) + I * std::copysign(1.0, di(i)) * z.col(i + 1);
+        res.col(i) = z.segment(i * N, N) +
+                     I * std::copysign(1.0, di(i)) * z.segment((i + 1) * N, N);
 #else
-        res.col(i) = z.col(i).cast<dcomplex>() +
-                     I * std::copysign(1.0, di(i)) * z.col(i + 1);
+        res.col(i) = z.segment(i * N, N).cast<dcomplex>() +
+                     I * std::copysign(1.0, di(i)) * z.segment((i + 1) * N, N);
 #endif
-        if(i < nev - 1) {
+        if(i < nconv - 1) {
           res.col(i + 1) = res.col(i).conjugate();
           ++i;
         }

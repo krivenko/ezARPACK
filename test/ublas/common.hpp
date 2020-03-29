@@ -135,3 +135,23 @@ void check_eigenvectors(AR const& ar, MT const& A, MT const& M) {
     CHECK_THAT(prod(A, vec), IsCloseTo(lambda[i] * prod(M, vec)));
   }
 }
+
+// Check that 'ar' contains the correct solution of a generalized eigenproblem
+// (Shift-and-Invert modes)
+template<typename AR, typename MT>
+void check_eigenvectors_shift_and_invert(AR const& ar,
+                                         MT const& A,
+                                         MT const& M) {
+  using worker_t = arpack_worker<ezarpack::Asymmetric, ublas_storage>;
+  using vector_view_t = worker_t::vector_view_t;
+  using vector_const_view_t = worker_t::vector_const_view_t;
+  auto Aop = [&](vector_const_view_t from, vector_view_t to) {
+    to = prod(A, from);
+  };
+  auto lambda = ar.eigenvalues(Aop);
+  auto vecs = ar.eigenvectors();
+  for(int i = 0; i < int(lambda.size()); ++i) {
+    auto vec = column(vecs, i);
+    CHECK_THAT(prod(A, vec), IsCloseTo(lambda[i] * prod(M, vec), 1e-9));
+  }
+}

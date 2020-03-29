@@ -84,4 +84,52 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
       check_eigenvectors(ar, A, M);
     }
   }
+
+  using cmat_type = matrix<dcomplex, column_major>;
+
+  SECTION("Generalized eigenproblem: Shift-and-Invert mode (real part)") {
+    dcomplex sigma(1.0, -0.1);
+    decltype(A) op_matrix = real(prod(inverse(A - sigma * cmat_type(M)), M));
+
+    auto op = [&](vector_const_view_t from, vector_view_t to) {
+      to = prod(op_matrix, from);
+    };
+    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
+      to = prod(M, from);
+    };
+
+    worker_t ar(A.size1());
+
+    for(auto e : spectrum_parts) {
+      params_t params(nev, e, params_t::Ritz);
+      params.random_residual_vector = false;
+      params.sigma = sigma;
+      set_init_residual_vector(ar);
+      ar(op, Bop, worker_t::ShiftAndInvertReal, params);
+      check_eigenvectors_shift_and_invert(ar, A, M);
+    }
+  }
+
+  SECTION("Generalized eigenproblem: Shift-and-Invert mode (imaginary part)") {
+    dcomplex sigma(-0.1, 1.0);
+    decltype(A) op_matrix = imag(prod(inverse(A - sigma * cmat_type(M)), M));
+
+    auto op = [&](vector_const_view_t from, vector_view_t to) {
+      to = prod(op_matrix, from);
+    };
+    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
+      to = prod(M, from);
+    };
+
+    worker_t ar(A.size1());
+
+    for(auto e : spectrum_parts) {
+      params_t params(nev, e, params_t::Ritz);
+      params.random_residual_vector = false;
+      params.sigma = sigma;
+      set_init_residual_vector(ar);
+      ar(op, Bop, worker_t::ShiftAndInvertImag, params);
+      check_eigenvectors_shift_and_invert(ar, A, M);
+    }
+  }
 }

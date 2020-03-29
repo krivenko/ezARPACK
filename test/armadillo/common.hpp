@@ -122,3 +122,21 @@ void check_eigenvectors(AR const& ar, MT const& A, MT const& M) {
     CHECK_THAT(A * vec, IsCloseTo(lambda[i] * M * vec));
   }
 }
+
+// Check that 'ar' contains the correct solution of a generalized eigenproblem
+// (Shift-and-Invert modes)
+template<typename AR, typename MT>
+void check_eigenvectors_shift_and_invert(AR const& ar,
+                                         MT const& A,
+                                         MT const& M) {
+  using worker_t = arpack_worker<ezarpack::Asymmetric, armadillo_storage>;
+  using vector_view_t = worker_t::vector_view_t;
+  using vector_const_view_t = worker_t::vector_const_view_t;
+  auto Aop = [&](vector_const_view_t from, vector_view_t to) { to = A * from; };
+  auto lambda = ar.eigenvalues(Aop);
+  auto vecs = ar.eigenvectors();
+  for(int i = 0; i < int(lambda.size()); ++i) {
+    auto vec = vecs.col(i);
+    CHECK_THAT(A * vec, IsCloseTo(lambda[i] * M * vec, 1e-9));
+  }
+}

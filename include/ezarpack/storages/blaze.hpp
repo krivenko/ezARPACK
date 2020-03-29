@@ -146,27 +146,59 @@ template<> struct storage_traits<blaze_storage> {
   inline static complex_vector_type
   make_asymm_eigenvalues(real_vector_type const& dr,
                          real_vector_type const& di,
-                         int nev) {
-    return blaze::subvector(dr, 0, nev) +
-           dcomplex(0, 1) * blaze::subvector(di, 0, nev);
+                         int nconv) {
+    return blaze::subvector(dr, 0, nconv) +
+           dcomplex(0, 1) * blaze::subvector(di, 0, nconv);
+  }
+
+  // worker_asymmetric: Compute Ritz values from Ritz vectors
+  template<typename A>
+  inline static complex_vector_type
+  make_asymm_eigenvalues(real_vector_type const& z,
+                         real_vector_type const& di,
+                         A&& a,
+                         int N,
+                         int nconv) {
+    complex_vector_type lambda(nconv);
+    real_vector_type Ax1(N), Ax2(N);
+    auto to1 = make_vector_view(Ax1);
+    auto to2 = make_vector_view(Ax2);
+    for(int i = 0; i < nconv; ++i) {
+      if(di[i] == 0) {
+        auto from1 = make_vector_const_view(z, i * N, N);
+        a(from1, to1);
+        lambda[i] = dot(from1, to1);
+      } else {
+        auto from1 = make_vector_const_view(z, i * N, N);
+        auto from2 = make_vector_const_view(z, (i + 1) * N, N);
+        a(from1, to1);
+        a(from2, to2);
+        lambda[i] = dcomplex(dot(from1, to1) + dot(from2, to2),
+                             dot(from1, to2) - dot(from2, to1));
+        ++i;
+        lambda[i] = std::conj(lambda[i - 1]);
+      }
+    }
+    return lambda;
   }
 
   // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
   inline static complex_matrix_type
-  make_asymm_eigenvectors(real_matrix_type const& z,
+  make_asymm_eigenvectors(real_vector_type const& z,
                           real_vector_type const& di,
                           int N,
-                          int nev) {
-    complex_matrix_type res(N, nev);
+                          int nconv) {
+    complex_matrix_type res(N, nconv);
     dcomplex I(0, 1);
     using namespace blaze;
-    for(int i = 0; i < nev; ++i) {
+    for(int i = 0; i < nconv; ++i) {
       if(di[i] == 0) {
-        column(res, i) = column(z, i);
+        column(res, i) = subvector(z, i * N, N);
       } else {
         column(res, i) =
-            column(z, i) + I * std::copysign(1.0, di[i]) * column(z, i + 1);
-        if(i < nev - 1) {
+            subvector(z, i * N, N) +
+            I * std::copysign(1.0, di[i]) * subvector(z, (i + 1) * N, N);
+        if(i < nconv - 1) {
           column(res, i + 1) = conj(column(res, i));
           ++i;
         }

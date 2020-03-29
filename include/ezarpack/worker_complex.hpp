@@ -45,9 +45,9 @@ template<typename Backend> class arpack_worker<Complex, Backend> {
   int iparam[11];             // Various input/output parameters
   int ipntr[14];              // Starting locations in workd and workl
   int info = 0;               // !=0 to use resid, 0 otherwise
-  int rvec;                   // RVEC parameter of dseupd
-  char howmny;                // HOWMNY parameter of dseupd
-  int_vector_t select;        // SELECT parameter of dseupd
+  int rvec;                   // RVEC parameter of zneupd
+  char howmny;                // HOWMNY parameter of zneupd
+  int_vector_t select;        // SELECT parameter of zneupd
   bool Bx_available_ = false; // Has B*x already been computed?
 
 public:
