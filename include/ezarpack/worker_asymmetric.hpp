@@ -62,10 +62,10 @@ public:
     enum {
       LargestMagnitude,
       SmallestMagnitude,
-      LargestReal,
-      SmallestReal,
-      LargestImag,
-      SmallestImag
+      LargestReal,  // Largest magnitude of the real part
+      SmallestReal, // Smallest magnitude of the real part
+      LargestImag,  // Largest magnitude of the imaginary part
+      SmallestImag  // Smallest magnitude of the imaginary part
     } eigenvalues_select;
 
     // Expert option: number of Lanczos vectors to be generated

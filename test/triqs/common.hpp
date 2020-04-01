@@ -12,6 +12,7 @@
  ******************************************************************************/
 #pragma once
 
+#include <cmath>
 #include <type_traits>
 
 #include <catch2/catch.hpp>
@@ -31,17 +32,20 @@ using scalar_t =
 template<operator_kind MKind> scalar_t<MKind> reflect_coeff(scalar_t<MKind> x);
 template<> double reflect_coeff<Symmetric>(double x) { return x; }
 template<> double reflect_coeff<Asymmetric>(double x) { return -x; }
-template<> dcomplex reflect_coeff<Complex>(dcomplex x) { return std::conj(x); }
+template<> dcomplex reflect_coeff<Complex>(dcomplex x) { return -x; }
 
 // Make a test sparse matrix
 template<operator_kind MKind, typename T = scalar_t<MKind>>
-matrix<T>
-make_sparse_matrix(int N, T diag_coeff, int offdiag_offset, T offdiag_coeff) {
+matrix<T> make_sparse_matrix(int N,
+                             T diag_coeff_shift,
+                             T diag_coeff_amp,
+                             int offdiag_offset,
+                             T offdiag_coeff) {
   auto refl_offdiag_coeff = reflect_coeff<MKind>(offdiag_coeff);
   matrix<T> M(N, N);
   assign_foreach(M, [&](int i, int j) {
     if(i == j)
-      return diag_coeff / (i + 1);
+      return diag_coeff_amp * T(i % 2) + diag_coeff_shift;
     else if(j - i == offdiag_offset)
       return offdiag_coeff;
     else if(i - j == offdiag_offset)
@@ -56,8 +60,9 @@ make_sparse_matrix(int N, T diag_coeff, int offdiag_offset, T offdiag_coeff) {
 template<operator_kind MKind, typename T = scalar_t<MKind>>
 matrix<T> make_inner_prod_matrix(int N) {
   matrix<T> M(N, N);
-  assign_foreach(
-      M, [](int i, int j) { return std::exp(-(i - j) * (i - j) / 2.0); });
+  assign_foreach(M, [](int i, int j) {
+    return (i == j) ? 1.5 : (std::abs(i - j) == 1 ? 0.25 : 0);
+  });
   return M;
 }
 

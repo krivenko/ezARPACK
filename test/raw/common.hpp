@@ -13,6 +13,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cmath>
 #include <type_traits>
 #include <utility>
 
@@ -32,7 +33,7 @@ using scalar_t =
 template<operator_kind MKind> scalar_t<MKind> reflect_coeff(scalar_t<MKind> x);
 template<> double reflect_coeff<Symmetric>(double x) { return x; }
 template<> double reflect_coeff<Asymmetric>(double x) { return -x; }
-template<> dcomplex reflect_coeff<Complex>(dcomplex x) { return std::conj(x); }
+template<> dcomplex reflect_coeff<Complex>(dcomplex x) { return -x; }
 
 // Make memory buffer ro accommodate N elements of type T
 template<typename T> std::unique_ptr<T[]> make_buffer(int N) {
@@ -41,15 +42,18 @@ template<typename T> std::unique_ptr<T[]> make_buffer(int N) {
 
 // Make a test sparse matrix
 template<operator_kind MKind, typename T = scalar_t<MKind>>
-std::unique_ptr<T[]>
-make_sparse_matrix(int N, T diag_coeff, int offdiag_offset, T offdiag_coeff) {
+std::unique_ptr<T[]> make_sparse_matrix(int N,
+                                        T diag_coeff_shift,
+                                        T diag_coeff_amp,
+                                        int offdiag_offset,
+                                        T offdiag_coeff) {
   auto refl_offdiag_coeff = reflect_coeff<MKind>(offdiag_coeff);
   auto M = make_buffer<T>(N * N);
   for(int i = 0; i < N; ++i) {
     for(int j = 0; j < N; ++j) {
       int n = i + j * N;
       if(i == j)
-        M[n] = diag_coeff / T(i + 1);
+        M[n] = diag_coeff_amp * T(i % 2) + diag_coeff_shift;
       else if(j - i == offdiag_offset)
         M[n] = offdiag_coeff;
       else if(i - j == offdiag_offset)
@@ -67,7 +71,7 @@ std::unique_ptr<T[]> make_inner_prod_matrix(int N) {
   auto M = make_buffer<T>(N * N);
   for(int i = 0; i < N; ++i) {
     for(int j = 0; j < N; ++j) {
-      M[i + j * N] = std::exp(-(i - j) * (i - j) / 2.0);
+      M[i + j * N] = (i == j) ? 1.5 : (std::abs(i - j) == 1 ? 0.25 : 0);
     }
   }
   return M;

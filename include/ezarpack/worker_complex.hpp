@@ -61,10 +61,10 @@ public:
     enum {
       LargestMagnitude,
       SmallestMagnitude,
-      LargestReal,
-      SmallestReal,
-      LargestImag,
-      SmallestImag
+      LargestReal,  // Algebraically largest real part
+      SmallestReal, // Algebraically smallest real part
+      LargestImag,  // Algebraically largest imaginary part
+      SmallestImag  // Algebraically smallest imaginary part
     } eigenvalues_select;
 
     // Expert option: number of Lanczos vectors to be generated

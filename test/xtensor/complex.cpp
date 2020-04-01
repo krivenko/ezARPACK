@@ -26,9 +26,10 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
   using params_t = worker_t::params_t;
 
   const int N = 100;
-  const dcomplex diag_coeff = 1.5;
-  const int offdiag_offset = 1;
-  const dcomplex offdiag_coeff(0, 0.1);
+  const dcomplex diag_coeff_shift = -0.55;
+  const dcomplex diag_coeff_amp = 1.0;
+  const int offdiag_offset = 3;
+  const dcomplex offdiag_coeff(0.5, 0.5);
   const int nev = 10;
 
   auto spectrum_parts = {
@@ -37,8 +38,8 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
       params_t::LargestImag,      params_t::SmallestImag};
 
   // Hermitian matrix A
-  auto A = make_sparse_matrix<ezarpack::Complex>(N, diag_coeff, offdiag_offset,
-                                                 offdiag_coeff);
+  auto A = make_sparse_matrix<ezarpack::Complex>(
+      N, diag_coeff_shift, diag_coeff_amp, offdiag_offset, offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<ezarpack::Complex>(N);
 
@@ -59,7 +60,6 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
-      params.ncv = 50;
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(Aop, params);
@@ -81,7 +81,6 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
-      params.ncv = 50;
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Invert, params);
@@ -90,7 +89,7 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
   }
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode") {
-    dcomplex sigma(0.5, 0.5);
+    dcomplex sigma(-1.0, 0.9);
     decltype(A) op_matrix = dot(inv(xt::eval(A - sigma * M)), M);
 
     auto op = [&](vector_const_view_t from, vector_view_t to) {
@@ -105,7 +104,6 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
       params.sigma = sigma;
-      params.ncv = 50;
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::ShiftAndInvert, params);

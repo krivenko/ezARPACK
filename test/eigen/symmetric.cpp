@@ -23,9 +23,10 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   using params_t = worker_t::params_t;
 
   const int N = 100;
-  const double diag_coeff = 1.5;
+  const double diag_coeff_shift = -0.55;
+  const double diag_coeff_amp = 1.0;
   const int offdiag_offset = 3;
-  const double offdiag_coeff = 0.5;
+  const double offdiag_coeff = -1.05;
   const int nev = 10;
 
   auto spectrum_parts = {params_t::Smallest, params_t::Largest,
@@ -34,7 +35,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
 
   // Symmetric matrix A
   auto A = make_sparse_matrix<ezarpack::Symmetric>(
-      N, diag_coeff, offdiag_offset, offdiag_coeff);
+      N, diag_coeff_shift, diag_coeff_amp, offdiag_offset, offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<ezarpack::Symmetric>(N);
 
@@ -85,7 +86,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   }
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode") {
-    double sigma = 1.0;
+    double sigma = 2.0;
     decltype(A) op_matrix = (A - sigma * M).inverse() * M;
 
     auto op = [&](vector_view_t from, vector_view_t to) {
@@ -108,7 +109,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   }
 
   SECTION("Generalized eigenproblem: Buckling mode") {
-    double sigma = 1.0;
+    double sigma = 3.3;
     decltype(A) op_matrix = (M - sigma * A).inverse() * M;
 
     auto op = [&](vector_view_t from, vector_view_t to) {
@@ -124,6 +125,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       params_t params(nev, e, true);
       params.sigma = sigma;
       params.random_residual_vector = false;
+      params.ncv = 30;
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Buckling, params);
       check_eigenvectors(ar, M, A);
@@ -131,7 +133,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   }
 
   SECTION("Generalized eigenproblem: Cayley transformed mode") {
-    double sigma = 1.0;
+    double sigma = 2.0;
     decltype(A) op_matrix = (A - sigma * M).inverse() * (A + sigma * M);
 
     auto op = [&](vector_view_t from, vector_view_t to) {

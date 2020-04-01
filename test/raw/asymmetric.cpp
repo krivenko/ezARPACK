@@ -18,12 +18,13 @@
 ///////////////////
 TEST_CASE("Asymmetric matrix is inverted", "[invert_asymmetric]") {
   const int N = 100;
-  const double diag_coeff = 1.5;
+  const double diag_coeff_shift = -0.55;
+  const double diag_coeff_amp = 1.0;
   const int offdiag_offset = 3;
-  const double offdiag_coeff = 0.1;
+  const double offdiag_coeff = -1.05;
 
-  auto A = make_sparse_matrix<Asymmetric>(N, diag_coeff, offdiag_offset,
-                                          offdiag_coeff);
+  auto A = make_sparse_matrix<Asymmetric>(N, diag_coeff_shift, diag_coeff_amp,
+                                          offdiag_offset, offdiag_coeff);
 
   auto invA = make_buffer<double>(N * N);
   invert(A.get(), invA.get(), N);
@@ -56,9 +57,10 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
   using params_t = worker_t::params_t;
 
   const int N = 100;
-  const double diag_coeff = 1.5;
+  const double diag_coeff_shift = -0.55;
+  const double diag_coeff_amp = 1.0;
   const int offdiag_offset = 3;
-  const double offdiag_coeff = 0.1;
+  const double offdiag_coeff = -1.05;
   const int nev = 10;
 
   auto spectrum_parts = {
@@ -67,8 +69,8 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
       params_t::LargestImag,      params_t::SmallestImag};
 
   // Asymmetric matrix A
-  auto A = make_sparse_matrix<Asymmetric>(N, diag_coeff, offdiag_offset,
-                                          offdiag_coeff);
+  auto A = make_sparse_matrix<Asymmetric>(N, diag_coeff_shift, diag_coeff_amp,
+                                          offdiag_offset, offdiag_coeff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<Asymmetric>(N);
 
