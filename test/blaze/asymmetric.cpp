@@ -85,9 +85,12 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
     }
   }
 
+  using cmat_type = DynamicMatrix<dcomplex, columnMajor>;
+
   SECTION("Generalized eigenproblem: Shift-and-Invert mode (real part)") {
     dcomplex sigma(1.0, -0.1);
-    decltype(A) op_matrix = real((inv(A - sigma * M) * M));
+    decltype(A) op_matrix =
+        real((inv(cmat_type(A) - sigma * cmat_type(M)) * cmat_type(M)));
 
     auto op = [&](vector_const_view_t from, vector_view_t to) {
       to = op_matrix * from;
@@ -110,7 +113,8 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode (imaginary part)") {
     dcomplex sigma(-0.1, 1.0);
-    decltype(A) op_matrix = imag(inv(A - sigma * M) * M);
+    decltype(A) op_matrix =
+        imag(inv(cmat_type(A) - sigma * cmat_type(M)) * cmat_type(M));
 
     auto op = [&](vector_const_view_t from, vector_view_t to) {
       to = op_matrix * from;
