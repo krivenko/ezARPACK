@@ -87,7 +87,14 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode (real part)") {
     dcomplex sigma(1.0, -0.1);
+#ifdef EIGEN_CAN_MIX_REAL_COMPLEX_EXPR
     decltype(A) op_matrix = ((A - sigma * M).inverse() * M).real();
+#else
+    decltype(A) op_matrix =
+        ((A.cast<dcomplex>() - sigma * M.cast<dcomplex>()).inverse() *
+         M.cast<dcomplex>())
+            .real();
+#endif
 
     auto op = [&](vector_const_view_t from, vector_view_t to) {
       to = op_matrix * from;
@@ -110,7 +117,14 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode (imaginary part)") {
     dcomplex sigma(-0.1, 1.0);
+#ifdef EIGEN_CAN_MIX_REAL_COMPLEX_EXPR
     decltype(A) op_matrix = ((A - sigma * M).inverse() * M).imag();
+#else
+    decltype(A) op_matrix =
+        ((A.cast<dcomplex>() - sigma * M.cast<dcomplex>()).inverse() *
+         M.cast<dcomplex>())
+            .imag();
+#endif
 
     auto op = [&](vector_const_view_t from, vector_view_t to) {
       to = op_matrix * from;
