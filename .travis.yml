@@ -1,5 +1,5 @@
 language: cpp
-sudo: required
+os: linux
 dist: xenial
 cache: bundler
 
@@ -8,7 +8,7 @@ branches:
     - master
     - travis
 
-matrix:
+jobs:
   include:
   - compiler: clang
     addons:
