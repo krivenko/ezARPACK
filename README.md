@@ -32,7 +32,7 @@ One can easily add support for her favorite vector/matrix framework by defining
 a new instance of the `storage_traits` structure (see, for example,
 `include/storages/eigen.hpp`).
 
-Copyright (C) 2016-2019 Igor Krivenko <igor.s.krivenko @ gmail.com>
+Copyright (C) 2016-2020 Igor Krivenko <igor.s.krivenko @ gmail.com>
 
 Dependencies
 ------------
