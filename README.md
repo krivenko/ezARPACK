@@ -25,7 +25,7 @@ libraries (storage backends):
 * Blaze >= 3 [3];
 * Armadillo [4];
 * Boost uBLAS >= 1.58 [5];
-* TRIQS arrays >= 2.0 [6].
+* TRIQS arrays >= 2.0 [6];
 * xtensor >= 0.20.0 [7].
 
 One can easily add support for her favorite vector/matrix framework by defining

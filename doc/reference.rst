@@ -24,4 +24,3 @@ API reference
     * :ref:`refworker` - includes all `arpack_worker` variants at once
     * :ref:`refarpack` - Low level C++ interface to FORTRAN routines of ARPACK
     * :ref:`refversion` - ezARPACK version information
-

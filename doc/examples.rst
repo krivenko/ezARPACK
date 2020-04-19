@@ -1,0 +1,4 @@
+.. _examples:
+
+Usage examples
+==============
