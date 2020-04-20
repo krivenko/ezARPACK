@@ -3,6 +3,8 @@
 API reference
 =============
 
+List of C++ headers:
+
 * Specializations of the `arpack_worker` eigensolver class
 
     * :ref:`refworkersymmetric` - symmetric real eigenproblems
@@ -22,5 +24,6 @@ API reference
 * Auxiliary headers
 
     * :ref:`refworker` - includes all `arpack_worker` variants at once
-    * :ref:`refarpack` - Low level C++ interface to FORTRAN routines of ARPACK
+    * :ref:`refarpack` - Low level C++ interface to FORTRAN 77 routines \
+      of ARPACK-NG
     * :ref:`refversion` - ezARPACK version information
