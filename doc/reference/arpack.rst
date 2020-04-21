@@ -3,4 +3,4 @@
 `ezarpack/arpack.hpp`
 =====================
 
-.. doxygenfile:: arpack.hpp
+.. doxygenfile:: ezarpack/arpack.hpp

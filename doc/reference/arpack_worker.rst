@@ -3,4 +3,4 @@
 `ezarpack/arpack_worker.hpp`
 ============================
 
-.. doxygenfile:: arpack_worker.hpp
+.. doxygenfile:: ezarpack/arpack_worker.hpp

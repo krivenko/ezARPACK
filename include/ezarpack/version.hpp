@@ -10,6 +10,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  ******************************************************************************/
+/// @file ezarpack/version.hpp
+/// @brief ezARPACK version information.
 #pragma once
 
+/// ezARPACK version string.
 #define EZARPACK_VERSION "0.8"

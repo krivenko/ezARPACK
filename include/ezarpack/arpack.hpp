@@ -10,7 +10,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  ******************************************************************************/
-/// @file arpack.hpp
+/// @file ezarpack/arpack.hpp
 /// @brief Declarations of ARPACK-NG FORTRAN 77 subroutines used by ezARPACK
 /// and their C++ wrappers.
 #pragma once

@@ -3,4 +3,4 @@
 `ezarpack/version.hpp`
 ======================
 
-.. doxygenfile:: version.hpp
+.. doxygenfile:: ezarpack/version.hpp
