@@ -1,6 +1,9 @@
 .. _refblaze:
 
-`ezarpack/storages/blaze.hpp`
-=============================
+`ezarpack/storages/blaze.hpp` - Blaze
+=====================================
 
-.. doxygenfile:: storages/blaze.hpp
+This storage backend depends on `Blaze <https://bitbucket.org/blaze-lib/blaze>`_
+version 3.
+
+.. doxygenfile:: ezarpack/storages/blaze.hpp

@@ -56,9 +56,13 @@ You can obtain a copy of the MPL at http://mozilla.org/MPL/2.0/.
 Contents
 ========
 
-* :ref:`installation`
-* :ref:`examples`
-* :ref:`storage`
-* :ref:`reference`
-* :ref:`genindex`
-* :ref:`search`
+.. toctree::
+    :name: mastertoc
+    :maxdepth: 3
+
+    installation
+    examples
+    reference/index
+    storage_backend
+    genindex
+    search

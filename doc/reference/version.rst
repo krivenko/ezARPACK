@@ -1,6 +1,6 @@
 .. _refversion:
 
-`ezarpack/version.hpp`
-======================
+`ezarpack/version.hpp` - ezARPACK version information
+=====================================================
 
 .. doxygenfile:: ezarpack/version.hpp

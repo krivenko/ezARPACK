@@ -1,6 +1,9 @@
 .. _refeigen:
 
-`ezarpack/storages/eigen.hpp`
-=============================
+`ezarpack/storages/eigen.hpp` - Eigen 3
+=======================================
 
-.. doxygenfile:: storages/eigen.hpp
+This storage backend depends on `Eigen <http://eigen.tuxfamily.org>`_ version
+3.3 or newer.
+
+.. doxygenfile:: ezarpack/storages/eigen.hpp

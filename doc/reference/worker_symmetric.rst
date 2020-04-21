@@ -1,6 +1,6 @@
 .. _refworkersymmetric:
 
-`ezarpack/worker_symmetric.hpp`
-===============================
+`ezarpack/worker_symmetric.hpp` - symmetric real eigenproblems
+==============================================================
 
-.. doxygenfile:: worker_symmetric.hpp
+.. doxygenfile:: ezarpack/worker_symmetric.hpp

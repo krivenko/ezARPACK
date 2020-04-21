@@ -1,6 +1,6 @@
 .. _refworkercomplex:
 
-`ezarpack/worker_complex.hpp`
-=============================
+`ezarpack/worker_complex.hpp` - general complex eigenproblems
+=============================================================
 
-.. doxygenfile:: worker_complex.hpp
+.. doxygenfile:: ezarpack/worker_complex.hpp

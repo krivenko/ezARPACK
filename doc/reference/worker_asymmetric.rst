@@ -1,6 +1,6 @@
 .. _refworkerasymmetric:
 
-`ezarpack/worker_asymmetric.hpp`
-================================
+`ezarpack/worker_asymmetric.hpp` - general real eigenproblems
+=============================================================
 
-.. doxygenfile:: worker_asymmetric.hpp
+.. doxygenfile:: ezarpack/worker_asymmetric.hpp

@@ -1,6 +1,8 @@
 .. _refarmadillo:
 
-`ezarpack/storages/armadillo.hpp`
-=================================
+`ezarpack/storages/armadillo.hpp` - Armadillo
+=============================================
 
-.. doxygenfile:: storages/armadillo.hpp
+This storage backend depends on `Armadillo <http://arma.sourceforge.net>`_.
+
+.. doxygenfile:: ezarpack/storages/armadillo.hpp
