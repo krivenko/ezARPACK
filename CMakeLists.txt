@@ -103,12 +103,13 @@ install(FILES "${PROJECT_BINARY_DIR}/ezARPACKConfigVersion.cmake"
 if(Documentation)
   message(STATUS "Building documentation")
 
-  # Detect Doxygen, Sphinx and Breathe
+  # Detect Doxygen, Sphinx, Breathe and MathJax
   list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
   find_package(Doxygen REQUIRED)
   find_package(PythonInterp 3 REQUIRED)
   find_package(Sphinx 2.0.0 REQUIRED)
   find_package(Breathe 4.13.0 REQUIRED)
+  find_package(MathJax REQUIRED)
 
   add_subdirectory(doc)
 endif(Documentation)

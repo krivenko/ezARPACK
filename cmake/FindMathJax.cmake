@@ -8,17 +8,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-INPUT = "@DOXYGEN_INPUT_DIR@"
-OUTPUT_DIRECTORY = "@DOXYGEN_OUTPUT_DIR@"
-RECURSIVE = YES
+if(NOT MATHJAX_DIR)
+  find_path(MATHJAX_DIR
+    NAMES MathJax.js
+    PATHS "/usr/share/javascript/mathjax"
+    DOC "Path to MathJax.js script"
+  )
 
-OUTPUT_LANGUAGE = "English"
-FULL_PATH_NAMES = YES
-STRIP_FROM_INC_PATH = "@DOXYGEN_INPUT_DIR@"
-GENERATE_XML = YES
-GENERATE_HTML = NO
-GENERATE_LATEX = NO
-USE_MATHJAX = YES
-
-ENABLE_PREPROCESSING = YES
-PREDEFINED = "DOXYGEN_IGNORE"
+  include(FindPackageHandleStandardArgs)
+  find_package_handle_standard_args(MathJax
+    FOUND_VAR MathJax_FOUND
+    REQUIRED_VARS MATHJAX_DIR
+    FAIL_MESSAGE "Failed to find MathJax"
+  )
+endif(NOT MATHJAX_DIR)

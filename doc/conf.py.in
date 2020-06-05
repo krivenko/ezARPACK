@@ -29,6 +29,9 @@ extensions = [
 breathe_projects = {"ezARPACK": "@BREATHE_PROJECT@"}
 breathe_default_project = "ezARPACK"
 
+# MathJax configuration
+mathjax_path = "@MATHJAX_DIR@/MathJax.js?config=default"
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = [os.path.join('@CMAKE_CURRENT_SOURCE_DIR@', '_templates')]
 

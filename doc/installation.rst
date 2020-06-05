@@ -72,8 +72,9 @@ said libraries.
 
 Documentation of ezARPACK can optionally be built and installed using the
 `Decumentation` CMake flag (requires `Doxygen <https://www.doxygen.nl/>`_,
-`Sphinx <https://www.sphinx-doc.org>`_ and
-`Breathe <https://breathe.readthedocs.io>`_).
+`Sphinx <https://www.sphinx-doc.org>`_,
+`Breathe <https://breathe.readthedocs.io>`_ and
+`MathJax <https://www.mathjax.org/>`_).
 
 The table below gives a complete lists of supported CMake options with their
 meaning.
@@ -114,4 +115,7 @@ meaning.
 | Doxygen_ROOT            | Path to Doxygen installation.                      |
 +-------------------------+----------------------------------------------------+
 | Sphinx_ROOT             | Path to Sphinx installation.                       |
++-------------------------+----------------------------------------------------+
+| MathJax_ROOT            | Path to MathJax installation (directory containing |
+|                         | `MathJax.js`).                                     |
 +-------------------------+----------------------------------------------------+
