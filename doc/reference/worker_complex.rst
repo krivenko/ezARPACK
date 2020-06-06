@@ -3,4 +3,5 @@
 `ezarpack/worker_complex.hpp` - general complex eigenproblems
 =============================================================
 
-.. doxygenfile:: ezarpack/worker_complex.hpp
+.. doxygenclass:: ezarpack::arpack_worker< Complex, Backend >
+    :members:

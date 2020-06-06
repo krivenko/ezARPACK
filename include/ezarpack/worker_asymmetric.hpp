@@ -10,29 +10,71 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  ******************************************************************************/
+/// @file ezarpack/worker_asymmetric.hpp
+/// @brief Specialization of `arpack_worker` class for the case of general real
+/// eigenproblems.
 #pragma once
 
 namespace ezarpack {
 
-/********************************************************
- * ARPACK worker object: Case of real asymmetric matrix A
- ********************************************************/
+/// @brief Main worker class wrapping the Implicitly Restarted Arnoldi
+/// Method (IRAM) for general real eigenproblems.
+///
+/// This specialization of `arpack_worker` calls ARPACK-NG routines `dnaupd()`
+/// and `dneupd()` to compute approximations to a few eigenpairs of a real
+/// linear operator @f$ \hat O @f$ with respect to a semi-inner product defined
+/// by a real positive semi-definite symmetric matrix @f$ \hat B @f$.
+///
+/// @note If the linear operator @f$ \hat O @f$ is symmetric with respect to
+/// @f$ \hat B@f$, then @ref arpack_worker<Symmetric, Backend> should be
+/// used instead.
+///
+/// @tparam Backend Tag type specifying what *storage backend* (matrix/vector
+/// algebra library) must be used by `arpack_worker`. The storage backend
+/// determines types of internally stored data arrays and input/output view
+/// objects returned by methods of the class.
 template<typename Backend> class arpack_worker<Asymmetric, Backend> {
 
   using storage = storage_traits<Backend>;
 
 public:
+  /// @name Backend-specific array and view types
+
+  /// @{
+
+  /// One-dimensional data array (vector) of real numbers.
   using real_vector_t = typename storage::real_vector_type;
+  /// Two-dimensional data array (matrix) of real numbers.
   using real_matrix_t = typename storage::real_matrix_type;
+  /// One-dimensional data array (vector) of complex numbers.
   using complex_vector_t = typename storage::complex_vector_type;
+  /// Two-dimensional data array (matrix) of complex numbers.
   using complex_matrix_t = typename storage::complex_matrix_type;
+  /// One-dimensional data array (vector) of integers.
   using int_vector_t = typename storage::int_vector_type;
 
+  /// Partial view (slice) of a real vector.
   using real_vector_view_t = typename storage::real_vector_view_type;
+  /// Partial constant view (slice) of a real vector.
   using real_vector_const_view_t =
       typename storage::real_vector_const_view_type;
+  /// Partial constant view (slice) of a real matrix.
   using real_matrix_const_view_t =
       typename storage::real_matrix_const_view_type;
+
+  /// Storage-specific view type to expose real input vectors
+  /// @f$ \mathbf{x} @f$. An argument of this type is passed as input to
+  /// callable objects representing linear operators @f$ \hat O @f$ and
+  /// @f$ \hat B @f$.
+  using vector_const_view_t = real_vector_const_view_t;
+
+  /// Storage-specific view type to expose real output vectors
+  /// @f$ \mathbf{y} @f$. An argument of this type receives output from
+  /// callable objects representing linear operators @f$ \hat O @f$ and
+  /// @f$ \hat B @f$.
+  using vector_view_t = real_vector_view_t;
+
+  /// @}
 
 private:
   int N;                      // Matrix size
@@ -56,52 +98,70 @@ private:
   bool Bx_available_ = false; // Has B*x already been computed?
 
 public:
-  using vector_view_t = real_vector_view_t;
-  using vector_const_view_t = real_vector_const_view_t;
-
+  /// Input parameters of the Implicitly Restarted Arnoldi Method (IRAM).
   struct params_t {
-    // Number of eigenvalues (Ritz values) to compute
-    unsigned int n_eigenvalues;
-    // Which of the Ritz values to compute
-    enum {
-      LargestMagnitude,
-      SmallestMagnitude,
-      LargestReal,  // Largest magnitude of the real part
-      SmallestReal, // Smallest magnitude of the real part
-      LargestImag,  // Largest magnitude of the imaginary part
-      SmallestImag  // Smallest magnitude of the imaginary part
-    } eigenvalues_select;
 
-    // Expert option: number of Lanczos vectors to be generated
-    // default: min(2*n_eigenvalues+1, N)
+    /// Number of eigenvalues (Ritz values) to compute.
+    unsigned int n_eigenvalues;
+
+    /// Categories of eigenvalues to compute.
+    enum eigenvalues_select_t {
+      LargestMagnitude,  /**< Largest eigenvalues in magnitude. */
+      SmallestMagnitude, /**< Smallest eigenvalues in magnitude. */
+      LargestReal,       /**< Eigenvalues of largest real part. */
+      SmallestReal,      /**< Eigenvalues of smallest real part. */
+      LargestImag,       /**< Eigenvalues of largest imaginary part. */
+      SmallestImag       /**< Eigenvalues of smallest imaginary part. */
+    };
+
+    /// Which of the eigenvalues to compute?
+    eigenvalues_select_t eigenvalues_select;
+
+    /// Number of Arnoldi vectors to be generated.
+    /// `-1` stands for the default value `min(2*n_eigenvalues + 2, N)`,
+    /// where `N` is the dimension of the problem.
     int ncv = -1;
 
-    // Compute Ritz/Schur vectors?
-    // None: do not compute anything;
-    // Ritz: compute eigenvectors of A;
-    // Schur: compute orthogonal basis vectors of
-    // the n_eigenvalues-dimensional subspace.
-    enum { None, Ritz, Schur } compute_vectors;
+    /// Kinds of vectors to compute.
+    enum compute_vectors_t {
+      None, /**< Do not compute neither Ritz nor Schur vectors. */
+      Ritz, /**< Compute Ritz vectors (eigenvectors). */
+      Schur /**< Compute Schur vectors (orthogonal basis vectors of
+                 the @ref n_eigenvalues -dimensional subspace). */
+    };
 
-    // Use a randomly generated initial residual vector
+    /// Compute Ritz or Schur vectors?
+    compute_vectors_t compute_vectors;
+
+    /// Use a randomly generated initial residual vector?
     bool random_residual_vector = true;
 
-    // Eigenvalue shift
+    /// Eigenvalue shift @f$ \sigma @f$ used if a spectral transformation is
+    /// employed.
     dcomplex sigma = 0;
 
-    // Relative tolerance for Ritz value convergence
+    /// Relative tolerance for Ritz value convergence. The default setting is
+    /// machine precision.
     double tolerance = 0;
-    // Maximum number of Arnoldi update iterations
+
+    /// Maximum number of IRAM iterations allowed.
     unsigned int max_iter = INT_MAX;
 
+    /// Constructs an IRAM parameter object with given
+    /// @ref n_eigenvalues, @ref eigenvalues_select and
+    /// @ref compute_vectors.
+    /// The rest of the parameters are set to their defaults.
     params_t(unsigned int n_eigenvalues,
-             decltype(eigenvalues_select) ev_select,
-             decltype(compute_vectors) compute_evec)
+             eigenvalues_select_t eigenvalues_select,
+             compute_vectors_t compute_vectors)
         : n_eigenvalues(n_eigenvalues),
-          eigenvalues_select(ev_select),
-          compute_vectors(compute_evec) {}
+          eigenvalues_select(eigenvalues_select),
+          compute_vectors(compute_vectors) {}
   };
 
+  /// Constructs a worker object and allocates internal data buffers to be
+  /// used by ARPACK-NG.
+  /// @param N Dimension of the eigenproblem.
   arpack_worker(unsigned int N)
       : N(N),
         resid(storage::make_real_vector(N)),
@@ -127,7 +187,8 @@ public:
   arpack_worker(arpack_worker const&) = delete;
   arpack_worker(arpack_worker&&) noexcept = delete;
 
-  // Prepare values of input parameters
+private:
+  /// @internal Prepare values of input parameters and resize containers.
   void prepare(params_t const& params) {
 
     // Check n_eigenvalues
@@ -177,7 +238,29 @@ public:
           "Maximum number of Arnoldi update iterations must be positive");
   }
 
+public:
+  /// If this functor is used to provide shifts for implicit restart,
+  /// then the default ARPACK-NG's shift strategy (Exact Shift Strategy)
+  /// will be employed.
+  /// @sa Paragraph 4.4.1 of ARPACK Users' Guide:
+  /// Solution of Large Scale Eigenvalue Problems
+  /// with Implicitly Restarted Arnoldi Methods (R. B. Lehoucq, D. C. Sorensen,
+  /// C. Yang, SIAM, 1998),
+  /// https://www.caam.rice.edu/software/ARPACK/UG/node50.html.
   struct exact_shifts_f {
+    /// Trivial call operator. The actual shifts will be internally computed by
+    /// ARPACK-NG.
+    ///
+    /// @param[in] ritz_values_re View of a vector with real parts of
+    /// current @ref params_t::ncv Ritz values.
+    /// @param[in] ritz_values_im View of a vector with imaginary parts of
+    /// current @ref params_t::ncv Ritz values.
+    /// @param[in] ritz_bounds View of a real vector with current estimated
+    /// error bounds of the Ritz values.
+    /// @param[out] shifts_re Real vector view to receive real parts of the
+    /// computed shifts.
+    /// @param[out] shifts_im Real vector view to receive imaginary parts of
+    /// the computed shifts.
     void operator()(real_vector_const_view_t ritz_values_re,
                     real_vector_const_view_t ritz_values_im,
                     real_vector_const_view_t ritz_bounds,
@@ -185,24 +268,40 @@ public:
                     real_vector_view_t shifts_im) {}
   };
 
-  /**********************************
-   * Solve the standard eigenproblem
-   * A*x = \lambda*x
-   **********************************/
-
-  // a: callable taking 2 arguments
-  // a(vector_const_view_t from, vector_view_t to)
-  // 'a' is expected to act on 'from' and write the result to 'to': to = A*from
-  //
-  // 'from' is also indirectly available as
-  // this->workspace_vector(this->vector_from_n())
-  // 'to' is also indirectly available as
-  // this->workspace_vector(this->vector_to_n())
-  //
-  // shifts_f: callable taking two arguments
-  // shifts_f(vector_view_t shifts_re, vector_view_t shifts_im)
-  // 'shifts_f' is expected to place real and imaginary parts of the shifts
-  // for implicit restart into 'shifts_re' and 'shifts_im' respectively.
+  /// Solve a standard eigenproblem @f$ \hat A\mathbf{x} = \lambda\mathbf{x}@f$.
+  ///
+  /// @param a A callable object representing the linear operator
+  /// @f$ \hat A @f$. It must take two arguments,
+  /// @code
+  /// a(vector_const_view_t from, vector_view_t to)
+  /// @endcode
+  /// `a` is expected to act on the vector view `from` and write the result into
+  /// the vector view `to`, `to = a*from`. Given an instance `aw` of the
+  /// arpack_worker< Asymmetric, Backend > class, `from` is also indirectly
+  /// accessible as
+  /// @code
+  /// aw.workspace_vector(aw.from_vector_n())
+  /// @endcode
+  /// and `to` is accessible as
+  /// @code
+  /// aw.workspace_vector(aw.to_vector_n())
+  /// @endcode
+  ///
+  /// @param params Set of input parameters for the Implicitly Restarted
+  /// Arnoldi Method.
+  ///
+  /// @param shifts_f Functor that implements a shift selection strategy for the
+  /// implicit restarts. For the expected signature of the functor, see
+  /// @ref exact_shifts_f::operator()(). When this argument is omitted, the
+  /// default @ref exact_shifts_f "\"Exact Shift Strategy\"" is used, which is
+  /// the right choice in most cases.
+  ///
+  /// @throws ezarpack::ncv_insufficient No shifts could be applied during
+  /// a cycle of the IRA iteration.
+  /// @throws ezarpack::maxiter_reached Maximum number of IRA iterations has
+  /// been reached. All possible eigenvalues of @f$ \hat O @f$ have been found.
+  /// @throws std::runtime_error Invalid input parameters and other errors
+  /// reported by ARPACK-NG routines `dnaupd()` and `dneupd()`.
   template<typename A, typename ShiftsF = exact_shifts_f>
   void operator()(A&& a, params_t const& params, ShiftsF shifts_f = {}) {
 
@@ -265,40 +364,118 @@ public:
     handle_eupd_error_codes(info);
   }
 
-  /***********************************
-   * Solve the generalized eigenproblem
-   * A*x = \lambda*M*x
-   ************************************/
-
   // clang-format off
-  enum Mode : int {Invert = 2,               // OP = inv[M]*A and B = M
-                   ShiftAndInvertReal = 3,   // OP = Re { inv[A - sigma*M]*M }
-                                             // and B = M
-                   ShiftAndInvertImag = 4};  // OP = Im { inv[A - sigma*M]*M }
-                                             // and B = M
+  /// Computational modes for generalized eigenproblems.
+  enum Mode : int {
+    Invert = 2,
+    /**< Regular inverse mode.
+
+    Solve a generalized eigenproblem
+    @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
+    a standard one with
+    @f$ \hat O = \hat M^{-1} \hat A @f$ and
+    @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is symmetric
+    positive-definite.
+    */
+    ShiftAndInvertReal = 3,
+    /**< Complex Shift-and-Invert mode in real arithmetic.
+
+    Solve a generalized eigenproblem
+    @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
+    a standard one with
+    @f$ \hat O = \Re[(\hat A - \sigma\hat M)^{-1} \hat M] @f$
+    and @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is
+    symmetric positive semi-definite.
+    @note In this computational mode, ARPACK-NG only finds
+    eigenvalues @f$ \mu @f$ of @f$ \hat O @f$ that are
+    related to @f$ \lambda @f$ via
+    @f[
+    \mu = \frac{1}{2}\left[
+      \frac{1}{\lambda-\sigma} + \frac{1}{\lambda-\sigma^*}
+    \right].
+    @f]
+    Calling @ref eigenvalues() to retrieve @f$ \lambda @f$ after
+    a calculation in this mode will throw `std::runtime_error`.
+    Instead, one should call @ref eigenvalues(A &&) const "eigenvalues(A &&a)",
+    which computes @f$ \lambda @f$ as Rayleigh quotients
+    @f$ \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}{
+              \mathbf{x}^\dagger \mathbf{x}} @f$.
+    */
+    ShiftAndInvertImag = 4
+    /**< Complex Shift-and-Invert mode in real arithmetic.
+
+    Solve a generalized eigenproblem
+    @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
+    a standard one with
+    @f$ \hat O = \Im[(\hat A - \sigma\hat M)^{-1} \hat M] @f$
+    and @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is
+    symmetric positive semi-definite.
+    @note In this computational mode, ARPACK-NG only finds
+    eigenvalues @f$ \mu @f$ of @f$ \hat O @f$ that are
+    related to @f$ \lambda @f$ via
+    @f[
+    \mu = \frac{1}{2i}\left[
+      \frac{1}{\lambda-\sigma} - \frac{1}{\lambda-\sigma^*}
+    \right].
+    @f]
+    Calling @ref eigenvalues() to retrieve @f$ \lambda @f$ after
+    a calculation in this mode will throw `std::runtime_error`.
+    Instead, one should call @ref eigenvalues(A &&) const "eigenvalues(A &&a)",
+    which computes @f$ \lambda @f$ as Rayleigh quotients
+    @f$ \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}{
+              \mathbf{x}^\dagger \mathbf{x}} @f$.
+    */
+  };
   // clang-format on
 
-  // op: callable taking 2 arguments
-  // op(vector_const_view_t from, vector_view_t to)
-  // 'op' is expected to act on 'from' and write the result to 'to':
-  // to = OP*from
-  //
-  // b: callable taking 2 arguments
-  // b(vector_const_view_t from, vector_view_t to)
-  // 'b' is expected to act on 'from' and write the result to 'to': to = B*from
-  //
-  // 'from' is also indirectly available as
-  // this->workspace_vector(this->from_vector_n())
-  // 'to' is also indirectly available as
-  // this->workspace_vector(this->to_vector_n())
-  //
-  // this->Bx_available() indicates whether B*x has already been computed
-  // and available as this->Bx_vector()
-  //
-  // shifts_f: callable taking two arguments
-  // shifts_f(vector_view_t shifts_re, vector_view_t shifts_im)
-  // 'shifts_f' is expected to place real and imaginary parts of the shifts
-  // for implicit restart into 'shifts_re' and 'shifts_im' respectively.
+  /// Solve a generalized eigenproblem @f$ \hat A\mathbf{x} =
+  /// \lambda\hat M\mathbf{x}@f$.
+  ///
+  /// Operators @f$ \hat O @f$ and @f$ \hat B @f$
+  /// mentioned below are related to @f$ \hat A @f$ and @f$ \hat M @f$ via
+  /// a @ref Mode -dependent spectral transformation.
+  ///
+  /// @param op A callable object representing the linear operator
+  /// @f$ \hat O @f$. It must take two arguments,
+  /// @code
+  /// op(vector_const_view_t from, vector_view_t to)
+  /// @endcode
+  /// `op` is expected to act on the vector view `from` and write the result
+  /// into the vector view `to`, `to = op*from`.
+  /// Given an instance `aw` of the arpack_worker< Asymmetric, Backend > class,
+  /// `from` is also indirectly accessible as
+  /// @code
+  /// aw.workspace_vector(aw.from_vector_n())
+  /// @endcode
+  /// and `to` is accessible as
+  /// @code
+  /// aw.workspace_vector(aw.to_vector_n())
+  /// @endcode
+  ///
+  /// @param b A callable object representing the linear operator
+  /// @f$ \hat B @f$. It must take two arguments,
+  /// @code
+  /// b(vector_const_view_t from, vector_view_t to)
+  /// @endcode
+  /// `b` is expected to act on the vector view `from` and write the result into
+  /// the vector view `to`, `to = b*from`.
+  ///
+  /// @param mode @ref Mode "Computational mode" to be used.
+  /// @param params Set of input parameters for the Implicitly Restarted
+  /// Arnoldi Method.
+  ///
+  /// @param shifts_f Functor that implements a shift selection strategy for the
+  /// implicit restarts. For the expected signature of the functor, see
+  /// @ref exact_shifts_f::operator()(). When this argument is omitted, the
+  /// default @ref exact_shifts_f "\"Exact Shift Strategy\"" is used, which is
+  /// the right choice in most cases.
+  ///
+  /// @throws ezarpack::ncv_insufficient No shifts could be applied during
+  /// a cycle of the IRA iteration.
+  /// @throws ezarpack::maxiter_reached Maximum number of IRA iterations has
+  /// been reached. All possible eigenvalues of @f$ \hat O @f$ have been found.
+  /// @throws std::runtime_error Invalid input parameters and other errors
+  /// reported by ARPACK-NG routines `dnaupd()` and `dneupd()`.
   template<typename OP, typename B, typename ShiftsF = exact_shifts_f>
   void operator()(OP&& op,
                   B&& b,
@@ -384,13 +561,19 @@ public:
     handle_eupd_error_codes(info);
   }
 
-  // Index of workspace vector, which is expected to be acted on
+  /// Returns the index of the workspace vector, which is currently expected to
+  /// be acted upon by linear operator @f$ \hat O @f$ or @f$ \hat B @f$.
   inline int from_vector_n() const { return (ipntr[0] - 1) / N; }
 
-  // Index of workspace vector, which will receive result of the operator action
+  /// Returns the index of the workspace vector, which is currently expected to
+  /// receive result from application of linear operator @f$ \hat O @f$ or
+  /// @f$ \hat B @f$.
   inline int to_vector_n() const { return (ipntr[1] - 1) / N; }
 
-  // Get view of a workspace vector
+  /// Returns a view of a vector within ARPACK-NG's workspace array.
+  ///
+  /// @param n Index of the workspace vector. Valid values are 0, 1 and 2.
+  /// @throws std::runtime_error Invalid index value.
   real_vector_view_t workspace_vector(int n) const {
     if(n < 0 || n > 2)
       throw ARPACK_WORKER_ERROR(
@@ -399,8 +582,12 @@ public:
     return storage::make_vector_view(workd, n * N, N);
   }
 
-  // Access eigenvalues
-  // Cannot be used in ShiftAndInvertReal and ShiftAndInvertImag modes
+  /// Returns a list of @ref stats_t::n_converged eigenvalues.
+  ///
+  /// Cannot be used in the @ref ShiftAndInvertReal and @ref ShiftAndInvertImag
+  /// modes.
+  /// @throws std::runtime_error The last IRAM run was performed in the
+  /// @ref ShiftAndInvertReal or @ref ShiftAndInvertImag mode.
   complex_vector_t eigenvalues() const {
     if(iparam[6] == ShiftAndInvertReal || iparam[6] == ShiftAndInvertImag)
       throw ARPACK_WORKER_ERROR("This method is invalid in ShiftAndInvertReal "
@@ -408,7 +595,19 @@ public:
     return storage::make_asymm_eigenvalues(dr, di, iparam[4]);
   }
 
-  // Compute eigenvalues from eigenvectors as x^+ * A * x
+  /// Returns a list of @ref stats_t::n_converged eigenvalues computed as
+  /// Rayleigh quotients
+  ///  @f$ \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}{
+  ///            \mathbf{x}^\dagger \mathbf{x}} @f$.
+  ///
+  /// This method requires availability of the Ritz vectors @f$ \mathbf{x} @f$
+  /// (@ref params_t::compute_vectors has been set to @ref params_t::Ritz in the
+  /// last run) and is primarily intended for use in the @ref ShiftAndInvertReal
+  /// and @ref ShiftAndInvertImag modes.
+  /// @param a A callable object representing the linear operator
+  /// @f$ \hat A @f$.
+  /// @throws std::runtime_error Ritz vectors have not been computed in the
+  /// last IRAM run.
   template<typename A> complex_vector_t eigenvalues(A&& a) const {
     if((!rvec) || (howmny != 'A'))
       throw ARPACK_WORKER_ERROR(
@@ -417,7 +616,10 @@ public:
                                            iparam[4]);
   }
 
-  // Access Ritz vectors
+  /// Returns a matrix, whose @ref stats_t::n_converged columns are converged
+  /// Ritz vectors (eigenvectors).
+  /// @throws std::runtime_error Ritz vectors have not been computed in the
+  /// last IRAM run.
   complex_matrix_t eigenvectors() const {
     if((!rvec) || (howmny != 'A'))
       throw ARPACK_WORKER_ERROR(
@@ -425,39 +627,51 @@ public:
     return storage::make_asymm_eigenvectors(z, di, N, iparam[4]);
   }
 
-  // Access Schur basis vectors
+  /// Returns a view of a matrix, whose @ref params_t::ncv columns are
+  /// Schur basis vectors.
+  /// @throws std::runtime_error Schur vectors have not been computed in the
+  /// last IRAM run.
   real_matrix_const_view_t schur_vectors() const {
+    if(!rvec)
+      throw ARPACK_WORKER_ERROR(
+          "Invalid method call: Schur vectors have not been computed");
     return storage::make_matrix_const_view(v, N, iparam[4]);
   }
 
-  // Access residual vector
+  /// Returns a view of the current residual vector.
+  ///
+  /// When @ref params_t::random_residual_vector is set to `false`, the view
+  /// returned by this accessor can be used to set the initial residual vector.
   real_vector_view_t residual_vector() {
     return storage::make_vector_view(resid);
   }
 
-  // Has B*x already been computed?
+  /// Has @f$ \hat B\mathbf{x} @f$ already been computed at the current
+  /// IRAM iteration?
   bool Bx_available() const { return Bx_available_; }
 
-  // Previously computed vector B*x
+  /// Returns a constant view of the most recently computed vector
+  /// @f$ \hat B\mathbf{x} @f$.
   real_vector_const_view_t Bx_vector() const {
     int n = ipntr[2] - 1;
     return storage::make_vector_const_view(workd, n, N);
   }
 
+  /// Statistics regarding a completed IRAM run.
   struct stats_t {
-    // Number of Arnoldi update iterations
+    /// Number of Arnoldi update iterations taken.
     unsigned int n_iter;
-    // Number of "converged" Ritz values
+    /// Number of "converged" Ritz values.
     unsigned int n_converged;
-    // Total number of OP*x operations
+    /// Total number of @f$ \hat O \mathbf{x} @f$ operations.
     unsigned int n_op_x_operations;
-    // Total number of B*x operations
+    /// Total number of @f$ \hat B \mathbf{x} @f$ operations.
     unsigned int n_b_x_operations;
-    // Total number of steps of re-orthogonalization
+    /// Total number of steps of re-orthogonalization.
     unsigned int n_reorth_steps;
   };
 
-  // Return computation statistics
+  /// Returns computation statistics from the last IRAM run.
   stats_t stats() const {
     stats_t s;
     s.n_iter = iparam[2];
@@ -469,8 +683,9 @@ public:
   }
 
 private:
-  // Error handling
-
+  /// @internal Translate dnaupd's INFO codes into C++ exceptions.
+  ///
+  /// @param info dnaupd's INFO code.
   void handle_aupd_error_codes(int info, real_vector_t& workl) {
     if(info == 0) return;
 
@@ -491,6 +706,10 @@ private:
                                   std::to_string(info));
     }
   }
+
+  /// @internal Translate dneupd's INFO codes into C++ exceptions.
+  ///
+  /// @param info dneupd's INFO code.
   void handle_eupd_error_codes(int info) {
     switch(info) {
       case 0: return;

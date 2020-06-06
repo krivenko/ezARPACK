@@ -31,12 +31,11 @@ namespace ezarpack {
 
 /// Kind of square matrix (linear operator) to solve an eigenproblem for.
 enum operator_kind {
-  Symmetric,    /**< Symmetric real matrix. */
-  Asymmetric,   /**< General real matrix. */
-  Complex       /**< General complex matrix. */
+  Symmetric,  /**< Symmetric real matrix. */
+  Asymmetric, /**< General real matrix. */
+  Complex     /**< General complex matrix. */
 };
 
-/// @class arpack_worker
 /// @brief Main class template of ezARPACK's API.
 ///
 /// Instances of this class are used to solve all kinds of eigenproblems
@@ -46,7 +45,7 @@ enum operator_kind {
 /// algebra library) must be used by `arpack_worker`. The storage backend
 /// determines types of internally stored data arrays and input/output view
 /// objects exposed by methods of the class.
-template<operator_kind OpKind, typename Backend> class arpack_worker;
+template<operator_kind OpKind, typename Backend> class arpack_worker {};
 
 #ifndef DOXYGEN_IGNORE
 #define ARPACK_WORKER_ERROR(MSG) std::runtime_error("arpack_worker: " MSG)
@@ -58,7 +57,9 @@ template<operator_kind OpKind, typename Backend> class arpack_worker;
 /// This exception can be thrown by `operator()` of `arpack_worker`
 /// specializations.
 struct maxiter_reached : public std::runtime_error {
-  int maxiter; /**< Maximum number of iterations.*/
+  /// Maximum number of IRLM/IRAM iterations allowed.
+  int maxiter;
+  /// @param maxiter Maximum number of IRLM/IRAM iterations allowed.
   maxiter_reached(int maxiter)
       : ARPACK_WORKER_ERROR("Maximum number of iterations (" +
                             std::to_string(maxiter) + ") reached"),
@@ -72,7 +73,8 @@ struct maxiter_reached : public std::runtime_error {
 /// This exception can be thrown by `operator()` of `arpack_worker`
 /// specializations.
 struct ncv_insufficient : public std::runtime_error {
-  int ncv; /**< Number of Lanczos/Arnoldi vectors generated at each iteration.*/
+  int ncv; /**< Number of Lanczos/Arnoldi vectors to be generated. */
+  /// @param ncv Number of Lanczos/Arnoldi vectors to be generated.
   ncv_insufficient(int ncv)
       : ARPACK_WORKER_ERROR("No shifts could be applied during a cycle "
                             "of the Implicitly restarted Arnoldi iteration. "

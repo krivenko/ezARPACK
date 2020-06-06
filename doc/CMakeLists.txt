@@ -19,6 +19,9 @@ set(DOXYFILE_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 # Generate Doxygen config
 configure_file(${DOXYFILE_IN} ${DOXYFILE_OUT} @ONLY)
 
+# Create Doxygen output directory
+file(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_DIR}/xml)
+
 # Run Doxygen
 add_custom_command(OUTPUT ${DOXYGEN_INDEX_FILE}
                    DEPENDS ${ALL_HEADERS}

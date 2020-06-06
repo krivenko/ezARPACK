@@ -26,14 +26,15 @@ using dcomplex = std::complex<double>;
 /// these values to signal the state of the Reverse Communication Interface
 /// (RCI).
 enum rci_flag : int {
-  Init = 0,           /**< First call of the RCI.                             */
-  ApplyOpInit = -1,   /**< Compute `Y = OP * X`
-                          (force the starting vector into the range of `OP`). */
-  ApplyOp = 1,        /**< Compute `Y = OP * X`.                              */
-  ApplyB = 2,         /**< Compute `Y = B * X`.                               */
-  Shifts = 3,         /**< Compute and return the shifts for the Implicitly
-                           Restarted Arnoldi Method.                          */
-  Done = 99           /**< Done with the iterations.                          */
+  Init = 0,         /**< First call of the RCI.                             */
+  ApplyOpInit = -1, /**< Compute @f$ \mathbf{y} = \hat O \mathbf{x} @f$
+                        (force the starting vector into the range of
+                        @f$ \hat O @f$).                                    */
+  ApplyOp = 1,      /**< Compute @f$ \mathbf{y} = \hat O \mathbf{x} @f$.    */
+  ApplyB = 2,       /**< Compute @f$ \mathbf{y} = \hat B \mathbf{x} @f$.    */
+  Shifts = 3,       /**< Compute and return the shifts for the Implicitly
+                         Restarted Lanczos/Arnoldi Method.                  */
+  Done = 99         /**< Done with the iterations.                          */
 };
 
 namespace f77 {
@@ -201,7 +202,8 @@ extern "C" {
 /// @name External ARPACK-NG subroutines *eupd()
 ///
 /// These subroutines return the converged approximations to eigenvalues
-/// of `A*z = lambda*B*z` and (optionally):
+/// of @f$ \hat O \mathbf{z} = \lambda \hat B\mathbf{z} @f$
+/// and (optionally):
 ///   -# the corresponding approximate eigenvectors;
 ///   -# an orthonormal basis for the associated approximate invariant subspace;
 ///   -# both.

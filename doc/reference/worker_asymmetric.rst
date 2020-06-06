@@ -3,4 +3,5 @@
 `ezarpack/worker_asymmetric.hpp` - general real eigenproblems
 =============================================================
 
-.. doxygenfile:: ezarpack/worker_asymmetric.hpp
+.. doxygenclass:: ezarpack::arpack_worker< Asymmetric, Backend >
+    :members:

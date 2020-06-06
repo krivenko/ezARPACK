@@ -3,4 +3,5 @@
 `ezarpack/worker_symmetric.hpp` - symmetric real eigenproblems
 ==============================================================
 
-.. doxygenfile:: ezarpack/worker_symmetric.hpp
+.. doxygenclass:: ezarpack::arpack_worker< Symmetric, Backend >
+    :members:
