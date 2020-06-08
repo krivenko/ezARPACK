@@ -51,7 +51,7 @@ struct {
     // A_{ij} = |i-j| / (1 + i + j), if |i-j| <= bandwidth, zero otherwise
     for(int i = 0; i < N; ++i) {
       int j_min = std::max(0, i - bandwidth);
-      int j_max = std::min(N, i + bandwidth);
+      int j_max = std::min(N - 1, i + bandwidth);
       for(int j = j_min; j <= j_max; ++j) {
         to[i] += double(std::abs(i - j)) / (1 + i + j) * from[j];
       }
