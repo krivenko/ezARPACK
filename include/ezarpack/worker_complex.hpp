@@ -170,8 +170,7 @@ public:
   }
 
   struct trivial_shifts_f {
-    void operator()(complex_vector_view_t shifts_re,
-                    complex_vector_view_t shifts_im) {}
+    void operator()(complex_vector_view_t shifts) {}
   };
 
   /**********************************
@@ -188,10 +187,10 @@ public:
   // 'to' is also indirectly available as
   // this->workspace_vector(this->vector_to_n())
   //
-  // shifts_f: callable taking two arguments
-  // shifts_f(vector_view_t shifts_re, vector_view_t shifts_im)
-  // 'shifts_f' is expected to place real and imaginary parts of the shifts
-  // for implicit restart into 'shifts_re' and 'shifts_im' respectively.
+  // shifts_f: callable taking one argument
+  // shifts_f(vector_view_t shifts)
+  // 'shifts_f' is expected to place the shifts for implicit restart
+  // into 'shifts'
   template<typename A, typename ShiftsF = trivial_shifts_f>
   void operator()(A&& a, params_t const& params, ShiftsF shifts_f = {}) {
 
@@ -220,11 +219,7 @@ public:
             storage::make_vector_view(workd, to_pos, N));
         } break;
         case Shifts: {
-          int np = iparam[7];
-          int shifts_re_n = ipntr[13] - 1;
-          int shifts_im_n = ipntr[13] - 1 + np;
-          shifts_f(storage::make_vector_view(workl, shifts_re_n, np),
-                   storage::make_vector_view(workl, shifts_im_n, np));
+          shifts_f(storage::make_vector_view(workl, ipntr[13] - 1, iparam[7]));
         } break;
         case Done: break;
         default: {
@@ -280,10 +275,10 @@ public:
   // 'to' is also indirectly available as
   // this->workspace_vector(this->to_vector_n())
   //
-  // shifts_f: callable taking two arguments
-  // shifts_f(vector_view_t shifts_re, vector_view_t shifts_im)
-  // 'shifts_f' is expected to place real and imaginary parts of the shifts
-  // for implicit restart into 'shifts_re' and 'shifts_im' respectively.
+  // shifts_f: callable taking one argument
+  // shifts_f(vector_view_t shifts)
+  // 'shifts_f' is expected to place the shifts for implicit restart
+  // into 'shifts'
   template<typename OP, typename B, typename ShiftsF = trivial_shifts_f>
   void operator()(OP&& op,
                   B&& b,
@@ -330,11 +325,7 @@ public:
             storage::make_vector_view(workd, to_pos, N));
         } break;
         case Shifts: {
-          int np = iparam[7];
-          int shifts_re_n = ipntr[13] - 1;
-          int shifts_im_n = ipntr[13] - 1 + np;
-          shifts_f(storage::make_vector_view(workl, shifts_re_n, np),
-                   storage::make_vector_view(workl, shifts_im_n, np));
+          shifts_f(storage::make_vector_view(workl, ipntr[13] - 1, iparam[7]));
         } break;
         case Done: break;
         default: {
