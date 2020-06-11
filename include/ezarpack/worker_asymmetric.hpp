@@ -30,6 +30,8 @@ template<typename Backend> class arpack_worker<Asymmetric, Backend> {
   using real_vector_view_t = typename storage::real_vector_view_type;
   using real_vector_const_view_t =
       typename storage::real_vector_const_view_type;
+  using real_matrix_const_view_t =
+      typename storage::real_matrix_const_view_type;
 
   int N;                      // Matrix size
   const char* which;          // WHICH parameter
@@ -408,9 +410,17 @@ public:
                                            iparam[4]);
   }
 
-  // Access Ritz/Schur vectors
+  // Access Ritz vectors
   complex_matrix_t eigenvectors() const {
+    if((!rvec) || (howmny != 'A'))
+      throw ARPACK_WORKER_ERROR(
+          "Invalid method call: Ritz vectors have not been computed");
     return storage::make_asymm_eigenvectors(z, di, N, iparam[4]);
+  }
+
+  // Access Schur basis vectors
+  real_matrix_const_view_t schur_vectors() const {
+    return storage::make_matrix_const_view(v, N, iparam[4]);
   }
 
   // Access residual vector
