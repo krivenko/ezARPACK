@@ -21,6 +21,7 @@ template<typename Backend> class arpack_worker<Symmetric, Backend> {
 
   using storage = storage_traits<Backend>;
 
+public:
   using real_vector_t = typename storage::real_vector_type;
   using real_matrix_t = typename storage::real_matrix_type;
   using int_vector_t = typename storage::int_vector_type;
@@ -31,6 +32,7 @@ template<typename Backend> class arpack_worker<Symmetric, Backend> {
   using real_matrix_const_view_t =
       typename storage::real_matrix_const_view_type;
 
+private:
   int N;                      // Matrix size
   const char* which;          // WHICH parameter
   int nev = 0;                // Number of eigenvalues
