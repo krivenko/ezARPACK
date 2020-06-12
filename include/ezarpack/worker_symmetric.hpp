@@ -156,8 +156,10 @@ public:
           "Maximum number of Arnoldi update iterations must be positive");
   }
 
-  struct trivial_shifts_f {
-    void operator()(real_vector_view_t shifts) {}
+  struct exact_shifts_f {
+    void operator()(real_vector_const_view_t tridiag_eigenvalues,
+                    real_vector_const_view_t ritz_estimates,
+                    real_vector_view_t shifts) {}
   };
 
   /**********************************
@@ -178,12 +180,12 @@ public:
   // shifts_f(vector_view_t shifts)
   // 'shifts_f' is expected to place the shifts for implicit restart
   // into 'shifts'
-  template<typename A, typename ShiftsF = trivial_shifts_f>
+  template<typename A, typename ShiftsF = exact_shifts_f>
   void operator()(A&& a, params_t const& params, ShiftsF shifts_f = {}) {
 
     prepare(params);
 
-    iparam[0] = (std::is_same<ShiftsF, trivial_shifts_f>::value ? 1 : 0);
+    iparam[0] = (std::is_same<ShiftsF, exact_shifts_f>::value ? 1 : 0);
     iparam[6] = 1; // Mode 1, standard eigenproblem
 
     const int workl_size = ncv * ncv + 8 * ncv;
@@ -206,7 +208,9 @@ public:
             storage::make_vector_view(workd, to_pos, N));
         } break;
         case Shifts:
-          shifts_f(storage::make_vector_view(workl, ipntr[10] - 1, iparam[7]));
+          shifts_f(storage::make_vector_const_view(workl, ipntr[5] - 1, ncv),
+                   storage::make_vector_const_view(workl, ipntr[7] - 1, ncv),
+                   storage::make_vector_view(workl, ipntr[10] - 1, iparam[7]));
           break;
         case Done: break;
         default: {
@@ -269,7 +273,7 @@ public:
   // shifts_f(vector_view_t shifts)
   // 'shifts_f' is expected to place the shifts for implicit restart
   // into 'shifts'
-  template<typename OP, typename B, typename ShiftsF = trivial_shifts_f>
+  template<typename OP, typename B, typename ShiftsF = exact_shifts_f>
   void operator()(OP&& op,
                   B&& b,
                   Mode mode,
@@ -278,7 +282,7 @@ public:
 
     prepare(params);
 
-    iparam[0] = (std::is_same<ShiftsF, trivial_shifts_f>::value ? 1 : 0);
+    iparam[0] = (std::is_same<ShiftsF, exact_shifts_f>::value ? 1 : 0);
     iparam[6] = mode; // Modes 2-5, generalized eigenproblem
 
     const int workl_size = ncv * ncv + 8 * ncv;
@@ -315,7 +319,9 @@ public:
             storage::make_vector_view(workd, to_pos, N));
         } break;
         case Shifts:
-          shifts_f(storage::make_vector_view(workl, ipntr[10] - 1, iparam[7]));
+          shifts_f(storage::make_vector_const_view(workl, ipntr[5] - 1, ncv),
+                   storage::make_vector_const_view(workl, ipntr[7] - 1, ncv),
+                   storage::make_vector_view(workl, ipntr[10] - 1, iparam[7]));
           break;
         case Done: break;
         default: {
