@@ -140,10 +140,10 @@ void check_eigenvectors(AR const& ar, MT const& A, MT const& M) {
 // (Asymmetric Shift-and-Invert modes)
 template<typename MT>
 void check_eigenvectors_shift_and_invert(
-    arpack_worker<ezarpack::Asymmetric, ublas_storage> const& ar,
+    arpack_worker<Asymmetric, ublas_storage> const& ar,
     MT const& A,
     MT const& M) {
-  using worker_t = arpack_worker<ezarpack::Asymmetric, ublas_storage>;
+  using worker_t = arpack_worker<Asymmetric, ublas_storage>;
   using vector_view_t = worker_t::vector_view_t;
   using vector_const_view_t = worker_t::vector_const_view_t;
   auto Aop = [&](vector_const_view_t from, vector_view_t to) {
@@ -154,5 +154,43 @@ void check_eigenvectors_shift_and_invert(
   for(int i = 0; i < int(lambda.size()); ++i) {
     auto vec = column(vecs, i);
     CHECK_THAT(prod(A, vec), IsCloseTo(lambda[i] * prod(M, vec), 1e-9));
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// In the real symmetric case, eigenvectors form an orthonormal basis
+auto get_basis_vectors(arpack_worker<Symmetric, ublas_storage> const& ar)
+    -> decltype(ar.eigenvectors()) {
+  return ar.eigenvectors();
+}
+// In the other two cases we must call schur_vectors()
+template<typename AR>
+auto get_basis_vectors(AR const& ar) -> decltype(ar.schur_vectors()) {
+  return ar.schur_vectors();
+}
+
+// Check orthogonality of basis vectors (standard eigenproblem)
+template<typename AR> void check_basis_vectors(AR const& ar) {
+  auto vecs = get_basis_vectors(ar);
+  for(int i = 0; i < int(vecs.size2()); ++i) {
+    auto vi = column(vecs, i);
+    for(int j = 0; j < int(vecs.size2()); ++j) {
+      auto vj = column(vecs, j);
+      CHECK(std::abs(inner_prod(conj(vi), vj) - double(i == j)) < 1e-10);
+    }
+  }
+}
+// Check orthogonality of basis vectors (generalized eigenproblem)
+template<typename AR, typename MT>
+void check_basis_vectors(AR const& ar, MT const& B) {
+  auto vecs = get_basis_vectors(ar);
+  for(int i = 0; i < int(vecs.size2()); ++i) {
+    auto vi = column(vecs, i);
+    for(int j = 0; j < int(vecs.size2()); ++j) {
+      auto vj = column(vecs, j);
+      CHECK(std::abs(inner_prod(conj(vi), prod(B, vj)) - double(i == j)) <
+            1e-10);
+    }
   }
 }

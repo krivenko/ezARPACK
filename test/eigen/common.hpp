@@ -145,3 +145,41 @@ void check_eigenvectors_shift_and_invert(
     CHECK_THAT(A * vec, IsCloseTo(lambda(i) * M * vec, 1e-9));
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+
+// In the real symmetric case, eigenvectors form an orthonormal basis
+auto get_basis_vectors(
+    arpack_worker<ezarpack::Symmetric, eigen_storage> const& ar)
+    -> decltype(ar.eigenvectors()) {
+  return ar.eigenvectors();
+}
+// In the other two cases we must call schur_vectors()
+template<typename AR>
+auto get_basis_vectors(AR const& ar) -> decltype(ar.schur_vectors()) {
+  return ar.schur_vectors();
+}
+
+// Check orthogonality of basis vectors (standard eigenproblem)
+template<typename AR> void check_basis_vectors(AR const& ar) {
+  auto vecs = get_basis_vectors(ar);
+  for(int i = 0; i < vecs.cols(); ++i) {
+    auto vi = vecs.col(i);
+    for(int j = 0; j < vecs.cols(); ++j) {
+      auto vj = vecs.col(j);
+      CHECK(std::abs(vi.dot(vj) - double(i == j)) < 1e-10);
+    }
+  }
+}
+// Check orthogonality of basis vectors (generalized eigenproblem)
+template<typename AR, typename MT>
+void check_basis_vectors(AR const& ar, MT const& B) {
+  auto vecs = get_basis_vectors(ar);
+  for(int i = 0; i < vecs.cols(); ++i) {
+    auto vi = vecs.col(i);
+    for(int j = 0; j < vecs.cols(); ++j) {
+      auto vj = vecs.col(j);
+      CHECK(std::abs(vi.dot(B * vj) - double(i == j)) < 1e-10);
+    }
+  }
+}

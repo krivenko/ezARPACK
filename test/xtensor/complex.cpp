@@ -22,7 +22,7 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
   using xt::linalg::dot;
   using xt::linalg::inv;
 
-  using worker_t = arpack_worker<ezarpack::Complex, xtensor_storage>;
+  using worker_t = arpack_worker<Complex, xtensor_storage>;
   using params_t = worker_t::params_t;
 
   const int N = 100;
@@ -38,10 +38,10 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
       params_t::LargestImag,      params_t::SmallestImag};
 
   // Hermitian matrix A
-  auto A = make_sparse_matrix<ezarpack::Complex>(
-      N, diag_coeff_shift, diag_coeff_amp, offdiag_offset, offdiag_coeff);
+  auto A = make_sparse_matrix<Complex>(N, diag_coeff_shift, diag_coeff_amp,
+                                       offdiag_offset, offdiag_coeff);
   // Inner product matrix
-  auto M = make_inner_prod_matrix<ezarpack::Complex>(N);
+  auto M = make_inner_prod_matrix<Complex>(N);
 
   auto set_init_residual_vector = [](worker_t& ar) {
     for(int i = 0; i < N; ++i)
@@ -64,6 +64,7 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
       set_init_residual_vector(ar);
       ar(Aop, params);
       check_eigenvectors(ar, A);
+      check_basis_vectors(ar);
     }
   }
 
@@ -85,6 +86,7 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Invert, params);
       check_eigenvectors(ar, A, M);
+      check_basis_vectors(ar, M);
     }
   }
 
@@ -108,6 +110,7 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::ShiftAndInvert, params);
       check_eigenvectors(ar, A, M);
+      check_basis_vectors(ar, M);
     }
   }
 }

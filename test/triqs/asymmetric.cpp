@@ -61,6 +61,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
       set_init_residual_vector(ar);
       ar(Aop, params);
       check_eigenvectors(ar, A);
+      check_basis_vectors(ar);
     }
   }
 
@@ -82,6 +83,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Invert, params);
       check_eigenvectors(ar, A, M);
+      check_basis_vectors(ar, M);
     }
   }
 
@@ -105,6 +107,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::ShiftAndInvertReal, params);
       check_eigenvectors_shift_and_invert(ar, A, M);
+      check_basis_vectors(ar, M);
     }
   }
 
@@ -128,6 +131,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::ShiftAndInvertImag, params);
       check_eigenvectors_shift_and_invert(ar, A, M);
+      check_basis_vectors(ar, M);
     }
   }
 }

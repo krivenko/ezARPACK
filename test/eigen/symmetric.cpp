@@ -60,6 +60,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       set_init_residual_vector(ar);
       ar(Aop, params);
       check_eigenvectors(ar, A);
+      check_basis_vectors(ar);
     }
   }
 
@@ -82,6 +83,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Invert, params);
       check_eigenvectors(ar, A, M);
+      check_basis_vectors(ar, M);
     }
   }
 
@@ -105,6 +107,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::ShiftAndInvert, params);
       check_eigenvectors(ar, A, M);
+      check_basis_vectors(ar, M);
     }
   }
 
@@ -129,6 +132,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Buckling, params);
       check_eigenvectors(ar, M, A);
+      check_basis_vectors(ar, M);
     }
   }
 
@@ -152,6 +156,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Cayley, params);
       check_eigenvectors(ar, A, M);
+      check_basis_vectors(ar, M);
     }
   }
 }

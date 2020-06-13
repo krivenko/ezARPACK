@@ -37,9 +37,9 @@ template<typename T> using vector = xtensor<T, 1>;
 template<typename T> using matrix = xtensor<T, 2, layout_type::column_major>;
 
 template<operator_kind MKind> scalar_t<MKind> reflect_coeff(scalar_t<MKind> x);
-template<> double reflect_coeff<ezarpack::Symmetric>(double x) { return x; }
-template<> double reflect_coeff<ezarpack::Asymmetric>(double x) { return -x; }
-template<> dcomplex reflect_coeff<ezarpack::Complex>(dcomplex x) { return -x; }
+template<> double reflect_coeff<Symmetric>(double x) { return x; }
+template<> double reflect_coeff<Asymmetric>(double x) { return -x; }
+template<> dcomplex reflect_coeff<Complex>(dcomplex x) { return -x; }
 
 // Make a test sparse matrix
 template<operator_kind MKind, typename T = scalar_t<MKind>>
@@ -134,10 +134,10 @@ void check_eigenvectors(AR const& ar, MT const& A, MT const& M) {
 // (Asymmetric Shift-and-Invert modes)
 template<typename MT>
 void check_eigenvectors_shift_and_invert(
-    arpack_worker<ezarpack::Asymmetric, xtensor_storage> const& ar,
+    arpack_worker<Asymmetric, xtensor_storage> const& ar,
     MT const& A,
     MT const& M) {
-  using worker_t = arpack_worker<ezarpack::Asymmetric, xtensor_storage>;
+  using worker_t = arpack_worker<Asymmetric, xtensor_storage>;
   using vector_view_t = worker_t::vector_view_t;
   using vector_const_view_t = worker_t::vector_const_view_t;
   using linalg::dot;
@@ -149,5 +149,46 @@ void check_eigenvectors_shift_and_invert(
   for(int i = 0; i < int(lambda.size()); ++i) {
     auto vec = view(vecs, all(), i);
     CHECK_THAT(dot(A, vec), IsCloseTo(lambda(i) * dot(M, vec), 1e-9));
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// In the real symmetric case, eigenvectors form an orthonormal basis
+auto get_basis_vectors(arpack_worker<Symmetric, xtensor_storage> const& ar)
+    -> decltype(ar.eigenvectors()) {
+  return ar.eigenvectors();
+}
+// In the other two cases we must call schur_vectors()
+template<typename AR>
+auto get_basis_vectors(AR const& ar) -> decltype(ar.schur_vectors()) {
+  return ar.schur_vectors();
+}
+
+// Check orthogonality of basis vectors (standard eigenproblem)
+template<typename AR> void check_basis_vectors(AR const& ar) {
+  using linalg::dot;
+  auto vecs = get_basis_vectors(ar);
+  int N = vecs.shape(0);
+  for(int i = 0; i < int(vecs.shape(1)); ++i) {
+    auto vi = reshape_view(view(vecs, all(), i), {N});
+    for(int j = 0; j < int(vecs.shape(1)); ++j) {
+      auto vj = reshape_view(view(vecs, all(), j), {N});
+      CHECK(std::abs(dot(conj(vi), vj)[0] - double(i == j)) < 1e-10);
+    }
+  }
+}
+// Check orthogonality of basis vectors (generalized eigenproblem)
+template<typename AR, typename MT>
+void check_basis_vectors(AR const& ar, MT const& B) {
+  using linalg::dot;
+  auto vecs = get_basis_vectors(ar);
+  int N = vecs.shape(0);
+  for(int i = 0; i < int(vecs.shape(1)); ++i) {
+    auto vi = reshape_view(view(vecs, all(), i), {N});
+    for(int j = 0; j < int(vecs.shape(1)); ++j) {
+      auto vj = reshape_view(view(vecs, all(), j), {N});
+      CHECK(std::abs(dot(conj(vi), dot(B, vj))[0] - double(i == j)) < 1e-10);
+    }
   }
 }

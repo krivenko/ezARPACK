@@ -30,6 +30,9 @@ template<operator_kind MKind>
 using scalar_t =
     typename std::conditional<MKind == Complex, dcomplex, double>::type;
 
+double conj(double x) { return x; }
+dcomplex conj(dcomplex x) { return std::conj(x); }
+
 template<operator_kind MKind> scalar_t<MKind> reflect_coeff(scalar_t<MKind> x);
 template<> double reflect_coeff<Symmetric>(double x) { return x; }
 template<> double reflect_coeff<Asymmetric>(double x) { return -x; }
@@ -274,12 +277,12 @@ void check_eigenvectors(arpack_worker<MKind, raw_storage> const& ar,
 // (Asymmetric Shift-and-Invert modes)
 template<typename M>
 void check_eigenvectors_shift_and_invert(
-    arpack_worker<ezarpack::Asymmetric, raw_storage> const& ar,
+    arpack_worker<Asymmetric, raw_storage> const& ar,
     M const* a,
     M const* m,
     int N,
     int nev) {
-  using worker_t = arpack_worker<ezarpack::Asymmetric, raw_storage>;
+  using worker_t = arpack_worker<Asymmetric, raw_storage>;
   using vector_view_t = worker_t::vector_view_t;
   using vector_const_view_t = worker_t::vector_const_view_t;
   auto Aop = [&](vector_const_view_t from, vector_view_t to) {
@@ -297,5 +300,56 @@ void check_eigenvectors_shift_and_invert(
     mv_product(a, get_ptr(eigenvectors) + i * N, lhs.get(), N);
 
     CHECK_THAT(rhs.get(), IsCloseTo(lhs.get(), N));
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// In the real symmetric case, eigenvectors form an orthonormal basis
+auto get_basis_vectors(arpack_worker<Symmetric, raw_storage> const& ar)
+    -> decltype(ar.eigenvectors()) {
+  return ar.eigenvectors();
+}
+// In the other two cases we must call schur_vectors()
+template<typename AR>
+auto get_basis_vectors(AR const& ar) -> decltype(ar.schur_vectors()) {
+  return ar.schur_vectors();
+}
+
+// Check orthogonality of basis vectors (standard eigenproblem)
+template<operator_kind MKind>
+void check_basis_vectors(arpack_worker<MKind, raw_storage> const& ar,
+                         int N,
+                         int nev) {
+  auto vecs = get_basis_vectors(ar);
+  for(int i = 0; i < nev; ++i) {
+    auto iptr = get_ptr(vecs) + i * N;
+    for(int j = 0; j < nev; ++j) {
+      auto jptr = get_ptr(vecs) + j * N;
+      scalar_t<MKind> prod = {};
+      for(int k = 0; k < N; ++k)
+        prod += conj(*(iptr + k)) * *(jptr + k);
+      CHECK(std::abs(prod - double(i == j)) < 1e-10);
+    }
+  }
+}
+// Check orthogonality of basis vectors (generalized eigenproblem)
+template<operator_kind MKind, typename M>
+void check_basis_vectors(arpack_worker<MKind, raw_storage> const& ar,
+                         M const* b,
+                         int N,
+                         int nev) {
+  auto vecs = get_basis_vectors(ar);
+  auto bx = make_buffer<scalar_t<MKind>>(N);
+  for(int i = 0; i < nev; ++i) {
+    auto iptr = get_ptr(vecs) + i * N;
+    for(int j = 0; j < nev; ++j) {
+      auto jptr = get_ptr(vecs) + j * N;
+      mv_product(b, jptr, bx.get(), N);
+      scalar_t<MKind> prod = {};
+      for(int k = 0; k < N; ++k)
+        prod += conj(*(iptr + k)) * *(bx.get() + k);
+      CHECK(std::abs(prod - double(i == j)) < 1e-10);
+    }
   }
 }

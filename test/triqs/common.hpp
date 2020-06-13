@@ -124,10 +124,10 @@ void check_eigenvectors(AR const& ar, MT const& A, MT const& M) {
 // (Asymmetric Shift-and-Invert modes)
 template<typename MT>
 void check_eigenvectors_shift_and_invert(
-    arpack_worker<ezarpack::Asymmetric, triqs_storage> const& ar,
+    arpack_worker<Asymmetric, triqs_storage> const& ar,
     MT const& A,
     MT const& M) {
-  using worker_t = arpack_worker<ezarpack::Asymmetric, triqs_storage>;
+  using worker_t = arpack_worker<Asymmetric, triqs_storage>;
   using vector_view_t = worker_t::vector_view_t;
   using vector_const_view_t = worker_t::vector_const_view_t;
   auto Aop = [&](vector_const_view_t from, vector_view_t to) { to = A * from; };
@@ -136,5 +136,42 @@ void check_eigenvectors_shift_and_invert(
   for(int i = 0; i < int(lambda.size()); ++i) {
     auto vec = vecs(range(), i);
     CHECK_THAT(A * vec, IsCloseTo(lambda(i) * M * vec, 1e-9));
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// In the real symmetric case, eigenvectors form an orthonormal basis
+auto get_basis_vectors(arpack_worker<Symmetric, triqs_storage> const& ar)
+    -> decltype(ar.eigenvectors()) {
+  return ar.eigenvectors();
+}
+// In the other two cases we must call schur_vectors()
+template<typename AR>
+auto get_basis_vectors(AR const& ar) -> decltype(ar.schur_vectors()) {
+  return ar.schur_vectors();
+}
+
+// Check orthogonality of basis vectors (standard eigenproblem)
+template<typename AR> void check_basis_vectors(AR const& ar) {
+  auto vecs = get_basis_vectors(ar);
+  for(int i : range(second_dim(vecs))) {
+    auto vi = vecs(range(), i);
+    for(int j : range(second_dim(vecs))) {
+      auto vj = vecs(range(), j);
+      CHECK(std::abs(dotc(vi, vj) - double(i == j)) < 1e-10);
+    }
+  }
+}
+// Check orthogonality of basis vectors (generalized eigenproblem)
+template<typename AR, typename MT>
+void check_basis_vectors(AR const& ar, MT const& B) {
+  auto vecs = get_basis_vectors(ar);
+  for(int i : range(second_dim(vecs))) {
+    auto vi = vecs(range(), i);
+    for(int j : range(second_dim(vecs))) {
+      auto vj = vecs(range(), j);
+      CHECK(std::abs(dotc(vi, B * vj) - double(i == j)) < 1e-10);
+    }
   }
 }

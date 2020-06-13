@@ -22,7 +22,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   using xt::linalg::dot;
   using xt::linalg::inv;
 
-  using worker_t = arpack_worker<ezarpack::Symmetric, xtensor_storage>;
+  using worker_t = arpack_worker<Symmetric, xtensor_storage>;
   using params_t = worker_t::params_t;
 
   const int N = 100;
@@ -37,10 +37,10 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
                          params_t::LargestMagnitude, params_t::BothEnds};
 
   // Symmetric matrix A
-  auto A = make_sparse_matrix<ezarpack::Symmetric>(
-      N, diag_coeff_shift, diag_coeff_amp, offdiag_offset, offdiag_coeff);
+  auto A = make_sparse_matrix<Symmetric>(N, diag_coeff_shift, diag_coeff_amp,
+                                         offdiag_offset, offdiag_coeff);
   // Inner product matrix
-  auto M = make_inner_prod_matrix<ezarpack::Symmetric>(N);
+  auto M = make_inner_prod_matrix<Symmetric>(N);
 
   auto set_init_residual_vector = [](worker_t& ar) {
     for(int i = 0; i < N; ++i)
@@ -63,6 +63,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       set_init_residual_vector(ar);
       ar(Aop, params);
       check_eigenvectors(ar, A);
+      check_basis_vectors(ar);
     }
   }
 
@@ -85,6 +86,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Invert, params);
       check_eigenvectors(ar, A, M);
+      check_basis_vectors(ar, M);
     }
   }
 
@@ -108,6 +110,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::ShiftAndInvert, params);
       check_eigenvectors(ar, A, M);
+      check_basis_vectors(ar, M);
     }
   }
 
@@ -132,6 +135,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Buckling, params);
       check_eigenvectors(ar, M, A);
+      check_basis_vectors(ar, M);
     }
   }
 
@@ -155,6 +159,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Cayley, params);
       check_eigenvectors(ar, A, M);
+      check_basis_vectors(ar, M);
     }
   }
 }
