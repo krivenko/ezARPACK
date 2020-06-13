@@ -25,9 +25,12 @@ struct raw_storage {};
 
 /// Traits of the raw memory storage backend
 template<> struct storage_traits<raw_storage> {
+private:
+  // Implementation details
 
   using dcomplex = std::complex<double>;
 
+public:
   // Storage types
   using real_vector_type = std::unique_ptr<double[]>;
   using complex_vector_type = std::unique_ptr<dcomplex[]>;
@@ -42,9 +45,7 @@ template<> struct storage_traits<raw_storage> {
   using complex_vector_view_type = dcomplex*;
   using complex_vector_const_view_type = dcomplex const*;
 
-  using real_matrix_view_type = double*;
   using real_matrix_const_view_type = double const*;
-  using complex_matrix_view_type = dcomplex*;
   using complex_matrix_const_view_type = dcomplex const*;
 
   // Factories
@@ -87,10 +88,6 @@ template<> struct storage_traits<raw_storage> {
   inline static T* make_vector_view(std::unique_ptr<T[]>& v) {
     return v.get();
   }
-  template<typename T>
-  inline static T const* make_vector_const_view(std::unique_ptr<T[]> const& v) {
-    return v.get();
-  }
 
   // Make subvector view
   template<typename T>
@@ -107,19 +104,11 @@ template<> struct storage_traits<raw_storage> {
 
   // Make matrix view
   template<typename T>
-  inline static T* make_matrix_view(std::unique_ptr<T[]>& m) {
-    return m.get();
-  }
-  template<typename T>
   inline static T const* make_matrix_const_view(std::unique_ptr<T[]> const& m) {
     return m.get();
   }
 
   // Make submatrix view including 'cols' leftmost columns
-  template<typename T>
-  inline static T* make_matrix_view(T* m, int /* rows */, int /* cols */) {
-    return m;
-  }
   template<typename T>
   inline static T const* make_matrix_const_view(std::unique_ptr<T[]> const& m,
                                                 int /* rows */,
@@ -177,7 +166,7 @@ template<> struct storage_traits<raw_storage> {
     return lambda;
   }
 
-  // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
+  // worker_asymmetric: Extract Ritz vectors from 'z' matrix
   inline static complex_matrix_type
   make_asymm_eigenvectors(real_vector_type const& z,
                           real_vector_type const& di,

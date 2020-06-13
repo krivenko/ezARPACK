@@ -29,6 +29,8 @@ struct ublas_storage {};
 
 /// Traits of the uBLAS storage backend
 template<> struct storage_traits<ublas_storage> {
+private:
+  // Implementation details
 
   template<typename T> using vector = boost::numeric::ublas::vector<T>;
   template<typename T>
@@ -48,6 +50,7 @@ template<> struct storage_traits<ublas_storage> {
 
   using dcomplex = std::complex<double>;
 
+public:
   // Storage types
   using real_vector_type = vector<double>;
   using complex_vector_type = vector<dcomplex>;
@@ -62,9 +65,7 @@ template<> struct storage_traits<ublas_storage> {
   using complex_vector_view_type = vector_view<dcomplex>;
   using complex_vector_const_view_type = vector_const_view<dcomplex>;
 
-  using real_matrix_view_type = matrix_view<double>;
   using real_matrix_const_view_type = matrix_const_view<double>;
-  using complex_matrix_view_type = matrix_view<dcomplex>;
   using complex_matrix_const_view_type = matrix_const_view<dcomplex>;
 
   // Factories
@@ -110,11 +111,6 @@ template<> struct storage_traits<ublas_storage> {
   inline static vector_view<T> make_vector_view(vector<T>& v) {
     return boost::numeric::ublas::subrange(v, 0, v.size());
   }
-  template<typename T>
-  inline static vector_const_view<T>
-  make_vector_const_view(vector<T> const& v) {
-    return boost::numeric::ublas::subrange(v, 0, v.size());
-  }
 
   // Make subvector view
   template<typename T>
@@ -130,11 +126,6 @@ template<> struct storage_traits<ublas_storage> {
 
   // Make matrix view
   template<typename T>
-  inline static matrix_view<T> make_matrix_view(matrix<T>& m) {
-    using namespace boost::numeric::ublas;
-    return project(m, range(0, m.size1()), range(0, m.size2()));
-  }
-  template<typename T>
   inline static matrix_const_view<T>
   make_matrix_const_view(matrix<T> const& m) {
     using namespace boost::numeric::ublas;
@@ -142,12 +133,6 @@ template<> struct storage_traits<ublas_storage> {
   }
 
   // Make submatrix view including 'cols' leftmost columns
-  template<typename T>
-  inline static matrix_view<T>
-  make_matrix_view(matrix<T>& m, int /* rows */, int cols) {
-    using namespace boost::numeric::ublas;
-    return project(m, range(0, m.size1()), range(0, cols));
-  }
   template<typename T>
   inline static matrix_const_view<T>
   make_matrix_const_view(matrix<T> const& m, int /* rows */, int cols) {
@@ -197,7 +182,7 @@ template<> struct storage_traits<ublas_storage> {
     return lambda;
   }
 
-  // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
+  // worker_asymmetric: Extract Ritz vectors from 'z' matrix
   inline static complex_matrix_type
   make_asymm_eigenvectors(real_vector_type const& z,
                           real_vector_type const& di,

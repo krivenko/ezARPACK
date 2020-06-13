@@ -25,6 +25,8 @@ struct eigen_storage {};
 
 /// Traits of the Eigen3 storage backend
 template<> struct storage_traits<eigen_storage> {
+private:
+  // Implementation details
 
   template<typename T> using vector = Eigen::Matrix<T, Eigen::Dynamic, 1>;
   template<typename T>
@@ -43,6 +45,7 @@ template<> struct storage_traits<eigen_storage> {
 
   using dcomplex = std::complex<double>;
 
+public:
   // Storage types
   using real_vector_type = vector<double>;
   using complex_vector_type = vector<dcomplex>;
@@ -57,9 +60,7 @@ template<> struct storage_traits<eigen_storage> {
   using complex_vector_view_type = vector_view<dcomplex>;
   using complex_vector_const_view_type = vector_const_view<dcomplex>;
 
-  using real_matrix_view_type = matrix_view<double>;
   using real_matrix_const_view_type = matrix_const_view<double>;
-  using complex_matrix_view_type = matrix_view<dcomplex>;
   using complex_matrix_const_view_type = matrix_const_view<dcomplex>;
 
   // Factories
@@ -105,11 +106,6 @@ template<> struct storage_traits<eigen_storage> {
   inline static vector_view<T> make_vector_view(vector<T>& v) {
     return v.head(v.size());
   }
-  template<typename T>
-  inline static vector_const_view<T>
-  make_vector_const_view(vector<T> const& v) {
-    return v.head(v.size());
-  }
 
   // Make subvector view
   template<typename T>
@@ -125,21 +121,12 @@ template<> struct storage_traits<eigen_storage> {
 
   // Make matrix view
   template<typename T>
-  inline static matrix_view<T> make_matrix_view(matrix<T>& m) {
-    return m.leftCols(m.cols());
-  }
-  template<typename T>
   inline static matrix_const_view<T>
   make_matrix_const_view(matrix<T> const& m) {
     return m.leftCols(m.cols());
   }
 
   // Make submatrix view including 'cols' leftmost columns
-  template<typename T>
-  inline static matrix_view<T>
-  make_matrix_view(matrix<T>& m, int /* rows */, int cols) {
-    return m.leftCols(cols);
-  }
   template<typename T>
   inline static matrix_const_view<T>
   make_matrix_const_view(matrix<T> const& m, int /* rows */, int cols) {
@@ -189,7 +176,7 @@ template<> struct storage_traits<eigen_storage> {
     return lambda;
   }
 
-  // worker_asymmetric: Extract Ritz/Schur vectors from 'z' matrix
+  // worker_asymmetric: Extract Ritz vectors from 'z' matrix
   inline static complex_matrix_type
   make_asymm_eigenvectors(real_vector_type const& z,
                           real_vector_type const& di,
