@@ -178,9 +178,9 @@ public:
   }
 
   struct exact_shifts_f {
-    void operator()(real_vector_const_view_t hessenberg_eigenvalues_re,
-                    real_vector_const_view_t hessenberg_eigenvalues_im,
-                    real_vector_const_view_t ritz_estimates,
+    void operator()(real_vector_const_view_t ritz_values_re,
+                    real_vector_const_view_t ritz_values_im,
+                    real_vector_const_view_t ritz_bounds,
                     real_vector_view_t shifts_re,
                     real_vector_view_t shifts_im) {}
   };

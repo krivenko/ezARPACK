@@ -134,4 +134,66 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
       check_basis_vectors(ar, M);
     }
   }
+
+  SECTION("Custom implementation of the Exact Shift Strategy") {
+    std::vector<int> p;
+    p.reserve(A.n_rows);
+    auto shifts_f = [&](worker_t::real_vector_const_view_t ritz_values_re,
+                        worker_t::real_vector_const_view_t ritz_values_im,
+                        worker_t::real_vector_const_view_t ritz_bounds,
+                        worker_t::real_vector_view_t shifts_re,
+                        worker_t::real_vector_view_t shifts_im) {
+      int np = shifts_re.n_rows;
+      if(np == 0) return;
+
+      p.resize(np);
+      std::iota(p.begin(), p.end(), 0);
+      // p will contain the permutation that puts ritz_bounds in
+      // the descending order of magnitude
+      std::sort(p.begin(), p.end(),
+                [&](int i, int j) { return ritz_bounds(i) > ritz_bounds(j); });
+      // Apply permutation p to ritz_values_* and use the result to fill shifts
+      for(int i = 0; i < np; ++i) {
+        shifts_re(i) = ritz_values_re(p[i]);
+        shifts_im(i) = ritz_values_im(p[i]);
+      }
+    };
+
+    SECTION("Standard eigenproblem") {
+      auto Aop = [&](vector_const_view_t from, vector_view_t to) {
+        to = A * from;
+      };
+
+      worker_t ar(A.n_rows);
+
+      params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
+      params.random_residual_vector = false;
+      set_init_residual_vector(ar);
+      ar(Aop, params, shifts_f);
+      check_eigenvectors(ar, A);
+      check_basis_vectors(ar);
+    }
+
+    SECTION("Generalized eigenproblem: Shift-and-Invert mode (real part)") {
+      dcomplex sigma(1.0, -0.1);
+      decltype(A) op_matrix = real(inv(A - sigma * M) * M);
+
+      auto op = [&](vector_const_view_t from, vector_view_t to) {
+        to = op_matrix * from;
+      };
+      auto Bop = [&](vector_const_view_t from, vector_view_t to) {
+        to = M * from;
+      };
+
+      worker_t ar(A.n_rows);
+
+      params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
+      params.random_residual_vector = false;
+      params.sigma = sigma;
+      set_init_residual_vector(ar);
+      ar(op, Bop, worker_t::ShiftAndInvertReal, params);
+      check_eigenvectors_shift_and_invert(ar, A, M);
+      check_basis_vectors(ar, M);
+    }
+  }
 }

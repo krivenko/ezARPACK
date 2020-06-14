@@ -14,8 +14,10 @@
 
 #include <algorithm>
 #include <cmath>
+#include <numeric>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 #include <catch2/catch.hpp>
 

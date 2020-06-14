@@ -92,7 +92,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode") {
     double sigma = 2.0;
-    decltype(A) op_matrix = dot(inv(xt::eval(A - sigma * M)), M);
+    decltype(A) op_matrix = dot(inv(eval(A - sigma * M)), M);
 
     auto op = [&](vector_view_t from, vector_view_t to) {
       to = dot(op_matrix, from);
@@ -116,7 +116,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
 
   SECTION("Generalized eigenproblem: Buckling mode") {
     double sigma = 3.3;
-    decltype(A) op_matrix = dot(inv(xt::eval(M - sigma * A)), M);
+    decltype(A) op_matrix = dot(inv(eval(M - sigma * A)), M);
 
     auto op = [&](vector_view_t from, vector_view_t to) {
       to = dot(op_matrix, from);
@@ -141,7 +141,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
 
   SECTION("Generalized eigenproblem: Cayley transformed mode") {
     double sigma = 2.0;
-    decltype(A) op_matrix = dot(inv(xt::eval(A - sigma * M)), (A + sigma * M));
+    decltype(A) op_matrix = dot(inv(eval(A - sigma * M)), (A + sigma * M));
 
     auto op = [&](vector_view_t from, vector_view_t to) {
       to = dot(op_matrix, from);
@@ -158,6 +158,64 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::Cayley, params);
+      check_eigenvectors(ar, A, M);
+      check_basis_vectors(ar, M);
+    }
+  }
+
+  SECTION("Custom implementation of the Exact Shift Strategy") {
+    std::vector<int> p;
+    p.reserve(A.shape(0));
+    auto shifts_f = [&](worker_t::real_vector_const_view_t ritz_values,
+                        worker_t::real_vector_const_view_t ritz_bounds,
+                        worker_t::real_vector_view_t shifts) {
+      int np = shifts.size();
+      if(np == 0) return;
+
+      p.resize(np);
+      std::iota(p.begin(), p.end(), 0);
+      // p will contain the permutation that puts ritz_bounds in
+      // the descending order of magnitude
+      std::sort(p.begin(), p.end(),
+                [&](int i, int j) { return ritz_bounds(i) > ritz_bounds(j); });
+      // Apply permutation p to ritz_values and use the result to fill shifts
+      for(int i = 0; i < np; ++i)
+        shifts(i) = ritz_values(p[i]);
+    };
+
+    SECTION("Standard eigenproblem") {
+      auto Aop = [&](vector_const_view_t from, vector_view_t to) {
+        to = dot(A, from);
+      };
+
+      worker_t ar(A.shape(0));
+
+      params_t params(nev, params_t::LargestMagnitude, true);
+      params.random_residual_vector = false;
+      set_init_residual_vector(ar);
+      ar(Aop, params, shifts_f);
+      check_eigenvectors(ar, A);
+      check_basis_vectors(ar);
+    }
+
+    SECTION("Generalized eigenproblem: Shift-and-Invert mode") {
+      double sigma = 2.0;
+      decltype(A) op_matrix = dot(inv(eval(A - sigma * M)), M);
+
+      auto op = [&](vector_view_t from, vector_view_t to) {
+        to = dot(op_matrix, from);
+      };
+      auto Bop = [&](vector_const_view_t from, vector_view_t to) {
+        to = dot(M, from);
+      };
+
+      worker_t ar(A.shape(0));
+
+      params_t params(nev, params_t::LargestMagnitude, true);
+      params.sigma = sigma;
+      params.random_residual_vector = false;
+      set_init_residual_vector(ar);
+      ar(op, Bop, worker_t::ShiftAndInvert, params, shifts_f);
       check_eigenvectors(ar, A, M);
       check_basis_vectors(ar, M);
     }

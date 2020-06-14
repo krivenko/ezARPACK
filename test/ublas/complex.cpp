@@ -110,4 +110,63 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
       check_basis_vectors(ar, M);
     }
   }
+
+  SECTION("Custom implementation of the Exact Shift Strategy") {
+    std::vector<int> p;
+    p.reserve(A.size1());
+    auto shifts_f = [&](worker_t::complex_vector_const_view_t ritz_values,
+                        worker_t::complex_vector_const_view_t ritz_bounds,
+                        worker_t::complex_vector_view_t shifts) {
+      int np = shifts.size();
+      if(np == 0) return;
+
+      p.resize(np);
+      std::iota(p.begin(), p.end(), 0);
+      // p will contain the permutation that puts ritz_bounds in
+      // the descending order of magnitude
+      std::sort(p.begin(), p.end(), [&](int i, int j) {
+        return std::abs(ritz_bounds(i)) > std::abs(ritz_bounds(j));
+      });
+      // Apply permutation p to ritz_values and use the result to fill shifts
+      for(int i = 0; i < np; ++i)
+        shifts(i) = ritz_values(p[i]);
+    };
+
+    SECTION("Standard eigenproblem") {
+      auto Aop = [&](vector_const_view_t from, vector_view_t to) {
+        to = prod(A, from);
+      };
+
+      worker_t ar(A.size1());
+
+      params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
+      params.random_residual_vector = false;
+      set_init_residual_vector(ar);
+      ar(Aop, params, shifts_f);
+      check_eigenvectors(ar, A);
+      check_basis_vectors(ar);
+    }
+
+    SECTION("Generalized eigenproblem: Shift-and-Invert mode") {
+      dcomplex sigma(-1.0, 0.9);
+      decltype(A) op_matrix = prod(inverse(A - sigma * M), M);
+
+      auto op = [&](vector_const_view_t from, vector_view_t to) {
+        to = prod(op_matrix, from);
+      };
+      auto Bop = [&](vector_const_view_t from, vector_view_t to) {
+        to = prod(M, from);
+      };
+
+      worker_t ar(A.size1());
+
+      params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
+      params.sigma = sigma;
+      params.random_residual_vector = false;
+      set_init_residual_vector(ar);
+      ar(op, Bop, worker_t::ShiftAndInvert, params, shifts_f);
+      check_eigenvectors(ar, A, M);
+      check_basis_vectors(ar, M);
+    }
+  }
 }

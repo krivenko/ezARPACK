@@ -157,8 +157,8 @@ public:
   }
 
   struct exact_shifts_f {
-    void operator()(real_vector_const_view_t tridiag_eigenvalues,
-                    real_vector_const_view_t ritz_estimates,
+    void operator()(real_vector_const_view_t ritz_values,
+                    real_vector_const_view_t ritz_bounds,
                     real_vector_view_t shifts) {}
   };
 
@@ -209,7 +209,7 @@ public:
         } break;
         case Shifts:
           shifts_f(storage::make_vector_const_view(workl, ipntr[5] - 1, ncv),
-                   storage::make_vector_const_view(workl, ipntr[7] - 1, ncv),
+                   storage::make_vector_const_view(workl, ipntr[6] - 1, ncv),
                    storage::make_vector_view(workl, ipntr[10] - 1, iparam[7]));
           break;
         case Done: break;
@@ -320,7 +320,7 @@ public:
         } break;
         case Shifts:
           shifts_f(storage::make_vector_const_view(workl, ipntr[5] - 1, ncv),
-                   storage::make_vector_const_view(workl, ipntr[7] - 1, ncv),
+                   storage::make_vector_const_view(workl, ipntr[6] - 1, ncv),
                    storage::make_vector_view(workl, ipntr[10] - 1, iparam[7]));
           break;
         case Done: break;
