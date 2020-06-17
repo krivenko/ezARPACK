@@ -144,6 +144,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
                         worker_t::real_vector_view_t shifts_re,
                         worker_t::real_vector_view_t shifts_im) {
       int np = first_dim(shifts_re);
+      std::cout << np << std::endl;
       if(np == 0) return;
 
       p.resize(np);
@@ -168,6 +169,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
 
       params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
       params.random_residual_vector = false;
+      params.tolerance = 1e-10;
       set_init_residual_vector(ar);
       ar(Aop, params, shifts_f);
       check_eigenvectors(ar, A);
@@ -189,6 +191,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
 
       params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
       params.random_residual_vector = false;
+      params.tolerance = 1e-10;
       params.sigma = sigma;
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::ShiftAndInvertReal, params);

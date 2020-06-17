@@ -170,6 +170,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
 
       params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
       params.random_residual_vector = false;
+      params.tolerance = 1e-10;
       set_init_residual_vector(ar);
       ar(Aop, params, shifts_f);
       check_eigenvectors(ar, A);
@@ -191,6 +192,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
 
       params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
       params.random_residual_vector = false;
+      params.tolerance = 1e-10;
       params.sigma = sigma;
       set_init_residual_vector(ar);
       ar(op, Bop, worker_t::ShiftAndInvertReal, params);
