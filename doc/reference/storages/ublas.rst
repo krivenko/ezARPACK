@@ -9,3 +9,5 @@ This storage backend depends on
 
 .. doxygenstruct:: ezarpack::ublas_storage
 .. doxygenstruct:: ezarpack::storage_traits< ublas_storage >
+    :members:
+    :private-members:

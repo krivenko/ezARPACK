@@ -8,3 +8,5 @@ This storage backend depends on `Eigen <http://eigen.tuxfamily.org>`_ version
 
 .. doxygenstruct:: ezarpack::eigen_storage
 .. doxygenstruct:: ezarpack::storage_traits< eigen_storage >
+    :members:
+    :private-members:

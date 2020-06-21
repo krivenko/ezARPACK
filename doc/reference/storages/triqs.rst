@@ -8,3 +8,5 @@ version 2.0 or newer.
 
 .. doxygenstruct:: ezarpack::triqs_storage
 .. doxygenstruct:: ezarpack::storage_traits< triqs_storage >
+    :members:
+    :private-members:

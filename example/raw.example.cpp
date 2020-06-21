@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
   std::cout << lambda[N_ev - 1] << "]" << std::endl;
 
   // Check A*v = \lambda*v
-  // NB: Eigenvectors are stored in the column major order
+  // NB: Eigenvectors are stored in the column-major order
   auto const& v = worker.eigenvectors();
 
   double* lhs = new double[N];

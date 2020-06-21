@@ -8,3 +8,5 @@ This storage backend depends on
 
 .. doxygenstruct:: ezarpack::xtensor_storage
 .. doxygenstruct:: ezarpack::storage_traits< xtensor_storage >
+    :members:
+    :private-members:

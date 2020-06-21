@@ -6,6 +6,7 @@ For successful compilation, header files of the corresponding libraries must be
 visible to the compiler.
 
 .. toctree::
+    base
     eigen
     blaze
     armadillo
