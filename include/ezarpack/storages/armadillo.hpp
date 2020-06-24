@@ -23,7 +23,7 @@ namespace ezarpack {
 
 /// Armadillo storage backend tag.
 ///
-/// Passing this tag as the second template parameter of arpack_worker will
+/// Passing this tag as the second template parameter of arpack_worker
 /// instructs it to use Armadillo's vector/matrix/view types.
 struct armadillo_storage {};
 

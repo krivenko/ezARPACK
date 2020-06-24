@@ -22,7 +22,7 @@ namespace ezarpack {
 
 /// Eigen 3 storage backend tag.
 ///
-/// Passing this tag as the second template parameter of arpack_worker will
+/// Passing this tag as the second template parameter of arpack_worker
 /// instructs it to use Eigen's vector/matrix/view types.
 struct eigen_storage {};
 

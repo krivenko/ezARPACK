@@ -22,7 +22,7 @@ namespace ezarpack {
 
 /// Raw memory storage backend tag.
 ///
-/// Passing this tag as the second template parameter of arpack_worker will
+/// Passing this tag as the second template parameter of arpack_worker
 /// instructs it to use `std::unique_ptr` and raw pointers as vector/matrix and
 /// view types respectively.
 struct raw_storage {};

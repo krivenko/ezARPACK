@@ -26,7 +26,7 @@ namespace ezarpack {
 
 /// uBLAS storage backend tag.
 ///
-/// Passing this tag as the second template parameter of arpack_worker will
+/// Passing this tag as the second template parameter of arpack_worker
 /// instructs it to use vector/matrix/view types from Boost uBLAS.
 struct ublas_storage {};
 
