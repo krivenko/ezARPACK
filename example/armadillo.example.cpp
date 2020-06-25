@@ -34,7 +34,7 @@ const int bandwidth = 5;
 // The number of low-lying eigenvalues we want to compute
 const int N_ev = 10;
 
-int main(int argc, char* argv[]) {
+int main() {
 
   // Print ezARPACK version
   std::cout << "Using ezARPACK version " << EZARPACK_VERSION << std::endl;

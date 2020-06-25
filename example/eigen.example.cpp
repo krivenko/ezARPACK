@@ -59,7 +59,7 @@ struct {
   };
 } matrix_op;
 
-int main(int argc, char* argv[]) {
+int main() {
 
   // Print ezARPACK version
   std::cout << "Using ezARPACK version " << EZARPACK_VERSION << std::endl;

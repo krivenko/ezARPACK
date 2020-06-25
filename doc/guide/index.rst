@@ -5,7 +5,7 @@ User guide
 
 .. toctree::
     usage
-    general
+    choice
     symmetric
     asymmetric
     complex
