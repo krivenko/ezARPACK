@@ -399,7 +399,7 @@ public:
     Instead, one should call @ref eigenvalues(A &&) const "eigenvalues(A &&a)",
     which computes @f$ \lambda @f$ as Rayleigh quotients
     @f$ \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}{
-              \mathbf{x}^\dagger \mathbf{x}} @f$.
+              \mathbf{x}^\dagger \hat M \mathbf{x}} @f$.
     */
     ShiftAndInvertImag = 4
     /**< Complex Shift-and-Invert mode in real arithmetic.
@@ -423,7 +423,7 @@ public:
     Instead, one should call @ref eigenvalues(A &&) const "eigenvalues(A &&a)",
     which computes @f$ \lambda @f$ as Rayleigh quotients
     @f$ \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}{
-              \mathbf{x}^\dagger \mathbf{x}} @f$.
+              \mathbf{x}^\dagger \hat M \mathbf{x}} @f$.
     */
   };
   // clang-format on
@@ -598,7 +598,7 @@ public:
   /// Returns a list of @ref stats_t::n_converged eigenvalues computed as
   /// Rayleigh quotients
   ///  @f$ \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}{
-  ///            \mathbf{x}^\dagger \mathbf{x}} @f$.
+  ///            \mathbf{x}^\dagger \hat M \mathbf{x}} @f$.
   ///
   /// This method requires availability of the Ritz vectors @f$ \mathbf{x} @f$
   /// (@ref params_t::compute_vectors has been set to @ref params_t::Ritz in the

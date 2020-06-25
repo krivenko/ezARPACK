@@ -272,7 +272,7 @@ public:
   /// @brief Given a linear operator @f$ \hat A @f$, computes `nconv`
   /// eigenvalues from Ritz vectors @f$ \mathbf{x} @f$ as Rayleigh quotients
   /// @f$ \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}
-  ///          {\mathbf{x}^\dagger \mathbf{x}} @f$.
+  ///          {\mathbf{x}^\dagger \hat M \mathbf{x}} @f$.
   /// This function is called by
   /// ezarpack::arpack_worker<Asymmetric, Backend>::eigenvalues(A &&) const.
   ///
