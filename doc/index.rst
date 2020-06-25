@@ -1,9 +1,9 @@
 ezARPACK
 ========
 
-ezARPACK is a C++11 wrapper around the `ARPACK-NG
-<https://github.com/opencollab/arpack-ng>`_ FORTRAN 77 library designed to
-solve large scale eigenvalue/eigenvector problems. It allows for solving
+ezARPACK is a C++11 wrapper around `ARPACK-NG
+<https://github.com/opencollab/arpack-ng>`_, a FORTRAN 77 library designed to
+solve large scale sparse eigenproblems. It allows for solving
 eigenproblems for symmetric, asymmetric and complex double precision
 matrices with a minimal amount of boilerplate code. Both standard and
 generalized problems are supported, as well as all advanced spectral
@@ -13,12 +13,12 @@ The main goal of this header-only library is providing easy access to the
 powerful ARPACK algorithms from modern C++ code. ezARPACK pursues this goal by
 implementing two crucial features.
 
-- Following the ideology of ARPACK itself, ezARPACK does not force the user to
-  stick with a predefined matrix storage format. Instead, on each iteration of
-  the Arnoldi/Lanczos algorithm the user code is expected to apply the
-  corresponding linear operator to a vector (memory buffer) passed to it and
-  store the result in another buffer. Any callable C++ object with a suitable
-  signature can be used to implement action of the matrix on a vector.
+- Following the ideology of ARPACK, ezARPACK does not force the user to
+  stick with a predefined matrix storage format. Instead, user code is expected
+  to apply a linear operator to a vector (memory buffer) passed to it and to
+  store the result in another buffer at each iteration of
+  the Arnoldi/Lanczos algorithm. Any callable C++ object with a suitable
+  signature can be used to implement action of the operator on a vector.
 
 - Input, output and temporary data arrays used by ARPACK subroutines are
   allocated and stored as matrix/vector objects from a supported C++ matrix
@@ -33,16 +33,16 @@ implementing two crucial features.
   - `xtensor >= 0.20.0 <https://github.com/xtensor-stack/xtensor>`_
 
   Upon choosing the right backend via a template parameter of the main
-  `arpack_worker` class, programmer can use callable objects acting on the
-  vector objects from their library of choice. The output eigenvalues and
-  eigenvectors are accessible to the calling code in the compatible format too.
+  `arpack_worker` class, programmer can use callable objects to act on the
+  vectors from their library of choice. The output eigenvalues and
+  eigenvectors are accessible to the calling code in a compatible format too.
 
   Besides covering a range of popular matrix frameworks, ezARPACK
   allows for easy :ref:`addition of new backends <storage>` via specialization
   of a traits structure.
 
 You can learn about library's capabilities and the most common usage patterns
-from a series of :ref:`examples`. For an in-depth description of ezARPACK's API
+from the :ref:`guide`. For an in-depth description of ezARPACK's API
 consult the :ref:`reference`.
 
 Being a header-only library, ezARPACK does not require installation. However,
@@ -61,8 +61,7 @@ Contents
     :maxdepth: 3
 
     installation
-    examples
+    guide/index
     reference/index
-    storage_backend
     genindex
     search
