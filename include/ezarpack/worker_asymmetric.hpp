@@ -372,7 +372,7 @@ public:
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
-    a standard one with
+    another one with
     @f$ \hat O = \hat M^{-1} \hat A @f$ and
     @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is symmetric
     positive-definite.
@@ -382,7 +382,7 @@ public:
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
-    a standard one with
+    another one with
     @f$ \hat O = \Re[(\hat A - \sigma\hat M)^{-1} \hat M] @f$
     and @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is
     symmetric positive semi-definite.
@@ -406,7 +406,7 @@ public:
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
-    a standard one with
+    another one with
     @f$ \hat O = \Im[(\hat A - \sigma\hat M)^{-1} \hat M] @f$
     and @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is
     symmetric positive semi-definite.

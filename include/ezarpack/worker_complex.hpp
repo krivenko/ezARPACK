@@ -357,7 +357,7 @@ public:
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
-    a standard one with @f$ \hat O = \hat M^{-1} \hat A @f$ and
+    another one with @f$ \hat O = \hat M^{-1} \hat A @f$ and
     @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is Hermitian positive
     definite.
     */
@@ -366,7 +366,7 @@ public:
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
-    a standard one with @f$ \hat O = (\hat A - \sigma\hat M)^{-1} \hat M @f$
+    another one with @f$ \hat O = (\hat A - \sigma\hat M)^{-1} \hat M @f$
     and @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is Hermitian positive
     semi-definite.
     */
