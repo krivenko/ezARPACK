@@ -343,7 +343,7 @@ public:
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
-    another one with @f$ \hat O = \hat M^{-1} \hat A @f$ and
+    the canonical form with @f$ \hat O = \hat M^{-1} \hat A @f$ and
     @f$ \hat B = \hat M @f$, where @f$ \hat A @f$ is symmetric and
     @f$ \hat M @f$ is symmetric positive-definite.
     */
@@ -352,7 +352,7 @@ public:
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
-    another one with @f$ \hat O = (\hat A - \sigma\hat M)^{-1} \hat M @f$
+    the canonical form with @f$ \hat O = (\hat A - \sigma\hat M)^{-1} \hat M @f$
     and @f$ \hat B = \hat M @f$, where @f$ \hat A @f$ is symmetric and
     @f$ \hat M @f$ is symmetric positive semi-definite.
     */
@@ -361,7 +361,7 @@ public:
 
     Solve a generalized eigenproblem
     @f$ \hat K\mathbf{x} = \lambda \hat K_G\mathbf{x} @f$ by reduction to
-    another one with @f$ \hat O = (\hat K - \sigma\hat K_G)^{-1} \hat K @f$
+    the canonical form with @f$ \hat O = (\hat K - \sigma\hat K_G)^{-1} \hat K @f$
     and @f$ \hat B = \hat K @f$, where @f$ \hat K @f$ is symmetric positive
     semi-definite and @f$ \hat K_G @f$ is symmetric indefinite.
     */
@@ -370,7 +370,7 @@ public:
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
-    another one with
+    the canonical form with
     @f$\hat O = (\hat A -\sigma\hat M)^{-1}(\hat A +\sigma M)@f$ and
     @f$ \hat B = \hat M @f$, where @f$ \hat A @f$ is symmetric and
     @f$ \hat M @f$ is symmetric positive semi-definite.

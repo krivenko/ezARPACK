@@ -22,8 +22,8 @@ namespace ezarpack {
 ///
 /// This specialization of `arpack_worker` calls ARPACK-NG routines `dnaupd()`
 /// and `dneupd()` to compute approximations to a few eigenpairs of a real
-/// linear operator @f$ \hat O @f$ with respect to a semi-inner product defined
-/// by a real positive semi-definite symmetric matrix @f$ \hat B @f$.
+/// linear operator @f$ \hat O @f$ with respect to an inner product defined
+/// by a real symmetric positive semi-definite matrix @f$ \hat B @f$.
 ///
 /// @note If the linear operator @f$ \hat O @f$ is symmetric with respect to
 /// @f$ \hat B@f$, then @ref arpack_worker<Symmetric, Backend> should be
@@ -372,7 +372,7 @@ public:
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
-    another one with
+    the canonical form with
     @f$ \hat O = \hat M^{-1} \hat A @f$ and
     @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is symmetric
     positive-definite.
@@ -382,7 +382,7 @@ public:
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
-    another one with
+    the canonical form with
     @f$ \hat O = \Re[(\hat A - \sigma\hat M)^{-1} \hat M] @f$
     and @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is
     symmetric positive semi-definite.
@@ -406,7 +406,7 @@ public:
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
-    another one with
+    the canonical form with
     @f$ \hat O = \Im[(\hat A - \sigma\hat M)^{-1} \hat M] @f$
     and @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is
     symmetric positive semi-definite.

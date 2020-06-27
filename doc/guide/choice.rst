@@ -10,15 +10,19 @@ ARPACK-NG provides tools for solving a wide range of generalized eigenproblems
   \hat A \mathbf{x} = \lambda \hat M \mathbf{x}
 
 with large sparse matrices :math:`\hat A` and :math:`\hat M` (a standard
-eigenproblem is one with :math:`\hat M = \hat I`). All supported classed of the
-eigenproblems can be transformed to the canonical form
+eigenproblem is one with :math:`\hat M = \hat I`). At least one of
+:math:`\hat A` and :math:`\hat M` -- called :math:`\hat B` in the following --
+has to be Hermitian positive semi-definite so that it defines a weighted
+inner product :math:`\langle \mathbf{x}, \mathbf{y} \rangle =
+\mathbf{x}^\dagger \hat B \mathbf{y}`.
+
+All supported classed of the eigenproblems can be transformed to the
+canonical form
 
 .. math::
 
-  \hat O \mathbf{x} = \mu \hat B \mathbf{x},
+  \hat O \mathbf{x} = \mu \mathbf{x}.
 
-where :math:`\hat B` is a Hermitian positive semi-definite matrix defining a
-semi-inner product of vectors :math:`\mathbf{x}`.
 Depending on what properties matrices :math:`\hat A` and :math:`\hat M` posses
 -- being real or complex, symmetric, positive-definite, etc -- a different
 algorithm and computational mode should be chosen for the optimal performance
