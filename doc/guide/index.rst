@@ -9,5 +9,7 @@ User guide
     symmetric
     asymmetric
     complex
-    storage_backend
+    backends
+    implicit_restarting
+    new_backend
     examples

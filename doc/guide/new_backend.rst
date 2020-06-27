@@ -1,7 +1,7 @@
-.. _storage:
+.. _new_backend:
 
-HOWTO: Adding a new storage backend
-===================================
+Advanced: Adding a new storage backend
+======================================
 
 ezARPACK offers support for a few numerical linear algebra frameworks out of the
 box. Thanks to the decoupled design of ezARPACK's worker classes, it is fairly

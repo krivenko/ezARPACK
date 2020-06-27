@@ -38,8 +38,8 @@ implementing two crucial features.
   eigenvectors are accessible to the calling code in a compatible format too.
 
   Besides covering a range of popular matrix frameworks, ezARPACK
-  allows for easy :ref:`addition of new backends <storage>` via specialization
-  of a traits structure.
+  allows for easy :ref:`addition of new backends <new_backend>` via
+  specialization of a traits structure.
 
 You can learn about library's capabilities and the most common usage patterns
 from the :ref:`guide`. For an in-depth description of ezARPACK's API
