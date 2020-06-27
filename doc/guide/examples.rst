@@ -8,6 +8,8 @@ matrix and their respective eigenvectors. The matrix is a banded one with
 the bandwidth equal to 5. Note that the matrix is never stored in memory and
 is defined only by the rule of how it acts on a vector.
 
+.. _example_eigen:
+
 Eigen 3
 -------
 
@@ -15,6 +17,8 @@ Eigen 3
   :language: cpp
   :lines: 14-
   :linenos:
+
+.. _example_blaze:
 
 Blaze
 -----
@@ -24,6 +28,8 @@ Blaze
   :lines: 14-
   :linenos:
 
+.. _example_armadillo:
+
 Armadillo
 ---------
 
@@ -31,6 +37,8 @@ Armadillo
   :language: cpp
   :lines: 14-
   :linenos:
+
+.. _example_ublas:
 
 Boost uBLAS
 -----------
@@ -40,6 +48,8 @@ Boost uBLAS
   :lines: 14-
   :linenos:
 
+.. _example_triqs:
+
 TRIQS arrays
 ------------
 
@@ -47,6 +57,8 @@ TRIQS arrays
   :language: cpp
   :lines: 14-
   :linenos:
+
+.. _example_xtensor:
 
 xtensor
 -------

@@ -73,7 +73,7 @@ Passing the defined tag type as the second template parameter to
 
 The most crucial and biggest part of the header is a specialization of the
 `storage_traits` structure. This traits structure is going to be a 'glue'
-layer between :ref:`arpack_worker <refworker>` and the new library.
+layer between :ref:`arpack_worker <refworkerbase>` and the new library.
 `arpack_worker` extracts `mylib`-specific type
 information from typedef members of `storage_traits` and calls its static member
 functions to handle `mylib`'s vector/matrix/view objects.
