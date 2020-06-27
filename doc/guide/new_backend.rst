@@ -3,11 +3,11 @@
 Advanced: Adding a new storage backend
 ======================================
 
-ezARPACK offers support for a few numerical linear algebra frameworks out of the
-box. Thanks to the decoupled design of ezARPACK's worker classes, it is fairly
-easy to extend the support to other matrix/vector algebra libraries. In order to
-be conceptually compatible with ezARPACK's architecture, a C++ library has to
-implement the following abstractions.
+ezARPACK offers support for a few numerical linear algebra frameworks
+:ref:`out of the box <backends>`. Thanks to the decoupled design of ezARPACK's
+worker classes, it is fairly easy to extend the support to other matrix/vector
+algebra libraries. In order to be conceptually compatible with ezARPACK's
+architecture, a C++ library has to implement the following abstractions.
 
 * A class that wraps a one-dimensional contiguous array of `double` elements
   (*real vector type*).

@@ -9,6 +9,8 @@ two ways to use ezARPACK. Either way, you would need
 * A reasonably recent compiler supporting C++11 or newer;
 * a working `ARPACK-NG installation
   <https://github.com/opencollab/arpack-ng>`_ (version 3.6.0 or newer).
+* One of supported :ref:`linear algebra libraries <backends>` (unless
+  you are going to :ref:`add support for a new one <new_backend>`).
 
 Makefiles/no build system
 -------------------------
@@ -22,7 +24,9 @@ directory. A compiler command line for your program can be as simple as
   g++ -O3 -I<EZARPACK_ROOT>/include -L<ARPACK_NG_ROOT>/lib -larpack \
       -o myprog myprog.cpp
 
-(similar for `clang++` and other compilers).
+(similar for `clang++` and other compilers). More `-I` flags might be needed
+if the linear algebra framework you choose is not visible to the compiler by
+default.
 
 .. note::
 
@@ -49,9 +53,12 @@ project.
   # Import ezARPACK target
   find_package(ezARPACK 0.9 CONFIG REQUIRED)
 
+  # Import Eigen (Blaze, Armadillo, etc) targets
+  find_package(Eigen3 CONFIG)
+
   # Build an executable called 'myprog'
   add_executable(myprog myprog.cpp)
-  target_link_libraries(myprog ezarpack)
+  target_link_libraries(myprog PRIVATE ezarpack Eigen3::Eigen)
 
 If no usable ARPACK-NG lib has been detected by ezARPACK during
 installation, you will have to link `myprog` to a ARPACK-NG library
@@ -67,3 +74,4 @@ explicitly.
 
   # Link to ARPACK-NG
   target_link_libraries(myprog ${arpack_ng_LIBRARIES})
+
