@@ -312,3 +312,12 @@ The shift :math:`\sigma` used in various Shift-and-Invert modes has to be
 provided by the user based on *a priori* knowledge about the spectrum. The
 fastest convergence is achieved when it is close to the selected eigenvalues of
 interest.
+
+The table presented here is meant to give only some basic guidance. For a much
+deeper overview of ARPACK-NG's capabilities you are referred to the definitive
+
+  ARPACK Users' Guide: Solution of Large Scale Eigenvalue Problems
+  with Implicitly Restarted Arnoldi Methods (R. B. Lehoucq, D. C. Sorensen,
+  C. Yang, SIAM, 1998),
+  https://www.caam.rice.edu/software/ARPACK/UG/
+
