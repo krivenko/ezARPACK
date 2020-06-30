@@ -9,18 +9,18 @@ worker classes, it is fairly easy to extend the support to other matrix/vector
 algebra libraries. In order to be conceptually compatible with ezARPACK's
 architecture, a C++ library has to implement the following abstractions.
 
-* A class that wraps a one-dimensional contiguous array of `double` elements
+* A class that wraps a one-dimensional contiguous array of ``double`` elements
   (*real vector type*).
 * A class that wraps a one-dimensional contiguous array of
-  `std::complex<double>` elements (*complex vector type*).
-* A class that wraps a one-dimensional contiguous array of `int` elements
+  ``std::complex<double>`` elements (*complex vector type*).
+* A class that wraps a one-dimensional contiguous array of ``int`` elements
   (*integer vector type*).
 * A class that wraps a two-dimensional
   `column-major <https://en.wikipedia.org/wiki/Row-_and_column-major_order>`_
-  contiguous array of `double` elements (*real matrix type*).
+  contiguous array of ``double`` elements (*real matrix type*).
 * A class that wraps a two-dimensional
   `column-major <https://en.wikipedia.org/wiki/Row-_and_column-major_order>`_
-  contiguous array of `std::complex<double>` elements (*complex matrix type*).
+  contiguous array of ``std::complex<double>`` elements (*complex matrix type*).
 * A class that implements a partial contiguous view of a real/complex vector,
   i.e. a subvector.
 * A class that implements a rectangular contiguous view of a real/complex
@@ -31,21 +31,21 @@ architecture, a C++ library has to implement the following abstractions.
   - Their underlying data arrays must be resizable at run time;
   - There must be a way to acquire a pointer to the underlying data array.
 
-Let us say one has a fictitious library `mylib` that meets all listed
+Let us say one has a fictitious library ``mylib`` that meets all listed
 requirements. One lets ezARPACK know about the new library by implementing a
 *storage backend* in a new header file. In the following sections,
 we give step-by-step instructions on how to write such a header.
 
 For a complete example of a storage backend implementation, see
-`<ezarpack/storages/eigen.hpp>` (:ref:`Eigen 3 <refeigen>` backend).
+``<ezarpack/storages/eigen.hpp>`` (:ref:`Eigen 3 <refeigen>` backend).
 
 Basic header structure
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Our storage backend header must include `<complex>`,
-`<ezarpack/storages/base.hpp>` and all relevant headers of `mylib`.
+Our storage backend header must include ``<complex>``,
+``<ezarpack/storages/base.hpp>`` and all relevant headers of ``mylib``.
 Normally, it is a good idea to also use some include guard macros of
-`#pragma once`.
+``#pragma once``.
 
 .. code:: cpp
 
@@ -68,15 +68,15 @@ does not really matter, so it can be an empty structure.
   struct mylib_storage {};
 
 Passing the defined tag type as the second template parameter to
-`arpack_worker` (e.g. :ref:`arpack_worker\<Symmetric,mylib_storage\>
-<refworkersymmetric>`) will enable use of the `mylib` backend in the worker.
+``arpack_worker`` (e.g. :ref:`arpack_worker\<Symmetric,mylib_storage\>
+<refworkersymmetric>`) will enable use of the ``mylib`` backend in the worker.
 
 The most crucial and biggest part of the header is a specialization of the
-`storage_traits` structure. This traits structure is going to be a 'glue'
+``storage_traits`` structure. This traits structure is going to be a 'glue'
 layer between :ref:`arpack_worker <refworkerbase>` and the new library.
-`arpack_worker` extracts `mylib`-specific type
-information from typedef members of `storage_traits` and calls its static member
-functions to handle `mylib`'s vector/matrix/view objects.
+``arpack_worker`` extracts ``mylib``-specific type
+information from typedef members of ``storage_traits`` and calls its static
+member functions to handle ``mylib``'s vector/matrix/view objects.
 
 .. code:: cpp
 
@@ -88,12 +88,12 @@ functions to handle `mylib`'s vector/matrix/view objects.
   };
 
 The rest of this HOWTO gives a detailed description of mandatory and optional
-members of the `storage_traits` specialization.
+members of the ``storage_traits`` specialization.
 
 Member type definitions of the traits structure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The member type definitions of `storage_traits` form two groups. The first one
+The member type definitions of ``storage_traits`` form two groups. The first one
 is for the container (vector/matrix) types.
 
 .. code:: cpp
@@ -120,7 +120,7 @@ The second group includes all *view* type declarations. ezARPACK makes a
 distinction between constant views and regular (read/write) views. The constant
 views are returned/passed to the user code whenever a data array is meant to be
 read and should be protected against external modifications. Although not
-recommended, it is still possible to use `mylib`'s read/write views as a
+recommended, it is still possible to use ``mylib``'s read/write views as a
 substitute for the constant views. This will result in functional albeit more
 error-prone user code.
 
@@ -152,7 +152,7 @@ Static member functions of the traits structure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following member functions are mandatory for any specialization of
-`storage_traits`.
+``storage_traits``.
 
 * Vector object factories.
 
@@ -199,10 +199,10 @@ The following member functions are mandatory for any specialization of
 
   .. warning::
 
-    The `destroy()` functions should free memory occupied by
-    `v` and `m` **if and only if** it is not already done by `v`'s and `m`'s
-    destructors. Since most libraries manage the memory on their own, bodies of
-    `destroy()` should normally be left blank.
+    The ``destroy()`` functions should free memory occupied by
+    ``v`` and ``m`` **if and only if** it is not already done by
+    ``v``'s and ``m``'s destructors. Since most libraries manage the memory on
+    their own, bodies of ``destroy()`` should normally be left blank.
 
 * Resize functions.
 
@@ -293,7 +293,7 @@ The following member functions are mandatory for any specialization of
       // Call complex_matrix_const_view_type's constructor and return the result
     }
 
-Some of the functions, such as `destroy()` and `resize()`, do not have to be
+Some of the functions, such as ``destroy()`` and ``resize()``, do not have to be
 defined separately for each argument type. It is acceptable to use function
 templates instead.
 
@@ -325,12 +325,13 @@ a convenient form.
     // Compute and return dr + i*di
   }
 
-`make_asymm_eigenvalues()` is the simplest of the three functions. It is called
-to combine two real vectors -- lists of real (`dr`) and imaginary (`di`) parts
-of computed eigenvalues -- into one complex vector. `nconv` is the total number
-of the computed eigenvalues. Exactly `nconv` first elements of `dr` and `di`
-must be used to form the complex vector (`dr` and `di` can, in general, be
-longer or not providing size information at all).
+``make_asymm_eigenvalues()`` is the simplest of the three functions. It is
+called to combine two real vectors -- lists of real (``dr``) and
+imaginary (``di``) parts of computed eigenvalues -- into one complex vector.
+``nconv`` is the total number of the computed eigenvalues. Exactly ``nconv``
+first elements of ``dr`` and ``di`` must be used to form the complex vector
+(``dr`` and ``di`` can, in general, be longer or not providing size information
+at all).
 
 .. code:: cpp
 
@@ -342,17 +343,18 @@ longer or not providing size information at all).
       // Extract and return eigenvectors as columns of a complex matrix.
     }
 
-This function extracts eigenvectors from a real vector `z` according to special
-rules. `z` holds components of the eigenvectors as a sequence of `nconv`
-length-`N` chunks, where `N` is the dimension of the eigenproblem and `nconv`
-has the same meaning as before. Meaning of each chunk depends on the
-corresponding component of `di`. If `di[i]` is zero, then the `i`-th chunk of
-`z` contains a real eigenvector. Otherwise, `di[i] = -di[i+1] != 0`,
-in which case the `i`-th and `(i+1)`-th chunks of `z` are real and imaginary
-parts of a complex eigenvector respectively. Every such pair corresponds to a
-complex conjugate pair of eigenvectors, so that the total amount of vectors
-stored in `z` is exactly `nconv`. The extracted eigenvectors must be returned
-as columns of a complex `N` x `nconv` matrix.
+This function extracts eigenvectors from a real vector ``z`` according to
+special rules. ``z`` holds components of the eigenvectors as a sequence of
+``nconv`` length-``N`` chunks, where ``N`` is the dimension of the eigenproblem
+and ``nconv`` has the same meaning as before. Meaning of each chunk depends on
+the corresponding component of ``di``. If ``di[i]`` is zero, then the ``i``-th
+chunk of ``z`` contains a real eigenvector. Otherwise,
+``di[i] = -di[i+1] != 0``, in which case the ``i``-th and ``(i+1)``-th chunks
+of ``z`` are real and imaginary parts of a complex eigenvector respectively.
+Every such pair corresponds to a complex conjugate pair of eigenvectors,
+so that the total amount of vectors stored in ``z`` is exactly ``nconv``.
+The extracted eigenvectors must be returned as columns of a complex
+``N`` x ``nconv`` matrix.
 
 .. code:: cpp
 
@@ -367,7 +369,7 @@ as columns of a complex `N` x `nconv` matrix.
       // a complex vector.
     }
 
-In the `ShiftAndInvertReal` and `ShiftAndInvertImag` spectral transformation
+In the ``ShiftAndInvertReal`` and ``ShiftAndInvertImag`` spectral transformation
 modes, ARPACK-NG computes eigenvalues of an auxiliary real matrix. Those
 eigenvalues are implicitly related to the ones of the original eigenproblem.
 One way to extract the original eigenvalues is via solution of a quadratic
@@ -377,14 +379,14 @@ correct solution with a given eigenvector :math:`\mathbf{x}`. A robust
 alternative approach is to compute the eigenvalue :math:`\lambda` of
 :math:`\hat A\mathbf{x} = \lambda\hat M\mathbf{x}` as the Rayleigh quotient
 :math:`\lambda = \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}
-{\mathbf{x}^\dagger\hat M \mathbf{x}}`, which is the purpose of the last of the three
-functions. `z`, `di`, `N` and `nconv` have the same meaning as before, and
-callable object `a` represents the linear operator :math:`\hat A`. This overload
-of `make_asymm_eigenvalues()` should extract the eigenvectors from `z` one by
-one and compute :math:`\lambda` for each of them. It is beneficial to treat
-the real vectors differently from the complex ones, as the Rayleigh quotient
-can be computed at lower memory and CPU costs if :math:`\mathbf{x}^\dagger =
-\mathbf{x}^T`.
+{\mathbf{x}^\dagger\hat M \mathbf{x}}`, which is the purpose of the last of the
+three functions. ``z``, ``di``, ``N`` and ``nconv`` have the same meaning as
+before, and callable object ``a`` represents the linear operator :math:`\hat A`.
+This overload of ``make_asymm_eigenvalues()`` should extract the eigenvectors
+from ``z`` one by one and compute :math:`\lambda` for each of them. It is
+beneficial to treat the real vectors differently from the complex ones,
+as the Rayleigh quotient can be computed at lower memory and CPU costs
+if :math:`\mathbf{x}^\dagger = \mathbf{x}^T`.
 
 .. note:: Despite the name, the quotients amount to just the numerators.
           ARPACK-NG guarantees that :math:`\mathbf{x}^\dagger\hat M

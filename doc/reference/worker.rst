@@ -1,5 +1,5 @@
-Specializations of the `arpack_worker` class
-============================================
+Specializations of the ``arpack_worker`` class template
+=======================================================
 
 .. toctree::
     worker_symmetric

@@ -47,7 +47,7 @@ Typical steps needed to compute the eigenpairs are as follows.
    will assume that the `Eigen <http://eigen.tuxfamily.org>`_ backend has been
    selected.
 
-2. Include `arpack_worker.hpp` and the relevant backend header.
+2. Include ``<ezarpack/arpack_worker.hpp>`` and the relevant backend header.
 
   .. code::
 
@@ -56,10 +56,11 @@ Typical steps needed to compute the eigenpairs are as follows.
 
   .. note::
 
-    `arpack_worker.hpp` includes
+    ``<ezarpack/arpack_worker.hpp>`` includes
     :ref:`all three specializations of ezarpack::arpack_worker<refworker>`
     at once. If you want to speed up compilation a little bit, you can
-    include `worker_base.hpp` and `worker_symmetric.hpp` instead.
+    include ``<ezarpack/worker_base.hpp>`` and
+    ``<ezarpack/worker_symmetric.hpp>`` instead.
 
 3. Create a worker object.
 
@@ -74,7 +75,7 @@ Typical steps needed to compute the eigenpairs are as follows.
     // Worker object.
     worker_t worker(N);
 
-4. Fill a `params_t` structure with calculation parameters.
+4. Fill a ``params_t`` structure with calculation parameters.
 
   .. code:: cpp
 
@@ -97,6 +98,8 @@ Typical steps needed to compute the eigenpairs are as follows.
 
   The following table contains an annotated list of all supported parameters.
 
+  .. _the list of parameters:
+
   .. list-table::
     :header-rows: 1
     :align: left
@@ -107,68 +110,68 @@ Typical steps needed to compute the eigenpairs are as follows.
       - Default value
       - Description
 
-    * - `n_eigenvalues`
-      - `unsigned int`
+    * - ``n_eigenvalues``
+      - ``unsigned int``
       - n/a
       - Number of eigenvalues to compute.
 
-    * - `eigenvalues_select`
-      - `params_t::eigenvalues_select_t` (enumeration)
+    * - ``eigenvalues_select``
+      - ``params_t::eigenvalues_select_t`` (enumeration)
       - n/a
       - Part of the spectrum to target. Acceptable values are
-        `Largest` (algebraically largest eigenvalues),
-        `Smallest` (algebraically smallest eigenvalues),
-        `LargestMagnitude` (largest eigenvalues in magnitude),
-        `SmallestMagnitude` (smallest eigenvalues in magnitude) and
-        `BothEnds` (eigenvalues at both ends of the spectrum;
-        If `n_eigenvalues` is odd, compute one more from the high end
+        ``Largest`` (algebraically largest eigenvalues),
+        ``Smallest`` (algebraically smallest eigenvalues),
+        ``LargestMagnitude`` (largest eigenvalues in magnitude),
+        ``SmallestMagnitude`` (smallest eigenvalues in magnitude) and
+        ``BothEnds`` (eigenvalues at both ends of the spectrum;
+        If ``n_eigenvalues`` is odd, compute one more from the high end
         than from the low end).
 
-    * - `ncv`
-      - `int`
-      - min(2*n_eigenvalues + 2, N)
+    * - ``ncv``
+      - ``int``
+      - min(2 * ``n_eigenvalues`` + 2, ``N``)
       - How many Lanczos vectors to generate at each iteration.
 
-    * - `compute_eigenvectors`
-      - `bool`
+    * - ``compute_eigenvectors``
+      - ``bool``
       - n/a
       - Request computation of eigenvectors in addition to the eigenvalues.
 
-    * - `random_residual_vector`
-      - `bool`
-      - `true`
+    * - ``random_residual_vector``
+      - ``bool``
+      - ``true``
       - Use a randomly generated initial residual vector?
 
-    * - `sigma`
-      - `double`
+    * - ``sigma``
+      - ``double``
       - `0`
       - Real eigenvalue shift :math:`\sigma` for spectral transformation modes.
 
-    * - `tolerance`
-      - `double`
+    * - ``tolerance``
+      - ``double``
       - Machine precision
       - Relative tolerance for Ritz value (eigenvalue) convergence.
 
-    * - `max_iter`
-      - `unsigned int`
-      - `INT_MAX`
+    * - ``max_iter``
+      - ``unsigned int``
+      - ``INT_MAX``
       - Maximum number of Lanczos update iterations allowed.
 
   .. note::
 
-    In the spectral transformation modes, values of `eigenvalues_select` refer
+    In the spectral transformation modes, values of ``eigenvalues_select`` refer
     to the spectrum of the **transformed** problem, not the original one. For
-    instance, `LargestMagnitude` used in the shift-and-invert mode will pick
+    instance, ``LargestMagnitude`` used in the shift-and-invert mode will pick
     eigenvalues :math:`\lambda` closest to the shift :math:`\sigma`, because
     they correspond to the eigenvalues :math:`\mu = 1/(\lambda - \sigma)`
     that have the largest magnitude.
 
 5. Optionally set the initial vector for Lanczos iteration if a better choice
-   than a random vector is known. `random_residual_vector` parameter must
-   be set to `false` for the changes made to the initial vector to take effect.
+   than a random vector is known. ``random_residual_vector`` parameter must
+   be set to ``false`` for the changes made to the initial vector to take effect.
 
    A view of the residual vector is accessible via the method
-   `residual_vector()` of the worker.
+   ``residual_vector()`` of the worker.
 
    .. code:: cpp
 
@@ -176,11 +179,11 @@ Typical steps needed to compute the eigenpairs are as follows.
      auto rv = worker.residual_vector();
      for(int i = 0; i < N; ++i) rv[i] = 1.0;
 
-   One may also call `residual_vector()` later, after a diagonalization run
+   One may also call ``residual_vector()`` later, after a diagonalization run
    has started, to retrieve the current residual vector.
 
 6. Choose one of supported computational modes and perform diagonalization.
-   In this part, user is supposed to call the `worker` object and pass the
+   In this part, user is supposed to call the ``worker`` object and pass the
    parameter structure as well as callable objects (*e.g.* lambda-functions)
    that represent action of operators :math:`\hat O` and :math:`\hat B` on
    a given vector. The supplied objects will be called to generate Lanczos
@@ -232,8 +235,8 @@ Typical steps needed to compute the eigenpairs are as follows.
      is usually undesirable from the storage standpoint. A more practical
      solution is to compute the sparse LU or Cholesky factorization of
      :math:`\hat M` once (outside of the lambda-function's body), and write
-     the lambda-function so that it (1) sets `in = A * in` and (2) computes
-     `out` as the solution of the linear system `M * out = in` using the
+     the lambda-function so that it (1) sets ``in = A * in`` and (2) computes
+     ``out`` as the solution of the linear system ``M * out = in`` using the
      precomputed factorization.
 
    - **Shift-and-Invert mode** (for symmetric positive semi-definite
@@ -243,7 +246,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      :math:`\hat O = (\hat A -\sigma \hat M)^{-1} \hat M`,
      :math:`\hat B = \hat M` and :math:`\lambda = 1/\mu + \sigma`.
      The real spectral shift :math:`\sigma` must be set in the parameters
-     structure, see table in step 4.
+     structure, see `the list of parameters`_.
 
      .. code:: cpp
 
@@ -265,9 +268,9 @@ Typical steps needed to compute the eigenpairs are as follows.
      dense, which is usually undesirable from the storage standpoint. A more
      practical solution is to compute the sparse LU or Cholesky factorization of
      :math:`\hat A - \sigma\hat M` once (outside of the lambda-function's body),
-     and write the lambda-function so that it (1) computes `M * in` and
-     (2) computes `out` as the solution of the linear system
-     `(A - \\sigma M) * out = M * in` using the precomputed factorization.
+     and write the lambda-function so that it (1) computes ``M * in`` and
+     (2) computes ``out`` as the solution of the linear system
+     ``(A - \sigma M) * out = M * in`` using the precomputed factorization.
 
    - **Buckling mode** (for symmetric positive semi-definite
      :math:`\hat A` and symmetric indefinite :math:`\hat M`).
@@ -276,7 +279,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      :math:`\hat O = (\hat A -\sigma \hat M)^{-1} \hat A`,
      :math:`\hat B = \hat A`, and :math:`\lambda = \sigma \frac{\mu}{\mu-1}`.
      The real spectral shift :math:`\sigma` must be set in the parameters
-     structure, see table in step 4.
+     structure, see `the list of parameters`_.
 
      .. code:: cpp
 
@@ -300,8 +303,8 @@ Typical steps needed to compute the eigenpairs are as follows.
      practical solution is to compute the sparse LU or Cholesky factorization of
      :math:`\hat A - \sigma\hat M` once (outside of the lambda-function's body),
      and write the lambda-function so that it (1) computes
-     `A * in` and (2) computes `out` as the solution of the linear
-     system `(A - \\sigma M) * out = A * in` using the precomputed
+     ``A * in`` and (2) computes ``out`` as the solution of the linear
+     system ``(A - \sigma M) * out = A * in`` using the precomputed
      factorization.
 
    - **Cayley mode** (for symmetric positive semi-definite
@@ -312,7 +315,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      :math:`\hat B = \hat M` and
      :math:`\lambda = \sigma\left(\frac{1+\mu}{1-\mu}\right)`.
      The real spectral shift :math:`\sigma` must be set in the parameters
-     structure, see table in step 4.
+     structure, see `the list of parameters`_.
 
      .. code:: cpp
 
@@ -336,21 +339,21 @@ Typical steps needed to compute the eigenpairs are as follows.
      practical solution is to compute the sparse LU or Cholesky factorization of
      :math:`\hat A - \sigma\hat M` once (outside of the lambda-function's body),
      and write the lambda-function so that it (1) computes
-     `(A + \\sigma M) * in` and (2) computes `out` as the solution of the linear
-     system `(A - \\sigma M) * out = (A + \\sigma M) * in` using the
+     ``(A + \sigma M) * in`` and (2) computes ``out`` as the solution of the
+     linear system ``(A - \sigma M) * out = (A + \sigma M) * in`` using the
      precomputed factorization.
 
    .. note::
 
      In most computational modes above, it is seemingly necessary to apply
      operator :math:`\hat B` to the same vector twice per generated Lanczos
-     vector, once in functor `op` and once in `Bop`. It is actually possible to
-     spare one of the applications. Calling `worker.Bx_available()` inside `op`
-     will tell whether `Bop` has already been called at the current iteration,
-     and `worker.Bx_vector()` will return a constant view of the application
-     result :math:`\hat B \mathbf{x}`.
+     vector, once in functor ``op`` and once in ``Bop``. It is actually possible
+     to spare one of the applications. Calling ``worker.Bx_available()`` inside
+     ``op`` will tell whether ``Bop`` has already been called at the current
+     iteration, and ``worker.Bx_vector()`` will return a constant view of the
+     application result :math:`\hat B \mathbf{x}`.
 
-   The `in` and `out` views passed to the callable objects always expose one
+   The ``in`` and ``out`` views passed to the callable objects always expose one
    of three length-:math:`N` vectors stored inside the worker object. There is
    another, indirect way to access them.
 
@@ -362,7 +365,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      auto out_view = worker.workspace_vector(worker.out_vector_n());
 
    In advanced usage scenarios, the implicit restarting procedure can be
-   customized via an extra argument of `worker`'s call operator.
+   customized via an extra argument of ``worker``'s call operator.
    See :ref:`restarting` for more details.
 
    .. code:: cpp
@@ -378,26 +381,26 @@ Typical steps needed to compute the eigenpairs are as follows.
      // Other modes, e.g. Inverse
      worker(op, Bop, worker_t::Inverse, params, shifts_f);
 
-   `worker_t::operator()` can throw two special exception types.
+   ``worker_t::operator()`` can throw two special exception types.
 
-   - `maxiter_reached` - Maximum number of implicitly restarted Lanczos
+   - ``maxiter_reached`` - Maximum number of implicitly restarted Lanczos
      iterations has been reached.
-   - `ncv_insufficient` - No shifts could be applied during a cycle of
+   - ``ncv_insufficient`` - No shifts could be applied during a cycle of
      the Implicitly restarted Lanczos iteration. Consider increasing the number
-     of Lanczos vectors generated at each iteration (`ncv` parameter).
+     of Lanczos vectors generated at each iteration (``ncv`` parameter).
 
    The rest of possible problems reported by ARPACK-NG result in generic
-   `std::runtime_error` exceptions.
+   ``std::runtime_error`` exceptions.
 
 7. Request computed eigenvalues and eigenvectors (provided the
-   `compute_eigenvectors` parameter has been enabled).
+   ``compute_eigenvectors`` parameter has been enabled).
 
    .. code:: cpp
 
      auto lambda = worker.eigenvalues();
      auto vecs = worker.eigenvectors();
 
-   The eigenvectors are columns of the real matrix view `vecs`.
+   The eigenvectors are columns of the real matrix view ``vecs``.
 
 8. Optionally request statistics about the completed run.
 
@@ -419,5 +422,5 @@ Typical steps needed to compute the eigenpairs are as follows.
 
    If a diagonalization run has ended prematurely (for example, when the maximum
    number of iterations has been reached), then it may still be possible to
-   extract the first `stats.n_converged` eigenpairs.
+   extract the first ``stats.n_converged`` eigenpairs.
 

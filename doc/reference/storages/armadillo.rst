@@ -1,7 +1,7 @@
 .. _refarmadillo:
 
-`ezarpack/storages/armadillo.hpp` - Armadillo
-=============================================
+``ezarpack/storages/armadillo.hpp`` - Armadillo
+===============================================
 
 This storage backend depends on `Armadillo <http://arma.sourceforge.net>`_.
 

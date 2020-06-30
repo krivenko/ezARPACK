@@ -62,7 +62,7 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * - Real symmetric
     - :math:`\hat I`
-    - `Symmetric`
+    - ``Symmetric``
     - Standard
     - :math:`\hat A`
     - :math:`\hat I`
@@ -70,8 +70,8 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * -
     -
-    - `Symmetric`
-    - `ShiftAndInvert`
+    - ``Symmetric``
+    - ``ShiftAndInvert``
     - :math:`(\hat A - \sigma)^{-1}`
     - :math:`\hat I`
     - Optimal for finding eigenvalues in the interior of the spectrum, clustered
@@ -79,8 +79,8 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * - Real symmetric
     - Real symmetric, positive-definite
-    - `Symmetric`
-    - `Inverse`
+    - ``Symmetric``
+    - ``Inverse``
     - :math:`\hat M^{-1} \hat A`
     - :math:`\hat M`
     - Optimal for finding extremal eigenvalues when :math:`\hat M` is
@@ -88,8 +88,8 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * -
     -
-    - `Symmetric`
-    - `ShiftAndInvert`
+    - ``Symmetric``
+    - ``ShiftAndInvert``
     - :math:`(\hat A-\sigma \hat M)^{-1} \hat M`
     - :math:`\hat M`
     - Optimal for finding eigenvalues in the interior of the spectrum, clustered
@@ -97,8 +97,8 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * - Real symmetric
     - Real symmetric, positive semi-definite
-    - `Symmetric`
-    - `ShiftAndInvert`
+    - ``Symmetric``
+    - ``ShiftAndInvert``
     - :math:`(\hat A - \sigma \hat M)^{-1} \hat M`
     - :math:`\hat M`
     - Optimal for finding eigenvalues clustered around the real shift
@@ -106,8 +106,8 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * -
     -
-    - `Symmetric`
-    - `Cayley`
+    - ``Symmetric``
+    - ``Cayley``
     - :math:`(\hat A - \sigma \hat M)^{-1} (\hat A + \sigma \hat M)`
     - :math:`\hat M`
     - Cayley-transformed eigenproblem. Another option for finding eigenvalues
@@ -116,8 +116,8 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * - Real symmetric, positive semi-definite
     - Real symmetric
-    - `Symmetric`
-    - `Buckling`
+    - ``Symmetric``
+    - ``Buckling``
     - :math:`(\hat A - \sigma \hat M)^{-1} \hat A`
     - :math:`\hat A`
     - Buckling-transformed eigenproblem. Optimal for finding eigenvalues
@@ -126,7 +126,7 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * - General real
     - :math:`\hat I`
-    - `Asymmetric`
+    - ``Asymmetric``
     - Standard
     - :math:`\hat A`
     - :math:`\hat I`
@@ -135,29 +135,29 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * -
     -
-    - `Asymmetric`
-    - `ShiftAndInvertReal`
+    - ``Asymmetric``
+    - ``ShiftAndInvertReal``
     - :math:`\Re [(\hat A - \sigma)^{-1}]`
     - :math:`\hat I`
     - Optimal for finding eigenvalues in the interior of the spectrum, clustered
       around the complex shift :math:`\sigma`. This mode must be chosen over
-      `ShiftAndInvertImag` if :math:`\Im\sigma = 0`.
+      ``ShiftAndInvertImag`` if :math:`\Im\sigma = 0`.
 
   * -
     -
-    - `Asymmetric`
-    - `ShiftAndInvertImag`
+    - ``Asymmetric``
+    - ``ShiftAndInvertImag``
     - :math:`\Im [(\hat A - \sigma)^{-1}]`
     - :math:`\hat I`
     - Optimal for finding eigenvalues in the interior of the spectrum, clustered
       around the complex shift :math:`\sigma`. As :math:`\lambda` goes to
       infinity, the eigenvalues are damped more strongly in this mode than in
-      `ShiftAndInvertReal`.
+      ``ShiftAndInvertReal``.
 
   * - General real
     - Real symmetric, positive-definite
-    - `Asymmetric`
-    - `Inverse`
+    - ``Asymmetric``
+    - ``Inverse``
     - :math:`\hat M^{-1} \hat A`
     - :math:`\hat M`
     - Optimal for finding eigenvalues at the extreme points of the convex
@@ -165,49 +165,49 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * -
     -
-    - `Asymmetric`
-    - `ShiftAndInvertReal`
+    - ``Asymmetric``
+    - ``ShiftAndInvertReal``
     - :math:`\Re [(\hat A - \sigma\hat M)^{-1} \hat M]`
     - :math:`\hat M`
     - Optimal for finding eigenvalues in the interior of the spectrum, clustered
       around the complex shift :math:`\sigma`. This mode must be chosen over
-      `ShiftAndInvertImag` if :math:`\Im\sigma = 0`.
+      ``ShiftAndInvertImag`` if :math:`\Im\sigma = 0`.
 
   * -
     -
-    - `Asymmetric`
-    - `ShiftAndInvertImag`
+    - ``Asymmetric``
+    - ``ShiftAndInvertImag``
     - :math:`\Im [(\hat A - \sigma\hat M)^{-1} \hat M]`
     - :math:`\hat M`
     - Optimal for finding eigenvalues in the interior of the spectrum, clustered
       around the complex shift :math:`\sigma`. As :math:`\lambda` goes to
       infinity, the eigenvalues are damped more strongly in this mode than in
-      `ShiftAndInvertImag`.
+      ``ShiftAndInvertImag``.
 
   * - General real
     - Real symmetric, positive semi-definite
-    - `Asymmetric`
-    - `ShiftAndInvertReal`
+    - ``Asymmetric``
+    - ``ShiftAndInvertReal``
     - :math:`\Re [(\hat A - \sigma\hat M)^{-1} \hat M]`
     - :math:`\hat M`
     - Optimal for finding eigenvalues in the interior of the spectrum, clustered
       around the complex shift :math:`\sigma`. This mode must be chosen over
-      `ShiftAndInvertImag` if :math:`\Im\sigma = 0`.
+      ``ShiftAndInvertImag`` if :math:`\Im\sigma = 0`.
 
   * -
     -
-    - `Asymmetric`
-    - `ShiftAndInvertImag`
+    - ``Asymmetric``
+    - ``ShiftAndInvertImag``
     - :math:`\Im [(\hat A - \sigma\hat M)^{-1} \hat M]`
     - :math:`\hat M`
     - Optimal for finding eigenvalues in the interior of the spectrum, clustered
       around the complex shift :math:`\sigma`. As :math:`\lambda` goes to
       infinity, the eigenvalues are damped more strongly in this mode than in
-      `ShiftAndInvertImag`.
+      ``ShiftAndInvertImag``.
 
   * - General real
     - General real, invertible
-    - `Asymmetric`
+    - ``Asymmetric``
     - Standard
     - :math:`\hat M^{-1} \hat A`
     - :math:`\hat I`
@@ -221,7 +221,7 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * - General real
     - General real
-    - `Asymmetric`
+    - ``Asymmetric``
     - Standard
     - :math:`(\hat A - \sigma\hat M)^{-1} \hat M`
     - :math:`\hat I`
@@ -237,7 +237,7 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * - Complex
     - :math:`\hat I`
-    - `Complex`
+    - ``Complex``
     - Standard
     - :math:`\hat A`
     - :math:`\hat I`
@@ -246,8 +246,8 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * -
     -
-    - `Complex`
-    - `ShiftAndInvert`
+    - ``Complex``
+    - ``ShiftAndInvert``
     - :math:`(\hat A - \sigma)^{-1}`
     - :math:`\hat I`
     - Optimal for finding eigenvalues in the interior of the spectrum, clustered
@@ -255,8 +255,8 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * - Complex
     - Complex, Hermitian, positive-definite
-    - `Complex`
-    - `Inverse`
+    - ``Complex``
+    - ``Inverse``
     - :math:`\hat M^{-1} \hat A`
     - :math:`\hat M`
     - Optimal for finding eigenvalues at the extreme points of the convex
@@ -264,8 +264,8 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * -
     -
-    - `Complex`
-    - `ShiftAndInvert`
+    - ``Complex``
+    - ``ShiftAndInvert``
     - :math:`(\hat A - \sigma \hat M)^{-1} \hat M`
     - :math:`\hat M`
     - Optimal for finding eigenvalues in the interior of the spectrum, clustered
@@ -273,8 +273,8 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * - Complex
     - Complex, Hermitian, positive semi-definite
-    - `Complex`
-    - `ShiftAndInvert`
+    - ``Complex``
+    - ``ShiftAndInvert``
     - :math:`(\hat A - \sigma \hat M)^{-1} \hat M`
     - :math:`\hat M`
     - Optimal for finding eigenvalues in the interior of the spectrum, clustered
@@ -282,7 +282,7 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * - Complex
     - Complex, invertible
-    - `Complex`
+    - ``Complex``
     - Standard
     - :math:`\hat M^{-1} \hat A`
     - :math:`\hat I`
@@ -296,7 +296,7 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * - Complex
     - General complex
-    - `Complex`
+    - ``Complex``
     - Standard
     - :math:`(\hat A - \sigma\hat M)^{-1} \hat M`
     - :math:`\hat I`

@@ -21,9 +21,9 @@ subspace. A complete description of this restarting scheme can be found in
 In some (rather rare) cases, one may want to deviate from the default
 "Exact Shift Strategy" and change the way those shifts are selected/computed.
 ezARPACK allows for customization of the implicit restarting via an optional
-extra argument of `operator()` in specializations of
+extra argument of ``operator()`` in specializations of
 :ref:`ezarpack::arpack_worker <refworkerbase>`. The argument is expected to be
-a callable object `shifts_f` that supplies a list of shifts. It must have one
+a callable object ``shifts_f`` that supplies a list of shifts. It must have one
 of the following signatures.
 
 * For :ref:`ezarpack::arpack_worker\<Symmetric, Backend\> <refworkersymmetric>`:

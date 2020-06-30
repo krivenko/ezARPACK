@@ -15,7 +15,7 @@ two ways to use ezARPACK. Either way, you would need
 Makefiles/no build system
 -------------------------
 
-Assume that `<EZARPACK_ROOT>` is either a directory with unpacked
+Assume that ``<EZARPACK_ROOT>`` is either a directory with unpacked
 ezARPACK sources or its :ref:`installation <installation>`
 directory. A compiler command line for your program can be as simple as
 
@@ -24,21 +24,21 @@ directory. A compiler command line for your program can be as simple as
   g++ -O3 -I<EZARPACK_ROOT>/include -L<ARPACK_NG_ROOT>/lib -larpack \
       -o myprog myprog.cpp
 
-(similar for `clang++` and other compilers). More `-I` flags might be needed
+(similar for ``clang++`` and other compilers). More ``-I`` flags might be needed
 if the linear algebra framework you choose is not visible to the compiler by
 default.
 
 .. note::
 
   When linking to the static version of ARPACK-NG library
-  (`libarpack.a`), you might also need to explicitly link your code to
+  (``libarpack.a``), you might also need to explicitly link your code to
   a BLAS/LAPACK implementation. A common symptom of this problem is
-  undefined references to `dgemv_` and other LAPACK subroutines.
+  undefined references to ``dgemv_`` and other LAPACK subroutines.
 
 CMake
 -----
 
-Here is a minimal example of a root `CMakeLists.txt` script for your
+Here is a minimal example of a root ``CMakeLists.txt`` script for your
 project.
 
 .. code:: cmake
@@ -61,7 +61,7 @@ project.
   target_link_libraries(myprog PRIVATE ezarpack Eigen3::Eigen)
 
 If no usable ARPACK-NG lib has been detected by ezARPACK during
-installation, you will have to link `myprog` to a ARPACK-NG library
+installation, you will have to link ``myprog`` to a ARPACK-NG library
 explicitly.
 
 .. code:: cmake
