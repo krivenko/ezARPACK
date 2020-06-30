@@ -318,21 +318,21 @@ public:
     auto lambda = complex_vector_type::from_shape({size_t(nconv)});
     auto Ax1 = real_vector_type::from_shape({size_t(N)});
     auto Ax2 = real_vector_type::from_shape({size_t(N)});
-    auto to1 = make_vector_view(Ax1);
-    auto to2 = make_vector_view(Ax2);
+    auto out1 = make_vector_view(Ax1);
+    auto out2 = make_vector_view(Ax2);
     using xt::linalg::dot;
     for(int i = 0; i < nconv; ++i) {
       if(di(i) == 0) {
-        auto from1 = make_vector_const_view(z, i * N, N);
-        a(from1, to1);
-        lambda(i) = dot(from1, to1)[0];
+        auto in1 = make_vector_const_view(z, i * N, N);
+        a(in1, out1);
+        lambda(i) = dot(in1, out1)[0];
       } else {
-        auto from1 = make_vector_const_view(z, i * N, N);
-        auto from2 = make_vector_const_view(z, (i + 1) * N, N);
-        a(from1, to1);
-        a(from2, to2);
-        lambda(i) = dcomplex(dot(from1, to1)[0] + dot(from2, to2)[0],
-                             dot(from1, to2)[0] - dot(from2, to1)[0]);
+        auto in1 = make_vector_const_view(z, i * N, N);
+        auto in2 = make_vector_const_view(z, (i + 1) * N, N);
+        a(in1, out1);
+        a(in2, out2);
+        lambda(i) = dcomplex(dot(in1, out1)[0] + dot(in2, out2)[0],
+                             dot(in1, out2)[0] - dot(in2, out1)[0]);
         ++i;
         lambda(i) = std::conj(lambda(i - 1));
       }

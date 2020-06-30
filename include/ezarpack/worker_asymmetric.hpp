@@ -273,18 +273,18 @@ public:
   /// @param a A callable object representing the linear operator
   /// @f$ \hat A @f$. It must take two arguments,
   /// @code
-  /// a(vector_const_view_t from, vector_view_t to)
+  /// a(vector_const_view_t in, vector_view_t out)
   /// @endcode
-  /// `a` is expected to act on the vector view `from` and write the result into
-  /// the vector view `to`, `to = a*from`. Given an instance `aw` of the
-  /// arpack_worker< Asymmetric, Backend > class, `from` is also indirectly
+  /// `a` is expected to act on the vector view `in` and write the result into
+  /// the vector view `out`, `out = a*in`. Given an instance `aw` of the
+  /// arpack_worker< Asymmetric, Backend > class, `in` is also indirectly
   /// accessible as
   /// @code
-  /// aw.workspace_vector(aw.from_vector_n())
+  /// aw.workspace_vector(aw.in_vector_n())
   /// @endcode
-  /// and `to` is accessible as
+  /// and `out` is accessible as
   /// @code
-  /// aw.workspace_vector(aw.to_vector_n())
+  /// aw.workspace_vector(aw.out_vector_n())
   /// @endcode
   ///
   /// @param params Set of input parameters for the Implicitly Restarted
@@ -324,10 +324,10 @@ public:
       switch(ido) {
         case ApplyOpInit:
         case ApplyOp: {
-          int from_pos = from_vector_n() * N;
-          int to_pos = to_vector_n() * N;
-          a(storage::make_vector_const_view(workd, from_pos, N),
-            storage::make_vector_view(workd, to_pos, N));
+          int in_pos = in_vector_n() * N;
+          int out_pos = out_vector_n() * N;
+          a(storage::make_vector_const_view(workd, in_pos, N),
+            storage::make_vector_view(workd, out_pos, N));
         } break;
         case Shifts: {
           int np = iparam[7];
@@ -438,27 +438,27 @@ public:
   /// @param op A callable object representing the linear operator
   /// @f$ \hat O @f$. It must take two arguments,
   /// @code
-  /// op(vector_const_view_t from, vector_view_t to)
+  /// op(vector_const_view_t in, vector_view_t out)
   /// @endcode
-  /// `op` is expected to act on the vector view `from` and write the result
-  /// into the vector view `to`, `to = op*from`.
+  /// `op` is expected to act on the vector view `in` and write the result
+  /// into the vector view `out`, `out = op*in`.
   /// Given an instance `aw` of the arpack_worker< Asymmetric, Backend > class,
-  /// `from` is also indirectly accessible as
+  /// `in` is also indirectly accessible as
   /// @code
-  /// aw.workspace_vector(aw.from_vector_n())
+  /// aw.workspace_vector(aw.in_vector_n())
   /// @endcode
-  /// and `to` is accessible as
+  /// and `out` is accessible as
   /// @code
-  /// aw.workspace_vector(aw.to_vector_n())
+  /// aw.workspace_vector(aw.out_vector_n())
   /// @endcode
   ///
   /// @param b A callable object representing the linear operator
   /// @f$ \hat B @f$. It must take two arguments,
   /// @code
-  /// b(vector_const_view_t from, vector_view_t to)
+  /// b(vector_const_view_t in, vector_view_t out)
   /// @endcode
-  /// `b` is expected to act on the vector view `from` and write the result into
-  /// the vector view `to`, `to = b*from`.
+  /// `b` is expected to act on the vector view `in` and write the result into
+  /// the vector view `out`, `out = b*in`.
   ///
   /// @param mode @ref Mode "Computational mode" to be used.
   /// @param params Set of input parameters for the Implicitly Restarted
@@ -501,25 +501,25 @@ public:
                        storage::get_data_ptr(workl), workl_size, info);
       switch(ido) {
         case ApplyOpInit: {
-          int from_pos = from_vector_n() * N;
-          int to_pos = to_vector_n() * N;
+          int in_pos = in_vector_n() * N;
+          int out_pos = out_vector_n() * N;
           Bx_available_ = false;
-          op(storage::make_vector_const_view(workd, from_pos, N),
-             storage::make_vector_view(workd, to_pos, N));
+          op(storage::make_vector_const_view(workd, in_pos, N),
+             storage::make_vector_view(workd, out_pos, N));
         } break;
         case ApplyOp: {
-          int from_pos = from_vector_n() * N;
-          int to_pos = to_vector_n() * N;
+          int in_pos = in_vector_n() * N;
+          int out_pos = out_vector_n() * N;
           // B*x is available via Bx_vector()
           Bx_available_ = true;
-          op(storage::make_vector_const_view(workd, from_pos, N),
-             storage::make_vector_view(workd, to_pos, N));
+          op(storage::make_vector_const_view(workd, in_pos, N),
+             storage::make_vector_view(workd, out_pos, N));
         } break;
         case ApplyB: {
-          int from_pos = from_vector_n() * N;
-          int to_pos = to_vector_n() * N;
-          b(storage::make_vector_const_view(workd, from_pos, N),
-            storage::make_vector_view(workd, to_pos, N));
+          int in_pos = in_vector_n() * N;
+          int out_pos = out_vector_n() * N;
+          b(storage::make_vector_const_view(workd, in_pos, N),
+            storage::make_vector_view(workd, out_pos, N));
         } break;
         case Shifts: {
           int np = iparam[7];
@@ -563,12 +563,12 @@ public:
 
   /// Returns the index of the workspace vector, which is currently expected to
   /// be acted upon by linear operator @f$ \hat O @f$ or @f$ \hat B @f$.
-  inline int from_vector_n() const { return (ipntr[0] - 1) / N; }
+  inline int in_vector_n() const { return (ipntr[0] - 1) / N; }
 
   /// Returns the index of the workspace vector, which is currently expected to
   /// receive result from application of linear operator @f$ \hat O @f$ or
   /// @f$ \hat B @f$.
-  inline int to_vector_n() const { return (ipntr[1] - 1) / N; }
+  inline int out_vector_n() const { return (ipntr[1] - 1) / N; }
 
   /// Returns a view of a vector within ARPACK-NG's workspace array.
   ///

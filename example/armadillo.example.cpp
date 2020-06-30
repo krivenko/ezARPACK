@@ -51,17 +51,17 @@ int main() {
       arpack_worker<Symmetric, armadillo_storage>::vector_const_view_t;
 
   // Linear operator representing multiplication of a given vector by our matrix
-  // The operator must act on the 'from' vector and store results in 'to'.
-  auto matrix_op = [](vector_const_view_t from, vector_view_t to) {
-    to.zeros(); // Clear result
+  // The operator must act on the 'in' vector and store results in 'out'.
+  auto matrix_op = [](vector_const_view_t in, vector_view_t out) {
+    out.zeros(); // Clear result
 
-    // to_i = \sum_j A_{ij} from_j
+    // out_i = \sum_j A_{ij} in_j
     // A_{ij} = |i-j| / (1 + i + j), if |i-j| <= bandwidth, zero otherwise
     for(int i = 0; i < N; ++i) {
       int j_min = std::max(0, i - bandwidth);
       int j_max = std::min(N - 1, i + bandwidth);
       for(int j = j_min; j <= j_max; ++j) {
-        to[i] += double(std::abs(i - j)) / (1 + i + j) * from[j];
+        out[i] += double(std::abs(i - j)) / (1 + i + j) * in[j];
       }
     }
   };

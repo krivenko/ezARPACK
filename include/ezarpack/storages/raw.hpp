@@ -270,8 +270,8 @@ public:
                          int nconv) {
     complex_vector_type lambda(new dcomplex[nconv]);
     real_vector_type Ax1(new double[N]), Ax2(new double[N]);
-    auto to1 = make_vector_view(Ax1);
-    auto to2 = make_vector_view(Ax2);
+    auto out1 = make_vector_view(Ax1);
+    auto out2 = make_vector_view(Ax2);
     auto dot = [&](real_vector_const_view_type v1,
                    real_vector_const_view_type v2) {
       double s = 0;
@@ -281,16 +281,16 @@ public:
     };
     for(int i = 0; i < nconv; ++i) {
       if(di[i] == 0) {
-        auto from1 = make_vector_const_view(z, i * N, N);
-        a(from1, to1);
-        lambda[i] = dot(from1, to1);
+        auto in1 = make_vector_const_view(z, i * N, N);
+        a(in1, out1);
+        lambda[i] = dot(in1, out1);
       } else {
-        auto from1 = make_vector_const_view(z, i * N, N);
-        auto from2 = make_vector_const_view(z, (i + 1) * N, N);
-        a(from1, to1);
-        a(from2, to2);
-        lambda[i] = dcomplex(dot(from1, to1) + dot(from2, to2),
-                             dot(from1, to2) - dot(from2, to1));
+        auto in1 = make_vector_const_view(z, i * N, N);
+        auto in2 = make_vector_const_view(z, (i + 1) * N, N);
+        a(in1, out1);
+        a(in2, out2);
+        lambda[i] = dcomplex(dot(in1, out1) + dot(in2, out2),
+                             dot(in1, out2) - dot(in2, out1));
         ++i;
         lambda[i] = std::conj(lambda[i - 1]);
       }

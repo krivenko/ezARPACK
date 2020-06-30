@@ -195,9 +195,9 @@ Typical steps needed to compute the eigenpairs are as follows.
        using vector_view_t = worker_t::vector_view_t;
        using vector_const_view_t = worker_t::vector_const_view_t;
 
-       auto Aop = [](vector_const_view_t from, vector_view_t to) {
-         // Code implementing action of matrix A on vector 'from':
-         // to = A * from
+       auto Aop = [](vector_const_view_t in, vector_view_t out) {
+         // Code implementing action of matrix A on vector 'in':
+         // out = A * in
        };
 
        ar(Aop, params);
@@ -213,17 +213,17 @@ Typical steps needed to compute the eigenpairs are as follows.
        using vector_view_t = worker_t::vector_view_t;
        using vector_const_view_t = worker_t::vector_const_view_t;
 
-       auto op = [](vector_view_t from, vector_view_t to) {
+       auto op = [](vector_view_t in, vector_view_t out) {
          // Code implementing action of matrices M^{-1} and A according to
-         // from = A * from;
-         // to = invM * from;
+         // in = A * in;
+         // out = invM * in;
          //
-         // Note that unlike in the other computational modes, both 'from' and
-         // 'to' must be updated!
+         // Note that unlike in the other computational modes, both 'in' and
+         // 'out' must be updated!
        };
-       auto Bop = [](vector_const_view_t from, vector_view_t to) {
-         // Code implementing action of matrix M on vector 'from':
-         // to = M * from
+       auto Bop = [](vector_const_view_t in, vector_view_t out) {
+         // Code implementing action of matrix M on vector 'in':
+         // out = M * in
        };
 
        ar(op, Bop, worker_t::Inverse, params);
@@ -232,8 +232,8 @@ Typical steps needed to compute the eigenpairs are as follows.
      is usually undesirable from the storage standpoint. A more practical
      solution is to compute the sparse LU or Cholesky factorization of
      :math:`\hat M` once (outside of the lambda-function's body), and write
-     the lambda-function so that it (1) sets `from = A * from` and (2) computes
-     `to` as the solution of the linear system `M * to = from` using the
+     the lambda-function so that it (1) sets `in = A * in` and (2) computes
+     `out` as the solution of the linear system `M * out = in` using the
      precomputed factorization.
 
    - **Shift-and-Invert mode** (for symmetric positive semi-definite
@@ -250,13 +250,13 @@ Typical steps needed to compute the eigenpairs are as follows.
        using vector_view_t = worker_t::vector_view_t;
        using vector_const_view_t = worker_t::vector_const_view_t;
 
-       auto op = [](vector_view_t from, vector_view_t to) {
-         // Code implementing action of matrix (A - sigma*M)^{-1} * M on 'from'
-         // to = (A - sigma*M)^{-1} * M * from;
+       auto op = [](vector_view_t in, vector_view_t out) {
+         // Code implementing action of matrix (A - sigma*M)^{-1} * M on 'in'
+         // out = (A - sigma*M)^{-1} * M * in;
        };
-       auto Bop = [](vector_const_view_t from, vector_view_t to) {
-         // Code implementing action of matrix M on vector 'from':
-         // to = M * from
+       auto Bop = [](vector_const_view_t in, vector_view_t out) {
+         // Code implementing action of matrix M on vector 'in':
+         // out = M * in
        };
 
        ar(op, Bop, worker_t::ShiftAndInvert, params);
@@ -265,9 +265,9 @@ Typical steps needed to compute the eigenpairs are as follows.
      dense, which is usually undesirable from the storage standpoint. A more
      practical solution is to compute the sparse LU or Cholesky factorization of
      :math:`\hat A - \sigma\hat M` once (outside of the lambda-function's body),
-     and write the lambda-function so that it (1) computes `M * from` and
-     (2) computes `to` as the solution of the linear system
-     `(A - \\sigma M) * to = M * from` using the precomputed factorization.
+     and write the lambda-function so that it (1) computes `M * in` and
+     (2) computes `out` as the solution of the linear system
+     `(A - \\sigma M) * out = M * in` using the precomputed factorization.
 
    - **Buckling mode** (for symmetric positive semi-definite
      :math:`\hat A` and symmetric indefinite :math:`\hat M`).
@@ -283,14 +283,14 @@ Typical steps needed to compute the eigenpairs are as follows.
        using vector_view_t = worker_t::vector_view_t;
        using vector_const_view_t = worker_t::vector_const_view_t;
 
-       auto op = [](vector_view_t from, vector_view_t to) {
+       auto op = [](vector_view_t in, vector_view_t out) {
          // Code implementing action of matrix
-         // (A - sigma*M)^{-1} * A on 'from'
-         // to = (A - sigma*M)^{-1} A * from;
+         // (A - sigma*M)^{-1} * A on 'in'
+         // out = (A - sigma*M)^{-1} A * in;
        };
-       auto Bop = [](vector_const_view_t from, vector_view_t to) {
-         // Code implementing action of matrix A on vector 'from':
-         // to = A * from
+       auto Bop = [](vector_const_view_t in, vector_view_t out) {
+         // Code implementing action of matrix A on vector 'in':
+         // out = A * in
        };
 
        ar(op, Bop, worker_t::Buckling, params);
@@ -300,8 +300,8 @@ Typical steps needed to compute the eigenpairs are as follows.
      practical solution is to compute the sparse LU or Cholesky factorization of
      :math:`\hat A - \sigma\hat M` once (outside of the lambda-function's body),
      and write the lambda-function so that it (1) computes
-     `A * from` and (2) computes `to` as the solution of the linear
-     system `(A - \\sigma M) * to = A * from` using the precomputed
+     `A * in` and (2) computes `out` as the solution of the linear
+     system `(A - \\sigma M) * out = A * in` using the precomputed
      factorization.
 
    - **Cayley mode** (for symmetric positive semi-definite
@@ -319,14 +319,14 @@ Typical steps needed to compute the eigenpairs are as follows.
        using vector_view_t = worker_t::vector_view_t;
        using vector_const_view_t = worker_t::vector_const_view_t;
 
-       auto op = [](vector_view_t from, vector_view_t to) {
+       auto op = [](vector_view_t in, vector_view_t out) {
          // Code implementing action of matrix
-         // (A - sigma*M)^{-1} * (A + sigma*M) on 'from'
-         // to = (A - sigma*M)^{-1} * (A + sigma*M) * from;
+         // (A - sigma*M)^{-1} * (A + sigma*M) on 'in'
+         // out = (A - sigma*M)^{-1} * (A + sigma*M) * in;
        };
-       auto Bop = [](vector_const_view_t from, vector_view_t to) {
-         // Code implementing action of matrix M on vector 'from':
-         // to = M * from
+       auto Bop = [](vector_const_view_t in, vector_view_t out) {
+         // Code implementing action of matrix M on vector 'in':
+         // out = M * in
        };
 
        ar(op, Bop, worker_t::Cayley, params);
@@ -336,8 +336,8 @@ Typical steps needed to compute the eigenpairs are as follows.
      practical solution is to compute the sparse LU or Cholesky factorization of
      :math:`\hat A - \sigma\hat M` once (outside of the lambda-function's body),
      and write the lambda-function so that it (1) computes
-     `(A + \\sigma M) * from` and (2) computes `to` as the solution of the linear
-     system `(A - \\sigma M) * to = (A + \\sigma M) * from` using the
+     `(A + \\sigma M) * in` and (2) computes `out` as the solution of the linear
+     system `(A - \\sigma M) * out = (A + \\sigma M) * in` using the
      precomputed factorization.
 
    .. note::
@@ -350,16 +350,16 @@ Typical steps needed to compute the eigenpairs are as follows.
      and `worker.Bx_vector()` will return a constant view of the application
      result :math:`\hat B \mathbf{x}`.
 
-   The `from` and `to` views passed to the callable objects always expose one
+   The `in` and `out` views passed to the callable objects always expose one
    of three length-:math:`N` vectors stored inside the worker object. There is
    another, indirect way to access them.
 
    .. code:: cpp
 
-     // Get index (0-2) of the current 'from' vector and request a view of it
-     auto from_view = worker.workspace_vector(worker.from_vector_n());
-     // Similar for the 'to' vector
-     auto to_view = worker.workspace_vector(worker.to_vector_n());
+     // Get index (0-2) of the current 'in' vector and request a view of it
+     auto in_view = worker.workspace_vector(worker.in_vector_n());
+     // Similar for the 'out' vector
+     auto out_view = worker.workspace_vector(worker.out_vector_n());
 
    In advanced usage scenarios, the implicit restarting procedure can be
    customized via an extra argument of `worker`'s call operator.

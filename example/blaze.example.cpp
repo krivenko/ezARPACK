@@ -35,25 +35,25 @@ const int bandwidth = 5;
 const int N_ev = 10;
 
 // Linear operator representing multiplication of a given vector by our matrix.
-// The operator must act on the 'from' vector and store results in 'to'.
+// The operator must act on the 'in' vector and store results in 'out'.
 //
 // NB: With C++14 one could use a generic lambda function instead,
 //
-//  auto matrix_op = [](auto from, auto to) {
+//  auto matrix_op = [](auto in, auto out) {
 //                   ...
 //  };
 //
 struct {
-  template<typename TFrom, typename TTo> void operator()(TFrom from, TTo to) {
-    to.reset(); // Clear result
+  template<typename TIn, typename TOut> void operator()(TIn in, TOut out) {
+    out.reset(); // Clear result
 
-    // to_i = \sum_j A_{ij} from_j
+    // out_i = \sum_j A_{ij} in_j
     // A_{ij} = |i-j| / (1 + i + j), if |i-j| <= bandwidth, zero otherwise
     for(int i = 0; i < N; ++i) {
       int j_min = std::max(0, i - bandwidth);
       int j_max = std::min(N - 1, i + bandwidth);
       for(int j = j_min; j <= j_max; ++j) {
-        to[i] += double(std::abs(i - j)) / (1 + i + j) * from[j];
+        out[i] += double(std::abs(i - j)) / (1 + i + j) * in[j];
       }
     }
   };

@@ -49,8 +49,8 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
   using vector_const_view_t = worker_t::vector_const_view_t;
 
   SECTION("Standard eigenproblem") {
-    auto Aop = [&](vector_const_view_t from, vector_view_t to) {
-      to = prod(A, from);
+    auto Aop = [&](vector_const_view_t in, vector_view_t out) {
+      out = prod(A, in);
     };
 
     worker_t ar(A.size1());
@@ -68,11 +68,11 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
   SECTION("Generalized eigenproblem: invert mode") {
     decltype(A) op_matrix = prod(inverse(M), A);
 
-    auto op = [&](vector_const_view_t from, vector_view_t to) {
-      to = prod(op_matrix, from);
+    auto op = [&](vector_const_view_t in, vector_view_t out) {
+      out = prod(op_matrix, in);
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      to = prod(M, from);
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      out = prod(M, in);
     };
 
     worker_t ar(A.size1());
@@ -93,11 +93,11 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
     dcomplex sigma(1.0, -0.1);
     decltype(A) op_matrix = real(prod(inverse(A - sigma * cmat_type(M)), M));
 
-    auto op = [&](vector_const_view_t from, vector_view_t to) {
-      to = prod(op_matrix, from);
+    auto op = [&](vector_const_view_t in, vector_view_t out) {
+      out = prod(op_matrix, in);
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      to = prod(M, from);
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      out = prod(M, in);
     };
 
     worker_t ar(A.size1());
@@ -117,11 +117,11 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
     dcomplex sigma(-0.1, 1.0);
     decltype(A) op_matrix = imag(prod(inverse(A - sigma * cmat_type(M)), M));
 
-    auto op = [&](vector_const_view_t from, vector_view_t to) {
-      to = prod(op_matrix, from);
+    auto op = [&](vector_const_view_t in, vector_view_t out) {
+      out = prod(op_matrix, in);
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      to = prod(M, from);
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      out = prod(M, in);
     };
 
     worker_t ar(A.size1());
@@ -162,8 +162,8 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
     };
 
     SECTION("Standard eigenproblem") {
-      auto Aop = [&](vector_const_view_t from, vector_view_t to) {
-        to = prod(A, from);
+      auto Aop = [&](vector_const_view_t in, vector_view_t out) {
+        out = prod(A, in);
       };
 
       worker_t ar(A.size1());
@@ -181,11 +181,11 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[worker_asymmetric]") {
       dcomplex sigma(1.0, -0.1);
       decltype(A) op_matrix = real(prod(inverse(A - sigma * cmat_type(M)), M));
 
-      auto op = [&](vector_const_view_t from, vector_view_t to) {
-        to = prod(op_matrix, from);
+      auto op = [&](vector_const_view_t in, vector_view_t out) {
+        out = prod(op_matrix, in);
       };
-      auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-        to = prod(M, from);
+      auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+        out = prod(M, in);
       };
 
       worker_t ar(A.size1());

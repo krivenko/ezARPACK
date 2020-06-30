@@ -149,8 +149,8 @@ void check_eigenvectors_shift_and_invert(
   using worker_t = arpack_worker<Asymmetric, ublas_storage>;
   using vector_view_t = worker_t::vector_view_t;
   using vector_const_view_t = worker_t::vector_const_view_t;
-  auto Aop = [&](vector_const_view_t from, vector_view_t to) {
-    to = prod(A, from);
+  auto Aop = [&](vector_const_view_t in, vector_view_t out) {
+    out = prod(A, in);
   };
   auto lambda = ar.eigenvalues(Aop);
   auto vecs = ar.eigenvectors();

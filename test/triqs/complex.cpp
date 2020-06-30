@@ -49,8 +49,8 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
   using vector_const_view_t = worker_t::vector_const_view_t;
 
   SECTION("Standard eigenproblem") {
-    auto Aop = [&](vector_const_view_t from, vector_view_t to) {
-      to = A * from;
+    auto Aop = [&](vector_const_view_t in, vector_view_t out) {
+      out = A * in;
     };
 
     worker_t ar(first_dim(A));
@@ -68,11 +68,11 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
   SECTION("Generalized eigenproblem: invert mode") {
     decltype(A) op_matrix = inverse(M) * A;
 
-    auto op = [&](vector_const_view_t from, vector_view_t to) {
-      to = op_matrix * from;
+    auto op = [&](vector_const_view_t in, vector_view_t out) {
+      out = op_matrix * in;
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      to = M * from;
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      out = M * in;
     };
 
     worker_t ar(first_dim(A));
@@ -91,11 +91,11 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
     dcomplex sigma(-1.0, 0.9);
     decltype(A) op_matrix = inverse(A - sigma * M) * M;
 
-    auto op = [&](vector_const_view_t from, vector_view_t to) {
-      to = op_matrix * from;
+    auto op = [&](vector_const_view_t in, vector_view_t out) {
+      out = op_matrix * in;
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      to = M * from;
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      out = M * in;
     };
 
     worker_t ar(first_dim(A));
@@ -133,8 +133,8 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
     };
 
     SECTION("Standard eigenproblem") {
-      auto Aop = [&](vector_const_view_t from, vector_view_t to) {
-        to = A * from;
+      auto Aop = [&](vector_const_view_t in, vector_view_t out) {
+        out = A * in;
       };
 
       worker_t ar(first_dim(A));
@@ -151,11 +151,11 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
       dcomplex sigma(-1.0, 0.9);
       decltype(A) op_matrix = inverse(A - sigma * M) * M;
 
-      auto op = [&](vector_const_view_t from, vector_view_t to) {
-        to = op_matrix * from;
+      auto op = [&](vector_const_view_t in, vector_view_t out) {
+        out = op_matrix * in;
       };
-      auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-        to = M * from;
+      auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+        out = M * in;
       };
 
       worker_t ar(first_dim(A));

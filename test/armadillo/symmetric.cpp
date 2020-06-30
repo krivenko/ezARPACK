@@ -48,8 +48,8 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   using vector_const_view_t = worker_t::vector_const_view_t;
 
   SECTION("Standard eigenproblem") {
-    auto Aop = [&](vector_const_view_t from, vector_view_t to) {
-      to = A * from;
+    auto Aop = [&](vector_const_view_t in, vector_view_t out) {
+      out = A * in;
     };
 
     worker_t ar(A.n_rows);
@@ -67,12 +67,12 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   SECTION("Generalized eigenproblem: invert mode") {
     decltype(A) invM = inv(M);
 
-    auto op = [&](vector_view_t from, vector_view_t to) {
-      from = A * from;
-      to = invM * from;
+    auto op = [&](vector_view_t in, vector_view_t out) {
+      in = A * in;
+      out = invM * in;
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      to = M * from;
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      out = M * in;
     };
 
     worker_t ar(A.n_rows);
@@ -91,11 +91,11 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
     double sigma = 2.0;
     decltype(A) op_matrix = inv(A - sigma * M) * M;
 
-    auto op = [&](vector_view_t from, vector_view_t to) {
-      to = op_matrix * from;
+    auto op = [&](vector_view_t in, vector_view_t out) {
+      out = op_matrix * in;
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      to = M * from;
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      out = M * in;
     };
 
     worker_t ar(A.n_rows);
@@ -115,11 +115,11 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
     double sigma = 3.3;
     decltype(A) op_matrix = inv(M - sigma * A) * M;
 
-    auto op = [&](vector_view_t from, vector_view_t to) {
-      to = op_matrix * from;
+    auto op = [&](vector_view_t in, vector_view_t out) {
+      out = op_matrix * in;
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      to = M * from;
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      out = M * in;
     };
 
     worker_t ar(A.n_rows);
@@ -140,11 +140,11 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
     double sigma = 2.0;
     decltype(A) op_matrix = inv(A - sigma * M) * (A + sigma * M);
 
-    auto op = [&](vector_view_t from, vector_view_t to) {
-      to = op_matrix * from;
+    auto op = [&](vector_view_t in, vector_view_t out) {
+      out = op_matrix * in;
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      to = M * from;
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      out = M * in;
     };
 
     worker_t ar(A.n_rows);
@@ -180,8 +180,8 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
     };
 
     SECTION("Standard eigenproblem") {
-      auto Aop = [&](vector_const_view_t from, vector_view_t to) {
-        to = A * from;
+      auto Aop = [&](vector_const_view_t in, vector_view_t out) {
+        out = A * in;
       };
 
       worker_t ar(A.n_rows);
@@ -198,11 +198,11 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       double sigma = 2.0;
       decltype(A) op_matrix = inv(A - sigma * M) * M;
 
-      auto op = [&](vector_view_t from, vector_view_t to) {
-        to = op_matrix * from;
+      auto op = [&](vector_view_t in, vector_view_t out) {
+        out = op_matrix * in;
       };
-      auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-        to = M * from;
+      auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+        out = M * in;
       };
 
       worker_t ar(A.n_rows);

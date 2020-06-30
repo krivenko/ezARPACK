@@ -82,8 +82,8 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   using vector_const_view_t = worker_t::vector_const_view_t;
 
   SECTION("Standard eigenproblem") {
-    auto Aop = [&](vector_const_view_t from, vector_view_t to) {
-      mv_product(A.get(), from, to, N);
+    auto Aop = [&](vector_const_view_t in, vector_view_t out) {
+      mv_product(A.get(), in, out, N);
     };
 
     worker_t ar(N);
@@ -103,14 +103,14 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
     invert(M.get(), invM.get(), N);
 
     auto tmp = make_buffer<double>(N);
-    auto op = [&](vector_view_t from, vector_view_t to) {
-      mv_product(A.get(), from, tmp.get(), N);
-      std::copy(tmp.get(), tmp.get() + N, from);
+    auto op = [&](vector_view_t in, vector_view_t out) {
+      mv_product(A.get(), in, tmp.get(), N);
+      std::copy(tmp.get(), tmp.get() + N, in);
 
-      mv_product(invM.get(), from, to, N);
+      mv_product(invM.get(), in, out, N);
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      mv_product(M.get(), from, to, N);
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      mv_product(M.get(), in, out, N);
     };
 
     worker_t ar(N);
@@ -139,11 +139,11 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
     auto op_matrix = make_buffer<double>(N * N);
     mm_product(invAmM.get(), M.get(), op_matrix.get(), N);
 
-    auto op = [&](vector_view_t from, vector_view_t to) {
-      mv_product(op_matrix.get(), from, to, N);
+    auto op = [&](vector_view_t in, vector_view_t out) {
+      mv_product(op_matrix.get(), in, out, N);
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      mv_product(M.get(), from, to, N);
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      mv_product(M.get(), in, out, N);
     };
 
     worker_t ar(N);
@@ -173,11 +173,11 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
     auto op_matrix = make_buffer<double>(N * N);
     mm_product(invMmA.get(), M.get(), op_matrix.get(), N);
 
-    auto op = [&](vector_view_t from, vector_view_t to) {
-      mv_product(op_matrix.get(), from, to, N);
+    auto op = [&](vector_view_t in, vector_view_t out) {
+      mv_product(op_matrix.get(), in, out, N);
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      mv_product(M.get(), from, to, N);
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      mv_product(M.get(), in, out, N);
     };
 
     worker_t ar(N);
@@ -210,11 +210,11 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
     auto op_matrix = make_buffer<double>(N * N);
     mm_product(invAmM.get(), ApM.get(), op_matrix.get(), N);
 
-    auto op = [&](vector_view_t from, vector_view_t to) {
-      mv_product(op_matrix.get(), from, to, N);
+    auto op = [&](vector_view_t in, vector_view_t out) {
+      mv_product(op_matrix.get(), in, out, N);
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      mv_product(M.get(), from, to, N);
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      mv_product(M.get(), in, out, N);
     };
 
     worker_t ar(N);

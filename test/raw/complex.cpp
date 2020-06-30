@@ -83,8 +83,8 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
   using vector_const_view_t = worker_t::vector_const_view_t;
 
   SECTION("Standard eigenproblem") {
-    auto Aop = [&](vector_const_view_t from, vector_view_t to) {
-      mv_product(A.get(), from, to, N);
+    auto Aop = [&](vector_const_view_t in, vector_view_t out) {
+      mv_product(A.get(), in, out, N);
     };
 
     worker_t ar(N);
@@ -105,11 +105,11 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
     auto op_matrix = make_buffer<dcomplex>(N * N);
     mm_product(invM.get(), A.get(), op_matrix.get(), N);
 
-    auto op = [&](vector_const_view_t from, vector_view_t to) {
-      mv_product(op_matrix.get(), from, to, N);
+    auto op = [&](vector_const_view_t in, vector_view_t out) {
+      mv_product(op_matrix.get(), in, out, N);
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      mv_product(M.get(), from, to, N);
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      mv_product(M.get(), in, out, N);
     };
 
     worker_t ar(N);
@@ -138,11 +138,11 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
     auto op_matrix = make_buffer<dcomplex>(N * N);
     mm_product(invAmM.get(), M.get(), op_matrix.get(), N);
 
-    auto op = [&](vector_const_view_t from, vector_view_t to) {
-      mv_product(op_matrix.get(), from, to, N);
+    auto op = [&](vector_const_view_t in, vector_view_t out) {
+      mv_product(op_matrix.get(), in, out, N);
     };
-    auto Bop = [&](vector_const_view_t from, vector_view_t to) {
-      mv_product(M.get(), from, to, N);
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      mv_product(M.get(), in, out, N);
     };
 
     worker_t ar(N);

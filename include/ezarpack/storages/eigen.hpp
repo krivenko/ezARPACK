@@ -306,20 +306,20 @@ public:
                          int nconv) {
     complex_vector_type lambda(nconv);
     real_vector_type Ax1(N), Ax2(N);
-    auto to1 = make_vector_view(Ax1);
-    auto to2 = make_vector_view(Ax2);
+    auto out1 = make_vector_view(Ax1);
+    auto out2 = make_vector_view(Ax2);
     for(int i = 0; i < nconv; ++i) {
       if(di(i) == 0) {
-        auto from1 = make_vector_const_view(z, i * N, N);
-        a(from1, to1);
-        lambda(i) = from1.dot(to1);
+        auto in1 = make_vector_const_view(z, i * N, N);
+        a(in1, out1);
+        lambda(i) = in1.dot(out1);
       } else {
-        auto from1 = make_vector_const_view(z, i * N, N);
-        auto from2 = make_vector_const_view(z, (i + 1) * N, N);
-        a(from1, to1);
-        a(from2, to2);
-        lambda(i) = dcomplex(from1.dot(to1) + from2.dot(to2),
-                             from1.dot(to2) - from2.dot(to1));
+        auto in1 = make_vector_const_view(z, i * N, N);
+        auto in2 = make_vector_const_view(z, (i + 1) * N, N);
+        a(in1, out1);
+        a(in2, out2);
+        lambda(i) = dcomplex(in1.dot(out1) + in2.dot(out2),
+                             in1.dot(out2) - in2.dot(out1));
         ++i;
         lambda(i) = std::conj(lambda(i - 1));
       }
