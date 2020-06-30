@@ -367,7 +367,7 @@ public:
   // clang-format off
   /// Computational modes for generalized eigenproblems.
   enum Mode : int {
-    Invert = 2,
+    Inverse = 2,
     /**< Regular inverse mode.
 
     Solve a generalized eigenproblem
@@ -541,7 +541,7 @@ public:
 
     storage::resize(dr, nev + 1);
     storage::resize(di, nev + 1);
-    if(mode != Invert) {
+    if(mode != Inverse) {
       sigmar = params.sigma.real();
       sigmai = params.sigma.imag();
     }

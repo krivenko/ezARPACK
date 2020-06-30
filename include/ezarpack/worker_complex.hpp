@@ -352,7 +352,7 @@ public:
   // clang-format off
   /// Computational modes for generalized eigenproblems.
   enum Mode : int {
-    Invert = 2,
+    Inverse = 2,
     /**< Regular inverse mode.
 
     Solve a generalized eigenproblem

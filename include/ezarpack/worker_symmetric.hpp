@@ -338,7 +338,7 @@ public:
   // clang-format off
   /// Computational modes for generalized eigenproblems.
   enum Mode : int {
-    Invert = 2,
+    Inverse = 2,
     /**< Regular inverse mode.
 
     Solve a generalized eigenproblem
@@ -390,9 +390,9 @@ public:
   /// @code
   /// op(vector_view_t from, vector_view_t to)
   /// @endcode
-  /// In all computational modes except for @ref Invert, `op` is expected to act
-  /// on the vector view `from` and write the result into
-  /// the vector view `to`, `to = op*from`. In the @ref Invert mode, however,
+  /// In all computational modes except for @ref Inverse, `op` is expected to
+  /// act on the vector view `from` and write the result into
+  /// the vector view `to`, `to = op*from`. In the @ref Inverse mode, however,
   /// `op` must do the following,
   /// `from = op*from`, `to = M^{-1}*from`.
   /// Given an instance `aw` of the arpack_worker< Symmetric, Backend > class,
@@ -490,7 +490,7 @@ public:
     handle_aupd_error_codes(info, workl);
 
     storage::resize(d, nev);
-    double sigma = (mode != Invert) ? params.sigma : 0;
+    double sigma = (mode != Inverse) ? params.sigma : 0;
 
     f77::eupd(rvec, "A", storage::get_data_ptr(select),
               storage::get_data_ptr(d), storage::get_data_ptr(v), N, sigma, "G",

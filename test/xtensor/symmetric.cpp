@@ -84,7 +84,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       params_t params(nev, e, true);
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
-      ar(op, Bop, worker_t::Invert, params);
+      ar(op, Bop, worker_t::Inverse, params);
       check_eigenvectors(ar, A, M);
       check_basis_vectors(ar, M);
     }

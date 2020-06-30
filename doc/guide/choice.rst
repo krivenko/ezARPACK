@@ -80,7 +80,7 @@ contains some more elaborate detail. Forms of the transformed matrices
   * - Real symmetric
     - Real symmetric, positive-definite
     - `Symmetric`
-    - `Invert`
+    - `Inverse`
     - :math:`\hat M^{-1} \hat A`
     - :math:`\hat M`
     - Optimal for finding extremal eigenvalues when :math:`\hat M` is
@@ -157,7 +157,7 @@ contains some more elaborate detail. Forms of the transformed matrices
   * - General real
     - Real symmetric, positive-definite
     - `Asymmetric`
-    - `Invert`
+    - `Inverse`
     - :math:`\hat M^{-1} \hat A`
     - :math:`\hat M`
     - Optimal for finding eigenvalues at the extreme points of the convex
@@ -256,7 +256,7 @@ contains some more elaborate detail. Forms of the transformed matrices
   * - Complex
     - Complex, Hermitian, positive-definite
     - `Complex`
-    - `Invert`
+    - `Inverse`
     - :math:`\hat M^{-1} \hat A`
     - :math:`\hat M`
     - Optimal for finding eigenvalues at the extreme points of the convex

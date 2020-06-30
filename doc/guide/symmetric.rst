@@ -226,7 +226,7 @@ Typical steps needed to compute the eigenpairs are as follows.
          // to = M * from
        };
 
-       ar(op, Bop, worker_t::Invert, params);
+       ar(op, Bop, worker_t::Inverse, params);
 
      Inverting a sparse matrix :math:`\hat M` will likely make it dense, which
      is usually undesirable from the storage standpoint. A more practical
@@ -375,8 +375,8 @@ Typical steps needed to compute the eigenpairs are as follows.
 
      // Standard mode
      worker(op, params, shifts_f);
-     // Other modes, e.g. Invert
-     worker(op, Bop, worker_t::Invert, params, shifts_f);
+     // Other modes, e.g. Inverse
+     worker(op, Bop, worker_t::Inverse, params, shifts_f);
 
    `worker_t::operator()` can throw two special exception types.
 
