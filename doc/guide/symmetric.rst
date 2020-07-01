@@ -12,7 +12,7 @@ your C++ code to compute a few eigenpairs :math:`(\lambda,\mathbf{x})` of
   \hat A  \mathbf{x} = \lambda \hat M \mathbf{x}
 
 with real symmetric matrices :math:`\hat A` and :math:`\hat M`. The symmetric
-solver class supports a few computational modes where the original eigenproblem
+solver class supports a few computational modes, where the original eigenproblem
 is recast into
 
 .. math::
@@ -170,7 +170,7 @@ Typical steps needed to compute the eigenpairs are as follows.
    than a random vector is known. ``random_residual_vector`` parameter must
    be set to ``false`` for the changes made to the initial vector to take effect.
 
-   A view of the residual vector is accessible via the method
+   A view of the residual vector is accessible via method
    ``residual_vector()`` of the solver.
 
    .. code:: cpp
@@ -203,7 +203,7 @@ Typical steps needed to compute the eigenpairs are as follows.
          // out = A * in
        };
 
-       ar(Aop, params);
+       solver(Aop, params);
 
    - **Regular inverse mode** (for symmetric positive-definite :math:`\hat M`).
 
@@ -218,8 +218,9 @@ Typical steps needed to compute the eigenpairs are as follows.
 
        auto op = [](vector_view_t in, vector_view_t out) {
          // Code implementing action of matrices M^{-1} and A according to
-         // in = A * in;
-         // out = invM * in;
+         //
+         // in = A * in
+         // out = M^{-1} * in
          //
          // Note that unlike in the other computational modes, both 'in' and
          // 'out' must be updated!
@@ -229,7 +230,7 @@ Typical steps needed to compute the eigenpairs are as follows.
          // out = M * in
        };
 
-       ar(op, Bop, solver_t::Inverse, params);
+       solver(op, Bop, solver_t::Inverse, params);
 
      Inverting a sparse matrix :math:`\hat M` will likely make it dense, which
      is usually undesirable from the storage standpoint. A more practical
@@ -254,15 +255,15 @@ Typical steps needed to compute the eigenpairs are as follows.
        using vector_const_view_t = solver_t::vector_const_view_t;
 
        auto op = [](vector_view_t in, vector_view_t out) {
-         // Code implementing action of matrix (A - sigma*M)^{-1} * M on 'in'
-         // out = (A - sigma*M)^{-1} * M * in;
+         // Code implementing action of matrix (A - sigma*M)^{-1} * M on 'in':
+         // out = (A - sigma*M)^{-1} * M * in
        };
        auto Bop = [](vector_const_view_t in, vector_view_t out) {
          // Code implementing action of matrix M on vector 'in':
          // out = M * in
        };
 
-       ar(op, Bop, solver_t::ShiftAndInvert, params);
+       solver(op, Bop, solver_t::ShiftAndInvert, params);
 
      Inverting a sparse matrix :math:`\hat A - \sigma\hat M` will likely make it
      dense, which is usually undesirable from the storage standpoint. A more
@@ -288,15 +289,15 @@ Typical steps needed to compute the eigenpairs are as follows.
 
        auto op = [](vector_view_t in, vector_view_t out) {
          // Code implementing action of matrix
-         // (A - sigma*M)^{-1} * A on 'in'
-         // out = (A - sigma*M)^{-1} A * in;
+         // (A - sigma*M)^{-1} * A on 'in':
+         // out = (A - sigma*M)^{-1} A * in
        };
        auto Bop = [](vector_const_view_t in, vector_view_t out) {
          // Code implementing action of matrix A on vector 'in':
          // out = A * in
        };
 
-       ar(op, Bop, solver_t::Buckling, params);
+       solver(op, Bop, solver_t::Buckling, params);
 
      Inverting a sparse matrix :math:`\hat A - \sigma\hat M` will likely make it
      dense, which is usually undesirable from the storage standpoint. A more
@@ -324,15 +325,15 @@ Typical steps needed to compute the eigenpairs are as follows.
 
        auto op = [](vector_view_t in, vector_view_t out) {
          // Code implementing action of matrix
-         // (A - sigma*M)^{-1} * (A + sigma*M) on 'in'
-         // out = (A - sigma*M)^{-1} * (A + sigma*M) * in;
+         // (A - sigma*M)^{-1} * (A + sigma*M) on 'in':
+         // out = (A - sigma*M)^{-1} * (A + sigma*M) * in
        };
        auto Bop = [](vector_const_view_t in, vector_view_t out) {
          // Code implementing action of matrix M on vector 'in':
          // out = M * in
        };
 
-       ar(op, Bop, solver_t::Cayley, params);
+       solver(op, Bop, solver_t::Cayley, params);
 
      Inverting a sparse matrix :math:`\hat A - \sigma\hat M` will likely make it
      dense, which is usually undesirable from the storage standpoint. A more
@@ -409,7 +410,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      // Print some computation statistics
      auto stats = solver.stats();
 
-     std::cout << "Number of Arnoldi update iterations: " << stats.n_iter
+     std::cout << "Number of Lanczos update iterations: " << stats.n_iter
                << std::endl;
      std::cout << "Number of 'converged' Ritz values: " << stats.n_converged
                << std::endl;

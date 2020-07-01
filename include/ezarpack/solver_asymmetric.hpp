@@ -378,7 +378,7 @@ public:
     positive-definite.
     */
     ShiftAndInvertReal = 3,
-    /**< Complex Shift-and-Invert mode in real arithmetic.
+    /**< Complex Shift-and-Invert mode in real arithmetic I.
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
@@ -402,7 +402,7 @@ public:
               \mathbf{x}^\dagger \hat M \mathbf{x}} @f$.
     */
     ShiftAndInvertImag = 4
-    /**< Complex Shift-and-Invert mode in real arithmetic.
+    /**< Complex Shift-and-Invert mode in real arithmetic II.
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
