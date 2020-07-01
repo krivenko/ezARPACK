@@ -10,7 +10,7 @@
 
 foreach(t symmetric asymmetric complex)
   set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
-  set(t xtensor.worker_${t})
+  set(t xtensor.solver_${t})
   add_executable(${t} ${s})
   target_include_directories(${t} PRIVATE ${CMAKE_SOURCE_DIR}/test
                                           ${xtensor_INCLUDE_DIRS}

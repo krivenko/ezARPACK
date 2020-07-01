@@ -4,7 +4,7 @@ Symmetric real eigenproblems
 ============================
 
 This page is a walkthrough showing how to use
-:ref:`ezarpack::arpack_worker\<Symmetric, \Backend> <refworkersymmetric>` in
+:ref:`ezarpack::arpack_solver\<Symmetric, \Backend> <refsolversymmetric>` in
 your C++ code to compute a few eigenpairs :math:`(\lambda,\mathbf{x})` of
 
 .. math::
@@ -12,7 +12,7 @@ your C++ code to compute a few eigenpairs :math:`(\lambda,\mathbf{x})` of
   \hat A  \mathbf{x} = \lambda \hat M \mathbf{x}
 
 with real symmetric matrices :math:`\hat A` and :math:`\hat M`. The symmetric
-worker class supports a few computational modes where the original eigenproblem
+solver class supports a few computational modes where the original eigenproblem
 is recast into
 
 .. math::
@@ -47,22 +47,22 @@ Typical steps needed to compute the eigenpairs are as follows.
    will assume that the `Eigen <http://eigen.tuxfamily.org>`_ backend has been
    selected.
 
-2. Include ``<ezarpack/arpack_worker.hpp>`` and the relevant backend header.
+2. Include ``<ezarpack/arpack_solver.hpp>`` and the relevant backend header.
 
   .. code::
 
-    #include <ezarpack/arpack_worker.hpp>
+    #include <ezarpack/arpack_solver.hpp>
     #include <ezarpack/storages/eigen.hpp>
 
   .. note::
 
-    ``<ezarpack/arpack_worker.hpp>`` includes
-    :ref:`all three specializations of ezarpack::arpack_worker<refworker>`
+    ``<ezarpack/arpack_solver.hpp>`` includes
+    :ref:`all three specializations of ezarpack::arpack_solver<refsolver>`
     at once. If you want to speed up compilation a little bit, you can
-    include ``<ezarpack/worker_base.hpp>`` and
-    ``<ezarpack/worker_symmetric.hpp>`` instead.
+    include ``<ezarpack/solver_base.hpp>`` and
+    ``<ezarpack/solver_symmetric.hpp>`` instead.
 
-3. Create a worker object.
+3. Create a solver object.
 
   .. code:: cpp
 
@@ -70,10 +70,10 @@ Typical steps needed to compute the eigenpairs are as follows.
 
     using namespace ezarpack;
 
-    // Shorthand for worker's type.
-    using worker_t = arpack_worker<Symmetric, eigen_storage>;
-    // Worker object.
-    worker_t worker(N);
+    // Shorthand for solver's type.
+    using solver_t = arpack_solver<Symmetric, eigen_storage>;
+    // Solver object.
+    solver_t solver(N);
 
 4. Fill a ``params_t`` structure with calculation parameters.
 
@@ -81,7 +81,7 @@ Typical steps needed to compute the eigenpairs are as follows.
 
     // params_t is a structure holding parameters of
     // the Implicitly Restarted Lanczos iteration.
-    using params_t = worker_t::params_t;
+    using params_t = solver_t::params_t;
 
     // Requested number of eigenvalues to compute.
     const int nev = 10;
@@ -171,19 +171,19 @@ Typical steps needed to compute the eigenpairs are as follows.
    be set to ``false`` for the changes made to the initial vector to take effect.
 
    A view of the residual vector is accessible via the method
-   ``residual_vector()`` of the worker.
+   ``residual_vector()`` of the solver.
 
    .. code:: cpp
 
      // Set all components of the initial vector to 1.
-     auto rv = worker.residual_vector();
+     auto rv = solver.residual_vector();
      for(int i = 0; i < N; ++i) rv[i] = 1.0;
 
    One may also call ``residual_vector()`` later, after a diagonalization run
    has started, to retrieve the current residual vector.
 
 6. Choose one of supported computational modes and perform diagonalization.
-   In this part, user is supposed to call the ``worker`` object and pass the
+   In this part, user is supposed to call the ``solver`` object and pass the
    parameter structure as well as callable objects (*e.g.* lambda-functions)
    that represent action of operators :math:`\hat O` and :math:`\hat B` on
    a given vector. The supplied objects will be called to generate Lanczos
@@ -195,8 +195,8 @@ Typical steps needed to compute the eigenpairs are as follows.
 
      .. code:: cpp
 
-       using vector_view_t = worker_t::vector_view_t;
-       using vector_const_view_t = worker_t::vector_const_view_t;
+       using vector_view_t = solver_t::vector_view_t;
+       using vector_const_view_t = solver_t::vector_const_view_t;
 
        auto Aop = [](vector_const_view_t in, vector_view_t out) {
          // Code implementing action of matrix A on vector 'in':
@@ -213,8 +213,8 @@ Typical steps needed to compute the eigenpairs are as follows.
 
      .. code:: cpp
 
-       using vector_view_t = worker_t::vector_view_t;
-       using vector_const_view_t = worker_t::vector_const_view_t;
+       using vector_view_t = solver_t::vector_view_t;
+       using vector_const_view_t = solver_t::vector_const_view_t;
 
        auto op = [](vector_view_t in, vector_view_t out) {
          // Code implementing action of matrices M^{-1} and A according to
@@ -229,7 +229,7 @@ Typical steps needed to compute the eigenpairs are as follows.
          // out = M * in
        };
 
-       ar(op, Bop, worker_t::Inverse, params);
+       ar(op, Bop, solver_t::Inverse, params);
 
      Inverting a sparse matrix :math:`\hat M` will likely make it dense, which
      is usually undesirable from the storage standpoint. A more practical
@@ -250,8 +250,8 @@ Typical steps needed to compute the eigenpairs are as follows.
 
      .. code:: cpp
 
-       using vector_view_t = worker_t::vector_view_t;
-       using vector_const_view_t = worker_t::vector_const_view_t;
+       using vector_view_t = solver_t::vector_view_t;
+       using vector_const_view_t = solver_t::vector_const_view_t;
 
        auto op = [](vector_view_t in, vector_view_t out) {
          // Code implementing action of matrix (A - sigma*M)^{-1} * M on 'in'
@@ -262,7 +262,7 @@ Typical steps needed to compute the eigenpairs are as follows.
          // out = M * in
        };
 
-       ar(op, Bop, worker_t::ShiftAndInvert, params);
+       ar(op, Bop, solver_t::ShiftAndInvert, params);
 
      Inverting a sparse matrix :math:`\hat A - \sigma\hat M` will likely make it
      dense, which is usually undesirable from the storage standpoint. A more
@@ -283,8 +283,8 @@ Typical steps needed to compute the eigenpairs are as follows.
 
      .. code:: cpp
 
-       using vector_view_t = worker_t::vector_view_t;
-       using vector_const_view_t = worker_t::vector_const_view_t;
+       using vector_view_t = solver_t::vector_view_t;
+       using vector_const_view_t = solver_t::vector_const_view_t;
 
        auto op = [](vector_view_t in, vector_view_t out) {
          // Code implementing action of matrix
@@ -296,7 +296,7 @@ Typical steps needed to compute the eigenpairs are as follows.
          // out = A * in
        };
 
-       ar(op, Bop, worker_t::Buckling, params);
+       ar(op, Bop, solver_t::Buckling, params);
 
      Inverting a sparse matrix :math:`\hat A - \sigma\hat M` will likely make it
      dense, which is usually undesirable from the storage standpoint. A more
@@ -319,8 +319,8 @@ Typical steps needed to compute the eigenpairs are as follows.
 
      .. code:: cpp
 
-       using vector_view_t = worker_t::vector_view_t;
-       using vector_const_view_t = worker_t::vector_const_view_t;
+       using vector_view_t = solver_t::vector_view_t;
+       using vector_const_view_t = solver_t::vector_const_view_t;
 
        auto op = [](vector_view_t in, vector_view_t out) {
          // Code implementing action of matrix
@@ -332,7 +332,7 @@ Typical steps needed to compute the eigenpairs are as follows.
          // out = M * in
        };
 
-       ar(op, Bop, worker_t::Cayley, params);
+       ar(op, Bop, solver_t::Cayley, params);
 
      Inverting a sparse matrix :math:`\hat A - \sigma\hat M` will likely make it
      dense, which is usually undesirable from the storage standpoint. A more
@@ -348,40 +348,40 @@ Typical steps needed to compute the eigenpairs are as follows.
      In most computational modes above, it is seemingly necessary to apply
      operator :math:`\hat B` to the same vector twice per generated Lanczos
      vector, once in functor ``op`` and once in ``Bop``. It is actually possible
-     to spare one of the applications. Calling ``worker.Bx_available()`` inside
+     to spare one of the applications. Calling ``solver.Bx_available()`` inside
      ``op`` will tell whether ``Bop`` has already been called at the current
-     iteration, and ``worker.Bx_vector()`` will return a constant view of the
+     iteration, and ``solver.Bx_vector()`` will return a constant view of the
      application result :math:`\hat B \mathbf{x}`.
 
    The ``in`` and ``out`` views passed to the callable objects always expose one
-   of three length-:math:`N` vectors stored inside the worker object. There is
+   of three length-:math:`N` vectors stored inside the solver object. There is
    another, indirect way to access them.
 
    .. code:: cpp
 
      // Get index (0-2) of the current 'in' vector and request a view of it
-     auto in_view = worker.workspace_vector(worker.in_vector_n());
+     auto in_view = solver.workspace_vector(solver.in_vector_n());
      // Similar for the 'out' vector
-     auto out_view = worker.workspace_vector(worker.out_vector_n());
+     auto out_view = solver.workspace_vector(solver.out_vector_n());
 
    In advanced usage scenarios, the implicit restarting procedure can be
-   customized via an extra argument of ``worker``'s call operator.
+   customized via an extra argument of ``solver``'s call operator.
    See :ref:`restarting` for more details.
 
    .. code:: cpp
 
-     auto shifts_f = [](worker_t::real_vector_const_view_t ritz_values,
-                        worker_t::real_vector_const_view_t ritz_bounds,
-                        worker_t::real_vector_view_t shifts) {
+     auto shifts_f = [](solver_t::real_vector_const_view_t ritz_values,
+                        solver_t::real_vector_const_view_t ritz_bounds,
+                        solver_t::real_vector_view_t shifts) {
                           // Compute shifts for the implicit restarting
                         };
 
      // Standard mode
-     worker(op, params, shifts_f);
+     solver(op, params, shifts_f);
      // Other modes, e.g. Inverse
-     worker(op, Bop, worker_t::Inverse, params, shifts_f);
+     solver(op, Bop, solver_t::Inverse, params, shifts_f);
 
-   ``worker_t::operator()`` can throw two special exception types.
+   ``solver_t::operator()`` can throw two special exception types.
 
    - ``maxiter_reached`` - Maximum number of implicitly restarted Lanczos
      iterations has been reached.
@@ -397,8 +397,8 @@ Typical steps needed to compute the eigenpairs are as follows.
 
    .. code:: cpp
 
-     auto lambda = worker.eigenvalues();
-     auto vecs = worker.eigenvectors();
+     auto lambda = solver.eigenvalues();
+     auto vecs = solver.eigenvectors();
 
    The eigenvectors are columns of the real matrix view ``vecs``.
 
@@ -407,7 +407,7 @@ Typical steps needed to compute the eigenpairs are as follows.
    .. code:: cpp
 
      // Print some computation statistics
-     auto stats = worker.stats();
+     auto stats = solver.stats();
 
      std::cout << "Number of Arnoldi update iterations: " << stats.n_iter
                << std::endl;

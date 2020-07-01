@@ -18,10 +18,10 @@ template<typename T> constexpr bool unsupportedStorageBackend() {
   return false;
 }
 
-/// Specializations of this traits structure describe the way `arpack_worker`
-/// class makes use of a particular vector/matrix algebra library. The primary
-/// template cannot be instantiated, unless there is a valid specialization
-/// for the requested tag type `Backend`.
+/// Specializations of this traits structure describe the way
+/// @ref ezarpack::arpack_solver class makes use of a particular vector/matrix
+/// algebra library. The primary template cannot be instantiated, unless there
+/// is a valid specialization for the requested tag type `Backend`.
 /// @tparam Backend A tag type denoting a storage backend (vector/matrix algebra
 /// library).
 template<typename Backend> struct storage_traits {

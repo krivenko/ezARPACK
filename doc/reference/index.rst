@@ -6,6 +6,6 @@ API reference
 .. toctree::
     :caption: List of C++ headers:
 
-    worker
+    solver
     storages/index
     aux

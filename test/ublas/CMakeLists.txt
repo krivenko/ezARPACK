@@ -10,7 +10,7 @@
 
 foreach(t symmetric asymmetric complex)
   set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
-  set(t ublas.worker_${t})
+  set(t ublas.solver_${t})
   add_executable(${t} ${s})
   target_include_directories(${t} PRIVATE ${Boost_INCLUDE_DIRS}
                                           ${CMAKE_SOURCE_DIR}/test)

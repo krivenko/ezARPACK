@@ -18,7 +18,7 @@
 // to partially diagonalize a large sparse symmetric matrix
 // and find a number of its low-lying eigenvalues.
 
-#include <ezarpack/arpack_worker.hpp>
+#include <ezarpack/arpack_solver.hpp>
 #include <ezarpack/storages/triqs.hpp>
 #include <ezarpack/version.hpp>
 
@@ -39,15 +39,15 @@ int main() {
   // Print ezARPACK version
   std::cout << "Using ezARPACK version " << EZARPACK_VERSION << std::endl;
 
-  // Construct a worker object for the symmetric case.
+  // Construct a solver object for the symmetric case.
   // For the TRIQS storage backend, other options would be
-  // * `arpack_worker<Asymmetric, triqs_storage>' for general real matrices;
-  // * `arpack_worker<Complex, triqs_storage>' for general complex matrices.
-  arpack_worker<Symmetric, triqs_storage> worker(N);
+  // * `arpack_solver<Asymmetric, triqs_storage>' for general real matrices;
+  // * `arpack_solver<Complex, triqs_storage>' for general complex matrices.
+  arpack_solver<Symmetric, triqs_storage> solver(N);
 
-  using vector_view_t = arpack_worker<Symmetric, triqs_storage>::vector_view_t;
+  using vector_view_t = arpack_solver<Symmetric, triqs_storage>::vector_view_t;
   using vector_const_view_t =
-      arpack_worker<Symmetric, triqs_storage>::vector_const_view_t;
+      arpack_solver<Symmetric, triqs_storage>::vector_const_view_t;
 
   // Linear operator representing multiplication of a given vector by our matrix
   // The operator must act on the 'in' vector and store results in 'out'.
@@ -65,23 +65,23 @@ int main() {
     }
   };
 
-  // Specify parameters for the worker
-  using params_t = arpack_worker<Symmetric, triqs_storage>::params_t;
+  // Specify parameters for the solver
+  using params_t = arpack_solver<Symmetric, triqs_storage>::params_t;
   params_t params(N_ev,               // Number of low-lying eigenvalues
                   params_t::Smallest, // We want the smallest eigenvalues
                   true);              // Yes, we want the eigenvectors
                                       // (Ritz vectors) as well
 
   // Run diagonalization!
-  worker(matrix_op, params);
+  solver(matrix_op, params);
 
   // Print found eigenvalues
   std::cout << "Eigenvalues (Ritz values):" << std::endl;
-  std::cout << worker.eigenvalues() << std::endl;
+  std::cout << solver.eigenvalues() << std::endl;
 
   // Check A*v = \lambda*v
-  auto const& lambda = worker.eigenvalues();
-  auto const& v = worker.eigenvectors();
+  auto const& lambda = solver.eigenvalues();
+  auto const& v = solver.eigenvectors();
   vector<double> lhs(N), rhs(N);
 
   for(int i = 0; i < N_ev; ++i) {    // For each eigenpair ...
@@ -93,7 +93,7 @@ int main() {
   }
 
   // Print some computation statistics
-  auto stats = worker.stats();
+  auto stats = solver.stats();
 
   std::cout << "Number of Arnoldi update iterations: " << stats.n_iter
             << std::endl;

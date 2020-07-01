@@ -17,10 +17,10 @@
 // Eigenproblems with complex matrices //
 /////////////////////////////////////////
 
-TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
+TEST_CASE("Complex eigenproblem is solved", "[solver_complex]") {
 
-  using worker_t = arpack_worker<Complex, ublas_storage>;
-  using params_t = worker_t::params_t;
+  using solver_t = arpack_solver<Complex, ublas_storage>;
+  using params_t = solver_t::params_t;
 
   const int N = 100;
   const dcomplex diag_coeff_shift = -0.55;
@@ -40,20 +40,20 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
   // Inner product matrix
   auto M = make_inner_prod_matrix<Complex>(N);
 
-  auto set_init_residual_vector = [](worker_t& ar) {
+  auto set_init_residual_vector = [](solver_t& ar) {
     for(int i = 0; i < N; ++i)
       ar.residual_vector()[i] = double(i) / N;
   };
 
-  using vector_view_t = worker_t::vector_view_t;
-  using vector_const_view_t = worker_t::vector_const_view_t;
+  using vector_view_t = solver_t::vector_view_t;
+  using vector_const_view_t = solver_t::vector_const_view_t;
 
   SECTION("Standard eigenproblem") {
     auto Aop = [&](vector_const_view_t in, vector_view_t out) {
       out = prod(A, in);
     };
 
-    worker_t ar(A.size1());
+    solver_t ar(A.size1());
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
@@ -75,13 +75,13 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
       out = prod(M, in);
     };
 
-    worker_t ar(A.size1());
+    solver_t ar(A.size1());
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
-      ar(op, Bop, worker_t::Inverse, params);
+      ar(op, Bop, solver_t::Inverse, params);
       check_eigenvectors(ar, A, M);
       check_basis_vectors(ar, M);
     }
@@ -98,14 +98,14 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
       out = prod(M, in);
     };
 
-    worker_t ar(A.size1());
+    solver_t ar(A.size1());
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
       params.sigma = sigma;
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
-      ar(op, Bop, worker_t::ShiftAndInvert, params);
+      ar(op, Bop, solver_t::ShiftAndInvert, params);
       check_eigenvectors(ar, A, M);
       check_basis_vectors(ar, M);
     }
@@ -114,9 +114,9 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
   SECTION("Custom implementation of the Exact Shift Strategy") {
     std::vector<int> p;
     p.reserve(A.size1());
-    auto shifts_f = [&](worker_t::complex_vector_const_view_t ritz_values,
-                        worker_t::complex_vector_const_view_t ritz_bounds,
-                        worker_t::complex_vector_view_t shifts) {
+    auto shifts_f = [&](solver_t::complex_vector_const_view_t ritz_values,
+                        solver_t::complex_vector_const_view_t ritz_bounds,
+                        solver_t::complex_vector_view_t shifts) {
       int np = shifts.size();
       if(np == 0) return;
 
@@ -137,7 +137,7 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
         out = prod(A, in);
       };
 
-      worker_t ar(A.size1());
+      solver_t ar(A.size1());
 
       params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
       params.random_residual_vector = false;
@@ -158,13 +158,13 @@ TEST_CASE("Complex eigenproblem is solved", "[worker_complex]") {
         out = prod(M, in);
       };
 
-      worker_t ar(A.size1());
+      solver_t ar(A.size1());
 
       params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
       params.sigma = sigma;
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
-      ar(op, Bop, worker_t::ShiftAndInvert, params, shifts_f);
+      ar(op, Bop, solver_t::ShiftAndInvert, params, shifts_f);
       check_eigenvectors(ar, A, M);
       check_basis_vectors(ar, M);
     }

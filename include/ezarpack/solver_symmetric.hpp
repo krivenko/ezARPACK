@@ -10,17 +10,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  ******************************************************************************/
-/// @file ezarpack/worker_symmetric.hpp
-/// @brief Specialization of `arpack_worker` class for the case of real
+/// @file ezarpack/solver_symmetric.hpp
+/// @brief Specialization of `arpack_solver` class for the case of real
 /// symmetric eigenproblems.
 #pragma once
 
 namespace ezarpack {
 
-/// @brief Main worker class wrapping the Implicitly Restarted Lanczos
+/// @brief Main solver class wrapping the Implicitly Restarted Lanczos
 /// Method (IRLM) for real symmetric eigenproblems.
 ///
-/// This specialization of `arpack_worker` calls ARPACK-NG routines `dsaupd()`
+/// This specialization of `arpack_solver` calls ARPACK-NG routines `dsaupd()`
 /// and `dseupd()` to compute approximations to a few eigenpairs of a linear
 /// operator @f$ \hat O @f$ that is real and symmetric with respect to
 /// a real positive semi-definite symmetric matrix @f$ \hat B @f$. In other
@@ -38,10 +38,10 @@ namespace ezarpack {
 /// Arnoldi iteration for this class of problems.
 ///
 /// @tparam Backend Tag type specifying what *storage backend* (matrix/vector
-/// algebra library) must be used by `arpack_worker`. The storage backend
+/// algebra library) must be used by `arpack_solver`. The storage backend
 /// determines types of internally stored data arrays and input/output view
 /// objects returned by methods of the class.
-template<typename Backend> class arpack_worker<Symmetric, Backend> {
+template<typename Backend> class arpack_solver<Symmetric, Backend> {
 
   using storage = storage_traits<Backend>;
 
@@ -153,10 +153,10 @@ public:
           compute_eigenvectors(compute_eigenvectors) {}
   };
 
-  /// Constructs a worker object and allocates internal data buffers to be
+  /// Constructs a solver object and allocates internal data buffers to be
   /// used by ARPACK-NG.
   /// @param N Dimension of the eigenproblem.
-  arpack_worker(unsigned int N)
+  arpack_solver(unsigned int N)
       : N(N),
         resid(storage::make_real_vector(N)),
         workd(storage::make_real_vector(3 * N)),
@@ -166,7 +166,7 @@ public:
     iparam[3] = 1;
   }
 
-  ~arpack_worker() {
+  ~arpack_solver() {
     storage::destroy(resid);
     storage::destroy(workd);
     storage::destroy(v);
@@ -174,8 +174,8 @@ public:
     storage::destroy(select);
   }
 
-  arpack_worker(arpack_worker const&) = delete;
-  arpack_worker(arpack_worker&&) noexcept = delete;
+  arpack_solver(arpack_solver const&) = delete;
+  arpack_solver(arpack_solver&&) noexcept = delete;
 
 private:
   /// @internal Prepare values of input parameters and resize containers.
@@ -187,7 +187,7 @@ private:
     int nev_max = N - 1;
 
     if(nev < nev_min || nev > nev_max)
-      throw ARPACK_WORKER_ERROR("n_eigenvalues must be within [" +
+      throw ARPACK_SOLVER_ERROR("n_eigenvalues must be within [" +
                                 std::to_string(nev_min) + ";" +
                                 std::to_string(nev_max) + "]");
 
@@ -200,7 +200,7 @@ private:
     if(ncv == -1)
       ncv = std::min(2 * int(params.n_eigenvalues) + 2, N);
     else if(ncv <= int(params.n_eigenvalues) || ncv > N)
-      throw ARPACK_WORKER_ERROR("ncv must be within ]" +
+      throw ARPACK_SOLVER_ERROR("ncv must be within ]" +
                                 std::to_string(params.n_eigenvalues) + ";" +
                                 std::to_string(N) + "]");
 
@@ -218,7 +218,7 @@ private:
 
     iparam[2] = int(params.max_iter); // Max number of iterations
     if(iparam[2] <= 0)
-      throw ARPACK_WORKER_ERROR(
+      throw ARPACK_SOLVER_ERROR(
           "Maximum number of Arnoldi update iterations must be positive");
   }
 
@@ -253,15 +253,15 @@ public:
   /// a(vector_const_view_t in, vector_view_t out)
   /// @endcode
   /// `a` is expected to act on the vector view `in` and write the result into
-  /// the vector view `out`, `out = a*in`. Given an instance `aw` of the
-  /// arpack_worker< Symmetric, Backend > class, `in` is also indirectly
+  /// the vector view `out`, `out = a*in`. Given an instance `as` of the
+  /// arpack_solver< Symmetric, Backend > class, `in` is also indirectly
   /// accessible as
   /// @code
-  /// aw.workspace_vector(aw.in_vector_n())
+  /// as.workspace_vector(as.in_vector_n())
   /// @endcode
   /// and `out` is accessible as
   /// @code
-  /// aw.workspace_vector(aw.out_vector_n())
+  /// as.workspace_vector(as.out_vector_n())
   /// @endcode
   ///
   /// @param params Set of input parameters for the Implicitly Restarted
@@ -314,7 +314,7 @@ public:
         case Done: break;
         default: {
           storage::destroy(workl);
-          throw ARPACK_WORKER_ERROR("Reverse communication interface error");
+          throw ARPACK_SOLVER_ERROR("Reverse communication interface error");
         }
       }
     } while(ido != Done);
@@ -395,14 +395,14 @@ public:
   /// the vector view `out`, `out = op*in`. In the @ref Inverse mode, however,
   /// `op` must do the following,
   /// `in = op*in`, `out = M^{-1}*in`.
-  /// Given an instance `aw` of the arpack_worker< Symmetric, Backend > class,
+  /// Given an instance `as` of the arpack_solver< Symmetric, Backend > class,
   /// `in` is also indirectly accessible as
   /// @code
-  /// aw.workspace_vector(aw.in_vector_n())
+  /// as.workspace_vector(as.in_vector_n())
   /// @endcode
   /// and `out` is accessible as
   /// @code
-  /// aw.workspace_vector(aw.out_vector_n())
+  /// as.workspace_vector(as.out_vector_n())
   /// @endcode
   ///
   /// @param b A callable object representing the linear operator
@@ -482,7 +482,7 @@ public:
         case Done: break;
         default: {
           storage::destroy(workl);
-          throw ARPACK_WORKER_ERROR("Reverse communication interface error");
+          throw ARPACK_SOLVER_ERROR("Reverse communication interface error");
         }
       }
     } while(ido != Done);
@@ -519,7 +519,7 @@ public:
   /// @throws std::runtime_error Invalid index value.
   real_vector_view_t workspace_vector(int n) const {
     if(n < 0 || n > 2)
-      throw ARPACK_WORKER_ERROR(
+      throw ARPACK_SOLVER_ERROR(
           "Valid indices of workspace vectors are 0, 1 and 2 (got " +
           std::to_string(n) + ")");
     return storage::make_vector_view(workd, n * N, N);
@@ -598,19 +598,19 @@ private:
       case 1: throw(maxiter_reached(iparam[2]));
       case 3: throw(ncv_insufficient(ncv));
       case -8:
-        throw ARPACK_WORKER_ERROR(
+        throw ARPACK_SOLVER_ERROR(
             "Error in LAPACK tridiagonal eigenvalue calculation (dsteqr)");
-      case -9: throw ARPACK_WORKER_ERROR("Starting vector is zero");
+      case -9: throw ARPACK_SOLVER_ERROR("Starting vector is zero");
       case -13:
-        throw ARPACK_WORKER_ERROR("n_eigenvalues = 1 is incompatible with "
+        throw ARPACK_SOLVER_ERROR("n_eigenvalues = 1 is incompatible with "
                                   "eigenvalues_select = BothEnds");
       case -9999:
-        throw ARPACK_WORKER_ERROR(
+        throw ARPACK_SOLVER_ERROR(
             "Could not build an Arnoldi factorization. "
             "The size of the current Arnoldi factorization is " +
             std::to_string(iparam[4]));
       default:
-        throw ARPACK_WORKER_ERROR("dsaupd failed with error code " +
+        throw ARPACK_SOLVER_ERROR("dsaupd failed with error code " +
                                   std::to_string(info));
     }
   }
@@ -622,17 +622,17 @@ private:
     switch(info) {
       case 0: return;
       case -8:
-        throw ARPACK_WORKER_ERROR(
+        throw ARPACK_SOLVER_ERROR(
             "Error in LAPACK tridiagonal eigenvalue calculation (dsteqr)");
-      case -9: throw ARPACK_WORKER_ERROR("Starting vector is zero");
+      case -9: throw ARPACK_SOLVER_ERROR("Starting vector is zero");
       case -12:
-        throw ARPACK_WORKER_ERROR("n_eigenvalues = 1 is incompatible with "
+        throw ARPACK_SOLVER_ERROR("n_eigenvalues = 1 is incompatible with "
                                   "eigenvalues_select = BothEnds");
       case -14:
-        throw ARPACK_WORKER_ERROR(
+        throw ARPACK_SOLVER_ERROR(
             "dsaupd did not find any eigenvalues to sufficient accuracy");
       default:
-        throw ARPACK_WORKER_ERROR("dseupd failed with error code " +
+        throw ARPACK_SOLVER_ERROR("dseupd failed with error code " +
                                   std::to_string(info));
     }
   }

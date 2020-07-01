@@ -10,7 +10,7 @@
 
 foreach(t symmetric asymmetric complex)
   set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
-  set(t triqs.worker_${t})
+  set(t triqs.solver_${t})
   add_executable(${t} ${s})
   # FIXME: Setting CXX_STANDARD to 17 would require CMake >= 3.8,
   # which is too new to ask for.

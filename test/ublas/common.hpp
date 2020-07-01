@@ -23,7 +23,7 @@
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/numeric/ublas/lu.hpp>
 
-#include "ezarpack/arpack_worker.hpp"
+#include "ezarpack/arpack_solver.hpp"
 #include "ezarpack/storages/ublas.hpp"
 
 using namespace ezarpack;
@@ -143,12 +143,12 @@ void check_eigenvectors(AR const& ar, MT const& A, MT const& M) {
 // (Asymmetric Shift-and-Invert modes)
 template<typename MT>
 void check_eigenvectors_shift_and_invert(
-    arpack_worker<Asymmetric, ublas_storage> const& ar,
+    arpack_solver<Asymmetric, ublas_storage> const& ar,
     MT const& A,
     MT const& M) {
-  using worker_t = arpack_worker<Asymmetric, ublas_storage>;
-  using vector_view_t = worker_t::vector_view_t;
-  using vector_const_view_t = worker_t::vector_const_view_t;
+  using solver_t = arpack_solver<Asymmetric, ublas_storage>;
+  using vector_view_t = solver_t::vector_view_t;
+  using vector_const_view_t = solver_t::vector_const_view_t;
   auto Aop = [&](vector_const_view_t in, vector_view_t out) {
     out = prod(A, in);
   };
@@ -163,7 +163,7 @@ void check_eigenvectors_shift_and_invert(
 ////////////////////////////////////////////////////////////////////////////////
 
 // In the real symmetric case, eigenvectors form an orthonormal basis
-auto get_basis_vectors(arpack_worker<Symmetric, ublas_storage> const& ar)
+auto get_basis_vectors(arpack_solver<Symmetric, ublas_storage> const& ar)
     -> decltype(ar.eigenvectors()) {
   return ar.eigenvectors();
 }

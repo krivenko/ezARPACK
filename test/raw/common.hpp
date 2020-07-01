@@ -21,7 +21,7 @@
 
 #include <catch2/catch.hpp>
 
-#include "ezarpack/arpack_worker.hpp"
+#include "ezarpack/arpack_solver.hpp"
 #include "ezarpack/storages/raw.hpp"
 
 using namespace ezarpack;
@@ -231,7 +231,7 @@ template<
     typename M,
     typename T =
         typename std::conditional<MKind == Symmetric, double, dcomplex>::type>
-void check_eigenvectors(arpack_worker<MKind, raw_storage> const& ar,
+void check_eigenvectors(arpack_solver<MKind, raw_storage> const& ar,
                         M const* m,
                         int N,
                         int nev) {
@@ -255,7 +255,7 @@ template<
     typename M,
     typename T =
         typename std::conditional<MKind == Symmetric, double, dcomplex>::type>
-void check_eigenvectors(arpack_worker<MKind, raw_storage> const& ar,
+void check_eigenvectors(arpack_solver<MKind, raw_storage> const& ar,
                         M const* a,
                         M const* m,
                         int N,
@@ -279,14 +279,14 @@ void check_eigenvectors(arpack_worker<MKind, raw_storage> const& ar,
 // (Asymmetric Shift-and-Invert modes)
 template<typename M>
 void check_eigenvectors_shift_and_invert(
-    arpack_worker<Asymmetric, raw_storage> const& ar,
+    arpack_solver<Asymmetric, raw_storage> const& ar,
     M const* a,
     M const* m,
     int N,
     int nev) {
-  using worker_t = arpack_worker<Asymmetric, raw_storage>;
-  using vector_view_t = worker_t::vector_view_t;
-  using vector_const_view_t = worker_t::vector_const_view_t;
+  using solver_t = arpack_solver<Asymmetric, raw_storage>;
+  using vector_view_t = solver_t::vector_view_t;
+  using vector_const_view_t = solver_t::vector_const_view_t;
   auto Aop = [&](vector_const_view_t in, vector_view_t out) {
     mv_product(a, in, out, N);
   };
@@ -308,7 +308,7 @@ void check_eigenvectors_shift_and_invert(
 ////////////////////////////////////////////////////////////////////////////////
 
 // In the real symmetric case, eigenvectors form an orthonormal basis
-auto get_basis_vectors(arpack_worker<Symmetric, raw_storage> const& ar)
+auto get_basis_vectors(arpack_solver<Symmetric, raw_storage> const& ar)
     -> decltype(ar.eigenvectors()) {
   return ar.eigenvectors();
 }
@@ -320,7 +320,7 @@ auto get_basis_vectors(AR const& ar) -> decltype(ar.schur_vectors()) {
 
 // Check orthogonality of basis vectors (standard eigenproblem)
 template<operator_kind MKind>
-void check_basis_vectors(arpack_worker<MKind, raw_storage> const& ar,
+void check_basis_vectors(arpack_solver<MKind, raw_storage> const& ar,
                          int N,
                          int nev) {
   auto vecs = get_basis_vectors(ar);
@@ -337,7 +337,7 @@ void check_basis_vectors(arpack_worker<MKind, raw_storage> const& ar,
 }
 // Check orthogonality of basis vectors (generalized eigenproblem)
 template<operator_kind MKind, typename M>
-void check_basis_vectors(arpack_worker<MKind, raw_storage> const& ar,
+void check_basis_vectors(arpack_solver<MKind, raw_storage> const& ar,
                          M const* b,
                          int N,
                          int nev) {

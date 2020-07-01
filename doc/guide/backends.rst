@@ -5,7 +5,7 @@ List of supported matrix/vector algebra libraries
 
 One can choose which of supported linear algebra libraries to use by passing
 a special tag type as the second template parameter (``Backend``) to
-the :ref:`ezarpack::arpack_worker <refworkerbase>` class template.
+the :ref:`ezarpack::arpack_solver <refsolverbase>` class template.
 
 The following table lists all supported backends, their respective tag types
 and headers containing backends' definitions. The last columns contains links

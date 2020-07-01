@@ -10,11 +10,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  ******************************************************************************/
-/// @file ezarpack/arpack_worker.hpp
-/// @brief This header file includes all specializations of `arpack_worker`.
+/// @file ezarpack/arpack_solver.hpp
+/// @brief This header file includes all specializations of `arpack_solver`.
 #pragma once
 
-#include "worker_base.hpp"
-#include "worker_asymmetric.hpp"
-#include "worker_complex.hpp"
-#include "worker_symmetric.hpp"
+#include "solver_base.hpp"
+#include "solver_asymmetric.hpp"
+#include "solver_complex.hpp"
+#include "solver_symmetric.hpp"

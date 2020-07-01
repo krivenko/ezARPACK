@@ -17,13 +17,13 @@
 // Eigenproblems with real symmetric matrices //
 ////////////////////////////////////////////////
 
-TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
+TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
 
   using xt::linalg::dot;
   using xt::linalg::inv;
 
-  using worker_t = arpack_worker<Symmetric, xtensor_storage>;
-  using params_t = worker_t::params_t;
+  using solver_t = arpack_solver<Symmetric, xtensor_storage>;
+  using params_t = solver_t::params_t;
 
   const int N = 100;
   const double diag_coeff_shift = -0.55;
@@ -42,20 +42,20 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   // Inner product matrix
   auto M = make_inner_prod_matrix<Symmetric>(N);
 
-  auto set_init_residual_vector = [](worker_t& ar) {
+  auto set_init_residual_vector = [](solver_t& ar) {
     for(int i = 0; i < N; ++i)
       ar.residual_vector()[i] = double(i) / N;
   };
 
-  using vector_view_t = worker_t::vector_view_t;
-  using vector_const_view_t = worker_t::vector_const_view_t;
+  using vector_view_t = solver_t::vector_view_t;
+  using vector_const_view_t = solver_t::vector_const_view_t;
 
   SECTION("Standard eigenproblem") {
     auto Aop = [&](vector_const_view_t in, vector_view_t out) {
       out = dot(A, in);
     };
 
-    worker_t ar(A.shape(0));
+    solver_t ar(A.shape(0));
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -78,13 +78,13 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       out = dot(M, in);
     };
 
-    worker_t ar(A.shape(0));
+    solver_t ar(A.shape(0));
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
-      ar(op, Bop, worker_t::Inverse, params);
+      ar(op, Bop, solver_t::Inverse, params);
       check_eigenvectors(ar, A, M);
       check_basis_vectors(ar, M);
     }
@@ -101,14 +101,14 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       out = dot(M, in);
     };
 
-    worker_t ar(A.shape(0));
+    solver_t ar(A.shape(0));
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
       params.sigma = sigma;
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
-      ar(op, Bop, worker_t::ShiftAndInvert, params);
+      ar(op, Bop, solver_t::ShiftAndInvert, params);
       check_eigenvectors(ar, A, M);
       check_basis_vectors(ar, M);
     }
@@ -125,7 +125,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       out = dot(M, in);
     };
 
-    worker_t ar(A.shape(0));
+    solver_t ar(A.shape(0));
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -133,7 +133,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       params.random_residual_vector = false;
       params.ncv = 30;
       set_init_residual_vector(ar);
-      ar(op, Bop, worker_t::Buckling, params);
+      ar(op, Bop, solver_t::Buckling, params);
       check_eigenvectors(ar, M, A);
       check_basis_vectors(ar, M);
     }
@@ -150,14 +150,14 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
       out = dot(M, in);
     };
 
-    worker_t ar(A.shape(0));
+    solver_t ar(A.shape(0));
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
       params.sigma = sigma;
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
-      ar(op, Bop, worker_t::Cayley, params);
+      ar(op, Bop, solver_t::Cayley, params);
       check_eigenvectors(ar, A, M);
       check_basis_vectors(ar, M);
     }
@@ -166,9 +166,9 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
   SECTION("Custom implementation of the Exact Shift Strategy") {
     std::vector<int> p;
     p.reserve(A.shape(0));
-    auto shifts_f = [&](worker_t::real_vector_const_view_t ritz_values,
-                        worker_t::real_vector_const_view_t ritz_bounds,
-                        worker_t::real_vector_view_t shifts) {
+    auto shifts_f = [&](solver_t::real_vector_const_view_t ritz_values,
+                        solver_t::real_vector_const_view_t ritz_bounds,
+                        solver_t::real_vector_view_t shifts) {
       int np = shifts.size();
       if(np == 0) return;
 
@@ -188,7 +188,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
         out = dot(A, in);
       };
 
-      worker_t ar(A.shape(0));
+      solver_t ar(A.shape(0));
 
       params_t params(nev, params_t::LargestMagnitude, true);
       params.random_residual_vector = false;
@@ -209,13 +209,13 @@ TEST_CASE("Symmetric eigenproblem is solved", "[worker_symmetric]") {
         out = dot(M, in);
       };
 
-      worker_t ar(A.shape(0));
+      solver_t ar(A.shape(0));
 
       params_t params(nev, params_t::LargestMagnitude, true);
       params.sigma = sigma;
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
-      ar(op, Bop, worker_t::ShiftAndInvert, params, shifts_f);
+      ar(op, Bop, solver_t::ShiftAndInvert, params, shifts_f);
       check_eigenvectors(ar, A, M);
       check_basis_vectors(ar, M);
     }

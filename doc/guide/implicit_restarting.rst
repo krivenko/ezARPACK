@@ -22,29 +22,29 @@ In some (rather rare) cases, one may want to deviate from the default
 "Exact Shift Strategy" and change the way those shifts are selected/computed.
 ezARPACK allows for customization of the implicit restarting via an optional
 extra argument of ``operator()`` in specializations of
-:ref:`ezarpack::arpack_worker <refworkerbase>`. The argument is expected to be
+:ref:`ezarpack::arpack_solver <refsolverbase>`. The argument is expected to be
 a callable object ``shifts_f`` that supplies a list of shifts. It must have one
 of the following signatures.
 
-* For :ref:`ezarpack::arpack_worker\<Symmetric, Backend\> <refworkersymmetric>`:
+* For :ref:`ezarpack::arpack_solver\<Symmetric, Backend\> <refsolversymmetric>`:
 
 .. code:: cpp
 
-  using worker_t = ezarpack::arpack_worker<Symmetric, Backend>;
+  using solver_t = ezarpack::arpack_solver<Symmetric, Backend>;
 
   // ritz_values - View of a real vector with current m Ritz values.
   // ritz_bounds - View of a real vector with current m Ritz estimates.
   // shifts - Real vector view to receive the computed shifts.
-  shifts_f(worker_t::real_vector_const_view_t ritz_values,
-           worker_t::real_vector_const_view_t ritz_bounds,
-           worker_t::real_vector_view_t shifts);
+  shifts_f(solver_t::real_vector_const_view_t ritz_values,
+           solver_t::real_vector_const_view_t ritz_bounds,
+           solver_t::real_vector_view_t shifts);
 
 * For
-  :ref:`ezarpack::arpack_worker\<Asymmetric, Backend\> <refworkerasymmetric>`:
+  :ref:`ezarpack::arpack_solver\<Asymmetric, Backend\> <refsolverasymmetric>`:
 
 .. code:: cpp
 
-  using worker_t = ezarpack::arpack_worker<Asymmetric, Backend>;
+  using solver_t = ezarpack::arpack_solver<Asymmetric, Backend>;
 
   // ritz_values_re - View of a vector with real parts of current m Ritz values.
   // ritz_values_im - View of a vector with imaginary parts of
@@ -53,22 +53,22 @@ of the following signatures.
   // shifts_re - Real vector view to receive real parts of the computed shifts.
   // shifts_im - Real vector view to receive imaginary parts of the computed
   // shifts.
-  shifts_f(worker_t::real_vector_const_view_t ritz_values_re,
-           worker_t::real_vector_const_view_t ritz_values_im,
-           worker_t::real_vector_const_view_t ritz_bounds,
-           worker_t::real_vector_view_t shifts_re,
-           worker_t::real_vector_view_t shifts_im);
+  shifts_f(solver_t::real_vector_const_view_t ritz_values_re,
+           solver_t::real_vector_const_view_t ritz_values_im,
+           solver_t::real_vector_const_view_t ritz_bounds,
+           solver_t::real_vector_view_t shifts_re,
+           solver_t::real_vector_view_t shifts_im);
 
-* For :ref:`ezarpack::arpack_worker\<Complex, Backend\> <refworkercomplex>`:
+* For :ref:`ezarpack::arpack_solver\<Complex, Backend\> <refsolvercomplex>`:
 
 .. code:: cpp
 
-  using worker_t = ezarpack::arpack_worker<Complex, Backend>;
+  using solver_t = ezarpack::arpack_solver<Complex, Backend>;
 
   // ritz_values - View of a complex vector with current m Ritz values.
   // ritz_bounds - View of a complex vector with current m Ritz estimates.
   // shifts - Complex vector view to receive the computed shifts.
-  shifts_f(worker_t::complex_vector_const_view_t ritz_values,
-           worker_t::complex_vector_const_view_t ritz_bounds,
-           worker_t::complex_vector_view_t shifts);
+  shifts_f(solver_t::complex_vector_const_view_t ritz_values,
+           solver_t::complex_vector_const_view_t ritz_bounds,
+           solver_t::complex_vector_view_t shifts);
 

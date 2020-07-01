@@ -10,8 +10,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  ******************************************************************************/
-/// @file ezarpack/worker_base.hpp
-/// @brief Definition of ezARPACK's primary class template `arpack_worker` and
+/// @file ezarpack/solver_base.hpp
+/// @brief Definition of ezARPACK's primary class template `arpack_solver` and
 /// related types.
 #pragma once
 
@@ -40,26 +40,26 @@ enum operator_kind {
 /// supported by ezARPACK.
 /// @tparam OpKind Kind of eigenproblem to be solved.
 /// @tparam Backend Tag type specifying what *storage backend* (matrix/vector
-/// algebra library) must be used by `arpack_worker`. The storage backend
+/// algebra library) must be used by `arpack_solver`. The storage backend
 /// determines types of internally stored data arrays and input/output view
 /// objects exposed by methods of the class.
-template<operator_kind OpKind, typename Backend> class arpack_worker {};
+template<operator_kind OpKind, typename Backend> class arpack_solver {};
 
 #ifndef DOXYGEN_IGNORE
-#define ARPACK_WORKER_ERROR(MSG) std::runtime_error("arpack_worker: " MSG)
+#define ARPACK_SOLVER_ERROR(MSG) std::runtime_error("arpack_solver: " MSG)
 #endif
 
 /// @brief Exception: Maximum number of Implicitly restarted Arnoldi iterations
 /// has been reached.
 ///
-/// This exception can be thrown by `operator()` of `arpack_worker`
+/// This exception can be thrown by `operator()` of `arpack_solver`
 /// specializations.
 struct maxiter_reached : public std::runtime_error {
   /// Maximum number of IRLM/IRAM iterations allowed.
   int maxiter;
   /// @param maxiter Maximum number of IRLM/IRAM iterations allowed.
   maxiter_reached(int maxiter)
-      : ARPACK_WORKER_ERROR("Maximum number of iterations (" +
+      : ARPACK_SOLVER_ERROR("Maximum number of iterations (" +
                             std::to_string(maxiter) + ") reached"),
         maxiter(maxiter) {}
 };
@@ -68,13 +68,13 @@ struct maxiter_reached : public std::runtime_error {
 /// the Implicitly restarted Arnoldi iteration. Consider increasing the number
 /// of Lanczos/Arnoldi vectors generated at each iteration.
 ///
-/// This exception can be thrown by `operator()` of `arpack_worker`
+/// This exception can be thrown by `operator()` of `arpack_solver`
 /// specializations.
 struct ncv_insufficient : public std::runtime_error {
   int ncv; /**< Number of Lanczos/Arnoldi vectors to be generated. */
   /// @param ncv Number of Lanczos/Arnoldi vectors to be generated.
   ncv_insufficient(int ncv)
-      : ARPACK_WORKER_ERROR("No shifts could be applied during a cycle "
+      : ARPACK_SOLVER_ERROR("No shifts could be applied during a cycle "
                             "of the Implicitly restarted Arnoldi iteration. "
                             "Try increasing ncv (currently ncv = " +
                             std::to_string(ncv) + ")"),

@@ -2,7 +2,7 @@ Auxiliary headers
 =================
 
 .. toctree::
-    worker_base
-    arpack_worker
+    solver_base
+    arpack_solver
     arpack
     version

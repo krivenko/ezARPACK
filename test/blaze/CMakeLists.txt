@@ -12,7 +12,7 @@ find_package(LAPACK)
 if(LAPACK_FOUND)
   foreach(t symmetric asymmetric complex)
     set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
-    set(t blaze.worker_${t})
+    set(t blaze.solver_${t})
     add_executable(${t} ${s})
     target_include_directories(${t} PRIVATE ${CMAKE_SOURCE_DIR}/test)
     target_link_libraries(${t} PRIVATE ezarpack catch2

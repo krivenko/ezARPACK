@@ -5,7 +5,7 @@ Advanced: Adding a new storage backend
 
 ezARPACK offers support for a few numerical linear algebra frameworks
 :ref:`out of the box <backends>`. Thanks to the decoupled design of ezARPACK's
-worker classes, it is fairly easy to extend the support to other matrix/vector
+solver classes, it is fairly easy to extend the support to other matrix/vector
 algebra libraries. In order to be conceptually compatible with ezARPACK's
 architecture, a C++ library has to implement the following abstractions.
 
@@ -68,13 +68,13 @@ does not really matter, so it can be an empty structure.
   struct mylib_storage {};
 
 Passing the defined tag type as the second template parameter to
-``arpack_worker`` (e.g. :ref:`arpack_worker\<Symmetric,mylib_storage\>
-<refworkersymmetric>`) will enable use of the ``mylib`` backend in the worker.
+``arpack_solver`` (e.g. :ref:`arpack_solver\<Symmetric,mylib_storage\>
+<refsolversymmetric>`) will enable use of the ``mylib`` backend in the solver.
 
 The most crucial and biggest part of the header is a specialization of the
 ``storage_traits`` structure. This traits structure is going to be a 'glue'
-layer between :ref:`arpack_worker <refworkerbase>` and the new library.
-``arpack_worker`` extracts ``mylib``-specific type
+layer between :ref:`arpack_solver <refsolverbase>` and the new library.
+``arpack_solver`` extracts ``mylib``-specific type
 information from typedef members of ``storage_traits`` and calls its static
 member functions to handle ``mylib``'s vector/matrix/view objects.
 
@@ -298,10 +298,10 @@ defined separately for each argument type. It is acceptable to use function
 templates instead.
 
 With these functions implemented, one can already instantiate and use
-:ref:`arpack_worker\<Symmetric,mylib_storage\>
-<refworkersymmetric>` and
-:ref:`arpack_worker\<Complex,mylib_storage\>
-<refworkercomplex>`. The asymmetric case, however, requires more work, as
+:ref:`arpack_solver\<Symmetric,mylib_storage\>
+<refsolversymmetric>` and
+:ref:`arpack_solver\<Complex,mylib_storage\>
+<refsolvercomplex>`. The asymmetric case, however, requires more work, as
 described in the next section.
 
 Optional: Eigenvalue/eigenvector post-processing functions
@@ -309,10 +309,10 @@ Optional: Eigenvalue/eigenvector post-processing functions
 
 Because of specifics of the internal data storage format and numerical
 algorithm, extracting eigenvalues and eigenvectors after a completed
-:ref:`arpack_worker\<Asymmetric,mylib_storage\> <refworkerasymmetric>` run needs
+:ref:`arpack_solver\<Asymmetric,mylib_storage\> <refsolverasymmetric>` run needs
 some post-processing that is not done by ARPACK-NG itself.
 The storage traits structure may optionally implement three static
-member functions, which will be called by the asymmetric worker to extract a
+member functions, which will be called by the asymmetric solver to extract a
 computed eigensystem from memory buffers and return it to the user in
 a convenient form.
 

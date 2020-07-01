@@ -20,7 +20,7 @@
 
 #include <catch2/catch.hpp>
 
-#include "ezarpack/arpack_worker.hpp"
+#include "ezarpack/arpack_solver.hpp"
 #include "ezarpack/storages/xtensor.hpp"
 
 #include <xtensor-blas/xlinalg.hpp>
@@ -137,12 +137,12 @@ void check_eigenvectors(AR const& ar, MT const& A, MT const& M) {
 // (Asymmetric Shift-and-Invert modes)
 template<typename MT>
 void check_eigenvectors_shift_and_invert(
-    arpack_worker<Asymmetric, xtensor_storage> const& ar,
+    arpack_solver<Asymmetric, xtensor_storage> const& ar,
     MT const& A,
     MT const& M) {
-  using worker_t = arpack_worker<Asymmetric, xtensor_storage>;
-  using vector_view_t = worker_t::vector_view_t;
-  using vector_const_view_t = worker_t::vector_const_view_t;
+  using solver_t = arpack_solver<Asymmetric, xtensor_storage>;
+  using vector_view_t = solver_t::vector_view_t;
+  using vector_const_view_t = solver_t::vector_const_view_t;
   using linalg::dot;
   auto Aop = [&](vector_const_view_t in, vector_view_t out) {
     out = dot(A, in);
@@ -158,7 +158,7 @@ void check_eigenvectors_shift_and_invert(
 ////////////////////////////////////////////////////////////////////////////////
 
 // In the real symmetric case, eigenvectors form an orthonormal basis
-auto get_basis_vectors(arpack_worker<Symmetric, xtensor_storage> const& ar)
+auto get_basis_vectors(arpack_solver<Symmetric, xtensor_storage> const& ar)
     -> decltype(ar.eigenvectors()) {
   return ar.eigenvectors();
 }

@@ -29,20 +29,20 @@ algorithm and computational mode should be chosen for the optimal performance
 and stability.
 
 ezARPACK wraps ARPACK-NG's low-level subroutines in a form of three major
-worker classes.
+solver classes.
 
-* :ref:`ezarpack::arpack_worker\<Symmetric, Backend\> <symmetric>`;
-* :ref:`ezarpack::arpack_worker\<Asymmetric, Backend\> <asymmetric>`;
-* :ref:`ezarpack::arpack_worker\<Complex, Backend\> <complex>`.
+* :ref:`ezarpack::arpack_solver\<Symmetric, Backend\> <symmetric>`;
+* :ref:`ezarpack::arpack_solver\<Asymmetric, Backend\> <asymmetric>`;
+* :ref:`ezarpack::arpack_solver\<Complex, Backend\> <complex>`.
 
 Here, they are listed in the order of generality of the eigenproblems they can
 solve -- the symmetric variant is the most specialized and fastest one, whereas
 the complex version is for the most general problems. Furthermore, each of the
 variants supports a few computational modes. Picking the right combination of
-worker and computational mode can be an overwhelming task for a non-expert.
+solver and computational mode can be an overwhelming task for a non-expert.
 
 In the table below, we give a classification of all supported eigenproblems with
-recommendations on what worker variant/computational mode to choose.
+recommendations on what solver variant/computational mode to choose.
 In many cases, there are multiple acceptable choices, and the 'Notes' column
 contains some more elaborate detail. Forms of the transformed matrices
 :math:`\hat O` and :math:`\hat B` for each mode are also shown.
@@ -54,7 +54,7 @@ contains some more elaborate detail. Forms of the transformed matrices
 
   * - Type of :math:`\hat A`
     - Type of :math:`\hat M`
-    - Worker variant
+    - Solver variant
     - Computational mode
     - :math:`\hat O`
     - :math:`\hat B`
@@ -214,7 +214,7 @@ contains some more elaborate detail. Forms of the transformed matrices
     - **Not directly supported by ARPACK-NG**.
 
       One can manually form operator
-      :math:`\hat O = \hat M^{-1} \hat A` and use the Asymmetric worker in the
+      :math:`\hat O = \hat M^{-1} \hat A` and use the Asymmetric solver in the
       standard mode. Best used when :math:`\hat M` is well-conditioned and
       the eigenvalues of interest are at extreme points of the convex
       hull of the spectrum.
@@ -229,10 +229,10 @@ contains some more elaborate detail. Forms of the transformed matrices
 
       One can manually form operator
       :math:`\hat O = (\hat A - \sigma\hat M)^{-1}\hat M` and use the Asymmetric
-      worker in the standard mode. Best used when :math:`\hat M` is nearly
+      solver in the standard mode. Best used when :math:`\hat M` is nearly
       singular and/or for finding eigenvalues in the interior of the spectrum,
       clustered around the complex shift :math:`\sigma`. The eigenvalues
-      :math:`\mu` computed by the worker must be manually back-transformed
+      :math:`\mu` computed by the solver must be manually back-transformed
       according to :math:`\lambda = \mu^{-1} + \sigma`.
 
   * - Complex
@@ -289,7 +289,7 @@ contains some more elaborate detail. Forms of the transformed matrices
     - **Not directly supported by ARPACK-NG**.
 
       One can manually form operator
-      :math:`\hat O = \hat M^{-1} \hat A` and use the Complex worker in the
+      :math:`\hat O = \hat M^{-1} \hat A` and use the Complex solver in the
       standard mode. Best used when :math:`\hat M` is well-conditioned and
       the eigenvalues of interest are at extreme points of the convex
       hull of the spectrum.
@@ -304,10 +304,10 @@ contains some more elaborate detail. Forms of the transformed matrices
 
       One can manually form operator
       :math:`\hat O = (\hat A - \sigma\hat M)^{-1}\hat M` and use the Complex
-      worker in the standard mode. Best used when :math:`\hat M` is nearly
+      solver in the standard mode. Best used when :math:`\hat M` is nearly
       singular and/or for finding eigenvalues in the interior of the spectrum,
       clustered around the complex shift :math:`\sigma`. The eigenvalues
-      :math:`\mu` computed by the worker must be manually back-transformed
+      :math:`\mu` computed by the solver must be manually back-transformed
       according to :math:`\lambda = \mu^{-1} + \sigma`.
 
 Matrix :math:`\hat M` being well-conditioned means that it has a moderate

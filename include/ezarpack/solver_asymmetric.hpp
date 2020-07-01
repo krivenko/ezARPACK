@@ -10,29 +10,30 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  ******************************************************************************/
-/// @file ezarpack/worker_complex.hpp
-/// @brief Specialization of `arpack_worker` class for the case of general
-/// complex eigenproblems.
+/// @file ezarpack/solver_asymmetric.hpp
+/// @brief Specialization of `arpack_solver` class for the case of general real
+/// eigenproblems.
 #pragma once
 
 namespace ezarpack {
 
-/// @brief Main worker class wrapping the Implicitly Restarted Arnoldi
-/// Method (IRAM) for general complex eigenproblems.
+/// @brief Main solver class wrapping the Implicitly Restarted Arnoldi
+/// Method (IRAM) for general real eigenproblems.
 ///
-/// This specialization of `arpack_worker` calls ARPACK-NG routines `znaupd()`
-/// and `zneupd()` to compute approximations to a few eigenpairs of a complex
-/// linear operator @f$ \hat O @f$ with respect to a semi-inner product defined
-/// by a Hermitian positive semi-definite matrix @f$ \hat B @f$.
+/// This specialization of `arpack_solver` calls ARPACK-NG routines `dnaupd()`
+/// and `dneupd()` to compute approximations to a few eigenpairs of a real
+/// linear operator @f$ \hat O @f$ with respect to an inner product defined
+/// by a real symmetric positive semi-definite matrix @f$ \hat B @f$.
 ///
-/// @note If both @f$ \hat O @f$ and @f$ \hat B@f$ are real and symmetric,
-/// then @ref arpack_worker<Symmetric, Backend> should be used instead.
+/// @note If the linear operator @f$ \hat O @f$ is symmetric with respect to
+/// @f$ \hat B@f$, then @ref arpack_solver<Symmetric, Backend> should be
+/// used instead.
 ///
 /// @tparam Backend Tag type specifying what *storage backend* (matrix/vector
-/// algebra library) must be used by `arpack_worker`. The storage backend
+/// algebra library) must be used by `arpack_solver`. The storage backend
 /// determines types of internally stored data arrays and input/output view
 /// objects returned by methods of the class.
-template<typename Backend> class arpack_worker<Complex, Backend> {
+template<typename Backend> class arpack_solver<Asymmetric, Backend> {
 
   using storage = storage_traits<Backend>;
 
@@ -43,6 +44,8 @@ public:
 
   /// One-dimensional data array (vector) of real numbers.
   using real_vector_t = typename storage::real_vector_type;
+  /// Two-dimensional data array (matrix) of real numbers.
+  using real_matrix_t = typename storage::real_matrix_type;
   /// One-dimensional data array (vector) of complex numbers.
   using complex_vector_t = typename storage::complex_vector_type;
   /// Two-dimensional data array (matrix) of complex numbers.
@@ -50,26 +53,26 @@ public:
   /// One-dimensional data array (vector) of integers.
   using int_vector_t = typename storage::int_vector_type;
 
-  /// Partial view (slice) of a complex vector.
-  using complex_vector_view_t = typename storage::complex_vector_view_type;
-  /// Partial constant view (slice) of a complex vector.
-  using complex_vector_const_view_t =
-      typename storage::complex_vector_const_view_type;
-  /// Partial constant view (slice) of a complex matrix.
-  using complex_matrix_const_view_t =
-      typename storage::complex_matrix_const_view_type;
+  /// Partial view (slice) of a real vector.
+  using real_vector_view_t = typename storage::real_vector_view_type;
+  /// Partial constant view (slice) of a real vector.
+  using real_vector_const_view_t =
+      typename storage::real_vector_const_view_type;
+  /// Partial constant view (slice) of a real matrix.
+  using real_matrix_const_view_t =
+      typename storage::real_matrix_const_view_type;
 
-  /// Storage-specific view type to expose complex input vectors
+  /// Storage-specific view type to expose real input vectors
   /// @f$ \mathbf{x} @f$. An argument of this type is passed as input to
   /// callable objects representing linear operators @f$ \hat O @f$ and
   /// @f$ \hat B @f$.
-  using vector_const_view_t = complex_vector_const_view_t;
+  using vector_const_view_t = real_vector_const_view_t;
 
-  /// Storage-specific view type to expose complex output vectors
+  /// Storage-specific view type to expose real output vectors
   /// @f$ \mathbf{y} @f$. An argument of this type receives output from
   /// callable objects representing linear operators @f$ \hat O @f$ and
   /// @f$ \hat B @f$.
-  using vector_view_t = complex_vector_view_t;
+  using vector_view_t = real_vector_view_t;
 
   /// @}
 
@@ -78,18 +81,20 @@ private:
   const char* which;          // WHICH parameter
   int nev = 0;                // Number of eigenvalues
   double tol;                 // Relative tolerance for Ritz value convergence
-  complex_vector_t resid;     // Residual vector
-  complex_vector_t workd;     // Working space
+  real_vector_t resid;        // Residual vector
+  real_vector_t workd;        // Working space
   int ncv = 0;                // Number of Lanczos vectors to be generated
-  complex_matrix_t v;         // Matrix with Arnoldi basis vectors
-  complex_matrix_t z;         // Matrix with Ritz vectors
-  complex_vector_t d;         // Ritz values (real and imaginary parts)
+  real_matrix_t v;            // Matrix with Arnoldi basis vectors
+  real_vector_t z;            // Flattened matrix with Ritz vectors
+  real_vector_t dr, di;       // Ritz values (real and imaginary parts)
   int iparam[11];             // Various input/output parameters
   int ipntr[14];              // Starting locations in workd and workl
   int info = 0;               // !=0 to use resid, 0 otherwise
-  int rvec;                   // RVEC parameter of zneupd
-  char howmny;                // HOWMNY parameter of zneupd
-  int_vector_t select;        // SELECT parameter of zneupd
+  int rvec = false;           // RVEC parameter of dneupd
+  char howmny;                // HOWMNY parameter of dneupd
+  int_vector_t select;        // SELECT parameter of dneupd
+  double sigmar = 0;          // SIGMAR parameter of dneupd
+  double sigmai = 0;          // SIGMAI parameter of dneupd
   bool Bx_available_ = false; // Has B*x already been computed?
 
 public:
@@ -154,31 +159,33 @@ public:
           compute_vectors(compute_vectors) {}
   };
 
-  /// Constructs a worker object and allocates internal data buffers to be
+  /// Constructs a solver object and allocates internal data buffers to be
   /// used by ARPACK-NG.
   /// @param N Dimension of the eigenproblem.
-  arpack_worker(unsigned int N)
+  arpack_solver(unsigned int N)
       : N(N),
-        resid(storage::make_complex_vector(N)),
-        workd(storage::make_complex_vector(3 * N)),
-        v(storage::make_complex_matrix(N, 0)),
-        z(storage::make_complex_matrix(0, 0)),
-        d(storage::make_complex_vector(nev + 1)),
+        resid(storage::make_real_vector(N)),
+        workd(storage::make_real_vector(3 * N)),
+        v(storage::make_real_matrix(N, 0)),
+        z(storage::make_real_vector(0)),
+        dr(storage::make_real_vector(nev + 1)),
+        di(storage::make_real_vector(nev + 1)),
         select(storage::make_int_vector(0)) {
     iparam[3] = 1;
   }
 
-  ~arpack_worker() {
+  ~arpack_solver() {
     storage::destroy(resid);
     storage::destroy(workd);
     storage::destroy(v);
     storage::destroy(z);
-    storage::destroy(d);
+    storage::destroy(dr);
+    storage::destroy(di);
     storage::destroy(select);
   }
 
-  arpack_worker(arpack_worker const&) = delete;
-  arpack_worker(arpack_worker&&) noexcept = delete;
+  arpack_solver(arpack_solver const&) = delete;
+  arpack_solver(arpack_solver&&) noexcept = delete;
 
 private:
   /// @internal Prepare values of input parameters and resize containers.
@@ -190,7 +197,7 @@ private:
     int nev_max = N - 2;
 
     if(nev < nev_min || nev > nev_max)
-      throw ARPACK_WORKER_ERROR("n_eigenvalues must be within [" +
+      throw ARPACK_SOLVER_ERROR("n_eigenvalues must be within [" +
                                 std::to_string(nev_min) + ";" +
                                 std::to_string(nev_max) + "]");
 
@@ -203,20 +210,21 @@ private:
     ncv = params.ncv;
     if(ncv == -1)
       ncv = std::min(2 * int(params.n_eigenvalues) + 2, N);
-    else if(ncv <= int(params.n_eigenvalues + 1) || ncv > N)
-      throw ARPACK_WORKER_ERROR("ncv must be within ]" +
-                                std::to_string(params.n_eigenvalues + 1) + ";" +
+    else if(ncv <= int(params.n_eigenvalues + 2) || ncv > N)
+      throw ARPACK_SOLVER_ERROR("ncv must be within ]" +
+                                std::to_string(params.n_eigenvalues + 2) + ";" +
                                 std::to_string(N) + "]");
+
     storage::resize(v, N, ncv);
 
     // Eigenvectors
     rvec = (params.compute_vectors != params_t::None);
     howmny = params.compute_vectors == params_t::Schur ? 'P' : 'A';
     storage::resize(select, ncv);
-    if(rvec && params.compute_vectors == params_t::Ritz)
-      storage::resize(z, N, nev + 1);
+    if(rvec)
+      storage::resize(z, N * (nev + 1));
     else
-      storage::resize(z, 1, nev + 1);
+      storage::resize(z, 0);
 
     // Tolerance
     tol = std::max(.0, params.tolerance);
@@ -226,7 +234,7 @@ private:
 
     iparam[2] = int(params.max_iter); // Max number of iterations
     if(iparam[2] <= 0)
-      throw ARPACK_WORKER_ERROR(
+      throw ARPACK_SOLVER_ERROR(
           "Maximum number of Arnoldi update iterations must be positive");
   }
 
@@ -243,14 +251,21 @@ public:
     /// Trivial call operator. The actual shifts will be internally computed by
     /// ARPACK-NG.
     ///
-    /// @param[in] ritz_values View of a complex vector with current
-    /// @ref params_t::ncv Ritz values.
-    /// @param[in] ritz_bounds View of a complex vector with current estimated
+    /// @param[in] ritz_values_re View of a vector with real parts of
+    /// current @ref params_t::ncv Ritz values.
+    /// @param[in] ritz_values_im View of a vector with imaginary parts of
+    /// current @ref params_t::ncv Ritz values.
+    /// @param[in] ritz_bounds View of a real vector with current estimated
     /// error bounds of the Ritz values.
-    /// @param[out] shifts Complex vector view to receive the computed shifts.
-    void operator()(complex_vector_const_view_t ritz_values,
-                    complex_vector_const_view_t ritz_bounds,
-                    complex_vector_view_t shifts) {}
+    /// @param[out] shifts_re Real vector view to receive real parts of the
+    /// computed shifts.
+    /// @param[out] shifts_im Real vector view to receive imaginary parts of
+    /// the computed shifts.
+    void operator()(real_vector_const_view_t ritz_values_re,
+                    real_vector_const_view_t ritz_values_im,
+                    real_vector_const_view_t ritz_bounds,
+                    real_vector_view_t shifts_re,
+                    real_vector_view_t shifts_im) {}
   };
 
   /// Solve a standard eigenproblem @f$ \hat A\mathbf{x} = \lambda\mathbf{x}@f$.
@@ -261,15 +276,15 @@ public:
   /// a(vector_const_view_t in, vector_view_t out)
   /// @endcode
   /// `a` is expected to act on the vector view `in` and write the result into
-  /// the vector view `out`, `out = a*in`. Given an instance `aw` of the
-  /// arpack_worker< Complex, Backend > class, `in` is also indirectly
+  /// the vector view `out`, `out = a*in`. Given an instance `as` of the
+  /// arpack_solver< Asymmetric, Backend > class, `in` is also indirectly
   /// accessible as
   /// @code
-  /// aw.workspace_vector(aw.in_vector_n())
+  /// as.workspace_vector(as.in_vector_n())
   /// @endcode
   /// and `out` is accessible as
   /// @code
-  /// aw.workspace_vector(aw.out_vector_n())
+  /// as.workspace_vector(as.out_vector_n())
   /// @endcode
   ///
   /// @param params Set of input parameters for the Implicitly Restarted
@@ -286,7 +301,7 @@ public:
   /// @throws ezarpack::maxiter_reached Maximum number of IRA iterations has
   /// been reached. All possible eigenvalues of @f$ \hat O @f$ have been found.
   /// @throws std::runtime_error Invalid input parameters and other errors
-  /// reported by ARPACK-NG routines `znaupd()` and `zneupd()`.
+  /// reported by ARPACK-NG routines `dnaupd()` and `dneupd()`.
   template<typename A, typename ShiftsF = exact_shifts_f>
   void operator()(A&& a, params_t const& params, ShiftsF shifts_f = {}) {
 
@@ -295,17 +310,17 @@ public:
     iparam[0] = (std::is_same<ShiftsF, exact_shifts_f>::value ? 1 : 0);
     iparam[6] = 1; // Mode 1, standard eigenproblem
 
-    const int workl_size = 3 * ncv * ncv + 5 * ncv;
-    complex_vector_t workl = storage::make_complex_vector(workl_size);
-    real_vector_t rwork = storage::make_real_vector(ncv);
+    const int workl_size = 3 * ncv * ncv + 6 * ncv;
+    real_vector_t workl = storage::make_real_vector(workl_size);
 
     rci_flag ido = Init;
     Bx_available_ = false;
     do {
-      f77::aupd(ido, "I", N, which, nev, tol, storage::get_data_ptr(resid), ncv,
-                storage::get_data_ptr(v), N, iparam, ipntr,
-                storage::get_data_ptr(workd), storage::get_data_ptr(workl),
-                workl_size, storage::get_data_ptr(rwork), info);
+      f77::aupd<false>(ido, "I", N, which, nev, tol,
+                       storage::get_data_ptr(resid), ncv,
+                       storage::get_data_ptr(v), N, iparam, ipntr,
+                       storage::get_data_ptr(workd),
+                       storage::get_data_ptr(workl), workl_size, info);
       switch(ido) {
         case ApplyOpInit:
         case ApplyOp: {
@@ -315,35 +330,35 @@ public:
             storage::make_vector_view(workd, out_pos, N));
         } break;
         case Shifts: {
+          int np = iparam[7];
           shifts_f(storage::make_vector_const_view(workl, ipntr[5] - 1, ncv),
+                   storage::make_vector_const_view(workl, ipntr[6] - 1, ncv),
                    storage::make_vector_const_view(workl, ipntr[7] - 1, ncv),
-                   storage::make_vector_view(workl, ipntr[13] - 1, iparam[7]));
+                   storage::make_vector_view(workl, ipntr[13] - 1, np),
+                   storage::make_vector_view(workl, ipntr[13] - 1 + np, np));
         } break;
         case Done: break;
         default: {
-          storage::destroy(rwork);
           storage::destroy(workl);
-          throw ARPACK_WORKER_ERROR("Reverse communication interface error");
+          throw ARPACK_SOLVER_ERROR("Reverse communication interface error");
         }
       }
     } while(ido != Done);
 
-    handle_aupd_error_codes(info, rwork, workl);
+    handle_aupd_error_codes(info, workl);
 
-    storage::resize(d, nev + 1);
-    complex_vector_t workev = storage::make_complex_vector(2 * ncv);
+    storage::resize(dr, nev + 1);
+    storage::resize(di, nev + 1);
+    real_vector_t workev = storage::make_real_vector(3 * ncv);
 
     f77::eupd(rvec, &howmny, storage::get_data_ptr(select),
-              storage::get_data_ptr(d), storage::get_data_ptr(z),
-              (rvec && params.compute_vectors == params_t::Ritz ? N : 1),
-              params.sigma, storage::get_data_ptr(workev), "I", N, which, nev,
-              tol, storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v),
-              N, iparam, ipntr, storage::get_data_ptr(workd),
-              storage::get_data_ptr(workl), workl_size,
-              storage::get_data_ptr(rwork), info);
+              storage::get_data_ptr(dr), storage::get_data_ptr(di),
+              storage::get_data_ptr(z), (rvec ? N : 0), sigmar, sigmai,
+              storage::get_data_ptr(workev), "I", N, which, nev, tol,
+              storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v), N,
+              iparam, ipntr, storage::get_data_ptr(workd),
+              storage::get_data_ptr(workl), workl_size, info);
 
-    storage::destroy(workev);
-    storage::destroy(rwork);
     storage::destroy(workl);
 
     handle_eupd_error_codes(info);
@@ -357,18 +372,58 @@ public:
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
-    the canonical form with @f$ \hat O = \hat M^{-1} \hat A @f$ and
-    @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is Hermitian positive
-    definite.
+    the canonical form with
+    @f$ \hat O = \hat M^{-1} \hat A @f$ and
+    @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is symmetric
+    positive-definite.
     */
-    ShiftAndInvert = 3
-    /**< Shift-and-Invert mode.
+    ShiftAndInvertReal = 3,
+    /**< Complex Shift-and-Invert mode in real arithmetic.
 
     Solve a generalized eigenproblem
     @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
-    the canonical form with @f$ \hat O = (\hat A - \sigma\hat M)^{-1} \hat M @f$
-    and @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is Hermitian positive
-    semi-definite.
+    the canonical form with
+    @f$ \hat O = \Re[(\hat A - \sigma\hat M)^{-1} \hat M] @f$
+    and @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is
+    symmetric positive semi-definite.
+    @note In this computational mode, ARPACK-NG only finds
+    eigenvalues @f$ \mu @f$ of @f$ \hat O @f$ that are
+    related to @f$ \lambda @f$ via
+    @f[
+    \mu = \frac{1}{2}\left[
+      \frac{1}{\lambda-\sigma} + \frac{1}{\lambda-\sigma^*}
+    \right].
+    @f]
+    Calling @ref eigenvalues() to retrieve @f$ \lambda @f$ after
+    a calculation in this mode will throw `std::runtime_error`.
+    Instead, one should call @ref eigenvalues(A &&) const "eigenvalues(A &&a)",
+    which computes @f$ \lambda @f$ as Rayleigh quotients
+    @f$ \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}{
+              \mathbf{x}^\dagger \hat M \mathbf{x}} @f$.
+    */
+    ShiftAndInvertImag = 4
+    /**< Complex Shift-and-Invert mode in real arithmetic.
+
+    Solve a generalized eigenproblem
+    @f$ \hat A\mathbf{x} = \lambda \hat M\mathbf{x} @f$ by reduction to
+    the canonical form with
+    @f$ \hat O = \Im[(\hat A - \sigma\hat M)^{-1} \hat M] @f$
+    and @f$ \hat B = \hat M @f$, where @f$ \hat M @f$ is
+    symmetric positive semi-definite.
+    @note In this computational mode, ARPACK-NG only finds
+    eigenvalues @f$ \mu @f$ of @f$ \hat O @f$ that are
+    related to @f$ \lambda @f$ via
+    @f[
+    \mu = \frac{1}{2i}\left[
+      \frac{1}{\lambda-\sigma} - \frac{1}{\lambda-\sigma^*}
+    \right].
+    @f]
+    Calling @ref eigenvalues() to retrieve @f$ \lambda @f$ after
+    a calculation in this mode will throw `std::runtime_error`.
+    Instead, one should call @ref eigenvalues(A &&) const "eigenvalues(A &&a)",
+    which computes @f$ \lambda @f$ as Rayleigh quotients
+    @f$ \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}{
+              \mathbf{x}^\dagger \hat M \mathbf{x}} @f$.
     */
   };
   // clang-format on
@@ -387,14 +442,14 @@ public:
   /// @endcode
   /// `op` is expected to act on the vector view `in` and write the result
   /// into the vector view `out`, `out = op*in`.
-  /// Given an instance `aw` of the arpack_worker< Complex, Backend > class,
+  /// Given an instance `as` of the arpack_solver< Asymmetric, Backend > class,
   /// `in` is also indirectly accessible as
   /// @code
-  /// aw.workspace_vector(aw.in_vector_n())
+  /// as.workspace_vector(as.in_vector_n())
   /// @endcode
   /// and `out` is accessible as
   /// @code
-  /// aw.workspace_vector(aw.out_vector_n())
+  /// as.workspace_vector(as.out_vector_n())
   /// @endcode
   ///
   /// @param b A callable object representing the linear operator
@@ -420,7 +475,7 @@ public:
   /// @throws ezarpack::maxiter_reached Maximum number of IRA iterations has
   /// been reached. All possible eigenvalues of @f$ \hat O @f$ have been found.
   /// @throws std::runtime_error Invalid input parameters and other errors
-  /// reported by ARPACK-NG routines `znaupd()` and `zneupd()`.
+  /// reported by ARPACK-NG routines `dnaupd()` and `dneupd()`.
   template<typename OP, typename B, typename ShiftsF = exact_shifts_f>
   void operator()(OP&& op,
                   B&& b,
@@ -431,19 +486,19 @@ public:
     prepare(params);
 
     iparam[0] = (std::is_same<ShiftsF, exact_shifts_f>::value ? 1 : 0);
-    iparam[6] = mode; // Modes 2-3, generalized eigenproblem
+    iparam[6] = mode; // Modes 2-4, generalized eigenproblem
 
-    const int workl_size = 3 * ncv * ncv + 5 * ncv;
-    complex_vector_t workl = storage::make_complex_vector(workl_size);
-    real_vector_t rwork = storage::make_real_vector(ncv);
+    const int workl_size = 3 * ncv * ncv + 6 * ncv;
+    real_vector_t workl = storage::make_real_vector(workl_size);
 
     rci_flag ido = Init;
     Bx_available_ = false;
     do {
-      f77::aupd(ido, "G", N, which, nev, tol, storage::get_data_ptr(resid), ncv,
-                storage::get_data_ptr(v), N, iparam, ipntr,
-                storage::get_data_ptr(workd), storage::get_data_ptr(workl),
-                workl_size, storage::get_data_ptr(rwork), info);
+      f77::aupd<false>(ido, "G", N, which, nev, tol,
+                       storage::get_data_ptr(resid), ncv,
+                       storage::get_data_ptr(v), N, iparam, ipntr,
+                       storage::get_data_ptr(workd),
+                       storage::get_data_ptr(workl), workl_size, info);
       switch(ido) {
         case ApplyOpInit: {
           int in_pos = in_vector_n() * N;
@@ -467,35 +522,40 @@ public:
             storage::make_vector_view(workd, out_pos, N));
         } break;
         case Shifts: {
+          int np = iparam[7];
           shifts_f(storage::make_vector_const_view(workl, ipntr[5] - 1, ncv),
+                   storage::make_vector_const_view(workl, ipntr[6] - 1, ncv),
                    storage::make_vector_const_view(workl, ipntr[7] - 1, ncv),
-                   storage::make_vector_view(workl, ipntr[13] - 1, iparam[7]));
+                   storage::make_vector_view(workl, ipntr[13] - 1, np),
+                   storage::make_vector_view(workl, ipntr[13] - 1 + np, np));
         } break;
         case Done: break;
         default: {
-          storage::destroy(rwork);
           storage::destroy(workl);
-          throw ARPACK_WORKER_ERROR("Reverse communication interface error");
+          throw ARPACK_SOLVER_ERROR("Reverse communication interface error");
         }
       }
     } while(ido != Done);
 
-    handle_aupd_error_codes(info, rwork, workl);
+    handle_aupd_error_codes(info, workl);
 
-    storage::resize(d, nev + 1);
-    complex_vector_t workev = storage::make_complex_vector(2 * ncv);
+    storage::resize(dr, nev + 1);
+    storage::resize(di, nev + 1);
+    if(mode != Inverse) {
+      sigmar = params.sigma.real();
+      sigmai = params.sigma.imag();
+    }
+    real_vector_t workev = storage::make_real_vector(3 * ncv);
 
     f77::eupd(rvec, &howmny, storage::get_data_ptr(select),
-              storage::get_data_ptr(d), storage::get_data_ptr(z),
-              (rvec && params.compute_vectors == params_t::Ritz ? N : 1),
-              params.sigma, storage::get_data_ptr(workev), "G", N, which, nev,
-              tol, storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v),
-              N, iparam, ipntr, storage::get_data_ptr(workd),
-              storage::get_data_ptr(workl), workl_size,
-              storage::get_data_ptr(rwork), info);
+              storage::get_data_ptr(dr), storage::get_data_ptr(di),
+              storage::get_data_ptr(z), (rvec ? N : 0), sigmar, sigmai,
+              storage::get_data_ptr(workev), "G", N, which, nev, tol,
+              storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v), N,
+              iparam, ipntr, storage::get_data_ptr(workd),
+              storage::get_data_ptr(workl), workl_size, info);
 
     storage::destroy(workev);
-    storage::destroy(rwork);
     storage::destroy(workl);
 
     handle_eupd_error_codes(info);
@@ -514,42 +574,66 @@ public:
   ///
   /// @param n Index of the workspace vector. Valid values are 0, 1 and 2.
   /// @throws std::runtime_error Invalid index value.
-  complex_vector_view_t workspace_vector(int n) const {
+  real_vector_view_t workspace_vector(int n) const {
     if(n < 0 || n > 2)
-      throw ARPACK_WORKER_ERROR(
+      throw ARPACK_SOLVER_ERROR(
           "Valid indices of workspace vectors are 0, 1 and 2 (got " +
           std::to_string(n) + ")");
     return storage::make_vector_view(workd, n * N, N);
   }
 
-  /// Returns a constant view of a list of @ref stats_t::n_converged converged
-  /// eigenvalues.
+  /// Returns a list of @ref stats_t::n_converged eigenvalues.
   ///
-  /// \note In the generalized eigenproblem @ref Mode "modes", this
-  /// method always returns eigenvalues of the **original** problem.
-  complex_vector_const_view_t eigenvalues() const {
-    return storage::make_vector_const_view(d, 0, iparam[4]);
+  /// Cannot be used in the @ref ShiftAndInvertReal and @ref ShiftAndInvertImag
+  /// modes.
+  /// @throws std::runtime_error The last IRAM run was performed in the
+  /// @ref ShiftAndInvertReal or @ref ShiftAndInvertImag mode.
+  complex_vector_t eigenvalues() const {
+    if(iparam[6] == ShiftAndInvertReal || iparam[6] == ShiftAndInvertImag)
+      throw ARPACK_SOLVER_ERROR("This method is invalid in ShiftAndInvertReal "
+                                "or ShiftAndInvertImag mode");
+    return storage::make_asymm_eigenvalues(dr, di, iparam[4]);
   }
 
-  /// Returns a constant view of a matrix, whose @ref stats_t::n_converged
-  /// columns are converged Ritz vectors (eigenvectors).
+  /// Returns a list of @ref stats_t::n_converged eigenvalues computed as
+  /// Rayleigh quotients
+  ///  @f$ \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}{
+  ///            \mathbf{x}^\dagger \hat M \mathbf{x}} @f$.
   ///
+  /// This method requires availability of the Ritz vectors @f$ \mathbf{x} @f$
+  /// (@ref params_t::compute_vectors has been set to @ref params_t::Ritz in the
+  /// last run) and is primarily intended for use in the @ref ShiftAndInvertReal
+  /// and @ref ShiftAndInvertImag modes.
+  /// @param a A callable object representing the linear operator
+  /// @f$ \hat A @f$.
   /// @throws std::runtime_error Ritz vectors have not been computed in the
   /// last IRAM run.
-  complex_matrix_const_view_t eigenvectors() const {
+  template<typename A> complex_vector_t eigenvalues(A&& a) const {
     if((!rvec) || (howmny != 'A'))
-      throw ARPACK_WORKER_ERROR(
+      throw ARPACK_SOLVER_ERROR(
           "Invalid method call: Ritz vectors have not been computed");
-    return storage::make_matrix_const_view(z, N, iparam[4]);
+    return storage::make_asymm_eigenvalues(z, di, std::forward<A>(a), N,
+                                           iparam[4]);
+  }
+
+  /// Returns a matrix, whose @ref stats_t::n_converged columns are converged
+  /// Ritz vectors (eigenvectors).
+  /// @throws std::runtime_error Ritz vectors have not been computed in the
+  /// last IRAM run.
+  complex_matrix_t eigenvectors() const {
+    if((!rvec) || (howmny != 'A'))
+      throw ARPACK_SOLVER_ERROR(
+          "Invalid method call: Ritz vectors have not been computed");
+    return storage::make_asymm_eigenvectors(z, di, N, iparam[4]);
   }
 
   /// Returns a view of a matrix, whose @ref params_t::ncv columns are
   /// Schur basis vectors.
   /// @throws std::runtime_error Schur vectors have not been computed in the
   /// last IRAM run.
-  complex_matrix_const_view_t schur_vectors() const {
+  real_matrix_const_view_t schur_vectors() const {
     if(!rvec)
-      throw ARPACK_WORKER_ERROR(
+      throw ARPACK_SOLVER_ERROR(
           "Invalid method call: Schur vectors have not been computed");
     return storage::make_matrix_const_view(v, N, iparam[4]);
   }
@@ -558,7 +642,7 @@ public:
   ///
   /// When @ref params_t::random_residual_vector is set to `false`, the view
   /// returned by this accessor can be used to set the initial residual vector.
-  complex_vector_view_t residual_vector() {
+  real_vector_view_t residual_vector() {
     return storage::make_vector_view(resid);
   }
 
@@ -568,7 +652,7 @@ public:
 
   /// Returns a constant view of the most recently computed vector
   /// @f$ \hat B\mathbf{x} @f$.
-  complex_vector_const_view_t Bx_vector() const {
+  real_vector_const_view_t Bx_vector() const {
     int n = ipntr[2] - 1;
     return storage::make_vector_const_view(workd, n, N);
   }
@@ -599,53 +683,51 @@ public:
   }
 
 private:
-  /// @internal Translate znaupd's INFO codes into C++ exceptions.
+  /// @internal Translate dnaupd's INFO codes into C++ exceptions.
   ///
-  /// @param info znaupd's INFO code.
-  void handle_aupd_error_codes(int info,
-                               real_vector_t& rwork,
-                               complex_vector_t& workl) {
+  /// @param info dnaupd's INFO code.
+  void handle_aupd_error_codes(int info, real_vector_t& workl) {
     if(info == 0) return;
 
-    storage::destroy(rwork);
     storage::destroy(workl);
     switch(info) {
       case 1: throw(maxiter_reached(iparam[2]));
       case 3: throw(ncv_insufficient(ncv));
       case -8:
-        throw ARPACK_WORKER_ERROR("Error in LAPACK eigenvalue calculation");
-      case -9: throw ARPACK_WORKER_ERROR("Starting vector is zero");
+        throw ARPACK_SOLVER_ERROR("Error in LAPACK eigenvalue calculation");
+      case -9: throw ARPACK_SOLVER_ERROR("Starting vector is zero");
       case -9999:
-        throw ARPACK_WORKER_ERROR(
+        throw ARPACK_SOLVER_ERROR(
             "Could not build an Arnoldi factorization. "
             "The size of the current Arnoldi factorization is " +
             std::to_string(iparam[4]));
       default:
-        throw ARPACK_WORKER_ERROR("znaupd failed with error code " +
+        throw ARPACK_SOLVER_ERROR("dnaupd failed with error code " +
                                   std::to_string(info));
     }
   }
 
-  /// @internal Translate zneupd's INFO codes into C++ exceptions.
+  /// @internal Translate dneupd's INFO codes into C++ exceptions.
   ///
-  /// @param info zneupd's INFO code.
+  /// @param info dneupd's INFO code.
   void handle_eupd_error_codes(int info) {
     switch(info) {
       case 0: return;
       case 1:
-        throw ARPACK_WORKER_ERROR(
-            "The Schur form computed by LAPACK routine csheqr "
-            "could not be reordered by LAPACK routine ztrsen");
+        throw ARPACK_SOLVER_ERROR(
+            "The Schur form computed by LAPACK routine dlahqr "
+            "could not be reordered by LAPACK routine dtrsen");
       case -8:
-        throw ARPACK_WORKER_ERROR("Error in LAPACK eigenvalue calculation");
+        throw ARPACK_SOLVER_ERROR(
+            "Error in LAPACK calculation of a real Schur form (dlahqr)");
       case -9:
-        throw ARPACK_WORKER_ERROR(
-            "Error in LAPACK eigenvectors calculation (ztrevc)");
+        throw ARPACK_SOLVER_ERROR(
+            "Error in LAPACK calculation of eigenvectors (dtrevc)");
       case -14:
-        throw ARPACK_WORKER_ERROR(
-            "znaupd did not find any eigenvalues to sufficient accuracy");
+        throw ARPACK_SOLVER_ERROR(
+            "dnaupd did not find any eigenvalues to sufficient accuracy");
       default:
-        throw ARPACK_WORKER_ERROR("zneupd failed with error code " +
+        throw ARPACK_SOLVER_ERROR("dneupd failed with error code " +
                                   std::to_string(info));
     }
   }

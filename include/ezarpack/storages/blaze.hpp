@@ -22,14 +22,15 @@ namespace ezarpack {
 
 /// Blaze storage backend tag.
 ///
-/// Passing this tag as the second template parameter of arpack_worker
-/// instructs it to use Blaze's vector/matrix/view types.
+/// Passing this tag as the second template parameter of
+/// @ref ezarpack::arpack_solver instructs it to use Blaze's vector/matrix/view
+/// types.
 struct blaze_storage {};
 
 /// Traits of the Blaze storage backend.
 ///
 /// Member typedefs of this structure describe types of objects that will be
-/// used by arpack_worker to store numerical arrays and expose their partial
+/// used by arpack_solver to store numerical arrays and expose their partial
 /// views. Structure's static member functions are called to control arrays'
 /// lifetime, create the partial views, and perform some data post-processing
 /// operations.
@@ -254,7 +255,7 @@ public:
   /// @{
 
   /// @brief Combines real and imaginary parts of eigenvalues computed by
-  /// ezarpack::arpack_worker<Asymmetric, Backend>.
+  /// ezarpack::arpack_solver<Asymmetric, Backend>.
   ///
   /// @param dr Real parts of the computed eigenvalues.
   /// @param di Imaginary parts of the computed eigenvalues.
@@ -273,7 +274,7 @@ public:
   /// @f$ \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}
   ///          {\mathbf{x}^\dagger \hat M \mathbf{x}} @f$.
   /// This function is called by
-  /// ezarpack::arpack_worker<Asymmetric, Backend>::eigenvalues(A &&) const.
+  /// ezarpack::arpack_solver<Asymmetric, Backend>::eigenvalues(A &&) const.
   ///
   /// @tparam A Type of the callable object representing the linear operator
   /// @f$ \hat A @f$.
@@ -322,7 +323,7 @@ public:
 
   /// @brief Extracts `nconv` complex Ritz vectors from ARPACK-NG's internal
   /// representation. This function is called by
-  /// ezarpack::arpack_worker<Asymmetric, Backend>::eigenvectors() const.
+  /// ezarpack::arpack_solver<Asymmetric, Backend>::eigenvectors() const.
   ///
   /// @param z Holds components of the Ritz vectors @f$ \mathbf{x} @f$ as
   /// a sequence of `nconv` length-`N` chunks. Meaning of each chunk depends on

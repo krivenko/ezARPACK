@@ -33,7 +33,7 @@ implementing two crucial features.
   - `xtensor >= 0.20.0 <https://github.com/xtensor-stack/xtensor>`_
 
   Upon choosing the right backend via a template parameter of the main
-  ``arpack_worker`` class, programmer can use callable objects to act on the
+  ``arpack_solver`` class, programmer can use callable objects to act on the
   vectors from their library of choice. The output eigenvalues and
   eigenvectors are accessible to the calling code in a compatible format too.
 
