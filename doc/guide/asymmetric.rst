@@ -24,7 +24,7 @@ defined by the matrix :math:`\hat B = \hat M`,
 
 .. math::
 
-  \langle \mathbf{x}, \mathbf{y} \rangle = \mathbf{x}^T \hat B \mathbf{y}.
+  \langle \mathbf{x}, \mathbf{y} \rangle = \mathbf{x}^\dagger \hat B \mathbf{y}.
 
 There are explicit relations between the original eigenvalues :math:`\lambda`
 and their transformed counterparts :math:`\mu`. :math:`\lambda` are either real
@@ -106,11 +106,11 @@ Typical steps needed to compute the eigenpairs are as follows.
 
     // params_t's constructor takes three arguments -- mandatory parameters
     // that need be set explicitly.
-    params_t params(10, eigenvalues_select, compute_vectors);
+    params_t params(nev, eigenvalues_select, compute_vectors);
 
   The following table contains an annotated list of all supported parameters.
 
-  .. _the list of parameters:
+  .. _list of parameters:
 
   .. list-table::
     :header-rows: 1
@@ -257,7 +257,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      :math:`\mu = \frac{1}{2}\left[\frac{1}{\lambda-\sigma} +
      \frac{1}{\lambda-\sigma^*}\right]`.
      The complex spectral shift :math:`\sigma` must be set in the parameters
-     structure, see `the list of parameters`_.
+     structure, see the `list of parameters`_.
 
      .. code:: cpp
 
@@ -284,7 +284,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      :math:`\mu = \frac{1}{2i}\left[\frac{1}{\lambda-\sigma} -
      \frac{1}{\lambda-\sigma^*}\right]`.
      The complex spectral shift :math:`\sigma` must be set in the parameters
-     structure, see `the list of parameters`_.
+     structure, see the `list of parameters`_.
 
      .. code:: cpp
 
@@ -384,8 +384,10 @@ Typical steps needed to compute the eigenpairs are as follows.
 
    .. math::
 
-     \lambda = \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}
-                    {\mathbf{x}^\dagger \hat M \mathbf{x}}.
+     \lambda = \frac{\langle \mathbf{x}, \hat A \mathbf{x} \rangle}
+                    {\langle \mathbf{x}, \mathbf{x} \rangle} =
+               \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}
+                    {\mathbf{x}^\dagger \hat B \mathbf{x}}.
 
 
    The corresponding C++ code reads
@@ -413,7 +415,7 @@ Typical steps needed to compute the eigenpairs are as follows.
    The eigenvectors are ``solver.nconv()`` columns of the complex matrix
    ``vecs``.
 
-9. Optionally request the Schur vectors, i.e. :math:`\hat M`-orthogonal basis
+9. Optionally request the Schur vectors, i.e. :math:`\hat B`-orthogonal basis
    vectors of the relevant vector subspace (``compute_vectors`` must be either
    ``params_t::Schur`` or ``params_t::Ritz``).
 

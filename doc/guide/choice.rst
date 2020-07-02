@@ -47,6 +47,11 @@ In many cases, there are multiple acceptable choices, and the 'Notes' column
 contains some more elaborate detail. Forms of the transformed matrices
 :math:`\hat O` and :math:`\hat B` for each mode are also shown.
 
+.. note::
+
+  There is no specialized solver for complex Hermitian matrices. This case is
+  covered by :ref:`ezarpack::arpack_solver\<Complex, Backend\> <complex>`.
+
 .. list-table::
   :header-rows: 1
   :align: left

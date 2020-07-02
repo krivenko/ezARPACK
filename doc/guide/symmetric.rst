@@ -94,11 +94,11 @@ Typical steps needed to compute the eigenpairs are as follows.
 
     // params_t's constructor takes three arguments -- mandatory parameters
     // that need be set explicitly.
-    params_t params(10, eigenvalues_select, compute_eigenvectors);
+    params_t params(nev, eigenvalues_select, compute_eigenvectors);
 
   The following table contains an annotated list of all supported parameters.
 
-  .. _the list of parameters:
+  .. _list of parameters:
 
   .. list-table::
     :header-rows: 1
@@ -247,7 +247,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      :math:`\hat O = (\hat A -\sigma \hat M)^{-1} \hat M`,
      :math:`\hat B = \hat M` and :math:`\lambda = 1/\mu + \sigma`.
      The real spectral shift :math:`\sigma` must be set in the parameters
-     structure, see `the list of parameters`_.
+     structure, see the `list of parameters`_.
 
      .. code:: cpp
 
@@ -280,7 +280,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      :math:`\hat O = (\hat A -\sigma \hat M)^{-1} \hat A`,
      :math:`\hat B = \hat A`, and :math:`\lambda = \sigma \frac{\mu}{\mu-1}`.
      The real spectral shift :math:`\sigma` must be set in the parameters
-     structure, see `the list of parameters`_.
+     structure, see the `list of parameters`_.
 
      .. code:: cpp
 
@@ -316,7 +316,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      :math:`\hat B = \hat M` and
      :math:`\lambda = \sigma\left(\frac{1+\mu}{1-\mu}\right)`.
      The real spectral shift :math:`\sigma` must be set in the parameters
-     structure, see `the list of parameters`_.
+     structure, see the `list of parameters`_.
 
      .. code:: cpp
 
