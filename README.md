@@ -6,8 +6,8 @@ https://travis-ci.org/krivenko/ezARPACK)
 
 ezARPACK is a C++11 wrapper around ARPACK-NG [1] that can be used in conjunction
 with a number of C++ vector/matrix algebra libraries. It allows for solving
-large scale eigenproblems for symmetric, asymmetric and complex matrices with
-a minimal amount of boilerplate code.
+large scale eigenproblems for real symmetric, non-symmetric and complex matrices
+with a minimal amount of boilerplate code.
 
 When used directly, ARPACK-NG does not force the user to stick to a predefined
 storage format of the matrix being diagonalized. Instead, on each iteration of
@@ -20,17 +20,16 @@ Another important feature of ezARPACK is its extensibility with respect to
 compatible matrix algebra libraries. Currently, it supports the following
 libraries (storage backends):
 
-* Raw memory buffers *(not recommended for general use)*;
 * Eigen 3 [2];
 * Blaze >= 3 [3];
 * Armadillo [4];
 * Boost uBLAS >= 1.58 [5];
 * TRIQS arrays >= 2.0 [6];
-* xtensor >= 0.20.0 [7].
+* xtensor >= 0.20.0 [7];
+* Raw memory buffers *(for unit testing, not recommended for general use)*.
 
-One can easily add support for her favorite vector/matrix framework by defining
-a new instance of the `storage_traits` structure (see, for example,
-`include/storages/eigen.hpp`).
+One can easily add support for their favorite vector/matrix framework by
+defining a new specialization of the `storage_traits` structure.
 
 Copyright (C) 2016-2020 Igor Krivenko <igor.s.krivenko @ gmail.com>
 
@@ -52,7 +51,7 @@ ezARPACK is usable without installation, just add
 `-L/<ARPACK-NG_installation_prefix>/lib -larpack` to the linker command line.
 
 You will need CMake version 3.1.0 or newer [8] to build examples/unit tests and
-to install ezARPACK such that it can be used from other CMake projects.
+to install ezARPACK so that it can be used from other CMake projects.
 
 Assuming that ezARPACK is to be installed in `<ezARPACK_installation_prefix>`,
 the installation normally proceeds in a few simple steps.
@@ -108,15 +107,18 @@ set(ezARPACK_DIR ${EZARPACK_ROOT}/lib/cmake)
 find_package(arpack-ng 3.6.0 REQUIRED)
 # Import ezARPACK targets
 find_package(ezARPACK 0.6 CONFIG REQUIRED)
+# Import Eigen (Blaze, Armadillo, etc) targets
+find_package(Eigen3 CONFIG)
 
 # Build an executable called 'test'
 add_executable(test test.cpp)
 
-# Make ezARPACK headers visible to the compiler and link to ARPACK-NG libraries.
+# Make ezARPACK and Eigen headers visible to the compiler
+# and link to ARPACK-NG libraries.
 #
 # NB: If no usable ARPACK-NG has been detected by ezARPACK during installation,
 # you will have to link 'test' to ARPACK-NG libraries explicitly.
-target_link_libraries(test ezarpack)
+target_link_libraries(test PRIVATE ezarpack Eigen3::Eigen)
 ```
 
 Here is how `test.cpp` could look like.
@@ -227,15 +229,10 @@ int main() {
 }
 ```
 
-Documentation
--------------
-
-For now, I only provide a few examples in the `example` directory.
-
 Known issues
 ------------
 
-* ezARPACK is still beta, use with caution!
+* ezARPACK is still in beta, use with caution!
 * Parallel ARPACK routines (PARPACK) are not supported.
 
 License
