@@ -110,7 +110,7 @@ Typical steps needed to compute the eigenpairs are as follows.
 
   The following table contains an annotated list of all supported parameters.
 
-  .. _list of parameters:
+  .. _asym_params:
 
   .. list-table::
     :header-rows: 1
@@ -122,11 +122,13 @@ Typical steps needed to compute the eigenpairs are as follows.
       - Default value
       - Description
 
+        .. _asym_n_eigenvalues:
     * - ``n_eigenvalues``
       - ``unsigned int``
       - n/a
       - Number of eigenvalues to compute.
 
+        .. _asym_eigenvalues_select:
     * - ``eigenvalues_select``
       - ``params_t::eigenvalues_select_t`` (enumeration)
       - n/a
@@ -138,11 +140,13 @@ Typical steps needed to compute the eigenpairs are as follows.
         ``LargestImag`` (eigenvalues of largest imaginary part) and
         ``SmallestImag`` (eigenvalues of smallest imaginary part).
 
+        .. _asym_ncv:
     * - ``ncv``
       - ``int``
       - min(2 * ``n_eigenvalues`` + 2, ``N``)
       - How many Arnoldi vectors to generate at each iteration.
 
+        .. _asym_compute_vectors:
     * - ``compute_vectors``
       - ``compute_vectors_t`` (enumeration)
       - n/a
@@ -151,22 +155,26 @@ Typical steps needed to compute the eigenpairs are as follows.
         vectors (eigenvectors) in addition to the Schur vectors, ``None`` --
         compute neither Schur nor Ritz vectors.
 
+        .. _asym_random_residual_vector:
     * - ``random_residual_vector``
       - ``bool``
       - ``true``
       - Use a randomly generated initial residual vector?
 
+        .. _asym_sigma:
     * - ``sigma``
       - ``std::complex<double>``
       - `0`
       - Complex eigenvalue shift :math:`\sigma` for spectral transformation
         modes.
 
+        .. _asym_tolerance:
     * - ``tolerance``
       - ``double``
       - Machine precision
       - Relative tolerance for Ritz value (eigenvalue) convergence.
 
+        .. _asym_max_iter:
     * - ``max_iter``
       - ``unsigned int``
       - ``INT_MAX``
@@ -174,7 +182,8 @@ Typical steps needed to compute the eigenpairs are as follows.
 
   .. note::
 
-    In the spectral transformation modes, values of ``eigenvalues_select`` refer
+    In the spectral transformation modes, values of
+    :ref:`eigenvalues_select <asym_eigenvalues_select>` refer
     to the spectrum of the **transformed** problem, not the original one. For
     instance, ``LargestMagnitude`` used in the shift-and-invert mode with a
     real shift :math:`\sigma` will pick eigenvalues :math:`\lambda` closest to
@@ -182,8 +191,10 @@ Typical steps needed to compute the eigenpairs are as follows.
     :math:`\mu = 1/(\lambda - \sigma)` that have the largest magnitude.
 
 5. Optionally set the initial vector for Arnoldi iteration if a better choice
-   than a random vector is known. ``random_residual_vector`` parameter must
-   be set to ``false`` for the changes made to the initial vector to take effect.
+   than a random vector is known.
+   :ref:`random_residual_vector <asym_random_residual_vector>` parameter must
+   be set to ``false`` for the changes made to the initial vector
+   to take effect.
 
    A view of the residual vector is accessible via method
    ``residual_vector()`` of the solver.
@@ -206,6 +217,8 @@ Typical steps needed to compute the eigenpairs are as follows.
    the computational modes and will be explained individually for each of
    them.
 
+     .. _asym_standard:
+
    - **Standard mode** (for standard eigenproblems, :math:`\hat M = \hat I`).
 
      .. code:: cpp
@@ -219,6 +232,8 @@ Typical steps needed to compute the eigenpairs are as follows.
        };
 
        solver(Aop, params);
+
+     .. _asym_Inverse:
 
    - **Regular inverse mode** (for positive-definite :math:`\hat M`).
 
@@ -249,6 +264,8 @@ Typical steps needed to compute the eigenpairs are as follows.
      the lambda-function so that it computes ``out`` as the solution of
      the linear system ``M * out = A * in`` using the precomputed factorization.
 
+     .. _asym_ShiftAndInvertReal:
+
    - **Complex Shift-and-Invert mode in real arithmetic I**.
 
      In this mode, the transformed eigenproblem is defined by
@@ -257,7 +274,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      :math:`\mu = \frac{1}{2}\left[\frac{1}{\lambda-\sigma} +
      \frac{1}{\lambda-\sigma^*}\right]`.
      The complex spectral shift :math:`\sigma` must be set in the parameters
-     structure, see the `list of parameters`_.
+     structure, see the :ref:`list of parameters <asym_sigma>`.
 
      .. code:: cpp
 
@@ -276,6 +293,8 @@ Typical steps needed to compute the eigenpairs are as follows.
 
        solver(op, Bop, solver_t::ShiftAndInvertReal, params);
 
+     .. _asym_ShiftAndInvertImag:
+
    - **Complex Shift-and-Invert mode in real arithmetic II**.
 
      In this mode, the transformed eigenproblem is defined by
@@ -284,7 +303,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      :math:`\mu = \frac{1}{2i}\left[\frac{1}{\lambda-\sigma} -
      \frac{1}{\lambda-\sigma^*}\right]`.
      The complex spectral shift :math:`\sigma` must be set in the parameters
-     structure, see the `list of parameters`_.
+     structure, see the :ref:`list of parameters <asym_sigma>`.
 
      .. code:: cpp
 
@@ -303,16 +322,19 @@ Typical steps needed to compute the eigenpairs are as follows.
 
        solver(op, Bop, solver_t::ShiftAndInvertImag, params);
 
-   Shift-and-Invert modes in real arithmetic (``ShiftAndInvertReal`` and
-   ``ShiftAndInvertImag``) make extraction of eigenvalues more involved (see
-   below) and should only be used when the amount of storage used by complex
-   arithmetic is prohibitive. Otherwise, the ``ShiftAndInvert`` mode of
+   Shift-and-Invert modes in real arithmetic
+   (:ref:`ShiftAndInvertReal <asym_ShiftAndInvertReal>` and
+   :ref:`ShiftAndInvertImag <asym_ShiftAndInvertImag>`) make extraction of
+   eigenvalues more involved (see below) and should only be used when the
+   amount of storage used by complex arithmetic is prohibitive.
+   Otherwise, the :ref:`ShiftAndInvert <complex_ShiftAndInvert>` mode of
    :ref:`ezarpack::arpack_solver\<Complex, Backend\> <complex>` is preferable.
    Both Shift-and-Invert modes work well close to the complex shift
    :math:`\sigma`. However, for large :math:`\lambda` operator :math:`\hat O`
    in the mode II dampens the eigenvalues more strongly than that from the
    mode I. If :math:`\sigma` is purely real, :math:`\hat O = 0` in the mode II
-   is ill-defined and ``ShiftAndInvertReal`` is the only choice.
+   is ill-defined and :ref:`ShiftAndInvertReal <asym_ShiftAndInvertReal>`
+   is the only choice.
 
    .. note::
 
@@ -337,7 +359,7 @@ Typical steps needed to compute the eigenpairs are as follows.
 
    In advanced usage scenarios, the implicit restarting procedure can be
    customized via an extra argument of ``solver``'s call operator.
-   See :ref:`restarting` for more details.
+   See ':ref:`restarting`' for more details.
 
    .. code:: cpp
 
@@ -356,31 +378,35 @@ Typical steps needed to compute the eigenpairs are as follows.
 
    ``solver_t::operator()`` can throw two special exception types.
 
-   - ``maxiter_reached`` - Maximum number of implicitly restarted Arnoldi
-     iterations has been reached.
-   - ``ncv_insufficient`` - No shifts could be applied during a cycle of
-     the Implicitly restarted Arnoldi iteration. Consider increasing the number
-     of Arnoldi vectors generated at each iteration (``ncv`` parameter).
+   - :ref:`ezarpack::maxiter_reached <maxiter_reached>` - Maximum number of
+     implicitly restarted Arnoldi iterations has been reached.
+   - :ref:`ezarpack::ncv_insufficient <ncv_insufficient>` - No shifts could be
+     applied during a cycle of the Implicitly restarted Arnoldi iteration.
+     Consider increasing the number of Arnoldi vectors generated at each
+     iteration (:ref:`ncv <asym_ncv>` parameter).
 
    The rest of possible problems reported by ARPACK-NG result in generic
-   ``std::runtime_error`` exceptions.
+   `std::runtime_error <https://en.cppreference.com/w/cpp/error/runtime_error>`_
+   exceptions.
 
-7. Request computed eigenvalues. In the standard and ``Inverse`` computational
-   modes this is done by simply calling
+7. Request computed eigenvalues. In the :ref:`standard <asym_standard>` and
+   :ref:`Inverse <asym_Inverse>` computational modes this is done by simply
+   calling
 
    .. code:: cpp
 
      auto lambda = solver.eigenvalues();
 
-   In the Shift-and-Invert modes, however, the situation is more tricky.
+   In the :ref:`Shift-and-Invert modes <asym_ShiftAndInvertReal>`, however,
+   the situation is more tricky.
    Original eigenvalues :math:`\lambda` have to be extracted as solutions
    of a quadratic equation with coefficients given in terms of computed
    eigenvalues :math:`\mu` and of the shift :math:`\sigma`.
    ARPACK-NG does not solve that quadratic equation, because figuring out
    which of the two roots is the actual eigenvalue is not always trivial.
    Instead, ezARPACK allows to derive :math:`\lambda` from computed eigenvectors
-   :math:`\mathbf{x}` (``compute_vectors`` parameter must be set to
-   ``params_t::Ritz``) as Rayleigh quotients
+   :math:`\mathbf{x}` (:ref:`compute_vectors <asym_compute_vectors>` parameter
+   must be set to ``params_t::Ritz``) as Rayleigh quotients
 
    .. math::
 
@@ -406,7 +432,8 @@ Typical steps needed to compute the eigenpairs are as follows.
    possible to extract ``solver.nconv()`` converged eigenpairs.
 
 8. Optionally request computed eigenvectors (provided the
-   ``compute_vectors`` parameter has been set to ``params_t::Ritz``):
+   :ref:`compute_vectors <asym_compute_vectors>` parameter has been set to
+   ``params_t::Ritz``):
 
    .. code:: cpp
 
@@ -416,7 +443,8 @@ Typical steps needed to compute the eigenpairs are as follows.
    ``vecs``.
 
 9. Optionally request the Schur vectors, i.e. :math:`\hat B`-orthogonal basis
-   vectors of the relevant vector subspace (``compute_vectors`` must be either
+   vectors of the relevant vector subspace
+   (:ref:`compute_vectors <asym_compute_vectors>` must be either
    ``params_t::Schur`` or ``params_t::Ritz``).
 
    .. code:: cpp

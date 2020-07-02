@@ -1,7 +1,6 @@
 TODO
 ====
 
-* Finish the user guide.
 * Create a documentation web-site and set up Travis deployment.
 * Clean up README.md and add a link (icon) to the docs.
 * Optional: publish the package via conan.

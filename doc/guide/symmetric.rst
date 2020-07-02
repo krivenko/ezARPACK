@@ -98,7 +98,7 @@ Typical steps needed to compute the eigenpairs are as follows.
 
   The following table contains an annotated list of all supported parameters.
 
-  .. _list of parameters:
+  .. _sym_params:
 
   .. list-table::
     :header-rows: 1
@@ -110,11 +110,13 @@ Typical steps needed to compute the eigenpairs are as follows.
       - Default value
       - Description
 
+        .. _sym_n_eigenvalues:
     * - ``n_eigenvalues``
       - ``unsigned int``
       - n/a
       - Number of eigenvalues to compute.
 
+        .. _sym_eigenvalues_select:
     * - ``eigenvalues_select``
       - ``params_t::eigenvalues_select_t`` (enumeration)
       - n/a
@@ -127,31 +129,37 @@ Typical steps needed to compute the eigenpairs are as follows.
         If ``n_eigenvalues`` is odd, compute one more from the high end
         than from the low end).
 
+        .. _sym_ncv:
     * - ``ncv``
       - ``int``
       - min(2 * ``n_eigenvalues`` + 2, ``N``)
       - How many Lanczos vectors to generate at each iteration.
 
+        .. _sym_compute_eigenvectors:
     * - ``compute_eigenvectors``
       - ``bool``
       - n/a
       - Request computation of eigenvectors in addition to the eigenvalues.
 
+        .. _sym_random_residual_vector:
     * - ``random_residual_vector``
       - ``bool``
       - ``true``
       - Use a randomly generated initial residual vector?
 
+        .. _sym_sigma:
     * - ``sigma``
       - ``double``
       - `0`
       - Real eigenvalue shift :math:`\sigma` for spectral transformation modes.
 
+        .. _sym_tolerance:
     * - ``tolerance``
       - ``double``
       - Machine precision
       - Relative tolerance for Ritz value (eigenvalue) convergence.
 
+        .. _sym_max_iter:
     * - ``max_iter``
       - ``unsigned int``
       - ``INT_MAX``
@@ -159,7 +167,8 @@ Typical steps needed to compute the eigenpairs are as follows.
 
   .. note::
 
-    In the spectral transformation modes, values of ``eigenvalues_select`` refer
+    In the spectral transformation modes, values of
+    :ref:`eigenvalues_select <sym_eigenvalues_select>` refer
     to the spectrum of the **transformed** problem, not the original one. For
     instance, ``LargestMagnitude`` used in the shift-and-invert mode will pick
     eigenvalues :math:`\lambda` closest to the shift :math:`\sigma`, because
@@ -167,8 +176,10 @@ Typical steps needed to compute the eigenpairs are as follows.
     that have the largest magnitude.
 
 5. Optionally set the initial vector for Lanczos iteration if a better choice
-   than a random vector is known. ``random_residual_vector`` parameter must
-   be set to ``false`` for the changes made to the initial vector to take effect.
+   than a random vector is known. The
+   :ref:`random_residual_vector <sym_random_residual_vector>` parameter must
+   be set to ``false`` for the changes made to the initial vector to take
+   effect.
 
    A view of the residual vector is accessible via method
    ``residual_vector()`` of the solver.
@@ -191,6 +202,8 @@ Typical steps needed to compute the eigenpairs are as follows.
    the computational modes and will be explained individually for each of
    them.
 
+     .. _sym_standard:
+
    - **Standard mode** (for standard eigenproblems, :math:`\hat M = \hat I`).
 
      .. code:: cpp
@@ -204,6 +217,8 @@ Typical steps needed to compute the eigenpairs are as follows.
        };
 
        solver(Aop, params);
+
+     .. _sym_Inverse:
 
    - **Regular inverse mode** (for symmetric positive-definite :math:`\hat M`).
 
@@ -240,6 +255,8 @@ Typical steps needed to compute the eigenpairs are as follows.
      ``out`` as the solution of the linear system ``M * out = in`` using the
      precomputed factorization.
 
+     .. _sym_ShiftAndInvert:
+
    - **Shift-and-Invert mode** (for symmetric positive semi-definite
      :math:`\hat M`).
 
@@ -247,7 +264,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      :math:`\hat O = (\hat A -\sigma \hat M)^{-1} \hat M`,
      :math:`\hat B = \hat M` and :math:`\lambda = 1/\mu + \sigma`.
      The real spectral shift :math:`\sigma` must be set in the parameters
-     structure, see the `list of parameters`_.
+     structure, see the :ref:`list of parameters <sym_sigma>`.
 
      .. code:: cpp
 
@@ -273,6 +290,8 @@ Typical steps needed to compute the eigenpairs are as follows.
      (2) computes ``out`` as the solution of the linear system
      ``(A - \sigma M) * out = M * in`` using the precomputed factorization.
 
+     .. _sym_Buckling:
+
    - **Buckling mode** (for symmetric positive semi-definite
      :math:`\hat A` and symmetric indefinite :math:`\hat M`).
 
@@ -280,7 +299,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      :math:`\hat O = (\hat A -\sigma \hat M)^{-1} \hat A`,
      :math:`\hat B = \hat A`, and :math:`\lambda = \sigma \frac{\mu}{\mu-1}`.
      The real spectral shift :math:`\sigma` must be set in the parameters
-     structure, see the `list of parameters`_.
+     structure, see the :ref:`list of parameters <sym_sigma>`.
 
      .. code:: cpp
 
@@ -308,6 +327,8 @@ Typical steps needed to compute the eigenpairs are as follows.
      system ``(A - \sigma M) * out = A * in`` using the precomputed
      factorization.
 
+     .. _sym_Cayley:
+
    - **Cayley mode** (for symmetric positive semi-definite
      :math:`\hat M`).
 
@@ -316,7 +337,7 @@ Typical steps needed to compute the eigenpairs are as follows.
      :math:`\hat B = \hat M` and
      :math:`\lambda = \sigma\left(\frac{1+\mu}{1-\mu}\right)`.
      The real spectral shift :math:`\sigma` must be set in the parameters
-     structure, see the `list of parameters`_.
+     structure, see the :ref:`list of parameters <sym_sigma>`.
 
      .. code:: cpp
 
@@ -367,7 +388,7 @@ Typical steps needed to compute the eigenpairs are as follows.
 
    In advanced usage scenarios, the implicit restarting procedure can be
    customized via an extra argument of ``solver``'s call operator.
-   See :ref:`restarting` for more details.
+   See ':ref:`restarting`' for more details.
 
    .. code:: cpp
 
@@ -384,17 +405,20 @@ Typical steps needed to compute the eigenpairs are as follows.
 
    ``solver_t::operator()`` can throw two special exception types.
 
-   - ``maxiter_reached`` - Maximum number of implicitly restarted Lanczos
-     iterations has been reached.
-   - ``ncv_insufficient`` - No shifts could be applied during a cycle of
-     the Implicitly restarted Lanczos iteration. Consider increasing the number
-     of Lanczos vectors generated at each iteration (``ncv`` parameter).
+   - :ref:`ezarpack::maxiter_reached <maxiter_reached>` - Maximum number of
+     implicitly restarted Lanczos iterations has been reached.
+   - :ref:`ezarpack::ncv_insufficient <ncv_insufficient>` - No shifts could be
+     applied during a cycle of the Implicitly restarted Lanczos iteration.
+     Consider increasing the number of Lanczos vectors generated at each
+     iteration (:ref:`ncv <sym_ncv>` parameter).
 
    The rest of possible problems reported by ARPACK-NG result in generic
-   ``std::runtime_error`` exceptions.
+   `std::runtime_error <https://en.cppreference.com/w/cpp/error/runtime_error>`_
+   exceptions.
 
 7. Request computed eigenvalues and eigenvectors (provided the
-   ``compute_eigenvectors`` parameter has been enabled).
+   :ref:`compute_eigenvectors <sym_compute_eigenvectors>` parameter has been
+   enabled).
 
    .. code:: cpp
 

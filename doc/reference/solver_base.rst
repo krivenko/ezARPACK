@@ -8,7 +8,10 @@ types.
 
 .. doxygenenum:: ezarpack::operator_kind
 .. doxygenclass:: ezarpack::arpack_solver
+
+.. _maxiter_reached:
 .. doxygenstruct:: ezarpack::maxiter_reached
   :members:
+.. _ncv_insufficient:
 .. doxygenstruct:: ezarpack::ncv_insufficient
   :members:
