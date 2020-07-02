@@ -74,6 +74,10 @@ int main() {
   // Run diagonalization!
   solver(matrix_op, params);
 
+  // Number of converged eigenvalues
+  std::cout << solver.nconv() << " out of " << params.n_eigenvalues
+            << " eigenvalues have converged" << std::endl;
+
   // Print found eigenvalues
   auto const& lambda = solver.eigenvalues();
   std::cout << "Eigenvalues (Ritz values):\n[";
@@ -109,9 +113,7 @@ int main() {
   // Print some computation statistics
   auto stats = solver.stats();
 
-  std::cout << "Number of Arnoldi update iterations: " << stats.n_iter
-            << std::endl;
-  std::cout << "Number of 'converged' Ritz values: " << stats.n_converged
+  std::cout << "Number of Lanczos update iterations: " << stats.n_iter
             << std::endl;
   std::cout << "Total number of OP*x operations: " << stats.n_op_x_operations
             << std::endl;

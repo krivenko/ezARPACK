@@ -522,16 +522,19 @@ public:
     return storage::make_vector_view(workd, n * N, N);
   }
 
-  /// Returns a constant view of a list of @ref stats_t::n_converged converged
+  /// Number of "converged" Ritz values.
+  unsigned int nconv() const { return iparam[4]; }
+
+  /// Returns a constant view of a list of @ref nconv() converged
   /// eigenvalues.
   ///
   /// \note In the generalized eigenproblem @ref Mode "modes", this
   /// method always returns eigenvalues of the **original** problem.
   complex_vector_const_view_t eigenvalues() const {
-    return storage::make_vector_const_view(d, 0, iparam[4]);
+    return storage::make_vector_const_view(d, 0, nconv());
   }
 
-  /// Returns a constant view of a matrix, whose @ref stats_t::n_converged
+  /// Returns a constant view of a matrix, whose @ref nconv()
   /// columns are converged Ritz vectors (eigenvectors).
   ///
   /// @throws std::runtime_error Ritz vectors have not been computed in the
@@ -540,7 +543,7 @@ public:
     if((!rvec) || (howmny != 'A'))
       throw ARPACK_SOLVER_ERROR(
           "Invalid method call: Ritz vectors have not been computed");
-    return storage::make_matrix_const_view(z, N, iparam[4]);
+    return storage::make_matrix_const_view(z, N, nconv());
   }
 
   /// Returns a view of a matrix, whose @ref params_t::ncv columns are
@@ -551,7 +554,7 @@ public:
     if(!rvec)
       throw ARPACK_SOLVER_ERROR(
           "Invalid method call: Schur vectors have not been computed");
-    return storage::make_matrix_const_view(v, N, iparam[4]);
+    return storage::make_matrix_const_view(v, N, nconv());
   }
 
   /// Returns a view of the current residual vector.
@@ -577,8 +580,6 @@ public:
   struct stats_t {
     /// Number of Arnoldi update iterations taken.
     unsigned int n_iter;
-    /// Number of "converged" Ritz values.
-    unsigned int n_converged;
     /// Total number of @f$ \hat O \mathbf{x} @f$ operations.
     unsigned int n_op_x_operations;
     /// Total number of @f$ \hat B \mathbf{x} @f$ operations.
@@ -591,7 +592,6 @@ public:
   stats_t stats() const {
     stats_t s;
     s.n_iter = iparam[2];
-    s.n_converged = iparam[4];
     s.n_op_x_operations = iparam[8];
     s.n_b_x_operations = iparam[9];
     s.n_reorth_steps = iparam[10];
@@ -619,7 +619,7 @@ private:
         throw ARPACK_SOLVER_ERROR(
             "Could not build an Arnoldi factorization. "
             "The size of the current Arnoldi factorization is " +
-            std::to_string(iparam[4]));
+            std::to_string(nconv()));
       default:
         throw ARPACK_SOLVER_ERROR("znaupd failed with error code " +
                                   std::to_string(info));

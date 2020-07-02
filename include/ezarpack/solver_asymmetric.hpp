@@ -582,7 +582,10 @@ public:
     return storage::make_vector_view(workd, n * N, N);
   }
 
-  /// Returns a list of @ref stats_t::n_converged eigenvalues.
+  /// Number of "converged" Ritz values.
+  unsigned int nconv() const { return iparam[4]; }
+
+  /// Returns a list of @ref nconv() eigenvalues.
   ///
   /// Cannot be used in the @ref ShiftAndInvertReal and @ref ShiftAndInvertImag
   /// modes.
@@ -592,10 +595,10 @@ public:
     if(iparam[6] == ShiftAndInvertReal || iparam[6] == ShiftAndInvertImag)
       throw ARPACK_SOLVER_ERROR("This method is invalid in ShiftAndInvertReal "
                                 "or ShiftAndInvertImag mode");
-    return storage::make_asymm_eigenvalues(dr, di, iparam[4]);
+    return storage::make_asymm_eigenvalues(dr, di, nconv());
   }
 
-  /// Returns a list of @ref stats_t::n_converged eigenvalues computed as
+  /// Returns a list of @ref nconv() eigenvalues computed as
   /// Rayleigh quotients
   ///  @f$ \frac{\mathbf{x}^\dagger \hat A \mathbf{x}}{
   ///            \mathbf{x}^\dagger \hat M \mathbf{x}} @f$.
@@ -613,10 +616,10 @@ public:
       throw ARPACK_SOLVER_ERROR(
           "Invalid method call: Ritz vectors have not been computed");
     return storage::make_asymm_eigenvalues(z, di, std::forward<A>(a), N,
-                                           iparam[4]);
+                                           nconv());
   }
 
-  /// Returns a matrix, whose @ref stats_t::n_converged columns are converged
+  /// Returns a matrix, whose @ref nconv() columns are converged
   /// Ritz vectors (eigenvectors).
   /// @throws std::runtime_error Ritz vectors have not been computed in the
   /// last IRAM run.
@@ -624,7 +627,7 @@ public:
     if((!rvec) || (howmny != 'A'))
       throw ARPACK_SOLVER_ERROR(
           "Invalid method call: Ritz vectors have not been computed");
-    return storage::make_asymm_eigenvectors(z, di, N, iparam[4]);
+    return storage::make_asymm_eigenvectors(z, di, N, nconv());
   }
 
   /// Returns a view of a matrix, whose @ref params_t::ncv columns are
@@ -635,7 +638,7 @@ public:
     if(!rvec)
       throw ARPACK_SOLVER_ERROR(
           "Invalid method call: Schur vectors have not been computed");
-    return storage::make_matrix_const_view(v, N, iparam[4]);
+    return storage::make_matrix_const_view(v, N, nconv());
   }
 
   /// Returns a view of the current residual vector.
@@ -661,8 +664,6 @@ public:
   struct stats_t {
     /// Number of Arnoldi update iterations taken.
     unsigned int n_iter;
-    /// Number of "converged" Ritz values.
-    unsigned int n_converged;
     /// Total number of @f$ \hat O \mathbf{x} @f$ operations.
     unsigned int n_op_x_operations;
     /// Total number of @f$ \hat B \mathbf{x} @f$ operations.
@@ -675,7 +676,6 @@ public:
   stats_t stats() const {
     stats_t s;
     s.n_iter = iparam[2];
-    s.n_converged = iparam[4];
     s.n_op_x_operations = iparam[8];
     s.n_b_x_operations = iparam[9];
     s.n_reorth_steps = iparam[10];
@@ -700,7 +700,7 @@ private:
         throw ARPACK_SOLVER_ERROR(
             "Could not build an Arnoldi factorization. "
             "The size of the current Arnoldi factorization is " +
-            std::to_string(iparam[4]));
+            std::to_string(nconv()));
       default:
         throw ARPACK_SOLVER_ERROR("dnaupd failed with error code " +
                                   std::to_string(info));

@@ -402,6 +402,9 @@ Typical steps needed to compute the eigenpairs are as follows.
      auto vecs = solver.eigenvectors();
 
    The eigenvectors are columns of the real matrix view ``vecs``.
+   If the diagonalization run has ended prematurely (for example, when
+   the maximum number of iterations has been reached), then it is still
+   possible to extract ``solver.nconv()`` converged eigenpairs.
 
 8. Optionally request statistics about the completed run.
 
@@ -412,16 +415,10 @@ Typical steps needed to compute the eigenpairs are as follows.
 
      std::cout << "Number of Lanczos update iterations: " << stats.n_iter
                << std::endl;
-     std::cout << "Number of 'converged' Ritz values: " << stats.n_converged
-               << std::endl;
      std::cout << "Total number of O*x operations: " << stats.n_op_x_operations
                << std::endl;
      std::cout << "Total number of B*x operations: " << stats.n_b_x_operations
                << std::endl;
      std::cout << "Total number of steps of re-orthogonalization: "
                << stats.n_reorth_steps << std::endl;
-
-   If a diagonalization run has ended prematurely (for example, when the maximum
-   number of iterations has been reached), then it may still be possible to
-   extract the first ``stats.n_converged`` eigenpairs.
 

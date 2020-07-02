@@ -525,21 +525,23 @@ public:
     return storage::make_vector_view(workd, n * N, N);
   }
 
-  /// Returns a constant view of a list of @ref stats_t::n_converged
+  /// Number of "converged" Ritz values.
+  unsigned int nconv() const { return iparam[4]; }
+
+  /// Returns a constant view of a list of @ref nconv()
   /// eigenvalues.
   ///
   /// The values in the list are in ascending order.
   /// \note In the generalized eigenproblem @ref Mode "modes", this
   /// method always returns eigenvalues of the **original** problem.
   real_vector_const_view_t eigenvalues() const {
-    return storage::make_vector_const_view(d, 0, iparam[4]);
+    return storage::make_vector_const_view(d, 0, nconv());
   }
 
   /// Returns a constant view of a matrix, whose
-  /// @ref stats_t::n_converged columns are converged Lanczos basis
-  /// vectors (eigenvectors).
+  /// @ref nconv() columns are converged Lanczos basis vectors (eigenvectors).
   real_matrix_const_view_t eigenvectors() const {
-    return storage::make_matrix_const_view(v, N, iparam[4]);
+    return storage::make_matrix_const_view(v, N, nconv());
   }
 
   /// Returns a view of the current residual vector.
@@ -565,8 +567,6 @@ public:
   struct stats_t {
     /// Number of Arnoldi update iterations taken.
     unsigned int n_iter;
-    /// Number of "converged" Ritz values.
-    unsigned int n_converged;
     /// Total number of @f$ \hat O \mathbf{x} @f$ operations.
     unsigned int n_op_x_operations;
     /// Total number of @f$ \hat B \mathbf{x} @f$ operations.
@@ -579,7 +579,6 @@ public:
   stats_t stats() const {
     stats_t s;
     s.n_iter = iparam[2];
-    s.n_converged = iparam[4];
     s.n_op_x_operations = iparam[8];
     s.n_b_x_operations = iparam[9];
     s.n_reorth_steps = iparam[10];
@@ -608,7 +607,7 @@ private:
         throw ARPACK_SOLVER_ERROR(
             "Could not build an Arnoldi factorization. "
             "The size of the current Arnoldi factorization is " +
-            std::to_string(iparam[4]));
+            std::to_string(nconv()));
       default:
         throw ARPACK_SOLVER_ERROR("dsaupd failed with error code " +
                                   std::to_string(info));

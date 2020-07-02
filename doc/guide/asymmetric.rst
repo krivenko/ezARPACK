@@ -399,6 +399,10 @@ Typical steps needed to compute the eigenpairs are as follows.
 
      auto lambda = solver.eigenvalues(Aop);
 
+   If the diagonalization run has ended prematurely (for example, when
+   the maximum number of iterations has been reached), then it is still
+   possible to extract ``solver.nconv()`` converged eigenpairs.
+
 8. Optionally request computed eigenvectors (provided the
    ``compute_vectors`` parameter has been set to ``params_t::Ritz``):
 
@@ -406,7 +410,8 @@ Typical steps needed to compute the eigenpairs are as follows.
 
      auto vecs = solver.eigenvectors();
 
-   The eigenvectors are columns of the complex matrix ``vecs``.
+   The eigenvectors are ``solver.nconv()`` columns of the complex matrix
+   ``vecs``.
 
 9. Optionally request the Schur vectors, i.e. :math:`\hat M`-orthogonal basis
    vectors of the relevant vector subspace (``compute_vectors`` must be either
@@ -416,7 +421,8 @@ Typical steps needed to compute the eigenpairs are as follows.
 
      auto basis = solver.schur_vectors();
 
-   The basis vectors are columns of the real matrix view ``basis``.
+   The basis vectors are ``solver.nconv()`` columns of the real matrix
+   view ``basis``.
 
 10. Optionally request statistics about the completed run.
 
@@ -427,15 +433,9 @@ Typical steps needed to compute the eigenpairs are as follows.
 
      std::cout << "Number of Arnoldi update iterations: " << stats.n_iter
                << std::endl;
-     std::cout << "Number of 'converged' Ritz values: " << stats.n_converged
-               << std::endl;
      std::cout << "Total number of O*x operations: " << stats.n_op_x_operations
                << std::endl;
      std::cout << "Total number of B*x operations: " << stats.n_b_x_operations
                << std::endl;
      std::cout << "Total number of steps of re-orthogonalization: "
                << stats.n_reorth_steps << std::endl;
-
-   If a diagonalization run has ended prematurely (for example, when the maximum
-   number of iterations has been reached), then it may still be possible to
-   extract the first ``stats.n_converged`` eigenpairs and Schur vectors.

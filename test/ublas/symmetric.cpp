@@ -59,6 +59,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(Aop, params);
+      CHECK(ar.nconv() == nev);
       check_eigenvectors(ar, A);
       check_basis_vectors(ar);
     }
@@ -82,6 +83,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(op, Bop, solver_t::Inverse, params);
+      CHECK(ar.nconv() == nev);
       check_eigenvectors(ar, A, M);
       check_basis_vectors(ar, M);
     }
@@ -106,6 +108,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(op, Bop, solver_t::ShiftAndInvert, params);
+      CHECK(ar.nconv() == nev);
       check_eigenvectors(ar, A, M);
       check_basis_vectors(ar, M);
     }
@@ -131,6 +134,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
       params.ncv = 30;
       set_init_residual_vector(ar);
       ar(op, Bop, solver_t::Buckling, params);
+      CHECK(ar.nconv() == nev);
       check_eigenvectors(ar, M, A);
       check_basis_vectors(ar, M);
     }
@@ -155,6 +159,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(op, Bop, solver_t::Cayley, params);
+      CHECK(ar.nconv() == nev);
       check_eigenvectors(ar, A, M);
       check_basis_vectors(ar, M);
     }
@@ -191,6 +196,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(Aop, params, shifts_f);
+      CHECK(ar.nconv() == nev);
       check_eigenvectors(ar, A);
       check_basis_vectors(ar);
     }
@@ -213,6 +219,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(op, Bop, solver_t::ShiftAndInvert, params, shifts_f);
+      CHECK(ar.nconv() == nev);
       check_eigenvectors(ar, A, M);
       check_basis_vectors(ar, M);
     }

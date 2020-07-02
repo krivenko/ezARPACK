@@ -94,6 +94,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(Aop, params);
+      CHECK(ar.nconv() == nev);
       check_eigenvectors(ar, A.get(), N, nev);
       check_basis_vectors(ar, N, nev);
     }
@@ -119,6 +120,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(op, Bop, solver_t::Inverse, params);
+      CHECK(ar.nconv() == nev);
       check_eigenvectors(ar, A.get(), M.get(), N, nev);
       check_basis_vectors(ar, M.get(), N, nev);
     }
@@ -159,6 +161,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
       params.sigma = sigma;
       set_init_residual_vector(ar);
       ar(op, Bop, solver_t::ShiftAndInvertReal, params);
+      CHECK(ar.nconv() == nev);
       check_eigenvectors_shift_and_invert(ar, A.get(), M.get(), N, nev);
       check_basis_vectors(ar, M.get(), N, nev);
     }
@@ -199,6 +202,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
       params.sigma = sigma;
       set_init_residual_vector(ar);
       ar(op, Bop, solver_t::ShiftAndInvertImag, params);
+      CHECK(ar.nconv() == nev);
       check_eigenvectors_shift_and_invert(ar, A.get(), M.get(), N, nev);
       check_basis_vectors(ar, M.get(), N, nev);
     }
