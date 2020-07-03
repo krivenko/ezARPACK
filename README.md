@@ -3,6 +3,8 @@ ezARPACK
 
 [![Build Status](https://travis-ci.org/krivenko/ezARPACK.svg?branch=master)](
 https://travis-ci.org/krivenko/ezARPACK)
+[![Documentation](https://img.shields.io/badge/docs-documentation-red)](
+https://krivenko.github.io/ezARPACK)
 
 ezARPACK is a C++11 wrapper around ARPACK-NG [1] that can be used in conjunction
 with a number of C++ vector/matrix algebra libraries. It allows for solving
