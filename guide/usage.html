@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to use ezARPACK in your project &#8212; ezARPACK 0.8 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="What algorithm variant is right for your problem?" href="choice.html" />
+    <link rel="prev" title="User guide" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="choice.html" title="What algorithm variant is right for your problem?"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="User guide"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">User guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">How to use ezARPACK in your project</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="how-to-use-ezarpack-in-your-project">
+<span id="usage"></span><h1>How to use ezARPACK in your project<a class="headerlink" href="#how-to-use-ezarpack-in-your-project" title="Permalink to this headline">¶</a></h1>
+<p>Depending on what build system your C++ project is based on, there are
+two ways to use ezARPACK. Either way, you would need</p>
+<ul class="simple">
+<li><p>A reasonably recent compiler supporting C++11 or newer;</p></li>
+<li><p>a working <a class="reference external" href="https://github.com/opencollab/arpack-ng">ARPACK-NG installation</a> (version 3.6.0 or newer).</p></li>
+<li><p>One of supported <a class="reference internal" href="backends.html#backends"><span class="std std-ref">linear algebra libraries</span></a> (unless
+you are going to <a class="reference internal" href="new_backend.html#new-backend"><span class="std std-ref">add support for a new one</span></a>).</p></li>
+</ul>
+<div class="section" id="makefiles-no-build-system">
+<h2>Makefiles/no build system<a class="headerlink" href="#makefiles-no-build-system" title="Permalink to this headline">¶</a></h2>
+<p>Assume that <code class="docutils literal notranslate"><span class="pre">&lt;EZARPACK_ROOT&gt;</span></code> is either a directory with unpacked
+ezARPACK sources or its <a class="reference internal" href="../installation.html#installation"><span class="std std-ref">installation</span></a>
+directory. A compiler command line for your program can be as simple as</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++ -O3 -I&lt;EZARPACK_ROOT&gt;/include -L&lt;ARPACK_NG_ROOT&gt;/lib -larpack <span class="se">\</span>
+    -o myprog myprog.cpp
+</pre></div>
+</div>
+<p>(similar for <code class="docutils literal notranslate"><span class="pre">clang++</span></code> and other compilers). More <code class="docutils literal notranslate"><span class="pre">-I</span></code> flags might be needed
+if the linear algebra framework you choose is not visible to the compiler by
+default.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When linking to the static version of ARPACK-NG library
+(<code class="docutils literal notranslate"><span class="pre">libarpack.a</span></code>), you might also need to explicitly link your code to
+a BLAS/LAPACK implementation. A common symptom of this problem is
+undefined references to <code class="docutils literal notranslate"><span class="pre">dgemv_</span></code> and other LAPACK subroutines.</p>
+</div>
+</div>
+<div class="section" id="cmake">
+<h2>CMake<a class="headerlink" href="#cmake" title="Permalink to this headline">¶</a></h2>
+<p>Here is a minimal example of a root <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> script for your
+project.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.1.0</span> <span class="s">FATAL_ERROR</span><span class="p">)</span>
+
+<span class="nb">project</span><span class="p">(</span><span class="s">myproject</span> <span class="s">LANGUAGES</span> <span class="s">CXX</span><span class="p">)</span>
+
+<span class="c"># EZARPACK_ROOT is the installation prefix of ezARPACK</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">ezARPACK_DIR</span> <span class="o">${</span><span class="nv">EZARPACK_ROOT</span><span class="o">}</span><span class="s">/lib/cmake</span><span class="p">)</span>
+
+<span class="c"># Import ezARPACK target</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">ezARPACK</span> <span class="s">0.9</span> <span class="s">CONFIG</span> <span class="s">REQUIRED</span><span class="p">)</span>
+
+<span class="c"># Import Eigen (Blaze, Armadillo, etc) targets</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">Eigen3</span> <span class="s">CONFIG</span><span class="p">)</span>
+
+<span class="c"># Build an executable called &#39;myprog&#39;</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">myprog</span> <span class="s">myprog.cpp</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span> <span class="s">PRIVATE</span> <span class="s">ezarpack</span> <span class="s">Eigen3::Eigen</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If no usable ARPACK-NG lib has been detected by ezARPACK during
+installation, you will have to link <code class="docutils literal notranslate"><span class="pre">myprog</span></code> to a ARPACK-NG library
+explicitly.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># ARPACK_NG_ROOT is the installation prefix of ARPACK-NG</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">arpack-ng_DIR</span> <span class="o">${</span><span class="nv">ARPACK_NG_ROOT</span><span class="o">}</span><span class="s">/lib/cmake</span><span class="p">)</span>
+
+<span class="c"># Import ARPACK-NG targets</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">arpack-ng</span> <span class="s">3.6.0</span> <span class="s">REQUIRED</span><span class="p">)</span>
+
+<span class="c"># Link to ARPACK-NG</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span> <span class="o">${</span><span class="nv">arpack_ng_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">How to use ezARPACK in your project</a><ul>
+<li><a class="reference internal" href="#makefiles-no-build-system">Makefiles/no build system</a></li>
+<li><a class="reference internal" href="#cmake">CMake</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">User guide</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="choice.html"
+                        title="next chapter">What algorithm variant is right for your problem?</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/guide/usage.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="choice.html" title="What algorithm variant is right for your problem?"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="User guide"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >User guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">How to use ezARPACK in your project</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Igor Krivenko.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,602 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ezarpack/storages/ublas.hpp - Boost uBLAS &#8212; ezARPACK 0.8 documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ezarpack/storages/triqs.hpp - TRIQS arrays" href="triqs.html" />
+    <link rel="prev" title="ezarpack/storages/armadillo.hpp - Armadillo" href="armadillo.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="triqs.html" title="ezarpack/storages/triqs.hpp - TRIQS arrays"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="armadillo.html" title="ezarpack/storages/armadillo.hpp - Armadillo"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Data storage backends</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/ublas.hpp</span></code> - Boost uBLAS</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ezarpack-storages-ublas-hpp-boost-ublas">
+<span id="refublas"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/ublas.hpp</span></code> - Boost uBLAS<a class="headerlink" href="#ezarpack-storages-ublas-hpp-boost-ublas" title="Permalink to this headline">¶</a></h1>
+<p>This storage backend depends on
+<a class="reference external" href="https://www.boost.org/doc/libs/1_58_0/libs/numeric/ublas/doc">Boost</a> version
+1.58 or newer.</p>
+<dl class="cpp struct">
+<dt id="_CPPv4N8ezarpack13ublas_storageE">
+<span id="_CPPv3N8ezarpack13ublas_storageE"></span><span id="_CPPv2N8ezarpack13ublas_storageE"></span><span id="ezarpack::ublas_storage"></span><span class="target" id="structezarpack_1_1ublas__storage"></span><em class="property">struct </em><code class="sig-name descname">ublas_storage</code><a class="headerlink" href="#_CPPv4N8ezarpack13ublas_storageE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>uBLAS storage backend tag.</p>
+<p>Passing this tag as the second template parameter of <a class="reference internal" href="../solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref">ezarpack::arpack_solver</span></a> instructs it to use vector/matrix/view types from Boost uBLAS. </p>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt id="_CPPv4IEN8ezarpack14storage_traitsI13ublas_storageEE">
+<span id="_CPPv3IEN8ezarpack14storage_traitsI13ublas_storageEE"></span><span id="_CPPv2IEN8ezarpack14storage_traitsI13ublas_storageEE"></span>template&lt;&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4"></span><em class="property">struct </em><code class="sig-prename descclassname">ezarpack<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">storage_traits</code>&lt;<a class="reference internal" href="#_CPPv4N8ezarpack13ublas_storageE" title="ezarpack::ublas_storage">ublas_storage</a>&gt;<a class="headerlink" href="#_CPPv4IEN8ezarpack14storage_traitsI13ublas_storageEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Traits of the uBLAS storage backend.</p>
+<p>Member typedefs of this structure describe types of objects that will be used by <a class="reference internal" href="../solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref">arpack_solver</span></a> to store numerical arrays and expose their partial views. Structure’s static member functions are called to control arrays’ lifetime, create the partial views, and perform some data post-processing operations. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Private implementation details</p>
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6vectorE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE6vectorE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE6vectorE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a18b54cfc1b25e3789abb88ab27835292"></span><em class="property">using </em><code class="sig-name descname">vector</code> = boost::numeric::ublas::vector&lt;T&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6vectorE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>uBLAS vector. <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6matrixE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE6matrixE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE6matrixE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1ab59b813da753e06b2aa29bc92c9df060"></span><em class="property">using </em><code class="sig-name descname">matrix</code> = boost::numeric::ublas::matrix&lt;T, boost::numeric::ublas::column_major&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6matrixE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>uBLAS column-major matrix. <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE11vector_viewE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE11vector_viewE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE11vector_viewE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a594d0f27cb83c9ef39e6f5e15237099d"></span><em class="property">using </em><code class="sig-name descname">vector_view</code> = boost::numeric::ublas::vector_range&lt;<a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6vectorE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector">vector</a>&lt;T&gt;&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE11vector_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Vector view type (vector range). <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE17vector_const_viewE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE17vector_const_viewE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE17vector_const_viewE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1ad308654c19cda93e443313bb3ae824cc"></span><em class="property">using </em><code class="sig-name descname">vector_const_view</code> = <em class="property">const</em> boost::numeric::ublas::vector_range&lt;<em class="property">const</em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6vectorE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector">vector</a>&lt;T&gt;&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE17vector_const_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constant vector view type (vector range of a constant vector). <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE11matrix_viewE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE11matrix_viewE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE11matrix_viewE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1adbf4d32eec9f34afb8f81e337aa2b51a"></span><em class="property">using </em><code class="sig-name descname">matrix_view</code> = boost::numeric::ublas::matrix_range&lt;<a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6matrixE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::matrix">matrix</a>&lt;T&gt;&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE11matrix_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Matrix view type (matrix range). <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE17matrix_const_viewE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE17matrix_const_viewE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE17matrix_const_viewE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a39c7b6cf9545081d2bfcf3b331d9bdbd"></span><em class="property">using </em><code class="sig-name descname">matrix_const_view</code> = <em class="property">const</em> boost::numeric::ublas::matrix_range&lt;<em class="property">const</em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6matrixE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::matrix">matrix</a>&lt;T&gt;&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE17matrix_const_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constant matrix view type (matrix range of a constant matrix). <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Vector and matrix storage types</p>
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16real_vector_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE16real_vector_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE16real_vector_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a94bb7e6f421e9aa60f6abbb7ff957b0f"></span><em class="property">using </em><code class="sig-name descname">real_vector_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6vectorE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector">vector</a>&lt;double&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16real_vector_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>One-dimensional container owning a contiguous array of <code class="docutils literal notranslate"><span class="pre">double</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE19complex_vector_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE19complex_vector_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE19complex_vector_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a1fa3eb910f14f272730190e871838231"></span><em class="property">using </em><code class="sig-name descname">complex_vector_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6vectorE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector">vector</a>&lt;<a class="reference internal" href="../arpack.html#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE19complex_vector_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>One-dimensional container owning a contiguous array of <code class="docutils literal notranslate"><span class="pre">std::complex&lt;double&gt;</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE15int_vector_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE15int_vector_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE15int_vector_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1abb0cedff0813b216becbeece986aa29f"></span><em class="property">using </em><code class="sig-name descname">int_vector_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6vectorE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector">vector</a>&lt;int&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE15int_vector_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>One-dimensional container owning a contiguous array of <code class="docutils literal notranslate"><span class="pre">int</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16real_matrix_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE16real_matrix_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE16real_matrix_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a119ce3411bbd3f81302429502c75ccc5"></span><em class="property">using </em><code class="sig-name descname">real_matrix_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6matrixE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::matrix">matrix</a>&lt;double&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16real_matrix_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Two-dimensional container owning a contiguous array of <code class="docutils literal notranslate"><span class="pre">double</span></code>. The storage order is column-major. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE19complex_matrix_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE19complex_matrix_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE19complex_matrix_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a16cbf1c6be5aa4335f0120c24ab94420"></span><em class="property">using </em><code class="sig-name descname">complex_matrix_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6matrixE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::matrix">matrix</a>&lt;<a class="reference internal" href="../arpack.html#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE19complex_matrix_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Two-dimensional container owning a contiguous array of <code class="docutils literal notranslate"><span class="pre">std::complex&lt;double&gt;</span></code>. The storage order is column-major. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">View types</p>
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE21real_vector_view_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE21real_vector_view_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE21real_vector_view_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a584d2d4ec36f02d2fc7353e41daa17d5"></span><em class="property">using </em><code class="sig-name descname">real_vector_view_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE11vector_viewE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector_view">vector_view</a>&lt;double&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE21real_vector_view_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Contiguous partial view of a real vector (subvector). </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE27real_vector_const_view_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE27real_vector_const_view_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE27real_vector_const_view_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a51747db09e6c5ab95ed8a2cdb1cabb0b"></span><em class="property">using </em><code class="sig-name descname">real_vector_const_view_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE17vector_const_viewE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector_const_view">vector_const_view</a>&lt;double&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE27real_vector_const_view_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Contiguous partial constant view of a real vector (subvector). </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE24complex_vector_view_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE24complex_vector_view_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE24complex_vector_view_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a54dfd16d4edd08f60e8a52608b113b1d"></span><em class="property">using </em><code class="sig-name descname">complex_vector_view_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE11vector_viewE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector_view">vector_view</a>&lt;<a class="reference internal" href="../arpack.html#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE24complex_vector_view_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Contiguous partial view of a complex vector (subvector). </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE30complex_vector_const_view_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE30complex_vector_const_view_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE30complex_vector_const_view_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1aa5d082124f69648e125e19ef748486a6"></span><em class="property">using </em><code class="sig-name descname">complex_vector_const_view_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE17vector_const_viewE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector_const_view">vector_const_view</a>&lt;<a class="reference internal" href="../arpack.html#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE30complex_vector_const_view_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Contiguous partial constant view of a complex vector (subvector). </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE27real_matrix_const_view_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE27real_matrix_const_view_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE27real_matrix_const_view_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1aa1c80eb0979e4f9f538963ab54ed105a"></span><em class="property">using </em><code class="sig-name descname">real_matrix_const_view_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE17matrix_const_viewE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::matrix_const_view">matrix_const_view</a>&lt;double&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE27real_matrix_const_view_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Contiguous partial constant view of a real matrix (matrix block) that includes a number of the leftmost columns. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE30complex_matrix_const_view_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE30complex_matrix_const_view_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE30complex_matrix_const_view_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1ac0894c0943b3d62ca89188671f7f133a"></span><em class="property">using </em><code class="sig-name descname">complex_matrix_const_view_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE17matrix_const_viewE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::matrix_const_view">matrix_const_view</a>&lt;<a class="reference internal" href="../arpack.html#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE30complex_matrix_const_view_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Contiguous partial constant view of a complex matrix (matrix block) that includes a number of the leftmost columns. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Functions to create/destroy/resize data containers</p>
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16make_real_vectorEi">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE16make_real_vectorEi"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE16make_real_vectorEi"></span><span id="ezarpack::storage_traits:ublas_storage:::make_real_vector__i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a2c9e94793152237e20322e15cb0b9f67"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::real_vector_type">real_vector_type</a> <code class="sig-name descname">make_real_vector</code><span class="sig-paren">(</span>int <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16make_real_vectorEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs a real vector container. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Constructed vector. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the vector. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE19make_complex_vectorEi">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE19make_complex_vectorEi"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE19make_complex_vectorEi"></span><span id="ezarpack::storage_traits:ublas_storage:::make_complex_vector__i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a61f014611b182f5a8140492d90a28acf"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE19complex_vector_typeE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::complex_vector_type">complex_vector_type</a> <code class="sig-name descname">make_complex_vector</code><span class="sig-paren">(</span>int <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE19make_complex_vectorEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs a complex vector container. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Constructed vector. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the vector. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE15make_int_vectorEi">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE15make_int_vectorEi"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE15make_int_vectorEi"></span><span id="ezarpack::storage_traits:ublas_storage:::make_int_vector__i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a60d76593ebc784daa38a9d88d66ff345"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE15int_vector_typeE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::int_vector_type">int_vector_type</a> <code class="sig-name descname">make_int_vector</code><span class="sig-paren">(</span>int <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE15make_int_vectorEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs an integer vector container. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Constructed vector. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the vector. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16make_real_matrixEii">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE16make_real_matrixEii"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE16make_real_matrixEii"></span><span id="ezarpack::storage_traits:ublas_storage:::make_real_matrix__i.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1adc5fe9085ace5fdf338d815089b2a642"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16real_matrix_typeE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::real_matrix_type">real_matrix_type</a> <code class="sig-name descname">make_real_matrix</code><span class="sig-paren">(</span>int <em>rows</em>, int <em>cols</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16make_real_matrixEii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs a real matrix container. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Constructed matrix. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rows</span></code>: Number of matrix rows. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cols</span></code>: Number of matrix columns. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE19make_complex_matrixEii">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE19make_complex_matrixEii"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE19make_complex_matrixEii"></span><span id="ezarpack::storage_traits:ublas_storage:::make_complex_matrix__i.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1adfd62ddc7025d5644a9484fdf5ea9e90"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE19complex_matrix_typeE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::complex_matrix_type">complex_matrix_type</a> <code class="sig-name descname">make_complex_matrix</code><span class="sig-paren">(</span>int <em>rows</em>, int <em>cols</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE19make_complex_matrixEii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs a complex matrix container. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Constructed matrix. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rows</span></code>: Number of matrix rows. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cols</span></code>: Number of matrix columns. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE7destroyEvR6vectorI1TE">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13ublas_storageE7destroyER6vectorI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13ublas_storageE7destroyER6vectorI1TE"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1af4348333c9bb2610b5db9c42ef4d5741"></span>void <code class="sig-name descname">destroy</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6vectorE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector">vector</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE7destroyEvR6vectorI1TE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::destroy::T">T</a>&gt;&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE7destroyEvR6vectorI1TE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Destroys a vector container. This function is, in fact, no-op, because memory owned by a uBLAS vector will automatically be freed by its destructor. <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE7destroyEvR6matrixI1TE">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13ublas_storageE7destroyER6matrixI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13ublas_storageE7destroyER6matrixI1TE"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a3cea85faf2c1e849604f737f98793f68"></span>void <code class="sig-name descname">destroy</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6matrixE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::matrix">matrix</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE7destroyEvR6matrixI1TE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::destroy::T">T</a>&gt;&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE7destroyEvR6matrixI1TE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Destroys a matrix container. This function is, in fact, no-op, because memory owned by a uBLAS matrix will automatically be freed by its destructor. <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE6resizeEvR6vectorI1TEi">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13ublas_storageE6resizeER6vectorI1TEi"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13ublas_storageE6resizeER6vectorI1TEi"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a058b50dcd9f59003ea45adc316df2f47"></span>void <code class="sig-name descname">resize</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6vectorE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector">vector</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE6resizeEvR6vectorI1TEi" title="ezarpack::storage_traits&lt;ublas_storage&gt;::resize::T">T</a>&gt; &amp;<em>v</em>, int <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE6resizeEvR6vectorI1TEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Resizes a vector container. <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector container to resize. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: New vector size. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE6resizeEvR6matrixI1TEii">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13ublas_storageE6resizeER6matrixI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13ublas_storageE6resizeER6matrixI1TEii"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1ad5fe812fbc60840540ed35eaed6875fc"></span>void <code class="sig-name descname">resize</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6matrixE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::matrix">matrix</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE6resizeEvR6matrixI1TEii" title="ezarpack::storage_traits&lt;ublas_storage&gt;::resize::T">T</a>&gt; &amp;<em>m</em>, int <em>rows</em>, int <em>cols</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE6resizeEvR6matrixI1TEii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Resizes a matrix container. <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code>: Matrix container to resize. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rows</span></code>: New number of matrix rows. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cols</span></code>: New number of matrix columns. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE12get_data_ptrEP1TR6vectorI1TE">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13ublas_storageE12get_data_ptrER6vectorI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13ublas_storageE12get_data_ptrER6vectorI1TE"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1af0bec9daf711e4a295dd2a803f5713dd"></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE12get_data_ptrEP1TR6vectorI1TE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::get_data_ptr::T">T</a> *<code class="sig-name descname">get_data_ptr</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6vectorE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector">vector</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE12get_data_ptrEP1TR6vectorI1TE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::get_data_ptr::T">T</a>&gt; &amp;<em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE12get_data_ptrEP1TR6vectorI1TE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns a pointer to the underlying data array owned by a vector. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Pointer to the data array. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector to retrieve the data pointer from. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE12get_data_ptrEP1TR6matrixI1TE">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13ublas_storageE12get_data_ptrER6matrixI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13ublas_storageE12get_data_ptrER6matrixI1TE"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a30389acf2dabf466a84502e6ee949f0b"></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE12get_data_ptrEP1TR6matrixI1TE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::get_data_ptr::T">T</a> *<code class="sig-name descname">get_data_ptr</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6matrixE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::matrix">matrix</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE12get_data_ptrEP1TR6matrixI1TE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::get_data_ptr::T">T</a>&gt; &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE12get_data_ptrEP1TR6matrixI1TE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns a pointer to the underlying data array owned by a matrix. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Pointer to the data array. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code>: Matrix to retrieve the data pointer from. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Functions to create vector/matrix views</p>
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13ublas_storageE16make_vector_viewER6vectorI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13ublas_storageE16make_vector_viewER6vectorI1TE"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a30d94f74f347f225676633a9d32072fd"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE11vector_viewE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector_view">vector_view</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::make_vector_view::T">T</a>&gt; <code class="sig-name descname">make_vector_view</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6vectorE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector">vector</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::make_vector_view::T">T</a>&gt; &amp;<em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Makes a complete view of a vector. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>View of the full vector. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector container to make a view of. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13ublas_storageE16make_vector_viewER6vectorI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13ublas_storageE16make_vector_viewER6vectorI1TEii"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a0b36a8e183b4dce914a5d540716b0bb6"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE11vector_viewE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector_view">vector_view</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii" title="ezarpack::storage_traits&lt;ublas_storage&gt;::make_vector_view::T">T</a>&gt; <code class="sig-name descname">make_vector_view</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6vectorE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector">vector</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii" title="ezarpack::storage_traits&lt;ublas_storage&gt;::make_vector_view::T">T</a>&gt; &amp;<em>v</em>, int <em>start</em>, int <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Makes a partial view of a vector. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Subvector view. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector container to make a view of. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start</span></code>: Position of the starting element in the partial view. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of elements in the partial view. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13ublas_storageE22make_vector_const_viewERK6vectorI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13ublas_storageE22make_vector_const_viewERK6vectorI1TEii"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a138c1843fa07c890677f3d281ca583fc"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE17vector_const_viewE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector_const_view">vector_const_view</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii" title="ezarpack::storage_traits&lt;ublas_storage&gt;::make_vector_const_view::T">T</a>&gt; <code class="sig-name descname">make_vector_const_view</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6vectorE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::vector">vector</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii" title="ezarpack::storage_traits&lt;ublas_storage&gt;::make_vector_const_view::T">T</a>&gt; <em class="property">const</em> &amp;<em>v</em>, int <em>start</em>, int <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Makes a constant partial view of a vector. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Subvector view. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector container to make a view of. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start</span></code>: Position of the starting element in the partial view. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of elements in the partial view. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13ublas_storageE22make_matrix_const_viewERK6matrixI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13ublas_storageE22make_matrix_const_viewERK6matrixI1TE"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1ae5b3f6e07ccdf8ae701c84e0ab1ebe7a"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE17matrix_const_viewE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::matrix_const_view">matrix_const_view</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::make_matrix_const_view::T">T</a>&gt; <code class="sig-name descname">make_matrix_const_view</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6matrixE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::matrix">matrix</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::make_matrix_const_view::T">T</a>&gt; <em class="property">const</em> &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Makes a complete view of a matrix. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>View of the full matrix. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code>: Matrix container to make a view of. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13ublas_storageE22make_matrix_const_viewERK6matrixI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13ublas_storageE22make_matrix_const_viewERK6matrixI1TEii"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a169263a0148a6494e38779814605f8b7"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE17matrix_const_viewE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::matrix_const_view">matrix_const_view</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii" title="ezarpack::storage_traits&lt;ublas_storage&gt;::make_matrix_const_view::T">T</a>&gt; <code class="sig-name descname">make_matrix_const_view</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE6matrixE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::matrix">matrix</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii" title="ezarpack::storage_traits&lt;ublas_storage&gt;::make_matrix_const_view::T">T</a>&gt; <em class="property">const</em> &amp;<em>m</em>, int <em>rows</em>, int <em>cols</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Makes a constant partial view of a matrix including a number of the leftmost columns. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Submatrix view. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code>: Matrix container to make a view of. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rows</span></code>: <strong>[ignored]</strong> Number of matrix rows. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cols</span></code>: Number of the leftmost columns in the resulting view. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Post-processing required to compute eigenvalues/eigenvectors</p>
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei"></span><span id="ezarpack::storage_traits:ublas_storage:::make_asymm_eigenvalues__real_vector_typeCR.real_vector_typeCR.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a3e5b580f7e8b6eeb58ec5cee4d18f330"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE19complex_vector_typeE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::complex_vector_type">complex_vector_type</a> <code class="sig-name descname">make_asymm_eigenvalues</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::real_vector_type">real_vector_type</a> <em class="property">const</em> &amp;<em>dr</em>, <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::real_vector_type">real_vector_type</a> <em class="property">const</em> &amp;<em>di</em>, int <em>nconv</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Combines real and imaginary parts of eigenvalues computed by <a class="reference internal" href="../solver_asymmetric.html#classezarpack_1_1arpack__solver_3_01Asymmetric_00_01Backend_01_4"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;</span></a>. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Complex vector of eigenvalues. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dr</span></code>: Real parts of the computed eigenvalues. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">di</span></code>: Imaginary parts of the computed eigenvalues. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nconv</span></code>: Number of the converged eigenvalues. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_asymm_eigenvaluesE19complex_vector_typeRK16real_vector_typeRK16real_vector_typeRR1Aii">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13ublas_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typeRR1Aii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13ublas_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typeRR1Aii"></span>template&lt;typename <code class="sig-name descname">A</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1ae537eb66b0180aabe12eff050737cd98"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE19complex_vector_typeE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::complex_vector_type">complex_vector_type</a> <code class="sig-name descname">make_asymm_eigenvalues</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::real_vector_type">real_vector_type</a> <em class="property">const</em> &amp;<em>z</em>, <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::real_vector_type">real_vector_type</a> <em class="property">const</em> &amp;<em>di</em>, <a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_asymm_eigenvaluesE19complex_vector_typeRK16real_vector_typeRK16real_vector_typeRR1Aii" title="ezarpack::storage_traits&lt;ublas_storage&gt;::make_asymm_eigenvalues::A">A</a> &amp;&amp;<em>a</em>, int <em>N</em>, int <em>nconv</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13ublas_storageE22make_asymm_eigenvaluesE19complex_vector_typeRK16real_vector_typeRK16real_vector_typeRR1Aii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Given a linear operator <span class="math notranslate nohighlight">\( \hat A \)</span>, computes <code class="docutils literal notranslate"><span class="pre">nconv</span></code> eigenvalues from Ritz vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> as Rayleigh quotients <span class="math notranslate nohighlight">\( \frac{\mathbf{x}^\dagger \hat A \mathbf{x}} {\mathbf{x}^\dagger \hat M \mathbf{x}} \)</span>. This function is called by <a class="reference internal" href="../solver_asymmetric.html#classezarpack_1_1arpack__solver_3_01Asymmetric_00_01Backend_01_4_1a21418268f530673f2ad39d1e89a142f5"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;::eigenvalues(A &amp;&amp;) const</span></a>. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Complex vector of eigenvalues. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code>: Type of the callable object representing the linear operator <span class="math notranslate nohighlight">\( \hat A \)</span>. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>: Holds components of the Ritz vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> as a sequence of <code class="docutils literal notranslate"><span class="pre">nconv</span></code> length-<code class="docutils literal notranslate"><span class="pre">N</span></code> chunks. Meaning of each chunk depends on the corresponding component of <code class="docutils literal notranslate"><span class="pre">di</span></code>, see below. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">di</span></code>: If <code class="docutils literal notranslate"><span class="pre">di[i]</span></code> is zero, then the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th chunk of <code class="docutils literal notranslate"><span class="pre">z</span></code> contains a real Ritz vector. Otherwise, <code class="docutils literal notranslate"><span class="pre">di[i]</span> <span class="pre">=</span> <span class="pre">-di[i+1]</span> <span class="pre">!=</span> <span class="pre">0</span></code>, in which case the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th and <code class="docutils literal notranslate"><span class="pre">(i+1)</span></code>-th chunks of <code class="docutils literal notranslate"><span class="pre">z</span></code> are real and imaginary parts of a complex Ritz vector respectively. Every real Ritz vector corresponds to one real eigenvalue, while every complex vector gives rise to a complex conjugate pair of eigenvalues. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Callable object representing <span class="math notranslate nohighlight">\( \hat A \)</span>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N</span></code>: Dimension of the eigenproblem. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nconv</span></code>: Number of the converged Ritz vectors. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13ublas_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii">
+<span id="_CPPv3N8ezarpack14storage_traitsI13ublas_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii"></span><span id="_CPPv2N8ezarpack14storage_traitsI13ublas_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii"></span><span id="ezarpack::storage_traits:ublas_storage:::make_asymm_eigenvectors__real_vector_typeCR.real_vector_typeCR.i.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01ublas__storage_01_4_1a9ed5707254c1b93cf4f33ed2fc2ef2ef"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE19complex_matrix_typeE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::complex_matrix_type">complex_matrix_type</a> <code class="sig-name descname">make_asymm_eigenvectors</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::real_vector_type">real_vector_type</a> <em class="property">const</em> &amp;<em>z</em>, <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;ublas_storage&gt;::real_vector_type">real_vector_type</a> <em class="property">const</em> &amp;<em>di</em>, int <em>N</em>, int <em>nconv</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13ublas_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Extracts <code class="docutils literal notranslate"><span class="pre">nconv</span></code> complex Ritz vectors from ARPACK-NG’s internal representation. This function is called by <a class="reference internal" href="../solver_asymmetric.html#classezarpack_1_1arpack__solver_3_01Asymmetric_00_01Backend_01_4_1a7271edb1ffde24e37bb3a0c959cfbd1c"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;::eigenvectors() const</span></a>. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Complex matrix, whose columns are Ritz vectors (eigenvectors). </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>: Holds components of the Ritz vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> as a sequence of <code class="docutils literal notranslate"><span class="pre">nconv</span></code> length-<code class="docutils literal notranslate"><span class="pre">N</span></code> chunks. Meaning of each chunk depends on the corresponding component of <code class="docutils literal notranslate"><span class="pre">di</span></code>, see below. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">di</span></code>: If <code class="docutils literal notranslate"><span class="pre">di[i]</span></code> is zero, then the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th chunk of <code class="docutils literal notranslate"><span class="pre">z</span></code> contains a real Ritz vector. Otherwise, <code class="docutils literal notranslate"><span class="pre">di[i]</span> <span class="pre">=</span> <span class="pre">-di[i+1]</span> <span class="pre">!=</span> <span class="pre">0</span></code>, in which case the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th and <code class="docutils literal notranslate"><span class="pre">(i+1)</span></code>-th chunks of <code class="docutils literal notranslate"><span class="pre">z</span></code> are real and imaginary parts of a complex Ritz vector respectively. Every such pair corresponds to a complex conjugate pair of Ritz vectors, so that the total amount of vectors stored in <code class="docutils literal notranslate"><span class="pre">z</span></code> is exactly <code class="docutils literal notranslate"><span class="pre">nconv</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N</span></code>: Dimension of the eigenproblem. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nconv</span></code>: Number of the converged Ritz vectors. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="armadillo.html"
+                        title="previous chapter"><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/armadillo.hpp</span></code> - Armadillo</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="triqs.html"
+                        title="next chapter"><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/triqs.hpp</span></code> - TRIQS arrays</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/reference/storages/ublas.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="triqs.html" title="ezarpack/storages/triqs.hpp - TRIQS arrays"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="armadillo.html" title="ezarpack/storages/armadillo.hpp - Armadillo"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Data storage backends</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/ublas.hpp</span></code> - Boost uBLAS</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Igor Krivenko.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

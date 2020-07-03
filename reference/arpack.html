@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ezarpack/arpack.hpp - Low level C++ interface to FORTRAN routines of ARPACK &#8212; ezARPACK 0.8 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ezarpack/version.hpp - ezARPACK version information" href="version.html" />
+    <link rel="prev" title="ezarpack/arpack_solver.hpp - include all arpack_solver specializations" href="arpack_solver.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="version.html" title="ezarpack/version.hpp - ezARPACK version information"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="arpack_solver.html" title="ezarpack/arpack_solver.hpp - include all arpack_solver specializations"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="aux.html" accesskey="U">Auxiliary headers</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack.hpp</span></code> - Low level C++ interface to FORTRAN routines of ARPACK</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ezarpack-arpack-hpp-low-level-c-interface-to-fortran-routines-of-arpack">
+<span id="refarpack"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack.hpp</span></code> - Low level C++ interface to FORTRAN routines of ARPACK<a class="headerlink" href="#ezarpack-arpack-hpp-low-level-c-interface-to-fortran-routines-of-arpack" title="Permalink to this headline">¶</a></h1>
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack8dcomplexE">
+<span id="_CPPv3N8ezarpack8dcomplexE"></span><span id="_CPPv2N8ezarpack8dcomplexE"></span><span class="target" id="arpack_8hpp_1a1eee671c3a6a11d87a76664b11e321bb"></span><em class="property">using </em><code class="sig-prename descclassname">ezarpack<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">dcomplex</code> = std::complex&lt;double&gt;<a class="headerlink" href="#_CPPv4N8ezarpack8dcomplexE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The double precision complex type used in ARPACK-NG calls. </p>
+</dd></dl>
+
+<dl class="cpp enum">
+<dt id="_CPPv4N8ezarpack8rci_flagE">
+<span id="_CPPv3N8ezarpack8rci_flagE"></span><span id="_CPPv2N8ezarpack8rci_flagE"></span><span class="target" id="arpack_8hpp_1a0787739705d83a5b26dc54d7d0beb78b"></span><em class="property">enum </em><code class="sig-prename descclassname">ezarpack<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">rci_flag</code><a class="headerlink" href="#_CPPv4N8ezarpack8rci_flagE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The ARPACK-NG <code class="docutils literal notranslate"><span class="pre">*aupd_()</span></code> procedures set the output argument <code class="docutils literal notranslate"><span class="pre">IDO</span></code> to one of these values to signal the state of the Reverse Communication Interface (RCI). </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack8rci_flag4InitE">
+<span id="_CPPv3N8ezarpack8rci_flag4InitE"></span><span id="_CPPv2N8ezarpack8rci_flag4InitE"></span><span class="target" id="arpack_8hpp_1a0787739705d83a5b26dc54d7d0beb78ba864229d2cc1605068b6c69459e40087a"></span><em class="property">enumerator </em><code class="sig-name descname">Init</code> = 0<a class="headerlink" href="#_CPPv4N8ezarpack8rci_flag4InitE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>First call of the RCI. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack8rci_flag11ApplyOpInitE">
+<span id="_CPPv3N8ezarpack8rci_flag11ApplyOpInitE"></span><span id="_CPPv2N8ezarpack8rci_flag11ApplyOpInitE"></span><span class="target" id="arpack_8hpp_1a0787739705d83a5b26dc54d7d0beb78bacbcdfe9660da8e648ef6295ecaa5d0a9"></span><em class="property">enumerator </em><code class="sig-name descname">ApplyOpInit</code> = -1<a class="headerlink" href="#_CPPv4N8ezarpack8rci_flag11ApplyOpInitE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute <span class="math notranslate nohighlight">\( \mathbf{y} = \hat O \mathbf{x} \)</span> (force the starting vector into the range of <span class="math notranslate nohighlight">\( \hat O \)</span>). </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack8rci_flag7ApplyOpE">
+<span id="_CPPv3N8ezarpack8rci_flag7ApplyOpE"></span><span id="_CPPv2N8ezarpack8rci_flag7ApplyOpE"></span><span class="target" id="arpack_8hpp_1a0787739705d83a5b26dc54d7d0beb78bacd58487fd1b1f53c38e6be18d1ae85f1"></span><em class="property">enumerator </em><code class="sig-name descname">ApplyOp</code> = 1<a class="headerlink" href="#_CPPv4N8ezarpack8rci_flag7ApplyOpE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute <span class="math notranslate nohighlight">\( \mathbf{y} = \hat O \mathbf{x} \)</span>. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack8rci_flag6ApplyBE">
+<span id="_CPPv3N8ezarpack8rci_flag6ApplyBE"></span><span id="_CPPv2N8ezarpack8rci_flag6ApplyBE"></span><span class="target" id="arpack_8hpp_1a0787739705d83a5b26dc54d7d0beb78ba7b69b63638e9cea8955fb2135570dbb9"></span><em class="property">enumerator </em><code class="sig-name descname">ApplyB</code> = 2<a class="headerlink" href="#_CPPv4N8ezarpack8rci_flag6ApplyBE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute <span class="math notranslate nohighlight">\( \mathbf{y} = \hat B \mathbf{x} \)</span>. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack8rci_flag6ShiftsE">
+<span id="_CPPv3N8ezarpack8rci_flag6ShiftsE"></span><span id="_CPPv2N8ezarpack8rci_flag6ShiftsE"></span><span class="target" id="arpack_8hpp_1a0787739705d83a5b26dc54d7d0beb78ba7a96eb4df686cf176d815e4121878a26"></span><em class="property">enumerator </em><code class="sig-name descname">Shifts</code> = 3<a class="headerlink" href="#_CPPv4N8ezarpack8rci_flag6ShiftsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute and return the shifts for the Implicitly Restarted Lanczos/Arnoldi Method. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack8rci_flag4DoneE">
+<span id="_CPPv3N8ezarpack8rci_flag4DoneE"></span><span id="_CPPv2N8ezarpack8rci_flag4DoneE"></span><span class="target" id="arpack_8hpp_1a0787739705d83a5b26dc54d7d0beb78ba6528b54995d5b19227302cac0c69816e"></span><em class="property">enumerator </em><code class="sig-name descname">Done</code> = 99<a class="headerlink" href="#_CPPv4N8ezarpack8rci_flag4DoneE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Done with the iterations. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack3f77E">
+<span id="_CPPv3N8ezarpack3f77E"></span><span id="_CPPv2N8ezarpack3f77E"></span><span id="ezarpack::f77"></span><span class="target" id="namespaceezarpack_1_1f77"></span><em class="property">namespace </em><code class="sig-prename descclassname">ezarpack<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">f77</code><a class="headerlink" href="#_CPPv4N8ezarpack3f77E" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">External ARPACK-NG subroutines *aupd()</p>
+<p>These subroutines implement the Reverse Communication Interface for the Implicitly Restarted Arnoldi Iteration. </p>
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack3f777dsaupd_ERiPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi">
+<span id="_CPPv3N8ezarpack3f777dsaupd_ERiPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"></span><span id="_CPPv2N8ezarpack3f777dsaupd_ERiPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"></span><span id="ezarpack::f77::dsaupd___iR.cCP.iCR.cCP.iCR.doubleCR.doubleA.iCR.doubleA.iCR.iA.iA.doubleA.doubleA.iCR.iR"></span><span class="target" id="arpack_8hpp_1a0be60c021404ba112e95ad9e3925b224"></span>void <code class="sig-name descname">dsaupd_</code><span class="sig-paren">(</span>int&amp;, <em class="property">const</em> char*, <em class="property">const</em> int&amp;, <em class="property">const</em> char*, <em class="property">const</em> int&amp;, <em class="property">const</em> double&amp;, double[], <em class="property">const</em> int&amp;, double[], <em class="property">const</em> int&amp;, int[], int[], double[], double[], <em class="property">const</em> int&amp;, int&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3f777dsaupd_ERiPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>External ARPACK-NG FORTRAN 77 subroutine <a class="reference external" href="https://github.com/opencollab/arpack-ng/blob/master/SRC/dsaupd.f">dsaupd()</a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack3f777dnaupd_ERiPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi">
+<span id="_CPPv3N8ezarpack3f777dnaupd_ERiPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"></span><span id="_CPPv2N8ezarpack3f777dnaupd_ERiPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"></span><span id="ezarpack::f77::dnaupd___iR.cCP.iCR.cCP.iCR.doubleCR.doubleA.iCR.doubleA.iCR.iA.iA.doubleA.doubleA.iCR.iR"></span><span class="target" id="arpack_8hpp_1a42e2f3f68ec9cebb3ca237d0a11ea529"></span>void <code class="sig-name descname">dnaupd_</code><span class="sig-paren">(</span>int&amp;, <em class="property">const</em> char*, <em class="property">const</em> int&amp;, <em class="property">const</em> char*, <em class="property">const</em> int&amp;, <em class="property">const</em> double&amp;, double[], <em class="property">const</em> int&amp;, double[], <em class="property">const</em> int&amp;, int[], int[], double[], double[], <em class="property">const</em> int&amp;, int&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3f777dnaupd_ERiPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>External ARPACK-NG FORTRAN 77 subroutine <a class="reference external" href="https://github.com/opencollab/arpack-ng/blob/master/SRC/dnaupd.f">dnaupd()</a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack3f777znaupd_ERiPKcRKiPKcRKiRKdP8dcomplexRKiP8dcomplexRKiA_iA_iP8dcomplexP8dcomplexRKiA_dRi">
+<span id="_CPPv3N8ezarpack3f777znaupd_ERiPKcRKiPKcRKiRKdP8dcomplexRKiP8dcomplexRKiA_iA_iP8dcomplexP8dcomplexRKiA_dRi"></span><span id="_CPPv2N8ezarpack3f777znaupd_ERiPKcRKiPKcRKiRKdP8dcomplexRKiP8dcomplexRKiA_iA_iP8dcomplexP8dcomplexRKiA_dRi"></span><span id="ezarpack::f77::znaupd___iR.cCP.iCR.cCP.iCR.doubleCR.dcomplexP.iCR.dcomplexP.iCR.iA.iA.dcomplexP.dcomplexP.iCR.doubleA.iR"></span><span class="target" id="arpack_8hpp_1a286b6b5e09618af87174c0765f8c2e0c"></span>void <code class="sig-name descname">znaupd_</code><span class="sig-paren">(</span>int&amp;, <em class="property">const</em> char*, <em class="property">const</em> int&amp;, <em class="property">const</em> char*, <em class="property">const</em> int&amp;, <em class="property">const</em> double&amp;, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>*, <em class="property">const</em> int&amp;, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>*, <em class="property">const</em> int&amp;, int[], int[], <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>*, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>*, <em class="property">const</em> int&amp;, double[], int&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3f777znaupd_ERiPKcRKiPKcRKiRKdP8dcomplexRKiP8dcomplexRKiA_iA_iP8dcomplexP8dcomplexRKiA_dRi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>External ARPACK-NG FORTRAN 77 subroutine <a class="reference external" href="https://github.com/opencollab/arpack-ng/blob/master/SRC/znaupd.f">znaupd()</a>. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">External ARPACK-NG subroutines *eupd()</p>
+<p>These subroutines return the converged approximations to eigenvalues of <span class="math notranslate nohighlight">\( \hat O \mathbf{z} = \lambda \hat B\mathbf{z} \)</span> and (optionally):<ol class="loweralpha simple">
+<li><p>the corresponding approximate eigenvectors;</p></li>
+<li><p>an orthonormal basis for the associated approximate invariant subspace;</p></li>
+<li><p>both. </p></li>
+</ol>
+</p>
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack3f777dseupd_ERKiPKcA_KiA_dA_dRKiRKdPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi">
+<span id="_CPPv3N8ezarpack3f777dseupd_ERKiPKcA_KiA_dA_dRKiRKdPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"></span><span id="_CPPv2N8ezarpack3f777dseupd_ERKiPKcA_KiA_dA_dRKiRKdPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"></span><span id="ezarpack::f77::dseupd___iCR.cCP.iCA.doubleA.doubleA.iCR.doubleCR.cCP.iCR.cCP.iCR.doubleCR.doubleA.iCR.doubleA.iCR.iA.iA.doubleA.doubleA.iCR.iR"></span><span class="target" id="arpack_8hpp_1af76d811db3454edaa00d500ab8ccc44e"></span>void <code class="sig-name descname">dseupd_</code><span class="sig-paren">(</span><em class="property">const</em> int&amp;, <em class="property">const</em> char*, <em class="property">const</em> int[], double[], double[], <em class="property">const</em> int&amp;, <em class="property">const</em> double&amp;, <em class="property">const</em> char*, <em class="property">const</em> int&amp;, <em class="property">const</em> char*, <em class="property">const</em> int&amp;, <em class="property">const</em> double&amp;, double[], <em class="property">const</em> int&amp;, double[], <em class="property">const</em> int&amp;, int[], int[], double[], double[], <em class="property">const</em> int&amp;, int&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3f777dseupd_ERKiPKcA_KiA_dA_dRKiRKdPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>External ARPACK-NG FORTRAN 77 subroutine <a class="reference external" href="https://github.com/opencollab/arpack-ng/blob/master/SRC/dseupd.f">dseupd()</a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack3f777dneupd_ERKiPKcA_KiA_dA_dA_dRKiRKdRKdA_dPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi">
+<span id="_CPPv3N8ezarpack3f777dneupd_ERKiPKcA_KiA_dA_dA_dRKiRKdRKdA_dPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"></span><span id="_CPPv2N8ezarpack3f777dneupd_ERKiPKcA_KiA_dA_dA_dRKiRKdRKdA_dPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"></span><span id="ezarpack::f77::dneupd___iCR.cCP.iCA.doubleA.doubleA.doubleA.iCR.doubleCR.doubleCR.doubleA.cCP.iCR.cCP.iCR.doubleCR.doubleA.iCR.doubleA.iCR.iA.iA.doubleA.doubleA.iCR.iR"></span><span class="target" id="arpack_8hpp_1a489214a822cde96633d8341736043de7"></span>void <code class="sig-name descname">dneupd_</code><span class="sig-paren">(</span><em class="property">const</em> int&amp;, <em class="property">const</em> char*, <em class="property">const</em> int[], double[], double[], double[], <em class="property">const</em> int&amp;, <em class="property">const</em> double&amp;, <em class="property">const</em> double&amp;, double[], <em class="property">const</em> char*, <em class="property">const</em> int&amp;, <em class="property">const</em> char*, <em class="property">const</em> int&amp;, <em class="property">const</em> double&amp;, double[], <em class="property">const</em> int&amp;, double[], <em class="property">const</em> int&amp;, int[], int[], double[], double[], <em class="property">const</em> int&amp;, int&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3f777dneupd_ERKiPKcA_KiA_dA_dA_dRKiRKdRKdA_dPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>External ARPACK-NG FORTRAN 77 subroutine <a class="reference external" href="https://github.com/opencollab/arpack-ng/blob/master/SRC/dneupd.f">dneupd()</a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack3f777zneupd_ERKiPKcA_KiP8dcomplexP8dcomplexRKiRK8dcomplexP8dcomplexPKcRKiPKcRKiRKdP8dcomplexRKiP8dcomplexRKiA_iA_iP8dcomplexP8dcomplexRKiA_dRi">
+<span id="_CPPv3N8ezarpack3f777zneupd_ERKiPKcA_KiP8dcomplexP8dcomplexRKiRK8dcomplexP8dcomplexPKcRKiPKcRKiRKdP8dcomplexRKiP8dcomplexRKiA_iA_iP8dcomplexP8dcomplexRKiA_dRi"></span><span id="_CPPv2N8ezarpack3f777zneupd_ERKiPKcA_KiP8dcomplexP8dcomplexRKiRK8dcomplexP8dcomplexPKcRKiPKcRKiRKdP8dcomplexRKiP8dcomplexRKiA_iA_iP8dcomplexP8dcomplexRKiA_dRi"></span><span id="ezarpack::f77::zneupd___iCR.cCP.iCA.dcomplexP.dcomplexP.iCR.dcomplexCR.dcomplexP.cCP.iCR.cCP.iCR.doubleCR.dcomplexP.iCR.dcomplexP.iCR.iA.iA.dcomplexP.dcomplexP.iCR.doubleA.iR"></span><span class="target" id="arpack_8hpp_1a212312f9df18095ddeb0c43ff8ffc956"></span>void <code class="sig-name descname">zneupd_</code><span class="sig-paren">(</span><em class="property">const</em> int&amp;, <em class="property">const</em> char*, <em class="property">const</em> int[], <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>*, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>*, <em class="property">const</em> int&amp;, <em class="property">const</em> <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>&amp;, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>*, <em class="property">const</em> char*, <em class="property">const</em> int&amp;, <em class="property">const</em> char*, <em class="property">const</em> int&amp;, <em class="property">const</em> double&amp;, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>*, <em class="property">const</em> int&amp;, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>*, <em class="property">const</em> int&amp;, int[], int[], <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>*, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>*, <em class="property">const</em> int&amp;, double[], int&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3f777zneupd_ERKiPKcA_KiP8dcomplexP8dcomplexRKiRK8dcomplexP8dcomplexPKcRKiPKcRKiRKdP8dcomplexRKiP8dcomplexRKiA_iA_iP8dcomplexP8dcomplexRKiA_dRi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>External ARPACK-NG FORTRAN 77 subroutine <a class="reference external" href="https://github.com/opencollab/arpack-ng/blob/master/SRC/zneupd.f">zneupd()</a>. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4I_bEN8ezarpack3f774aupdEvR8rci_flagPKciPKcidPdiPdiPiPiPdPdiRi">
+<span id="_CPPv3I_bEN8ezarpack3f774aupdER8rci_flagPKciPKcidPdiPdiPiPiPdPdiRi"></span><span id="_CPPv2I_bEN8ezarpack3f774aupdER8rci_flagPKciPKcidPdiPdiPiPiPdPdiRi"></span>template&lt;bool <code class="sig-name descname">Symmetric</code> = false&gt;<br /><span class="target" id="arpack_8hpp_1ac1ebe424d17a4a87834eb9af32e165fe"></span>void <code class="sig-name descname">aupd</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack8rci_flagE" title="ezarpack::rci_flag">rci_flag</a> &amp;<em>ido</em>, <em class="property">const</em> char *<em>bmat</em>, int <em>n</em>, <em class="property">const</em> char *<em>which</em>, int <em>nev</em>, double <em>tol</em>, double *<em>resid</em>, int <em>ncv</em>, double *<em>v</em>, int <em>ldv</em>, int *<em>iparam</em>, int *<em>ipntr</em>, double *<em>workd</em>, double *<em>workl</em>, int <em>lworkl</em>, int &amp;<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_bEN8ezarpack3f774aupdEvR8rci_flagPKciPKcidPdiPdiPiPiPdPdiRi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>C++ wrapper for the Reverse Communication Interface ARPACK-NG subroutines <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a0be60c021404ba112e95ad9e3925b224"><span class="std std-ref"><span class="pre">dsaupd_()</span></span></a></code> and <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a42e2f3f68ec9cebb3ca237d0a11ea529"><span class="std std-ref"><span class="pre">dnaupd_()</span></span></a></code>. </p>
+<p><dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Symmetric</span></code>: If <code class="docutils literal notranslate"><span class="pre">true</span></code>, calls <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a0be60c021404ba112e95ad9e3925b224"><span class="std std-ref"><span class="pre">dsaupd_()</span></span></a></code>, otherwise calls <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a42e2f3f68ec9cebb3ca237d0a11ea529"><span class="std std-ref"><span class="pre">dnaupd_()</span></span></a></code>. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ido</span></code>: Reverse communication flag. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bmat</span></code>: Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code>: Dimension of the eigenproblem. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">which</span></code>: Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nev</span></code>: Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tol</span></code>: Stopping criterion: relative tolerance of the Ritz value. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resid</span></code>: Initial residual vector. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ncv</span></code>: How many Lanczos/Arnoldi vectors to generate at each iteration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Contains the final set of Lanczos/Arnoldi basis vectors. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ldv</span></code>: Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iparam</span></code>: Array of input/output parameter flags. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ipntr</span></code>: Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Lanczos/Arnoldi iteration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">workd</span></code>: Array to be used in the basic Lanczos/Arnoldi iteration for reverse communication. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">workl</span></code>: Work array. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lworkl</span></code>: Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">info</span></code>: Initial residual vector type (input) and error codes (output). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack3f774aupdER8rci_flagPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi">
+<span id="_CPPv3N8ezarpack3f774aupdER8rci_flagPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi"></span><span id="_CPPv2N8ezarpack3f774aupdER8rci_flagPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi"></span><span id="ezarpack::f77::aupd__rci_flagR.cCP.i.cCP.i.double.dcomplexP.i.dcomplexP.i.iP.iP.dcomplexP.dcomplexP.i.doubleP.iR"></span><span class="target" id="arpack_8hpp_1aa92603fe1c4876c34d725fea550165eb"></span>void <code class="sig-name descname">aupd</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack8rci_flagE" title="ezarpack::rci_flag">rci_flag</a> &amp;<em>ido</em>, <em class="property">const</em> char *<em>bmat</em>, int <em>n</em>, <em class="property">const</em> char *<em>which</em>, int <em>nev</em>, double <em>tol</em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a> *<em>resid</em>, int <em>ncv</em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a> *<em>v</em>, int <em>ldv</em>, int *<em>iparam</em>, int *<em>ipntr</em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a> *<em>workd</em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a> *<em>workl</em>, int <em>lworkl</em>, double *<em>rwork</em>, int &amp;<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3f774aupdER8rci_flagPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>C++ wrapper for the Reverse Communication Interface ARPACK-NG subroutine <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a286b6b5e09618af87174c0765f8c2e0c"><span class="std std-ref"><span class="pre">znaupd_()</span></span></a></code>. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ido</span></code>: Reverse communication flag. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bmat</span></code>: Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code>: Dimension of the eigenproblem. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">which</span></code>: Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nev</span></code>: Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tol</span></code>: Stopping criterion: relative tolerance of the Ritz value. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resid</span></code>: Initial residual vector. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ncv</span></code>: How many Arnoldi vectors to generate at each iteration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Contains the final set of Arnoldi basis vectors. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ldv</span></code>: Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iparam</span></code>: Array of input/output parameter flags. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ipntr</span></code>: Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Arnoldi iteration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">workd</span></code>: Array to be used in the basic Arnoldi iteration for reverse communication. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">workl</span></code>: Work array. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lworkl</span></code>: Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rwork</span></code>: Work array of dimension <code class="docutils literal notranslate"><span class="pre">ncv</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">info</span></code>: Initial residual vector type (input) and error codes (output). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack3f774eupdEiPKcPKiPdPdidPKciPKcidPdiPdiPiPiPdPdiRi">
+<span id="_CPPv3N8ezarpack3f774eupdEiPKcPKiPdPdidPKciPKcidPdiPdiPiPiPdPdiRi"></span><span id="_CPPv2N8ezarpack3f774eupdEiPKcPKiPdPdidPKciPKcidPdiPdiPiPiPdPdiRi"></span><span id="ezarpack::f77::eupd__i.cCP.iCP.doubleP.doubleP.i.double.cCP.i.cCP.i.double.doubleP.i.doubleP.i.iP.iP.doubleP.doubleP.i.iR"></span><span class="target" id="arpack_8hpp_1a412e046be25347b1e4a2cb848d302648"></span>void <code class="sig-name descname">eupd</code><span class="sig-paren">(</span>int <em>rvec</em>, <em class="property">const</em> char *<em>howmny</em>, <em class="property">const</em> int *<em>select</em>, double *<em>d</em>, double *<em>z</em>, int <em>ldz</em>, double <em>sigma</em>, <em class="property">const</em> char *<em>bmat</em>, int <em>n</em>, <em class="property">const</em> char *<em>which</em>, int <em>nev</em>, double <em>tol</em>, double *<em>resid</em>, int <em>ncv</em>, double *<em>v</em>, int <em>ldv</em>, int *<em>iparam</em>, int *<em>ipntr</em>, double *<em>workd</em>, double *<em>workl</em>, int <em>lworkl</em>, int &amp;<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3f774eupdEiPKcPKiPdPdidPKciPKcidPdiPdiPiPiPdPdiRi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>C++ wrapper for the post-processing ARPACK-NG subroutine <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1af76d811db3454edaa00d500ab8ccc44e"><span class="std std-ref"><span class="pre">dseupd_()</span></span></a></code>. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rvec</span></code>: Specifies whether to compute Ritz vectors. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">howmny</span></code>: Specifies how many Ritz vectors are wanted. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">select</span></code>: Selection of Ritz vectors to be computed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">d</span></code>: Approximate Ritz values (output). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>: Approximate <code class="docutils literal notranslate"><span class="pre">B</span></code>-orthonormal Ritz vectors (output). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ldz</span></code>: The leading dimension of the array <code class="docutils literal notranslate"><span class="pre">Z</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sigma</span></code>: Shift for spectral transformations. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bmat</span></code>: Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code>: Dimension of the eigenproblem. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">which</span></code>: Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nev</span></code>: Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tol</span></code>: Stopping criterion: relative tolerance of the Ritz value. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resid</span></code>: Initial residual vector. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ncv</span></code>: How many Lanczos vectors to generate at each iteration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Contains the final set of Lanczos basis vectors. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ldv</span></code>: Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iparam</span></code>: Array of input/output parameter flags. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ipntr</span></code>: Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Lanczos iteration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">workd</span></code>: Array to be used in the basic Lanczos iteration for reverse communication. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">workl</span></code>: Work array. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lworkl</span></code>: Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">info</span></code>: Initial residual vector type (input) and error codes (output). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack3f774eupdEiPKcPKiPdPdPdiddPdPKciPKcidPdiPdiPiPiPdPdiRi">
+<span id="_CPPv3N8ezarpack3f774eupdEiPKcPKiPdPdPdiddPdPKciPKcidPdiPdiPiPiPdPdiRi"></span><span id="_CPPv2N8ezarpack3f774eupdEiPKcPKiPdPdPdiddPdPKciPKcidPdiPdiPiPiPdPdiRi"></span><span id="ezarpack::f77::eupd__i.cCP.iCP.doubleP.doubleP.doubleP.i.double.double.doubleP.cCP.i.cCP.i.double.doubleP.i.doubleP.i.iP.iP.doubleP.doubleP.i.iR"></span><span class="target" id="arpack_8hpp_1a8e9418a6c2e6b26fe68eea6ebd0e9c30"></span>void <code class="sig-name descname">eupd</code><span class="sig-paren">(</span>int <em>rvec</em>, <em class="property">const</em> char *<em>howmny</em>, <em class="property">const</em> int *<em>select</em>, double *<em>dr</em>, double *<em>di</em>, double *<em>z</em>, int <em>ldz</em>, double <em>sigmar</em>, double <em>sigmai</em>, double *<em>workev</em>, <em class="property">const</em> char *<em>bmat</em>, int <em>n</em>, <em class="property">const</em> char *<em>which</em>, int <em>nev</em>, double <em>tol</em>, double *<em>resid</em>, int <em>ncv</em>, double *<em>v</em>, int <em>ldv</em>, int *<em>iparam</em>, int *<em>ipntr</em>, double *<em>workd</em>, double *<em>workl</em>, int <em>lworkl</em>, int &amp;<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3f774eupdEiPKcPKiPdPdPdiddPdPKciPKcidPdiPdiPiPiPdPdiRi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>C++ wrapper for the post-processing ARPACK-NG subroutine <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a489214a822cde96633d8341736043de7"><span class="std std-ref"><span class="pre">dneupd_()</span></span></a></code>. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rvec</span></code>: Specifies whether to compute Ritz/Schur vectors. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">howmny</span></code>: Specifies the form of the basis for the invariant subspace. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">select</span></code>: Selection of Ritz vectors to be computed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dr</span></code>: Real parts of approximate Ritz values (output). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">di</span></code>: Imaginary parts of approximate Ritz values (output). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>: Approximate <code class="docutils literal notranslate"><span class="pre">B</span></code>-orthonormal Ritz vectors (output). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ldz</span></code>: The leading dimension of the array <code class="docutils literal notranslate"><span class="pre">Z</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sigmar</span></code>: Real part of the shift for spectral transformations. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sigmai</span></code>: Imaginary part of the shift for spectral transformations. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">workev</span></code>: Work array. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bmat</span></code>: Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code>: Dimension of the eigenproblem. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">which</span></code>: Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nev</span></code>: Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tol</span></code>: Stopping criterion: relative tolerance of the Ritz value. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resid</span></code>: Initial residual vector. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ncv</span></code>: How many Arnoldi vectors to generate at each iteration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Contains the final set of Arnoldi basis vectors. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ldv</span></code>: Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iparam</span></code>: Array of input/output parameter flags. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ipntr</span></code>: Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Arnoldi iteration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">workd</span></code>: Array to be used in the basic Arnoldi iteration for reverse communication. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">workl</span></code>: Work array. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lworkl</span></code>: Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">info</span></code>: Initial residual vector type (input) and error codes (output). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack3f774eupdEiPKcPKiP8dcomplexP8dcomplexi8dcomplexP8dcomplexPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi">
+<span id="_CPPv3N8ezarpack3f774eupdEiPKcPKiP8dcomplexP8dcomplexi8dcomplexP8dcomplexPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi"></span><span id="_CPPv2N8ezarpack3f774eupdEiPKcPKiP8dcomplexP8dcomplexi8dcomplexP8dcomplexPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi"></span><span id="ezarpack::f77::eupd__i.cCP.iCP.dcomplexP.dcomplexP.i.dcomplex.dcomplexP.cCP.i.cCP.i.double.dcomplexP.i.dcomplexP.i.iP.iP.dcomplexP.dcomplexP.i.doubleP.iR"></span><span class="target" id="arpack_8hpp_1a9169bcf5ea308d136040118a15af32f7"></span>void <code class="sig-name descname">eupd</code><span class="sig-paren">(</span>int <em>rvec</em>, <em class="property">const</em> char *<em>howmny</em>, <em class="property">const</em> int *<em>select</em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a> *<em>d</em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a> *<em>z</em>, int <em>ldz</em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a> <em>sigma</em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a> *<em>workev</em>, <em class="property">const</em> char *<em>bmat</em>, int <em>n</em>, <em class="property">const</em> char *<em>which</em>, int <em>nev</em>, double <em>tol</em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a> *<em>resid</em>, int <em>ncv</em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a> *<em>v</em>, int <em>ldv</em>, int *<em>iparam</em>, int *<em>ipntr</em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a> *<em>workd</em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a> *<em>workl</em>, int <em>lworkl</em>, double *<em>rwork</em>, int &amp;<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3f774eupdEiPKcPKiP8dcomplexP8dcomplexi8dcomplexP8dcomplexPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>C++ wrapper for the post-processing ARPACK-NG subroutine <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a212312f9df18095ddeb0c43ff8ffc956"><span class="std std-ref"><span class="pre">zneupd_()</span></span></a></code>. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rvec</span></code>: Specifies whether to compute Ritz/Schur vectors. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">howmny</span></code>: Specifies the form of the basis for the invariant subspace. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">select</span></code>: Selection of Ritz vectors to be computed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">d</span></code>: Approximate Ritz values (output). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>: Approximate <code class="docutils literal notranslate"><span class="pre">B</span></code>-orthonormal Ritz vectors (output). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ldz</span></code>: The leading dimension of the array <code class="docutils literal notranslate"><span class="pre">Z</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sigma</span></code>: Shift for spectral transformations. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">workev</span></code>: Work array. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bmat</span></code>: Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code>: Dimension of the eigenproblem. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">which</span></code>: Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nev</span></code>: Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tol</span></code>: Stopping criterion: relative tolerance of the Ritz value. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resid</span></code>: Initial residual vector. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ncv</span></code>: How many Arnoldi vectors to generate at each iteration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Contains the final set of Arnoldi basis vectors. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ldv</span></code>: Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iparam</span></code>: Array of input/output parameter flags. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ipntr</span></code>: Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Arnoldi iteration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">workd</span></code>: Array to be used in the basic Arnoldi iteration for reverse communication. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">workl</span></code>: Work array. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lworkl</span></code>: Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rwork</span></code>: Work array of dimension <code class="docutils literal notranslate"><span class="pre">ncv</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">info</span></code>: Initial residual vector type (input) and error codes (output). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="arpack_solver.html"
+                        title="previous chapter"><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack_solver.hpp</span></code> - include all <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> specializations</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="version.html"
+                        title="next chapter"><code class="docutils literal notranslate"><span class="pre">ezarpack/version.hpp</span></code> - ezARPACK version information</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/arpack.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="version.html" title="ezarpack/version.hpp - ezARPACK version information"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="arpack_solver.html" title="ezarpack/arpack_solver.hpp - include all arpack_solver specializations"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="aux.html" >Auxiliary headers</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack.hpp</span></code> - Low level C++ interface to FORTRAN routines of ARPACK</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Igor Krivenko.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ezarpack/storages/base.hpp - definition of storage_traits structure &#8212; ezARPACK 0.8 documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ezarpack/storages/eigen.hpp - Eigen 3" href="eigen.html" />
+    <link rel="prev" title="Data storage backends" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="eigen.html" title="ezarpack/storages/eigen.hpp - Eigen 3"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Data storage backends"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Data storage backends</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/base.hpp</span></code> - definition of <code class="docutils literal notranslate"><span class="pre">storage_traits</span></code> structure</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ezarpack-storages-base-hpp-definition-of-storage-traits-structure">
+<span id="refbase"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/base.hpp</span></code> - definition of <code class="docutils literal notranslate"><span class="pre">storage_traits</span></code> structure<a class="headerlink" href="#ezarpack-storages-base-hpp-definition-of-storage-traits-structure" title="Permalink to this headline">¶</a></h1>
+<dl class="cpp struct">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsE">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsE"></span>template&lt;typename <code class="sig-name descname">Backend</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits"></span><em class="property">struct </em><code class="sig-name descname">storage_traits</code><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Specializations of this traits structure describe the way <a class="reference internal" href="../solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref">ezarpack::arpack_solver</span></a> class makes use of a particular vector/matrix algebra library. The primary template cannot be instantiated, unless there is a valid specialization for the requested tag type <code class="docutils literal notranslate"><span class="pre">Backend</span></code>. <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Backend</span></code>: A tag type denoting a storage backend (vector/matrix algebra library). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Data storage backends</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="eigen.html"
+                        title="next chapter"><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/eigen.hpp</span></code> - Eigen 3</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/reference/storages/base.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="eigen.html" title="ezarpack/storages/eigen.hpp - Eigen 3"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Data storage backends"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Data storage backends</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/base.hpp</span></code> - definition of <code class="docutils literal notranslate"><span class="pre">storage_traits</span></code> structure</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Igor Krivenko.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

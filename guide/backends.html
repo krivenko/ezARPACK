@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of supported matrix/vector algebra libraries &#8212; ezARPACK 0.8 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Advanced: Customization of Lanczos/Arnoldi implicit restarting" href="implicit_restarting.html" />
+    <link rel="prev" title="General complex eigenproblems" href="complex.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="implicit_restarting.html" title="Advanced: Customization of Lanczos/Arnoldi implicit restarting"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="complex.html" title="General complex eigenproblems"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">User guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">List of supported matrix/vector algebra libraries</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="list-of-supported-matrix-vector-algebra-libraries">
+<span id="backends"></span><h1>List of supported matrix/vector algebra libraries<a class="headerlink" href="#list-of-supported-matrix-vector-algebra-libraries" title="Permalink to this headline">¶</a></h1>
+<p>One can choose which of supported linear algebra libraries to use by passing
+a special tag type as the second template parameter (<code class="docutils literal notranslate"><span class="pre">Backend</span></code>) to
+the <a class="reference internal" href="../reference/solver_base.html#refsolverbase"><span class="std std-ref">ezarpack::arpack_solver</span></a> class template.</p>
+<p>The following table lists all supported backends, their respective tag types
+and headers containing backends’ definitions. The last columns contains links
+to complete usage examples.</p>
+<table class="colwidths-auto docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p>Storage backend</p></th>
+<th class="head"><p>Tag type</p></th>
+<th class="head"><p>Header</p></th>
+<th class="head"><p>Examples</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="http://eigen.tuxfamily.org">Eigen 3</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ezarpack::eigen_storage</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;ezarpack/storages/eigen.hpp&gt;</span></code></p></td>
+<td><p><a class="reference internal" href="examples.html#example-eigen"><span class="std std-ref">Eigen 3</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://bitbucket.org/blaze-lib/blaze">Blaze &gt;= 3</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ezarpack::blaze_storage</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;ezarpack/storages/blaze.hpp&gt;</span></code></p></td>
+<td><p><a class="reference internal" href="examples.html#example-blaze"><span class="std std-ref">Blaze</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="http://arma.sourceforge.net">Armadillo</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ezarpack::armadillo_storage</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;ezarpack/storages/armadillo.hpp&gt;</span></code></p></td>
+<td><p><a class="reference internal" href="examples.html#example-armadillo"><span class="std std-ref">Armadillo</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.boost.org/doc/libs/1_58_0/libs/numeric/ublas/doc">Boost uBLAS &gt;= 1.58 </a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ezarpack::ublas_storage</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;ezarpack/storages/ublas.hpp&gt;</span></code></p></td>
+<td><p><a class="reference internal" href="examples.html#example-ublas"><span class="std std-ref">Boost uBLAS</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://triqs.github.io/triqs/latest/">TRIQS arrays &gt;= 2.0</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ezarpack::triqs_storage</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;ezarpack/storages/triqs.hpp&gt;</span></code></p></td>
+<td><p><a class="reference internal" href="examples.html#example-triqs"><span class="std std-ref">TRIQS arrays</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://github.com/xtensor-stack/xtensor">xtensor &gt;= 0.20.0</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ezarpack::xtensor_storage</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;ezarpack/storages/xtensor.hpp&gt;</span></code></p></td>
+<td><p><a class="reference internal" href="examples.html#example-xtensor"><span class="std std-ref">xtensor</span></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="complex.html"
+                        title="previous chapter">General complex eigenproblems</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="implicit_restarting.html"
+                        title="next chapter">Advanced: Customization of Lanczos/Arnoldi implicit restarting</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/guide/backends.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="implicit_restarting.html" title="Advanced: Customization of Lanczos/Arnoldi implicit restarting"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="complex.html" title="General complex eigenproblems"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >User guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">List of supported matrix/vector algebra libraries</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Igor Krivenko.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

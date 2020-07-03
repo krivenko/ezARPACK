@@ -1,0 +1,422 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What algorithm variant is right for your problem? &#8212; ezARPACK 0.8 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Symmetric real eigenproblems" href="symmetric.html" />
+    <link rel="prev" title="How to use ezARPACK in your project" href="usage.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="symmetric.html" title="Symmetric real eigenproblems"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="How to use ezARPACK in your project"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">User guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">What algorithm variant is right for your problem?</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="what-algorithm-variant-is-right-for-your-problem">
+<span id="choice"></span><h1>What algorithm variant is right for your problem?<a class="headerlink" href="#what-algorithm-variant-is-right-for-your-problem" title="Permalink to this headline">¶</a></h1>
+<p>ARPACK-NG provides tools for solving a wide range of generalized eigenproblems</p>
+<div class="math notranslate nohighlight">
+\[\hat A \mathbf{x} = \lambda \hat M \mathbf{x}\]</div>
+<p>with large sparse matrices <span class="math notranslate nohighlight">\(\hat A\)</span> and <span class="math notranslate nohighlight">\(\hat M\)</span> (a standard
+eigenproblem is one with <span class="math notranslate nohighlight">\(\hat M = \hat I\)</span>). At least one of
+<span class="math notranslate nohighlight">\(\hat A\)</span> and <span class="math notranslate nohighlight">\(\hat M\)</span> – called <span class="math notranslate nohighlight">\(\hat B\)</span> in the following –
+has to be Hermitian positive semi-definite so that it defines a weighted
+inner product <span class="math notranslate nohighlight">\(\langle \mathbf{x}, \mathbf{y} \rangle =
+\mathbf{x}^\dagger \hat B \mathbf{y}\)</span>.</p>
+<p>All supported classed of the eigenproblems can be transformed to the
+canonical form</p>
+<div class="math notranslate nohighlight">
+\[\hat O \mathbf{x} = \mu \mathbf{x}.\]</div>
+<p>Depending on what properties matrices <span class="math notranslate nohighlight">\(\hat A\)</span> and <span class="math notranslate nohighlight">\(\hat M\)</span> posses
+– being real or complex, symmetric, positive-definite, etc – a different
+algorithm and computational mode should be chosen for the optimal performance
+and stability.</p>
+<p>ezARPACK wraps ARPACK-NG’s low-level subroutines in a form of three major
+solver classes.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="symmetric.html#symmetric"><span class="std std-ref">ezarpack::arpack_solver&lt;Symmetric, Backend&gt;</span></a>;</p></li>
+<li><p><a class="reference internal" href="asymmetric.html#asymmetric"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;</span></a>;</p></li>
+<li><p><a class="reference internal" href="complex.html#complex"><span class="std std-ref">ezarpack::arpack_solver&lt;Complex, Backend&gt;</span></a>.</p></li>
+</ul>
+<p>Here, they are listed in the order of generality of the eigenproblems they can
+solve – the symmetric variant is the most specialized and fastest one, whereas
+the complex version is for the most general problems. Furthermore, each of the
+variants supports a few computational modes. Picking the right combination of
+solver and computational mode can be an overwhelming task for a non-expert.</p>
+<p>In the table below, we give a classification of all supported eigenproblems with
+recommendations on what solver variant/computational mode to choose.
+In many cases, there are multiple acceptable choices, and the ‘Notes’ column
+contains some more elaborate detail. Forms of the transformed matrices
+<span class="math notranslate nohighlight">\(\hat O\)</span> and <span class="math notranslate nohighlight">\(\hat B\)</span> for each mode are also shown.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is no specialized solver for complex Hermitian matrices. This case is
+covered by <a class="reference internal" href="complex.html#complex"><span class="std std-ref">ezarpack::arpack_solver&lt;Complex, Backend&gt;</span></a>.</p>
+</div>
+<table class="colwidths-auto docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type of <span class="math notranslate nohighlight">\(\hat A\)</span></p></th>
+<th class="head"><p>Type of <span class="math notranslate nohighlight">\(\hat M\)</span></p></th>
+<th class="head"><p>Solver variant</p></th>
+<th class="head"><p>Computational mode</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\hat O\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\hat B\)</span></p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Real symmetric</p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat I\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Symmetric</span></code></p></td>
+<td><p>Standard</p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat A\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat I\)</span></p></td>
+<td><p>Optimal for finding extremal eigenvalues.</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Symmetric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ShiftAndInvert</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\((\hat A - \sigma)^{-1}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat I\)</span></p></td>
+<td><p>Optimal for finding eigenvalues in the interior of the spectrum, clustered
+around the real shift <span class="math notranslate nohighlight">\(\sigma\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p>Real symmetric</p></td>
+<td><p>Real symmetric, positive-definite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Symmetric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Inverse</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M^{-1} \hat A\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M\)</span></p></td>
+<td><p>Optimal for finding extremal eigenvalues when <span class="math notranslate nohighlight">\(\hat M\)</span> is
+well-conditioned.</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Symmetric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ShiftAndInvert</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\((\hat A-\sigma \hat M)^{-1} \hat M\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M\)</span></p></td>
+<td><p>Optimal for finding eigenvalues in the interior of the spectrum, clustered
+around the real shift <span class="math notranslate nohighlight">\(\sigma\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p>Real symmetric</p></td>
+<td><p>Real symmetric, positive semi-definite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Symmetric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ShiftAndInvert</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\((\hat A - \sigma \hat M)^{-1} \hat M\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M\)</span></p></td>
+<td><p>Optimal for finding eigenvalues clustered around the real shift
+<span class="math notranslate nohighlight">\(\sigma\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Symmetric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Cayley</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\((\hat A - \sigma \hat M)^{-1} (\hat A + \sigma \hat M)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M\)</span></p></td>
+<td><p>Cayley-transformed eigenproblem. Another option for finding eigenvalues
+clustered around the real shift <span class="math notranslate nohighlight">\(\sigma\)</span>. The transformation
+becomes ill-defined near <span class="math notranslate nohighlight">\(\sigma = 0\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p>Real symmetric, positive semi-definite</p></td>
+<td><p>Real symmetric</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Symmetric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Buckling</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\((\hat A - \sigma \hat M)^{-1} \hat A\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat A\)</span></p></td>
+<td><p>Buckling-transformed eigenproblem. Optimal for finding eigenvalues
+clustered around the real shift <span class="math notranslate nohighlight">\(\sigma\)</span>. The transformation
+becomes ill-defined near <span class="math notranslate nohighlight">\(\sigma = 0\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>General real</p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat I\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code></p></td>
+<td><p>Standard</p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat A\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat I\)</span></p></td>
+<td><p>Optimal for finding eigenvalues at the extreme points of the convex
+hull of the spectrum.</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ShiftAndInvertReal</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Re [(\hat A - \sigma)^{-1}]\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat I\)</span></p></td>
+<td><p>Optimal for finding eigenvalues in the interior of the spectrum, clustered
+around the complex shift <span class="math notranslate nohighlight">\(\sigma\)</span>. This mode must be chosen over
+<code class="docutils literal notranslate"><span class="pre">ShiftAndInvertImag</span></code> if <span class="math notranslate nohighlight">\(\Im\sigma = 0\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ShiftAndInvertImag</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Im [(\hat A - \sigma)^{-1}]\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat I\)</span></p></td>
+<td><p>Optimal for finding eigenvalues in the interior of the spectrum, clustered
+around the complex shift <span class="math notranslate nohighlight">\(\sigma\)</span>. As <span class="math notranslate nohighlight">\(\lambda\)</span> goes to
+infinity, the eigenvalues are damped more strongly in this mode than in
+<code class="docutils literal notranslate"><span class="pre">ShiftAndInvertReal</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>General real</p></td>
+<td><p>Real symmetric, positive-definite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Inverse</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M^{-1} \hat A\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M\)</span></p></td>
+<td><p>Optimal for finding eigenvalues at the extreme points of the convex
+hull of the spectrum.</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ShiftAndInvertReal</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Re [(\hat A - \sigma\hat M)^{-1} \hat M]\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M\)</span></p></td>
+<td><p>Optimal for finding eigenvalues in the interior of the spectrum, clustered
+around the complex shift <span class="math notranslate nohighlight">\(\sigma\)</span>. This mode must be chosen over
+<code class="docutils literal notranslate"><span class="pre">ShiftAndInvertImag</span></code> if <span class="math notranslate nohighlight">\(\Im\sigma = 0\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ShiftAndInvertImag</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Im [(\hat A - \sigma\hat M)^{-1} \hat M]\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M\)</span></p></td>
+<td><p>Optimal for finding eigenvalues in the interior of the spectrum, clustered
+around the complex shift <span class="math notranslate nohighlight">\(\sigma\)</span>. As <span class="math notranslate nohighlight">\(\lambda\)</span> goes to
+infinity, the eigenvalues are damped more strongly in this mode than in
+<code class="docutils literal notranslate"><span class="pre">ShiftAndInvertImag</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>General real</p></td>
+<td><p>Real symmetric, positive semi-definite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ShiftAndInvertReal</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Re [(\hat A - \sigma\hat M)^{-1} \hat M]\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M\)</span></p></td>
+<td><p>Optimal for finding eigenvalues in the interior of the spectrum, clustered
+around the complex shift <span class="math notranslate nohighlight">\(\sigma\)</span>. This mode must be chosen over
+<code class="docutils literal notranslate"><span class="pre">ShiftAndInvertImag</span></code> if <span class="math notranslate nohighlight">\(\Im\sigma = 0\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ShiftAndInvertImag</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Im [(\hat A - \sigma\hat M)^{-1} \hat M]\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M\)</span></p></td>
+<td><p>Optimal for finding eigenvalues in the interior of the spectrum, clustered
+around the complex shift <span class="math notranslate nohighlight">\(\sigma\)</span>. As <span class="math notranslate nohighlight">\(\lambda\)</span> goes to
+infinity, the eigenvalues are damped more strongly in this mode than in
+<code class="docutils literal notranslate"><span class="pre">ShiftAndInvertImag</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>General real</p></td>
+<td><p>General real, invertible</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code></p></td>
+<td><p>Standard</p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M^{-1} \hat A\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat I\)</span></p></td>
+<td><p><strong>Not directly supported by ARPACK-NG</strong>.</p>
+<p>One can manually form operator
+<span class="math notranslate nohighlight">\(\hat O = \hat M^{-1} \hat A\)</span> and use the Asymmetric solver in the
+standard mode. Best used when <span class="math notranslate nohighlight">\(\hat M\)</span> is well-conditioned and
+the eigenvalues of interest are at extreme points of the convex
+hull of the spectrum.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>General real</p></td>
+<td><p>General real</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code></p></td>
+<td><p>Standard</p></td>
+<td><p><span class="math notranslate nohighlight">\((\hat A - \sigma\hat M)^{-1} \hat M\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat I\)</span></p></td>
+<td><p><strong>Not directly supported by ARPACK-NG</strong>.</p>
+<p>One can manually form operator
+<span class="math notranslate nohighlight">\(\hat O = (\hat A - \sigma\hat M)^{-1}\hat M\)</span> and use the Asymmetric
+solver in the standard mode. Best used when <span class="math notranslate nohighlight">\(\hat M\)</span> is nearly
+singular and/or for finding eigenvalues in the interior of the spectrum,
+clustered around the complex shift <span class="math notranslate nohighlight">\(\sigma\)</span>. The eigenvalues
+<span class="math notranslate nohighlight">\(\mu\)</span> computed by the solver must be manually back-transformed
+according to <span class="math notranslate nohighlight">\(\lambda = \mu^{-1} + \sigma\)</span>.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Complex</p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat I\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Complex</span></code></p></td>
+<td><p>Standard</p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat A\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat I\)</span></p></td>
+<td><p>Optimal for finding eigenvalues at the extreme points of the convex
+hull of the spectrum.</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Complex</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ShiftAndInvert</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\((\hat A - \sigma)^{-1}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat I\)</span></p></td>
+<td><p>Optimal for finding eigenvalues in the interior of the spectrum, clustered
+around the complex shift <span class="math notranslate nohighlight">\(\sigma\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Complex</p></td>
+<td><p>Complex, Hermitian, positive-definite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Complex</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Inverse</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M^{-1} \hat A\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M\)</span></p></td>
+<td><p>Optimal for finding eigenvalues at the extreme points of the convex
+hull of the spectrum when <span class="math notranslate nohighlight">\(\hat M\)</span> is well-conditioned.</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Complex</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ShiftAndInvert</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\((\hat A - \sigma \hat M)^{-1} \hat M\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M\)</span></p></td>
+<td><p>Optimal for finding eigenvalues in the interior of the spectrum, clustered
+around the complex shift <span class="math notranslate nohighlight">\(\sigma\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Complex</p></td>
+<td><p>Complex, Hermitian, positive semi-definite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Complex</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ShiftAndInvert</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\((\hat A - \sigma \hat M)^{-1} \hat M\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M\)</span></p></td>
+<td><p>Optimal for finding eigenvalues in the interior of the spectrum, clustered
+around the complex shift <span class="math notranslate nohighlight">\(\sigma\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p>Complex</p></td>
+<td><p>Complex, invertible</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Complex</span></code></p></td>
+<td><p>Standard</p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat M^{-1} \hat A\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat I\)</span></p></td>
+<td><p><strong>Not directly supported by ARPACK-NG</strong>.</p>
+<p>One can manually form operator
+<span class="math notranslate nohighlight">\(\hat O = \hat M^{-1} \hat A\)</span> and use the Complex solver in the
+standard mode. Best used when <span class="math notranslate nohighlight">\(\hat M\)</span> is well-conditioned and
+the eigenvalues of interest are at extreme points of the convex
+hull of the spectrum.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Complex</p></td>
+<td><p>General complex</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Complex</span></code></p></td>
+<td><p>Standard</p></td>
+<td><p><span class="math notranslate nohighlight">\((\hat A - \sigma\hat M)^{-1} \hat M\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat I\)</span></p></td>
+<td><p><strong>Not directly supported by ARPACK-NG</strong>.</p>
+<p>One can manually form operator
+<span class="math notranslate nohighlight">\(\hat O = (\hat A - \sigma\hat M)^{-1}\hat M\)</span> and use the Complex
+solver in the standard mode. Best used when <span class="math notranslate nohighlight">\(\hat M\)</span> is nearly
+singular and/or for finding eigenvalues in the interior of the spectrum,
+clustered around the complex shift <span class="math notranslate nohighlight">\(\sigma\)</span>. The eigenvalues
+<span class="math notranslate nohighlight">\(\mu\)</span> computed by the solver must be manually back-transformed
+according to <span class="math notranslate nohighlight">\(\lambda = \mu^{-1} + \sigma\)</span>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Matrix <span class="math notranslate nohighlight">\(\hat M\)</span> being well-conditioned means that it has a moderate
+condition number <span class="math notranslate nohighlight">\(||\hat M||_2\cdot||\hat M^{-1}||_2\)</span>.
+The shift <span class="math notranslate nohighlight">\(\sigma\)</span> used in various Shift-and-Invert modes has to be
+provided by the user based on <em>a priori</em> knowledge about the spectrum. The
+fastest convergence is achieved when it is close to the selected eigenvalues of
+interest.</p>
+<p>The table presented here is meant to give only some basic guidance. For a much
+deeper overview of ARPACK-NG’s capabilities you are referred to the definitive</p>
+<blockquote>
+<div><p>ARPACK Users’ Guide: Solution of Large Scale Eigenvalue Problems
+with Implicitly Restarted Arnoldi Methods (R. B. Lehoucq, D. C. Sorensen,
+C. Yang, SIAM, 1998),
+<a class="reference external" href="https://www.caam.rice.edu/software/ARPACK/UG/">https://www.caam.rice.edu/software/ARPACK/UG/</a></p>
+</div></blockquote>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="usage.html"
+                        title="previous chapter">How to use ezARPACK in your project</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="symmetric.html"
+                        title="next chapter">Symmetric real eigenproblems</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/guide/choice.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="symmetric.html" title="Symmetric real eigenproblems"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="How to use ezARPACK in your project"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >User guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">What algorithm variant is right for your problem?</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Igor Krivenko.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

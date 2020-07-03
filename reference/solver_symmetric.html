@@ -1,0 +1,539 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ezarpack/solver_symmetric.hpp - symmetric real eigenproblems &#8212; ezARPACK 0.8 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ezarpack/solver_asymmetric.hpp - general real eigenproblems" href="solver_asymmetric.html" />
+    <link rel="prev" title="Specializations of the arpack_solver class template" href="solver.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="solver_asymmetric.html" title="ezarpack/solver_asymmetric.hpp - general real eigenproblems"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="solver.html" title="Specializations of the arpack_solver class template"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="solver.html" accesskey="U">Specializations of the <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_symmetric.hpp</span></code> - symmetric real eigenproblems</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ezarpack-solver-symmetric-hpp-symmetric-real-eigenproblems">
+<span id="refsolversymmetric"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_symmetric.hpp</span></code> - symmetric real eigenproblems<a class="headerlink" href="#ezarpack-solver-symmetric-hpp-symmetric-real-eigenproblems" title="Permalink to this headline">¶</a></h1>
+<dl class="cpp class">
+<dt id="_CPPv4I0EN8ezarpack13arpack_solverI9Symmetric7BackendEE">
+<span id="_CPPv3I0EN8ezarpack13arpack_solverI9Symmetric7BackendEE"></span><span id="_CPPv2I0EN8ezarpack13arpack_solverI9Symmetric7BackendEE"></span>template&lt;typename <code class="sig-name descname">Backend</code>&gt;<br /><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4"></span><em class="property">class </em><code class="sig-prename descclassname">ezarpack<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">arpack_solver</code>&lt;<a class="reference internal" href="solver_base.html#_CPPv4N8ezarpack13operator_kind9SymmetricE" title="ezarpack::Symmetric">Symmetric</a>, <a class="reference internal" href="#_CPPv4I0EN8ezarpack13arpack_solverI9Symmetric7BackendEE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::Backend">Backend</a>&gt;<a class="headerlink" href="#_CPPv4I0EN8ezarpack13arpack_solverI9Symmetric7BackendEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Main solver class wrapping the Implicitly Restarted Lanczos Method (IRLM) for real symmetric eigenproblems. </p>
+<p>This specialization of <code class="docutils literal notranslate"><a class="reference internal" href="solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code> calls ARPACK-NG routines <code class="docutils literal notranslate"><span class="pre">dsaupd()</span></code> and <code class="docutils literal notranslate"><span class="pre">dseupd()</span></code> to compute approximations to a few eigenpairs of a linear operator <span class="math notranslate nohighlight">\( \hat O \)</span> that is real and symmetric with respect to a real positive semi-definite symmetric matrix <span class="math notranslate nohighlight">\( \hat B \)</span>. In other words, <div class="math notranslate nohighlight">
+\[ \langle \mathbf{x},\hat O \mathbf{y} \rangle = \langle \hat O \mathbf{x}, \mathbf{y} \rangle \]</div>
+ for all vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span>, <span class="math notranslate nohighlight">\( \mathbf{y} \)</span> and with the scalar product defined as <div class="math notranslate nohighlight">
+\[ \langle \mathbf{x}, \mathbf{y} \rangle = \mathbf{x}^T \hat B \mathbf{y}. \]</div>
+ A variant of the Lanczos algorithm is internally used instead of the Arnoldi iteration for this class of problems.</p>
+<p><dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Backend</span></code>: Tag type specifying what <em>storage backend</em> (matrix/vector algebra library) must be used by <code class="docutils literal notranslate"><a class="reference internal" href="solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code>. The storage backend determines types of internally stored data arrays and input/output view objects returned by methods of the class. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Backend-specific array and view types</p>
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE13real_vector_tE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE13real_vector_tE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE13real_vector_tE"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a865be63b7bdb8756f0362e586d085c19"></span><em class="property">using </em><code class="sig-name descname">real_vector_t</code> = <em class="property">typename</em> storage::real_vector_type<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE13real_vector_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>One-dimensional data array (vector) of real numbers. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE13real_matrix_tE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE13real_matrix_tE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE13real_matrix_tE"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1ab4c1bb0de579d0889fc5d41d13ddfe3a"></span><em class="property">using </em><code class="sig-name descname">real_matrix_t</code> = <em class="property">typename</em> storage::real_matrix_type<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE13real_matrix_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Two-dimensional data array (matrix) of real numbers. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE12int_vector_tE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE12int_vector_tE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE12int_vector_tE"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a9133042946c32ac69300e73267ee9342"></span><em class="property">using </em><code class="sig-name descname">int_vector_t</code> = <em class="property">typename</em> storage::int_vector_type<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE12int_vector_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>One-dimensional data array (vector) of integers. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE18real_vector_view_tE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE18real_vector_view_tE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE18real_vector_view_tE"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a1a4fea704927c699b7236068ba56808f"></span><em class="property">using </em><code class="sig-name descname">real_vector_view_t</code> = <em class="property">typename</em> storage::real_vector_view_type<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE18real_vector_view_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Partial view (slice) of a real vector. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE24real_vector_const_view_tE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE24real_vector_const_view_tE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE24real_vector_const_view_tE"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a453099bc32c7d4f972603d3b6a5cd687"></span><em class="property">using </em><code class="sig-name descname">real_vector_const_view_t</code> = <em class="property">typename</em> storage::real_vector_const_view_type<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE24real_vector_const_view_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Partial constant view (slice) of a real vector. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE24real_matrix_const_view_tE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE24real_matrix_const_view_tE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE24real_matrix_const_view_tE"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a537134823c020e2a45e3641479eb41b8"></span><em class="property">using </em><code class="sig-name descname">real_matrix_const_view_t</code> = <em class="property">typename</em> storage::real_matrix_const_view_type<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE24real_matrix_const_view_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Partial constant view (slice) of a real matrix. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE19vector_const_view_tE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE19vector_const_view_tE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE19vector_const_view_tE"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a95c73d8609e742ec2f9c2f876031e36b"></span><em class="property">using </em><code class="sig-name descname">vector_const_view_t</code> = <a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE24real_vector_const_view_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::real_vector_const_view_t">real_vector_const_view_t</a><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE19vector_const_view_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Storage-specific view type to expose real input vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span>. An argument of this type is passed as input to callable objects representing linear operators <span class="math notranslate nohighlight">\( \hat O \)</span> and <span class="math notranslate nohighlight">\( \hat B \)</span>. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE13vector_view_tE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE13vector_view_tE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE13vector_view_tE"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a1e45a94bf21619ed4b7a477e6c74593a"></span><em class="property">using </em><code class="sig-name descname">vector_view_t</code> = <a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE18real_vector_view_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::real_vector_view_t">real_vector_view_t</a><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE13vector_view_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Storage-specific view type to expose real output vectors <span class="math notranslate nohighlight">\( \mathbf{y} \)</span>. An argument of this type receives output from callable objects representing linear operators <span class="math notranslate nohighlight">\( \hat O \)</span> and <span class="math notranslate nohighlight">\( \hat B \)</span>. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Types</p>
+<dl class="cpp enum">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4ModeE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE4ModeE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE4ModeE"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a61cbd003ce682200a6604ed208ea7ba3"></span><em class="property">enum </em><code class="sig-name descname">Mode</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4ModeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Computational modes for generalized eigenproblems. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode7InverseE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode7InverseE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode7InverseE"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a61cbd003ce682200a6604ed208ea7ba3a5e9f496d52fae41b3802d51d6eeafb62"></span><em class="property">enumerator </em><code class="sig-name descname">Inverse</code> = 2<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode7InverseE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Regular inverse mode.</p>
+<p>Solve a generalized eigenproblem <span class="math notranslate nohighlight">\( \hat A\mathbf{x} = \lambda \hat M\mathbf{x} \)</span> by reduction to the canonical form with <span class="math notranslate nohighlight">\( \hat O = \hat M^{-1} \hat A \)</span> and <span class="math notranslate nohighlight">\( \hat B = \hat M \)</span>, where <span class="math notranslate nohighlight">\( \hat A \)</span> is symmetric and <span class="math notranslate nohighlight">\( \hat M \)</span> is symmetric positive-definite. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode14ShiftAndInvertE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode14ShiftAndInvertE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode14ShiftAndInvertE"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a61cbd003ce682200a6604ed208ea7ba3ab5ffc5243d3afbacf80e0edb33d0a2fa"></span><em class="property">enumerator </em><code class="sig-name descname">ShiftAndInvert</code> = 3<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode14ShiftAndInvertE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Shift-and-Invert mode.</p>
+<p>Solve a generalized eigenproblem <span class="math notranslate nohighlight">\( \hat A\mathbf{x} = \lambda \hat M\mathbf{x} \)</span> by reduction to the canonical form with <span class="math notranslate nohighlight">\( \hat O = (\hat A - \sigma\hat M)^{-1} \hat M \)</span> and <span class="math notranslate nohighlight">\( \hat B = \hat M \)</span>, where <span class="math notranslate nohighlight">\( \hat A \)</span> is symmetric and <span class="math notranslate nohighlight">\( \hat M \)</span> is symmetric positive semi-definite. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode8BucklingE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode8BucklingE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode8BucklingE"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a61cbd003ce682200a6604ed208ea7ba3a02fe8b3faef5de9983cd907c29241caa"></span><em class="property">enumerator </em><code class="sig-name descname">Buckling</code> = 4<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode8BucklingE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Buckling mode.</p>
+<p>Solve a generalized eigenproblem <span class="math notranslate nohighlight">\( \hat K\mathbf{x} = \lambda \hat K_G\mathbf{x} \)</span> by reduction to the canonical form with <span class="math notranslate nohighlight">\( \hat O = (\hat K - \sigma\hat K_G)^{-1} \hat K \)</span> and <span class="math notranslate nohighlight">\( \hat B = \hat K \)</span>, where <span class="math notranslate nohighlight">\( \hat K \)</span> is symmetric positive semi-definite and <span class="math notranslate nohighlight">\( \hat K_G \)</span> is symmetric indefinite. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode6CayleyE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode6CayleyE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode6CayleyE"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a61cbd003ce682200a6604ed208ea7ba3a27b94dbd7979662289b55a6446c702ac"></span><em class="property">enumerator </em><code class="sig-name descname">Cayley</code> = 5<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode6CayleyE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Cayley mode.</p>
+<p>Solve a generalized eigenproblem <span class="math notranslate nohighlight">\( \hat A\mathbf{x} = \lambda \hat M\mathbf{x} \)</span> by reduction to the canonical form with <span class="math notranslate nohighlight">\(\hat O = (\hat A -\sigma\hat M)^{-1}(\hat A +\sigma M)\)</span> and <span class="math notranslate nohighlight">\( \hat B = \hat M \)</span>, where <span class="math notranslate nohighlight">\( \hat A \)</span> is symmetric and <span class="math notranslate nohighlight">\( \hat M \)</span> is symmetric positive semi-definite. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE13arpack_solverEj">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE13arpack_solverEj"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE13arpack_solverEj"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::arpack_solver__unsigned-i"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1aea377cfd58ae7ab46d4b8e56875faf2e"></span><code class="sig-name descname">arpack_solver</code><span class="sig-paren">(</span>unsigned int <em>N</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE13arpack_solverEj" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs a solver object and allocates internal data buffers to be used by ARPACK-NG. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">N</span></code>: Dimension of the eigenproblem. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I00EN8ezarpack13arpack_solverI9Symmetric7BackendEclEvRR1ARK8params_t7ShiftsF">
+<span id="_CPPv3I00EN8ezarpack13arpack_solverI9Symmetric7BackendEclERR1ARK8params_t7ShiftsF"></span><span id="_CPPv2I00EN8ezarpack13arpack_solverI9Symmetric7BackendEclERR1ARK8params_t7ShiftsF"></span>template&lt;typename <code class="sig-name descname">A</code>, typename <code class="sig-name descname">ShiftsF</code> = <a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE14exact_shifts_fE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::exact_shifts_f">exact_shifts_f</a>&gt;<br /><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1afd9108800994e2967739e8f339381302"></span>void <code class="sig-name descname">operator()</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN8ezarpack13arpack_solverI9Symmetric7BackendEclEvRR1ARK8params_t7ShiftsF" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::operator()::A">A</a> &amp;&amp;<em>a</em>, <a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::params_t">params_t</a> <em class="property">const</em> &amp;<em>params</em>, <a class="reference internal" href="#_CPPv4I00EN8ezarpack13arpack_solverI9Symmetric7BackendEclEvRR1ARK8params_t7ShiftsF" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::operator()::ShiftsF">ShiftsF</a> <em>shifts_f</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN8ezarpack13arpack_solverI9Symmetric7BackendEclEvRR1ARK8params_t7ShiftsF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Solve a standard eigenproblem <span class="math notranslate nohighlight">\( \hat A\mathbf{x} = \lambda\mathbf{x}\)</span>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: A callable object representing the linear operator <span class="math notranslate nohighlight">\( \hat A \)</span>. It must take two arguments, <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="p">(</span><span class="n">vector_const_view_t</span> <span class="ow">in</span><span class="p">,</span> <span class="n">vector_view_t</span> <span class="n">out</span><span class="p">)</span>
+</pre></div>
+</div>
+ <code class="docutils literal notranslate"><span class="pre">a</span></code> is expected to act on the vector view <code class="docutils literal notranslate"><span class="pre">in</span></code> and write the result into the vector view <code class="docutils literal notranslate"><span class="pre">out</span></code>, <code class="docutils literal notranslate"><span class="pre">out</span> <span class="pre">=</span> <span class="pre">a*in</span></code>. Given an instance <code class="docutils literal notranslate"><span class="pre">as</span></code> of the <a class="reference internal" href="#classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4"><span class="std std-ref">arpack_solver&lt; Symmetric, Backend &gt;</span></a> class, <code class="docutils literal notranslate"><span class="pre">in</span></code> is also indirectly accessible as <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">as</span><span class="o">.</span><span class="n">workspace_vector</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">in_vector_n</span><span class="p">())</span>
+</pre></div>
+</div>
+ and <code class="docutils literal notranslate"><span class="pre">out</span></code> is accessible as <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">as</span><span class="o">.</span><span class="n">workspace_vector</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">out_vector_n</span><span class="p">())</span>
+</pre></div>
+</div>
+</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">params</span></code>: Set of input parameters for the Implicitly Restarted Lanczos Method.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shifts_f</span></code>: Functor that implements a shift selection strategy for the implicit restarts. For the expected signature of the functor, see <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1exact__shifts__f_1ae562869a191b352b82a50d034a057316"><span class="std std-ref">exact_shifts_f::operator()()</span></a>. When this argument is omitted, the default <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1exact__shifts__f"><span class="std std-ref">“Exact Shift Strategy”</span></a> is used, which is the right choice in most cases.</p></li>
+</ul>
+</dd>
+<dt><strong>Exceptions</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><a class="reference internal" href="solver_base.html#structezarpack_1_1ncv__insufficient"><span class="std std-ref"><span class="pre">ezarpack::ncv_insufficient</span></span></a></code>: No shifts could be applied during a cycle of the IRL iteration. </p></li>
+<li><p><code class="docutils literal notranslate"><a class="reference internal" href="solver_base.html#structezarpack_1_1maxiter__reached"><span class="std std-ref"><span class="pre">ezarpack::maxiter_reached</span></span></a></code>: Maximum number of IRL iterations has been reached. All possible eigenvalues of <span class="math notranslate nohighlight">\( \hat O \)</span> have been found. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::runtime_error</span></code>: Invalid input parameters and other errors reported by ARPACK-NG routines <code class="docutils literal notranslate"><span class="pre">dsaupd()</span></code> and <code class="docutils literal notranslate"><span class="pre">dseupd()</span></code>. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I000EN8ezarpack13arpack_solverI9Symmetric7BackendEclEvRR2OPRR1B4ModeRK8params_t7ShiftsF">
+<span id="_CPPv3I000EN8ezarpack13arpack_solverI9Symmetric7BackendEclERR2OPRR1B4ModeRK8params_t7ShiftsF"></span><span id="_CPPv2I000EN8ezarpack13arpack_solverI9Symmetric7BackendEclERR2OPRR1B4ModeRK8params_t7ShiftsF"></span>template&lt;typename <code class="sig-name descname">OP</code>, typename <code class="sig-name descname">B</code>, typename <code class="sig-name descname">ShiftsF</code> = <a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE14exact_shifts_fE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::exact_shifts_f">exact_shifts_f</a>&gt;<br /><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1ac28945bf4f88ba28b7b6058252ed69bd"></span>void <code class="sig-name descname">operator()</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I000EN8ezarpack13arpack_solverI9Symmetric7BackendEclEvRR2OPRR1B4ModeRK8params_t7ShiftsF" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::operator()::OP">OP</a> &amp;&amp;<em>op</em>, <a class="reference internal" href="#_CPPv4I000EN8ezarpack13arpack_solverI9Symmetric7BackendEclEvRR2OPRR1B4ModeRK8params_t7ShiftsF" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::operator()::B">B</a> &amp;&amp;<em>b</em>, <a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4ModeE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::Mode">Mode</a> <em>mode</em>, <a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::params_t">params_t</a> <em class="property">const</em> &amp;<em>params</em>, <a class="reference internal" href="#_CPPv4I000EN8ezarpack13arpack_solverI9Symmetric7BackendEclEvRR2OPRR1B4ModeRK8params_t7ShiftsF" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::operator()::ShiftsF">ShiftsF</a> <em>shifts_f</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN8ezarpack13arpack_solverI9Symmetric7BackendEclEvRR2OPRR1B4ModeRK8params_t7ShiftsF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Solve a generalized eigenproblem <span class="math notranslate nohighlight">\( \hat A\mathbf{x} = \lambda\hat M\mathbf{x}\)</span>.</p>
+<p>Operators <span class="math notranslate nohighlight">\( \hat O \)</span> and <span class="math notranslate nohighlight">\( \hat B \)</span> mentioned below are related to <span class="math notranslate nohighlight">\( \hat A \)</span> and <span class="math notranslate nohighlight">\( \hat M \)</span> via a <a class="reference internal" href="#classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a61cbd003ce682200a6604ed208ea7ba3"><span class="std std-ref">Mode</span></a> -dependent spectral transformation.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">op</span></code>: A callable object representing the linear operator <span class="math notranslate nohighlight">\( \hat O \)</span>. It must take two arguments, <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">op</span><span class="p">(</span><span class="n">vector_view_t</span> <span class="ow">in</span><span class="p">,</span> <span class="n">vector_view_t</span> <span class="n">out</span><span class="p">)</span>
+</pre></div>
+</div>
+ In all computational modes except for <a class="reference internal" href="#classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a61cbd003ce682200a6604ed208ea7ba3a5e9f496d52fae41b3802d51d6eeafb62"><span class="std std-ref">Inverse</span></a>, <code class="docutils literal notranslate"><span class="pre">op</span></code> is expected to act on the vector view <code class="docutils literal notranslate"><span class="pre">in</span></code> and write the result into the vector view <code class="docutils literal notranslate"><span class="pre">out</span></code>, <code class="docutils literal notranslate"><span class="pre">out</span> <span class="pre">=</span> <span class="pre">op*in</span></code>. In the <a class="reference internal" href="#classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a61cbd003ce682200a6604ed208ea7ba3a5e9f496d52fae41b3802d51d6eeafb62"><span class="std std-ref">Inverse</span></a> mode, however, <code class="docutils literal notranslate"><span class="pre">op</span></code> must do the following, <code class="docutils literal notranslate"><span class="pre">in</span> <span class="pre">=</span> <span class="pre">op*in</span></code>, <code class="docutils literal notranslate"><span class="pre">out</span> <span class="pre">=</span> <span class="pre">M^{-1}*in</span></code>. Given an instance <code class="docutils literal notranslate"><span class="pre">as</span></code> of the <a class="reference internal" href="#classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4"><span class="std std-ref">arpack_solver&lt; Symmetric, Backend &gt;</span></a> class, <code class="docutils literal notranslate"><span class="pre">in</span></code> is also indirectly accessible as <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">as</span><span class="o">.</span><span class="n">workspace_vector</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">in_vector_n</span><span class="p">())</span>
+</pre></div>
+</div>
+ and <code class="docutils literal notranslate"><span class="pre">out</span></code> is accessible as <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">as</span><span class="o">.</span><span class="n">workspace_vector</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">out_vector_n</span><span class="p">())</span>
+</pre></div>
+</div>
+</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b</span></code>: A callable object representing the linear operator <span class="math notranslate nohighlight">\( \hat B \)</span>. It must take two arguments, <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">b</span><span class="p">(</span><span class="n">vector_const_view_t</span> <span class="ow">in</span><span class="p">,</span> <span class="n">vector_view_t</span> <span class="n">out</span><span class="p">)</span>
+</pre></div>
+</div>
+ <code class="docutils literal notranslate"><span class="pre">b</span></code> is expected to act on the vector view <code class="docutils literal notranslate"><span class="pre">in</span></code> and write the result into the vector view <code class="docutils literal notranslate"><span class="pre">out</span></code>, <code class="docutils literal notranslate"><span class="pre">out</span> <span class="pre">=</span> <span class="pre">b*in</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mode</span></code>: <a class="reference internal" href="#classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a61cbd003ce682200a6604ed208ea7ba3"><span class="std std-ref">Computational mode</span></a> to be used. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">params</span></code>: Set of input parameters for the Implicitly Restarted Lanczos Method.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shifts_f</span></code>: Functor that implements a shift selection strategy for the implicit restarts. For the expected signature of the functor, see <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1exact__shifts__f_1ae562869a191b352b82a50d034a057316"><span class="std std-ref">exact_shifts_f::operator()()</span></a>. When this argument is omitted, the default <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1exact__shifts__f"><span class="std std-ref">“Exact Shift Strategy”</span></a> is used, which is the right choice in most cases.</p></li>
+</ul>
+</dd>
+<dt><strong>Exceptions</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><a class="reference internal" href="solver_base.html#structezarpack_1_1ncv__insufficient"><span class="std std-ref"><span class="pre">ezarpack::ncv_insufficient</span></span></a></code>: No shifts could be applied during a cycle of the IRL iteration. </p></li>
+<li><p><code class="docutils literal notranslate"><a class="reference internal" href="solver_base.html#structezarpack_1_1maxiter__reached"><span class="std std-ref"><span class="pre">ezarpack::maxiter_reached</span></span></a></code>: Maximum number of IRL iterations has been reached. All possible eigenvalues of <span class="math notranslate nohighlight">\( \hat O \)</span> have been found. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::runtime_error</span></code>: Invalid input parameters and other errors reported by ARPACK-NG routines <code class="docutils literal notranslate"><span class="pre">dsaupd()</span></code> and <code class="docutils literal notranslate"><span class="pre">dseupd()</span></code>. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE11in_vector_nEv">
+<span id="_CPPv3NK8ezarpack13arpack_solverI9Symmetric7BackendE11in_vector_nEv"></span><span id="_CPPv2NK8ezarpack13arpack_solverI9Symmetric7BackendE11in_vector_nEv"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::in_vector_nC"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a592d6b68d5fffdbf93210d03a5e50b17"></span>int <code class="sig-name descname">in_vector_n</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE11in_vector_nEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the index of the workspace vector, which is currently expected to be acted upon by linear operator <span class="math notranslate nohighlight">\( \hat O \)</span> or <span class="math notranslate nohighlight">\( \hat B \)</span>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE12out_vector_nEv">
+<span id="_CPPv3NK8ezarpack13arpack_solverI9Symmetric7BackendE12out_vector_nEv"></span><span id="_CPPv2NK8ezarpack13arpack_solverI9Symmetric7BackendE12out_vector_nEv"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::out_vector_nC"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a15b67087751a9e3025bf8dd8974d11a3"></span>int <code class="sig-name descname">out_vector_n</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE12out_vector_nEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the index of the workspace vector, which is currently expected to receive result from application of linear operator <span class="math notranslate nohighlight">\( \hat O \)</span> or <span class="math notranslate nohighlight">\( \hat B \)</span>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE16workspace_vectorEi">
+<span id="_CPPv3NK8ezarpack13arpack_solverI9Symmetric7BackendE16workspace_vectorEi"></span><span id="_CPPv2NK8ezarpack13arpack_solverI9Symmetric7BackendE16workspace_vectorEi"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::workspace_vector__iC"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a7d88e42ec8d4333303aba2a3c31ad069"></span><a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE18real_vector_view_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::real_vector_view_t">real_vector_view_t</a> <code class="sig-name descname">workspace_vector</code><span class="sig-paren">(</span>int <em>n</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE16workspace_vectorEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns a view of a vector within ARPACK-NG’s workspace array.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code>: Index of the workspace vector. Valid values are 0, 1 and 2. </p></li>
+</ul>
+</dd>
+<dt><strong>Exceptions</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">std::runtime_error</span></code>: Invalid index value. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE5nconvEv">
+<span id="_CPPv3NK8ezarpack13arpack_solverI9Symmetric7BackendE5nconvEv"></span><span id="_CPPv2NK8ezarpack13arpack_solverI9Symmetric7BackendE5nconvEv"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::nconvC"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1ac1dab34889ee53c85993d4cf81cc1f43"></span>unsigned int <code class="sig-name descname">nconv</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE5nconvEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of “converged” Ritz values. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE11eigenvaluesEv">
+<span id="_CPPv3NK8ezarpack13arpack_solverI9Symmetric7BackendE11eigenvaluesEv"></span><span id="_CPPv2NK8ezarpack13arpack_solverI9Symmetric7BackendE11eigenvaluesEv"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::eigenvaluesC"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1aaff63c273021fd251e0ad103eab5d711"></span><a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE24real_vector_const_view_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::real_vector_const_view_t">real_vector_const_view_t</a> <code class="sig-name descname">eigenvalues</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE11eigenvaluesEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns a constant view of a list of <a class="reference internal" href="#classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1ac1dab34889ee53c85993d4cf81cc1f43"><span class="std std-ref">nconv()</span></a> eigenvalues.</p>
+<p>The values in the list are in ascending order. <dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>In the generalized eigenproblem <a class="reference internal" href="#classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a61cbd003ce682200a6604ed208ea7ba3"><span class="std std-ref">modes</span></a>, this method always returns eigenvalues of the <strong>original</strong> problem. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE12eigenvectorsEv">
+<span id="_CPPv3NK8ezarpack13arpack_solverI9Symmetric7BackendE12eigenvectorsEv"></span><span id="_CPPv2NK8ezarpack13arpack_solverI9Symmetric7BackendE12eigenvectorsEv"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::eigenvectorsC"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a0b1d4c7cc676e60226c7ca4f9987eaeb"></span><a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE24real_matrix_const_view_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::real_matrix_const_view_t">real_matrix_const_view_t</a> <code class="sig-name descname">eigenvectors</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE12eigenvectorsEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns a constant view of a matrix, whose <a class="reference internal" href="#classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1ac1dab34889ee53c85993d4cf81cc1f43"><span class="std std-ref">nconv()</span></a> columns are converged Lanczos basis vectors (eigenvectors). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE15residual_vectorEv">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE15residual_vectorEv"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE15residual_vectorEv"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::residual_vector"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a1befbd4d197eecd92959c40793aa7b09"></span><a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE18real_vector_view_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::real_vector_view_t">real_vector_view_t</a> <code class="sig-name descname">residual_vector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE15residual_vectorEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns a view of the current residual vector.</p>
+<p>When <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a8d99a9ccc5220b89f382a0030c6ae3d7"><span class="std std-ref">params_t::random_residual_vector</span></a> is set to <code class="docutils literal notranslate"><span class="pre">false</span></code>, the view returned by this accessor can be used to set the initial residual vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE12Bx_availableEv">
+<span id="_CPPv3NK8ezarpack13arpack_solverI9Symmetric7BackendE12Bx_availableEv"></span><span id="_CPPv2NK8ezarpack13arpack_solverI9Symmetric7BackendE12Bx_availableEv"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::Bx_availableC"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a34239ac3e981b6c97045bb07d37ff727"></span>bool <code class="sig-name descname">Bx_available</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE12Bx_availableEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Has <span class="math notranslate nohighlight">\( \hat B\mathbf{x} \)</span> already been computed at the current IRLM iteration? </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE9Bx_vectorEv">
+<span id="_CPPv3NK8ezarpack13arpack_solverI9Symmetric7BackendE9Bx_vectorEv"></span><span id="_CPPv2NK8ezarpack13arpack_solverI9Symmetric7BackendE9Bx_vectorEv"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::Bx_vectorC"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1a62b1a338df7b13988b7e52a211abd5c6"></span><a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE24real_vector_const_view_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::real_vector_const_view_t">real_vector_const_view_t</a> <code class="sig-name descname">Bx_vector</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE9Bx_vectorEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns a constant view of the most recently computed vector <span class="math notranslate nohighlight">\( \hat B\mathbf{x} \)</span>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE5statsEv">
+<span id="_CPPv3NK8ezarpack13arpack_solverI9Symmetric7BackendE5statsEv"></span><span id="_CPPv2NK8ezarpack13arpack_solverI9Symmetric7BackendE5statsEv"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::statsC"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1af61a6fcd4dfe49c55ddbd128d48aa2dc"></span><a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::stats_t">stats_t</a> <code class="sig-name descname">stats</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE5statsEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns computation statistics from the last IRLM run. </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE14exact_shifts_fE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE14exact_shifts_fE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE14exact_shifts_fE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::exact_shifts_f"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1exact__shifts__f"></span><em class="property">struct </em><code class="sig-name descname">exact_shifts_f</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE14exact_shifts_fE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>If this functor is used to provide shifts for implicit restart, then the default ARPACK-NG’s shift strategy (Exact Shift Strategy) will be employed. <dl class="simple">
+<dt><strong>See</strong></dt><dd><p>Paragraph 4.4.1 of ARPACK Users’ Guide: Solution of Large Scale Eigenvalue Problems with Implicitly Restarted Arnoldi Methods (R. B. Lehoucq, D. C. Sorensen, C. Yang, SIAM, 1998), <a class="reference external" href="https://www.caam.rice.edu/software/ARPACK/UG/node50.html">https://www.caam.rice.edu/software/ARPACK/UG/node50.html</a>. </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE14exact_shifts_fclE24real_vector_const_view_t24real_vector_const_view_t18real_vector_view_t">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE14exact_shifts_fclE24real_vector_const_view_t24real_vector_const_view_t18real_vector_view_t"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE14exact_shifts_fclE24real_vector_const_view_t24real_vector_const_view_t18real_vector_view_t"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::exact_shifts_f::call-operator__real_vector_const_view_t.real_vector_const_view_t.real_vector_view_t"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1exact__shifts__f_1ae562869a191b352b82a50d034a057316"></span>void <code class="sig-name descname">operator()</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE24real_vector_const_view_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::real_vector_const_view_t">real_vector_const_view_t</a> <em>ritz_values</em>, <a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE24real_vector_const_view_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::real_vector_const_view_t">real_vector_const_view_t</a> <em>ritz_bounds</em>, <a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE18real_vector_view_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::real_vector_view_t">real_vector_view_t</a> <em>shifts</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE14exact_shifts_fclE24real_vector_const_view_t24real_vector_const_view_t18real_vector_view_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Trivial call operator. The actual shifts will be internally computed by ARPACK-NG.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ritz_values</span></code>: View of a real vector with current <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a50b216641fa28655e500daa6d50a8fa7"><span class="std std-ref">params_t::ncv</span></a> Ritz values. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ritz_bounds</span></code>: View of a real vector with current estimated error bounds of the Ritz values. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">shifts</span></code>: Real vector view to receive the computed shifts. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_tE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_tE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_tE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::params_t"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t"></span><em class="property">struct </em><code class="sig-name descname">params_t</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Input parameters of the Implicitly Restarted Lanczos Method (IRLM). </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Types</p>
+<dl class="cpp enum">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_tE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_tE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_tE"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a4dd684905716669389515819aec3efeb"></span><em class="property">enum </em><code class="sig-name descname">eigenvalues_select_t</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Categories of eigenvalues to compute. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t7LargestE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t7LargestE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t7LargestE"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a4dd684905716669389515819aec3efeba47abfec17beb9c6c234d90498f6f628e"></span><em class="property">enumerator </em><code class="sig-name descname">Largest</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t7LargestE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Largest (algebraic) eigenvalues. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t8SmallestE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t8SmallestE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t8SmallestE"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a4dd684905716669389515819aec3efeba917af5656c3d74a669542785baae9df8"></span><em class="property">enumerator </em><code class="sig-name descname">Smallest</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t8SmallestE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Smallest (algebraic) eigenvalues. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t16LargestMagnitudeE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t16LargestMagnitudeE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t16LargestMagnitudeE"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a4dd684905716669389515819aec3efeba11899f343cad43c8fc40d9e3f25fdba4"></span><em class="property">enumerator </em><code class="sig-name descname">LargestMagnitude</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t16LargestMagnitudeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Largest eigenvalues in magnitude. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t17SmallestMagnitudeE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t17SmallestMagnitudeE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t17SmallestMagnitudeE"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a4dd684905716669389515819aec3efeba45bfb770242cd0519fe40a07a0a907e4"></span><em class="property">enumerator </em><code class="sig-name descname">SmallestMagnitude</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t17SmallestMagnitudeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Smallest eigenvalues in magnitude. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t8BothEndsE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t8BothEndsE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t8BothEndsE"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a4dd684905716669389515819aec3efeba519d416272940aeaaa541faac92d882b"></span><em class="property">enumerator </em><code class="sig-name descname">BothEnds</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t8BothEndsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Eigenvalues at both ends of the spectrum. If <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1af6d4dcf5be0f02596b320483860ff43d"><span class="std std-ref">n_eigenvalues</span></a> is odd, compute one more from the high end than from the low end. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t8params_tEj20eigenvalues_select_tb">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t8params_tEj20eigenvalues_select_tb"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t8params_tEj20eigenvalues_select_tb"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::params_t::params_t__unsigned-i.eigenvalues_select_t.b"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a4e9a1b31f36340bf3ff584681d1bbf8b"></span><code class="sig-name descname">params_t</code><span class="sig-paren">(</span>unsigned int <em>n_eigenvalues</em>, <a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::params_t::eigenvalues_select_t">eigenvalues_select_t</a> <em>eigenvalues_select</em>, bool <em>compute_eigenvectors</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t8params_tEj20eigenvalues_select_tb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs an IRLM parameter object with given <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1af6d4dcf5be0f02596b320483860ff43d"><span class="std std-ref">n_eigenvalues</span></a>, <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a72b1ed8cf291e60d6617ed79600ef597"><span class="std std-ref">eigenvalues_select</span></a> and <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1ad90c7900a343a7879d2790f14aacc3ad"><span class="std std-ref">compute_eigenvectors</span></a>. The rest of the parameters are set to their defaults. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Members</p>
+<dl class="cpp var">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t13n_eigenvaluesE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t13n_eigenvaluesE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t13n_eigenvaluesE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::params_t::n_eigenvalues__unsigned-i"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1af6d4dcf5be0f02596b320483860ff43d"></span>unsigned int <code class="sig-name descname">n_eigenvalues</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t13n_eigenvaluesE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of eigenvalues (Ritz values) to compute. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t18eigenvalues_selectE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t18eigenvalues_selectE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t18eigenvalues_selectE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::params_t::eigenvalues_select__eigenvalues_select_t"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a72b1ed8cf291e60d6617ed79600ef597"></span><a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_tE" title="ezarpack::arpack_solver&lt;Symmetric, Backend&gt;::params_t::eigenvalues_select_t">eigenvalues_select_t</a> <code class="sig-name descname">eigenvalues_select</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t18eigenvalues_selectE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Which of the eigenvalues to compute? </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t3ncvE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t3ncvE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t3ncvE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::params_t::ncv__i"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a50b216641fa28655e500daa6d50a8fa7"></span>int <code class="sig-name descname">ncv</code> = -1<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t3ncvE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of Lanczos vectors to be generated. <code class="docutils literal notranslate"><span class="pre">-1</span></code> stands for the default value <code class="docutils literal notranslate"><span class="pre">min(2*n_eigenvalues</span> <span class="pre">+</span> <span class="pre">2,</span> <span class="pre">N)</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the dimension of the problem. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20compute_eigenvectorsE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20compute_eigenvectorsE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20compute_eigenvectorsE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::params_t::compute_eigenvectors__b"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1ad90c7900a343a7879d2790f14aacc3ad"></span>bool <code class="sig-name descname">compute_eigenvectors</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20compute_eigenvectorsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute Ritz vectors in addition to the eigenvalues? </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t22random_residual_vectorE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t22random_residual_vectorE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t22random_residual_vectorE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::params_t::random_residual_vector__b"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a8d99a9ccc5220b89f382a0030c6ae3d7"></span>bool <code class="sig-name descname">random_residual_vector</code> = true<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t22random_residual_vectorE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Use a randomly generated initial residual vector? </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t5sigmaE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t5sigmaE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t5sigmaE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::params_t::sigma__double"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1acb96c8d0cb2072c62e574f085bd62cd2"></span>double <code class="sig-name descname">sigma</code> = 0<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t5sigmaE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Eigenvalue shift <span class="math notranslate nohighlight">\( \sigma \)</span> used if a spectral transformation is employed. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t9toleranceE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t9toleranceE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t9toleranceE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::params_t::tolerance__double"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a900fd77db45bda6650c1588fdb891031"></span>double <code class="sig-name descname">tolerance</code> = 0<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t9toleranceE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Relative tolerance for Ritz value convergence. The default setting is machine precision. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t8max_iterE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t8max_iterE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t8max_iterE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::params_t::max_iter__unsigned-i"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1params__t_1a851790636f1361a31cde6cb449f1d21a"></span>unsigned int <code class="sig-name descname">max_iter</code> = INT_MAX<a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t8max_iterE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maximum number of IRLM iterations allowed. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_tE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_tE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_tE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::stats_t"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1stats__t"></span><em class="property">struct </em><code class="sig-name descname">stats_t</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statistics regarding a completed IRLM run. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Members</p>
+<dl class="cpp var">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t6n_iterE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t6n_iterE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t6n_iterE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::stats_t::n_iter__unsigned-i"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1stats__t_1a6bb0f83eee8afd72036d5929c19dbc40"></span>unsigned int <code class="sig-name descname">n_iter</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t6n_iterE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of Arnoldi update iterations taken. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t17n_op_x_operationsE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t17n_op_x_operationsE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t17n_op_x_operationsE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::stats_t::n_op_x_operations__unsigned-i"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1stats__t_1a15ea1a844895be0fec6fbe70a496807a"></span>unsigned int <code class="sig-name descname">n_op_x_operations</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t17n_op_x_operationsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Total number of <span class="math notranslate nohighlight">\( \hat O \mathbf{x} \)</span> operations. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t16n_b_x_operationsE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t16n_b_x_operationsE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t16n_b_x_operationsE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::stats_t::n_b_x_operations__unsigned-i"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1stats__t_1abe4036300ac8b8d65e8efb637ddca805"></span>unsigned int <code class="sig-name descname">n_b_x_operations</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t16n_b_x_operationsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Total number of <span class="math notranslate nohighlight">\( \hat B \mathbf{x} \)</span> operations. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t14n_reorth_stepsE">
+<span id="_CPPv3N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t14n_reorth_stepsE"></span><span id="_CPPv2N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t14n_reorth_stepsE"></span><span id="ezarpack::arpack_solver:Symmetric.Backend:::stats_t::n_reorth_steps__unsigned-i"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4_1_1stats__t_1ac4b3884ebb42650f7cf6796ccf5064e1"></span>unsigned int <code class="sig-name descname">n_reorth_steps</code><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t14n_reorth_stepsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Total number of steps of re-orthogonalization. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="solver.html"
+                        title="previous chapter">Specializations of the <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="solver_asymmetric.html"
+                        title="next chapter"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_asymmetric.hpp</span></code> - general real eigenproblems</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/solver_symmetric.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="solver_asymmetric.html" title="ezarpack/solver_asymmetric.hpp - general real eigenproblems"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="solver.html" title="Specializations of the arpack_solver class template"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="solver.html" >Specializations of the <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_symmetric.hpp</span></code> - symmetric real eigenproblems</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Igor Krivenko.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

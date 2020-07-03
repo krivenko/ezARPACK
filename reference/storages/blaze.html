@@ -1,0 +1,601 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ezarpack/storages/blaze.hpp - Blaze &#8212; ezARPACK 0.8 documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ezarpack/storages/armadillo.hpp - Armadillo" href="armadillo.html" />
+    <link rel="prev" title="ezarpack/storages/eigen.hpp - Eigen 3" href="eigen.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="armadillo.html" title="ezarpack/storages/armadillo.hpp - Armadillo"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="eigen.html" title="ezarpack/storages/eigen.hpp - Eigen 3"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Data storage backends</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/blaze.hpp</span></code> - Blaze</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ezarpack-storages-blaze-hpp-blaze">
+<span id="refblaze"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/blaze.hpp</span></code> - Blaze<a class="headerlink" href="#ezarpack-storages-blaze-hpp-blaze" title="Permalink to this headline">¶</a></h1>
+<p>This storage backend depends on <a class="reference external" href="https://bitbucket.org/blaze-lib/blaze">Blaze</a>
+version 3 or newer.</p>
+<dl class="cpp struct">
+<dt id="_CPPv4N8ezarpack13blaze_storageE">
+<span id="_CPPv3N8ezarpack13blaze_storageE"></span><span id="_CPPv2N8ezarpack13blaze_storageE"></span><span id="ezarpack::blaze_storage"></span><span class="target" id="structezarpack_1_1blaze__storage"></span><em class="property">struct </em><code class="sig-name descname">blaze_storage</code><a class="headerlink" href="#_CPPv4N8ezarpack13blaze_storageE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Blaze storage backend tag.</p>
+<p>Passing this tag as the second template parameter of <a class="reference internal" href="../solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref">ezarpack::arpack_solver</span></a> instructs it to use Blaze’s vector/matrix/view types. </p>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt id="_CPPv4IEN8ezarpack14storage_traitsI13blaze_storageEE">
+<span id="_CPPv3IEN8ezarpack14storage_traitsI13blaze_storageEE"></span><span id="_CPPv2IEN8ezarpack14storage_traitsI13blaze_storageEE"></span>template&lt;&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4"></span><em class="property">struct </em><code class="sig-prename descclassname">ezarpack<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">storage_traits</code>&lt;<a class="reference internal" href="#_CPPv4N8ezarpack13blaze_storageE" title="ezarpack::blaze_storage">blaze_storage</a>&gt;<a class="headerlink" href="#_CPPv4IEN8ezarpack14storage_traitsI13blaze_storageEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Traits of the Blaze storage backend.</p>
+<p>Member typedefs of this structure describe types of objects that will be used by <a class="reference internal" href="../solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref">arpack_solver</span></a> to store numerical arrays and expose their partial views. Structure’s static member functions are called to control arrays’ lifetime, create the partial views, and perform some data post-processing operations. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Private implementation details</p>
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6vectorE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE6vectorE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE6vectorE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1ab0d6d4ead91703125a783b36218e0ae1"></span><em class="property">using </em><code class="sig-name descname">vector</code> = blaze::DynamicVector&lt;T&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6vectorE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Blaze dynamic column vector. <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6matrixE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE6matrixE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE6matrixE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1abd0d87a540b0a35b54d69a2baa7972af"></span><em class="property">using </em><code class="sig-name descname">matrix</code> = blaze::DynamicMatrix&lt;T, blaze::columnMajor&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6matrixE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Blaze dynamic column-major matrix. <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE11vector_viewE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE11vector_viewE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE11vector_viewE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1aedce57f0252a11d2d1b97b610e5f14d5"></span><em class="property">using </em><code class="sig-name descname">vector_view</code> = blaze::Subvector&lt;<a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6vectorE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector">vector</a>&lt;T&gt;&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE11vector_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Vector view type (subvector). <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE17vector_const_viewE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE17vector_const_viewE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE17vector_const_viewE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a4737bd9232ac81a675e89d5217adb3f9"></span><em class="property">using </em><code class="sig-name descname">vector_const_view</code> = blaze::Subvector&lt;<em class="property">const</em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6vectorE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector">vector</a>&lt;T&gt;&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE17vector_const_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constant vector view type (subvector of a constant vector). <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE11matrix_viewE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE11matrix_viewE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE11matrix_viewE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1ad9f12a6f0e715211ddc86d6c606a9115"></span><em class="property">using </em><code class="sig-name descname">matrix_view</code> = blaze::Submatrix&lt;<a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6matrixE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::matrix">matrix</a>&lt;T&gt;&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE11matrix_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Matrix view type (submatrix). <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE17matrix_const_viewE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE17matrix_const_viewE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE17matrix_const_viewE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1af86d33688b7147c6e593663125dcec4a"></span><em class="property">using </em><code class="sig-name descname">matrix_const_view</code> = blaze::Submatrix&lt;<em class="property">const</em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6matrixE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::matrix">matrix</a>&lt;T&gt;&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE17matrix_const_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constant matrix view type (submatrix of a constant matrix). <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Vector and matrix storage types</p>
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16real_vector_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE16real_vector_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE16real_vector_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a02e30709b75abe108f84fcd5b55b2514"></span><em class="property">using </em><code class="sig-name descname">real_vector_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6vectorE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector">vector</a>&lt;double&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16real_vector_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>One-dimensional container owning a contiguous array of <code class="docutils literal notranslate"><span class="pre">double</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE19complex_vector_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE19complex_vector_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE19complex_vector_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a0ed165928044d2ec3a65e302b7013167"></span><em class="property">using </em><code class="sig-name descname">complex_vector_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6vectorE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector">vector</a>&lt;<a class="reference internal" href="../arpack.html#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE19complex_vector_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>One-dimensional container owning a contiguous array of <code class="docutils literal notranslate"><span class="pre">std::complex&lt;double&gt;</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE15int_vector_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE15int_vector_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE15int_vector_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a3280613f53c8edcc1486533d42f5c1dd"></span><em class="property">using </em><code class="sig-name descname">int_vector_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6vectorE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector">vector</a>&lt;int&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE15int_vector_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>One-dimensional container owning a contiguous array of <code class="docutils literal notranslate"><span class="pre">int</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16real_matrix_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE16real_matrix_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE16real_matrix_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a8b9ba5f62fbbe9110bdb05cb6e033a53"></span><em class="property">using </em><code class="sig-name descname">real_matrix_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6matrixE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::matrix">matrix</a>&lt;double&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16real_matrix_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Two-dimensional container owning a contiguous array of <code class="docutils literal notranslate"><span class="pre">double</span></code>. The storage order is column-major. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE19complex_matrix_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE19complex_matrix_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE19complex_matrix_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a90e94e16f229962b4780477123a8dee8"></span><em class="property">using </em><code class="sig-name descname">complex_matrix_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6matrixE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::matrix">matrix</a>&lt;<a class="reference internal" href="../arpack.html#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE19complex_matrix_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Two-dimensional container owning a contiguous array of <code class="docutils literal notranslate"><span class="pre">std::complex&lt;double&gt;</span></code>. The storage order is column-major. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">View types</p>
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE21real_vector_view_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE21real_vector_view_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE21real_vector_view_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1adcc5c03311d4fd696582fc1d2ecd8036"></span><em class="property">using </em><code class="sig-name descname">real_vector_view_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE11vector_viewE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector_view">vector_view</a>&lt;double&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE21real_vector_view_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Contiguous partial view of a real vector (subvector). </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE27real_vector_const_view_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE27real_vector_const_view_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE27real_vector_const_view_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1afc9f4fd6f207b54fb6574b68659cfa2e"></span><em class="property">using </em><code class="sig-name descname">real_vector_const_view_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE17vector_const_viewE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector_const_view">vector_const_view</a>&lt;double&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE27real_vector_const_view_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Contiguous partial constant view of a real vector (subvector). </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE24complex_vector_view_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE24complex_vector_view_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE24complex_vector_view_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a9afabecfe2c6fcc93f4baf910c5bd9b0"></span><em class="property">using </em><code class="sig-name descname">complex_vector_view_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE11vector_viewE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector_view">vector_view</a>&lt;<a class="reference internal" href="../arpack.html#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE24complex_vector_view_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Contiguous partial view of a complex vector (subvector). </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE30complex_vector_const_view_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE30complex_vector_const_view_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE30complex_vector_const_view_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a8d2a8e627b1e63d2e7f0c2967d323fde"></span><em class="property">using </em><code class="sig-name descname">complex_vector_const_view_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE17vector_const_viewE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector_const_view">vector_const_view</a>&lt;<a class="reference internal" href="../arpack.html#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE30complex_vector_const_view_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Contiguous partial constant view of a complex vector (subvector). </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE27real_matrix_const_view_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE27real_matrix_const_view_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE27real_matrix_const_view_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a4a44347e2e27328dd30584992f3a7d74"></span><em class="property">using </em><code class="sig-name descname">real_matrix_const_view_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE17matrix_const_viewE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::matrix_const_view">matrix_const_view</a>&lt;double&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE27real_matrix_const_view_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Contiguous partial constant view of a real matrix (matrix block) that includes a number of the leftmost columns. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE30complex_matrix_const_view_typeE">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE30complex_matrix_const_view_typeE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE30complex_matrix_const_view_typeE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a60d0245a8f3b1daca9b665c9493aae4c"></span><em class="property">using </em><code class="sig-name descname">complex_matrix_const_view_type</code> = <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE17matrix_const_viewE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::matrix_const_view">matrix_const_view</a>&lt;<a class="reference internal" href="../arpack.html#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex">dcomplex</a>&gt;<a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE30complex_matrix_const_view_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Contiguous partial constant view of a complex matrix (matrix block) that includes a number of the leftmost columns. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Functions to create/destroy/resize data containers</p>
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16make_real_vectorEi">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE16make_real_vectorEi"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE16make_real_vectorEi"></span><span id="ezarpack::storage_traits:blaze_storage:::make_real_vector__i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a8d01691f91035a3cd90cddc1296dfe6c"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::real_vector_type">real_vector_type</a> <code class="sig-name descname">make_real_vector</code><span class="sig-paren">(</span>int <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16make_real_vectorEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs a real vector container. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Constructed vector. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the vector. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE19make_complex_vectorEi">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE19make_complex_vectorEi"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE19make_complex_vectorEi"></span><span id="ezarpack::storage_traits:blaze_storage:::make_complex_vector__i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1ac7925db0fee1b650481c77f1d924d631"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE19complex_vector_typeE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::complex_vector_type">complex_vector_type</a> <code class="sig-name descname">make_complex_vector</code><span class="sig-paren">(</span>int <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE19make_complex_vectorEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs a complex vector container. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Constructed vector. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the vector. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE15make_int_vectorEi">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE15make_int_vectorEi"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE15make_int_vectorEi"></span><span id="ezarpack::storage_traits:blaze_storage:::make_int_vector__i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a6d7c2d6e37accf659a5bce0388731c9b"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE15int_vector_typeE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::int_vector_type">int_vector_type</a> <code class="sig-name descname">make_int_vector</code><span class="sig-paren">(</span>int <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE15make_int_vectorEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs an integer vector container. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Constructed vector. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the vector. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16make_real_matrixEii">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE16make_real_matrixEii"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE16make_real_matrixEii"></span><span id="ezarpack::storage_traits:blaze_storage:::make_real_matrix__i.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a42ef4b09505795411ba52ca85d374afb"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16real_matrix_typeE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::real_matrix_type">real_matrix_type</a> <code class="sig-name descname">make_real_matrix</code><span class="sig-paren">(</span>int <em>rows</em>, int <em>cols</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16make_real_matrixEii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs a real matrix container. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Constructed matrix. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rows</span></code>: Number of matrix rows. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cols</span></code>: Number of matrix columns. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE19make_complex_matrixEii">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE19make_complex_matrixEii"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE19make_complex_matrixEii"></span><span id="ezarpack::storage_traits:blaze_storage:::make_complex_matrix__i.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1af9eb7ebd13e0a6c4eebbd61aa1652dc8"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE19complex_matrix_typeE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::complex_matrix_type">complex_matrix_type</a> <code class="sig-name descname">make_complex_matrix</code><span class="sig-paren">(</span>int <em>rows</em>, int <em>cols</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE19make_complex_matrixEii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs a complex matrix container. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Constructed matrix. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rows</span></code>: Number of matrix rows. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cols</span></code>: Number of matrix columns. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE7destroyEvR6vectorI1TE">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13blaze_storageE7destroyER6vectorI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13blaze_storageE7destroyER6vectorI1TE"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1aecca6107b28897094d65b781d6dbf1c8"></span>void <code class="sig-name descname">destroy</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6vectorE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector">vector</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE7destroyEvR6vectorI1TE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::destroy::T">T</a>&gt;&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE7destroyEvR6vectorI1TE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Destroys a vector container. This function is, in fact, no-op, because memory owned by a Blaze vector will automatically be freed by its destructor. <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE7destroyEvR6matrixI1TE">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13blaze_storageE7destroyER6matrixI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13blaze_storageE7destroyER6matrixI1TE"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1aef0c38ba2b2e57408fb2aa01ee93c7e9"></span>void <code class="sig-name descname">destroy</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6matrixE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::matrix">matrix</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE7destroyEvR6matrixI1TE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::destroy::T">T</a>&gt;&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE7destroyEvR6matrixI1TE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Destroys a matrix container. This function is, in fact, no-op, because memory owned by a Blaze matrix will automatically be freed by its destructor. <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE6resizeEvR6vectorI1TEi">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13blaze_storageE6resizeER6vectorI1TEi"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13blaze_storageE6resizeER6vectorI1TEi"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a1cd1b9f5e2a2aaffcfef16f4962f8fdb"></span>void <code class="sig-name descname">resize</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6vectorE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector">vector</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE6resizeEvR6vectorI1TEi" title="ezarpack::storage_traits&lt;blaze_storage&gt;::resize::T">T</a>&gt; &amp;<em>v</em>, int <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE6resizeEvR6vectorI1TEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Resizes a vector container. <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector container to resize. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: New vector size. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE6resizeEvR6matrixI1TEii">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13blaze_storageE6resizeER6matrixI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13blaze_storageE6resizeER6matrixI1TEii"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a38a57b82130be3724986ae5ecd59ecc8"></span>void <code class="sig-name descname">resize</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6matrixE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::matrix">matrix</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE6resizeEvR6matrixI1TEii" title="ezarpack::storage_traits&lt;blaze_storage&gt;::resize::T">T</a>&gt; &amp;<em>m</em>, int <em>rows</em>, int <em>cols</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE6resizeEvR6matrixI1TEii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Resizes a matrix container. <dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code>: Matrix container to resize. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rows</span></code>: New number of matrix rows. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cols</span></code>: New number of matrix columns. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE12get_data_ptrEP1TR6vectorI1TE">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13blaze_storageE12get_data_ptrER6vectorI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13blaze_storageE12get_data_ptrER6vectorI1TE"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a31343a00e48f77583bb0e5f13bdabde9"></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE12get_data_ptrEP1TR6vectorI1TE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::get_data_ptr::T">T</a> *<code class="sig-name descname">get_data_ptr</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6vectorE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector">vector</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE12get_data_ptrEP1TR6vectorI1TE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::get_data_ptr::T">T</a>&gt; &amp;<em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE12get_data_ptrEP1TR6vectorI1TE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns a pointer to the underlying data array owned by a vector. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Pointer to the data array. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector to retrieve the data pointer from. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE12get_data_ptrEP1TR6matrixI1TE">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13blaze_storageE12get_data_ptrER6matrixI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13blaze_storageE12get_data_ptrER6matrixI1TE"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a577fd69a54d8716209c5851379b669b7"></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE12get_data_ptrEP1TR6matrixI1TE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::get_data_ptr::T">T</a> *<code class="sig-name descname">get_data_ptr</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6matrixE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::matrix">matrix</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE12get_data_ptrEP1TR6matrixI1TE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::get_data_ptr::T">T</a>&gt; &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE12get_data_ptrEP1TR6matrixI1TE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns a pointer to the underlying data array owned by a matrix. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Pointer to the data array. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code>: Matrix to retrieve the data pointer from. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Functions to create vector/matrix views</p>
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13blaze_storageE16make_vector_viewER6vectorI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13blaze_storageE16make_vector_viewER6vectorI1TE"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a75eef9b660d396b0b9f3a619303394f6"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE11vector_viewE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector_view">vector_view</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::make_vector_view::T">T</a>&gt; <code class="sig-name descname">make_vector_view</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6vectorE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector">vector</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::make_vector_view::T">T</a>&gt; &amp;<em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Makes a complete view of a vector. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>View of the full vector. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector container to make a view of. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13blaze_storageE16make_vector_viewER6vectorI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13blaze_storageE16make_vector_viewER6vectorI1TEii"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a0997c6353207e37e0d3a2990efb3b0e2"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE11vector_viewE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector_view">vector_view</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii" title="ezarpack::storage_traits&lt;blaze_storage&gt;::make_vector_view::T">T</a>&gt; <code class="sig-name descname">make_vector_view</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6vectorE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector">vector</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii" title="ezarpack::storage_traits&lt;blaze_storage&gt;::make_vector_view::T">T</a>&gt; &amp;<em>v</em>, int <em>start</em>, int <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Makes a partial view of a vector. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Subvector view. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector container to make a view of. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start</span></code>: Position of the starting element in the partial view. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of elements in the partial view. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13blaze_storageE22make_vector_const_viewERK6vectorI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13blaze_storageE22make_vector_const_viewERK6vectorI1TEii"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a85759d1bc3ca32cb28d43f4299cc111a"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE17vector_const_viewE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector_const_view">vector_const_view</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii" title="ezarpack::storage_traits&lt;blaze_storage&gt;::make_vector_const_view::T">T</a>&gt; <code class="sig-name descname">make_vector_const_view</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6vectorE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::vector">vector</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii" title="ezarpack::storage_traits&lt;blaze_storage&gt;::make_vector_const_view::T">T</a>&gt; <em class="property">const</em> &amp;<em>v</em>, int <em>start</em>, int <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Makes a constant partial view of a vector. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Subvector view. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector container to make a view of. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start</span></code>: Position of the starting element in the partial view. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of elements in the partial view. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13blaze_storageE22make_matrix_const_viewERK6matrixI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13blaze_storageE22make_matrix_const_viewERK6matrixI1TE"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a0b03e790ea523a07853309e7a9a6bce2"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE17matrix_const_viewE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::matrix_const_view">matrix_const_view</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::make_matrix_const_view::T">T</a>&gt; <code class="sig-name descname">make_matrix_const_view</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6matrixE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::matrix">matrix</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::make_matrix_const_view::T">T</a>&gt; <em class="property">const</em> &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Makes a complete view of a matrix. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>View of the full matrix. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code>: Matrix container to make a view of. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13blaze_storageE22make_matrix_const_viewERK6matrixI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13blaze_storageE22make_matrix_const_viewERK6matrixI1TEii"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1abf033ccca229f3f81494a1a34c87d1f9"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE17matrix_const_viewE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::matrix_const_view">matrix_const_view</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii" title="ezarpack::storage_traits&lt;blaze_storage&gt;::make_matrix_const_view::T">T</a>&gt; <code class="sig-name descname">make_matrix_const_view</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE6matrixE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::matrix">matrix</a>&lt;<a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii" title="ezarpack::storage_traits&lt;blaze_storage&gt;::make_matrix_const_view::T">T</a>&gt; <em class="property">const</em> &amp;<em>m</em>, int <em>rows</em>, int <em>cols</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Makes a constant partial view of a matrix including a number of the leftmost columns. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Submatrix view. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code>: Matrix container to make a view of. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rows</span></code>: Number of matrix rows. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cols</span></code>: Number of the leftmost columns in the resulting view. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Post-processing required to compute eigenvalues/eigenvectors</p>
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei"></span><span id="ezarpack::storage_traits:blaze_storage:::make_asymm_eigenvalues__real_vector_typeCR.real_vector_typeCR.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a81d2e8e348d8eac682906bbceeaa3edf"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE19complex_vector_typeE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::complex_vector_type">complex_vector_type</a> <code class="sig-name descname">make_asymm_eigenvalues</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::real_vector_type">real_vector_type</a> <em class="property">const</em> &amp;<em>dr</em>, <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::real_vector_type">real_vector_type</a> <em class="property">const</em> &amp;<em>di</em>, int <em>nconv</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Combines real and imaginary parts of eigenvalues computed by <a class="reference internal" href="../solver_asymmetric.html#classezarpack_1_1arpack__solver_3_01Asymmetric_00_01Backend_01_4"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;</span></a>. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Complex vector of eigenvalues. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dr</span></code>: Real parts of the computed eigenvalues. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">di</span></code>: Imaginary parts of the computed eigenvalues. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nconv</span></code>: Number of the converged eigenvalues. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_asymm_eigenvaluesE19complex_vector_typeRK16real_vector_typeRK16real_vector_typeRR1Aii">
+<span id="_CPPv3I0EN8ezarpack14storage_traitsI13blaze_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typeRR1Aii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13blaze_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typeRR1Aii"></span>template&lt;typename <code class="sig-name descname">A</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a5682091ae755cfd548f3e8672c852e76"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE19complex_vector_typeE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::complex_vector_type">complex_vector_type</a> <code class="sig-name descname">make_asymm_eigenvalues</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::real_vector_type">real_vector_type</a> <em class="property">const</em> &amp;<em>z</em>, <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::real_vector_type">real_vector_type</a> <em class="property">const</em> &amp;<em>di</em>, <a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_asymm_eigenvaluesE19complex_vector_typeRK16real_vector_typeRK16real_vector_typeRR1Aii" title="ezarpack::storage_traits&lt;blaze_storage&gt;::make_asymm_eigenvalues::A">A</a> &amp;&amp;<em>a</em>, int <em>N</em>, int <em>nconv</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13blaze_storageE22make_asymm_eigenvaluesE19complex_vector_typeRK16real_vector_typeRK16real_vector_typeRR1Aii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Given a linear operator <span class="math notranslate nohighlight">\( \hat A \)</span>, computes <code class="docutils literal notranslate"><span class="pre">nconv</span></code> eigenvalues from Ritz vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> as Rayleigh quotients <span class="math notranslate nohighlight">\( \frac{\mathbf{x}^\dagger \hat A \mathbf{x}} {\mathbf{x}^\dagger \hat M \mathbf{x}} \)</span>. This function is called by <a class="reference internal" href="../solver_asymmetric.html#classezarpack_1_1arpack__solver_3_01Asymmetric_00_01Backend_01_4_1a21418268f530673f2ad39d1e89a142f5"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;::eigenvalues(A &amp;&amp;) const</span></a>. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Complex vector of eigenvalues. </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code>: Type of the callable object representing the linear operator <span class="math notranslate nohighlight">\( \hat A \)</span>. </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>: Holds components of the Ritz vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> as a sequence of <code class="docutils literal notranslate"><span class="pre">nconv</span></code> length-<code class="docutils literal notranslate"><span class="pre">N</span></code> chunks. Meaning of each chunk depends on the corresponding component of <code class="docutils literal notranslate"><span class="pre">di</span></code>, see below. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">di</span></code>: If <code class="docutils literal notranslate"><span class="pre">di[i]</span></code> is zero, then the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th chunk of <code class="docutils literal notranslate"><span class="pre">z</span></code> contains a real Ritz vector. Otherwise, <code class="docutils literal notranslate"><span class="pre">di[i]</span> <span class="pre">=</span> <span class="pre">-di[i+1]</span> <span class="pre">!=</span> <span class="pre">0</span></code>, in which case the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th and <code class="docutils literal notranslate"><span class="pre">(i+1)</span></code>-th chunks of <code class="docutils literal notranslate"><span class="pre">z</span></code> are real and imaginary parts of a complex Ritz vector respectively. Every real Ritz vector corresponds to one real eigenvalue, while every complex vector gives rise to a complex conjugate pair of eigenvalues. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Callable object representing <span class="math notranslate nohighlight">\( \hat A \)</span>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N</span></code>: Dimension of the eigenproblem. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nconv</span></code>: Number of the converged Ritz vectors. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8ezarpack14storage_traitsI13blaze_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii">
+<span id="_CPPv3N8ezarpack14storage_traitsI13blaze_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii"></span><span id="_CPPv2N8ezarpack14storage_traitsI13blaze_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii"></span><span id="ezarpack::storage_traits:blaze_storage:::make_asymm_eigenvectors__real_vector_typeCR.real_vector_typeCR.i.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01blaze__storage_01_4_1a95318d8b157f90c8bec18989ad1a1b67"></span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE19complex_matrix_typeE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::complex_matrix_type">complex_matrix_type</a> <code class="sig-name descname">make_asymm_eigenvectors</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::real_vector_type">real_vector_type</a> <em class="property">const</em> &amp;<em>z</em>, <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;blaze_storage&gt;::real_vector_type">real_vector_type</a> <em class="property">const</em> &amp;<em>di</em>, int <em>N</em>, int <em>nconv</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13blaze_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Extracts <code class="docutils literal notranslate"><span class="pre">nconv</span></code> complex Ritz vectors from ARPACK-NG’s internal representation. This function is called by <a class="reference internal" href="../solver_asymmetric.html#classezarpack_1_1arpack__solver_3_01Asymmetric_00_01Backend_01_4_1a7271edb1ffde24e37bb3a0c959cfbd1c"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;::eigenvectors() const</span></a>. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Complex matrix, whose columns are Ritz vectors (eigenvectors). </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>: Holds components of the Ritz vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> as a sequence of <code class="docutils literal notranslate"><span class="pre">nconv</span></code> length-<code class="docutils literal notranslate"><span class="pre">N</span></code> chunks. Meaning of each chunk depends on the corresponding component of <code class="docutils literal notranslate"><span class="pre">di</span></code>, see below. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">di</span></code>: If <code class="docutils literal notranslate"><span class="pre">di[i]</span></code> is zero, then the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th chunk of <code class="docutils literal notranslate"><span class="pre">z</span></code> contains a real Ritz vector. Otherwise, <code class="docutils literal notranslate"><span class="pre">di[i]</span> <span class="pre">=</span> <span class="pre">-di[i+1]</span> <span class="pre">!=</span> <span class="pre">0</span></code>, in which case the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th and <code class="docutils literal notranslate"><span class="pre">(i+1)</span></code>-th chunks of <code class="docutils literal notranslate"><span class="pre">z</span></code> are real and imaginary parts of a complex Ritz vector respectively. Every such pair corresponds to a complex conjugate pair of Ritz vectors, so that the total amount of vectors stored in <code class="docutils literal notranslate"><span class="pre">z</span></code> is exactly <code class="docutils literal notranslate"><span class="pre">nconv</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N</span></code>: Dimension of the eigenproblem. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nconv</span></code>: Number of the converged Ritz vectors. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="eigen.html"
+                        title="previous chapter"><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/eigen.hpp</span></code> - Eigen 3</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="armadillo.html"
+                        title="next chapter"><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/armadillo.hpp</span></code> - Armadillo</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/reference/storages/blaze.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="armadillo.html" title="ezarpack/storages/armadillo.hpp - Armadillo"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="eigen.html" title="ezarpack/storages/eigen.hpp - Eigen 3"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ezARPACK 0.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Data storage backends</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/blaze.hpp</span></code> - Blaze</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Igor Krivenko.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>
