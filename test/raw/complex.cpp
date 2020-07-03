@@ -94,7 +94,7 @@ TEST_CASE("Complex eigenproblem is solved", "[solver_complex]") {
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(Aop, params);
-      CHECK(ar.nconv() == nev);
+      CHECK(ar.nconv() >= nev);
       check_eigenvectors(ar, A.get(), N, nev);
       check_basis_vectors(ar, N, nev);
     }
@@ -120,7 +120,7 @@ TEST_CASE("Complex eigenproblem is solved", "[solver_complex]") {
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(op, Bop, solver_t::Inverse, params);
-      CHECK(ar.nconv() == nev);
+      CHECK(ar.nconv() >= nev);
       check_eigenvectors(ar, A.get(), M.get(), N, nev);
       check_basis_vectors(ar, M.get(), N, nev);
     }
@@ -155,7 +155,7 @@ TEST_CASE("Complex eigenproblem is solved", "[solver_complex]") {
       params.random_residual_vector = false;
       set_init_residual_vector(ar);
       ar(op, Bop, solver_t::ShiftAndInvert, params);
-      CHECK(ar.nconv() == nev);
+      CHECK(ar.nconv() >= nev);
       check_eigenvectors(ar, A.get(), M.get(), N, nev);
       check_basis_vectors(ar, M.get(), N, nev);
     }

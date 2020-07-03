@@ -41,6 +41,9 @@ jobs:
         - python-matplotlib
         - python-mpi4py
         - python-mako
+        # For documentation
+        - doxygen
+        - libjs-mathjax
   - compiler: gcc
     addons:
       apt:
@@ -85,9 +88,16 @@ before_script:
 
   # Force CLang to use libc++
   - |
-    if [[ "${CXX}" == "clang++" ]]; then                                       \
-      CMAKE_CXX_FLAGS="-stdlib=libc++ -D_LIBCPP_ENABLE_CXX17_REMOVED_AUTO_PTR";\
-      export LD_LIBRARY_PATH=/usr/local/clang-7.0.0/lib:$LD_LIBRARY_PATH;      \
+    if [[ "${CXX}" == "clang++" ]]; then
+      CMAKE_CXX_FLAGS="-stdlib=libc++ -D_LIBCPP_ENABLE_CXX17_REMOVED_AUTO_PTR";
+      export LD_LIBRARY_PATH=/usr/local/clang-7.0.0/lib:$LD_LIBRARY_PATH;
+    fi
+  # Conditionally build documentation
+  - |
+    if [[ "${CXX}" == "clang++" ]]; then
+      export DOCS=ON
+    else
+      export DOCS=OFF
     fi
 
   - cd $TRAVIS_BUILD_DIR/..
@@ -156,6 +166,12 @@ before_script:
   - make install
   - popd
 
+  # Install Sphinx and Breathe for documentation
+  # (have to do it after TRIQS installation that still depends on Python 2.7)
+  - pyenv global 3.7
+  - pip3 install -U sphinx breathe
+
+
 script:
   # Build ezARPACK
   - mkdir ezARPACK.installed
@@ -169,8 +185,31 @@ script:
     -DTRIQS_ROOT=$TRAVIS_BUILD_DIR/../triqs.installed               \
     -Dxtensor_ROOT=$TRAVIS_BUILD_DIR/../xtensor.installed           \
     -Dxtensor-blas_ROOT=$TRAVIS_BUILD_DIR/../xtensor.installed      \
-    -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -Wno-ignored-attributes"
+    -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -Wno-ignored-attributes"  \
+    -DDocumentation=${DOCS}                                         \
+    -DMathJax_ROOT=/usr/share/javascript/mathjax
   - make -j3
   - make test
   - make install
   - popd
+  # Prepare documentation for deployment
+  - |
+    if [[ "${CXX}" == "clang++" ]]; then
+      pushd ezARPACK.installed/share/doc/ezARPACK/sphinx
+      find . -name "*.html" -type f -exec sed -i                               \
+        's/\/usr\/share\/javascript\/mathjax/\/ezARPACK\/mathjax/g' {} \;
+      cp -r /usr/share/javascript/mathjax mathjax
+      touch .nojekyll
+      popd
+    fi
+
+deploy:
+  # Publish documentation
+  provider: pages
+  cleanup: false
+  token: $GITHUB_TOKEN
+  keep_history: true
+  local_dir: $TRAVIS_BUILD_DIR/../ezARPACK.installed/share/doc/ezARPACK/sphinx
+  on:
+    branch: master
+    condition: "$CC = clang"
