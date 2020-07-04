@@ -43,7 +43,8 @@ implementing two crucial features.
 
 You can learn about library's capabilities and the most common usage patterns
 from the :ref:`guide`. For an in-depth description of ezARPACK's API
-consult the :ref:`reference`.
+consult the :ref:`reference`. The source code repository and the issue tracker
+are hosted on `GitHub <https://github.com/krivenko/ezARPACK>`_.
 
 Being a header-only library, ezARPACK does not require installation. However,
 you may still choose to follow the :ref:`installation` to build and run unit
