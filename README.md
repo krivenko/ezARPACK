@@ -5,6 +5,8 @@ ezARPACK
 https://travis-ci.org/krivenko/ezARPACK)
 [![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-red)](
 https://krivenko.github.io/ezARPACK)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3930203.svg)](
+https://doi.org/10.5281/zenodo.3930203)
 
 ezARPACK is a C++11 wrapper around ARPACK-NG [1] that can be used in conjunction
 with a number of C++ vector/matrix algebra libraries. It allows for solving
@@ -246,6 +248,27 @@ int main() {
             << stats.n_reorth_steps << std::endl;
 
   return 0;
+}
+```
+
+Citing
+------
+
+If you find this library useful for your research, you can help me by citing it
+using the following BibTeX entry.
+
+```
+@software{igor_krivenko_2020_3930203,
+  author       = {Igor Krivenko},
+  title        = {{ezARPACK - a C++ ARPACK-NG wrapper compatible with
+                   multiple matrix/vector algebra libraries: Release
+                   0.9}},
+  month        = jul,
+  year         = 2020,
+  publisher    = {Zenodo},
+  version      = {0.9},
+  doi          = {10.5281/zenodo.3930203},
+  url          = {https://doi.org/10.5281/zenodo.3930203}
 }
 ```
 
