@@ -71,7 +71,7 @@ The ``*_ROOT`` CMake options allow to manually specify installation locations of
 said libraries.
 
 Documentation of ezARPACK can optionally be built and installed using the
-`Documentation` CMake flag (requires `Doxygen <https://www.doxygen.nl/>`_,
+``Documentation`` CMake flag (requires `Doxygen <https://www.doxygen.nl/>`_,
 `Sphinx <https://www.sphinx-doc.org>`_,
 `Breathe <https://breathe.readthedocs.io>`_ and
 `MathJax <https://www.mathjax.org/>`_).
