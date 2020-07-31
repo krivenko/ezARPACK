@@ -168,7 +168,7 @@ before_script:
 
   # Install Sphinx and Breathe for documentation
   # (have to do it after TRIQS installation that still depends on Python 2.7)
-  - pyenv global 3.7
+  - pyenv global 3.7.1
   - pip3 install -U sphinx breathe
 
 
