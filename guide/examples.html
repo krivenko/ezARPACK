@@ -186,7 +186,7 @@ is defined only by the rule of how it acts on a vector.</p>
 <span class="c1">//  };</span>
 <span class="c1">//</span>
 <span class="k">struct</span> <span class="p">{</span>
-  <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">TIn</span><span class="p">,</span> <span class="k">typename</span> <span class="n">TOut</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="k">operator</span><span class="p">()(</span><span class="n">TIn</span> <span class="n">in</span><span class="p">,</span> <span class="n">TOut</span> <span class="n">out</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">TIn</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">TOut</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="k">operator</span><span class="p">()(</span><span class="n">TIn</span> <span class="n">in</span><span class="p">,</span> <span class="n">TOut</span> <span class="n">out</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">out</span><span class="p">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="c1">// Clear result</span>
 
     <span class="c1">// out_i = \sum_j A_{ij} in_j</span>
@@ -398,7 +398,7 @@ is defined only by the rule of how it acts on a vector.</p>
 <span class="c1">//  };</span>
 <span class="c1">//</span>
 <span class="k">struct</span> <span class="p">{</span>
-  <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">TIn</span><span class="p">,</span> <span class="k">typename</span> <span class="n">TOut</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="k">operator</span><span class="p">()(</span><span class="n">TIn</span> <span class="n">in</span><span class="p">,</span> <span class="n">TOut</span> <span class="n">out</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">TIn</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">TOut</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="k">operator</span><span class="p">()(</span><span class="n">TIn</span> <span class="n">in</span><span class="p">,</span> <span class="n">TOut</span> <span class="n">out</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">out</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span> <span class="c1">// Clear result</span>
 
     <span class="c1">// out_i = \sum_j A_{ij} in_j</span>
@@ -813,7 +813,7 @@ is defined only by the rule of how it acts on a vector.</p>
 <span class="c1">//  };</span>
 <span class="c1">//</span>
 <span class="k">struct</span> <span class="p">{</span>
-  <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">TIn</span><span class="p">,</span> <span class="k">typename</span> <span class="n">TOut</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="k">operator</span><span class="p">()(</span><span class="n">TIn</span> <span class="n">in</span><span class="p">,</span> <span class="n">TOut</span> <span class="n">out</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">TIn</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">TOut</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="k">operator</span><span class="p">()(</span><span class="n">TIn</span> <span class="n">in</span><span class="p">,</span> <span class="n">TOut</span> <span class="n">out</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">std</span><span class="o">::</span><span class="n">fill</span><span class="p">(</span><span class="n">out</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">out</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="mf">.0</span><span class="p">);</span> <span class="c1">// Clear result</span>
 
     <span class="c1">// out_i = \sum_j A_{ij} in_j</span>
