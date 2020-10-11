@@ -178,7 +178,7 @@ public:
   }
 
   arpack_solver(arpack_solver const&) = delete;
-  arpack_solver(arpack_solver&&) noexcept = delete;
+  arpack_solver(arpack_solver&&) noexcept = default;
 
 private:
   /// @internal Prepare values of input parameters and resize containers.
