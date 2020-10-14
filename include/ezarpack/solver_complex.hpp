@@ -15,6 +15,9 @@
 /// complex eigenproblems.
 #pragma once
 
+#include <algorithm>
+#include <utility>
+
 namespace ezarpack {
 
 /// @brief Main solver class wrapping the Implicitly Restarted Arnoldi
@@ -178,7 +181,10 @@ public:
   }
 
   arpack_solver(arpack_solver const&) = delete;
-  arpack_solver(arpack_solver&&) noexcept = default;
+  arpack_solver(arpack_solver&&) noexcept(
+    noexcept(int_vector_t(std::declval<int_vector_t>())) &&
+    noexcept(complex_vector_t(std::declval<complex_vector_t>())) &&
+    noexcept(complex_matrix_t(std::declval<complex_matrix_t>()))) = default;
 
 private:
   /// @internal Prepare values of input parameters and resize containers.

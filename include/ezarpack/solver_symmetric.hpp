@@ -15,6 +15,9 @@
 /// symmetric eigenproblems.
 #pragma once
 
+#include <algorithm>
+#include <utility>
+
 namespace ezarpack {
 
 /// @brief Main solver class wrapping the Implicitly Restarted Lanczos
@@ -175,7 +178,10 @@ public:
   }
 
   arpack_solver(arpack_solver const&) = delete;
-  arpack_solver(arpack_solver&&) noexcept = default;
+  arpack_solver(arpack_solver&&) noexcept(
+    noexcept(int_vector_t(std::declval<int_vector_t>())) &&
+    noexcept(real_vector_t(std::declval<real_vector_t>())) &&
+    noexcept(real_matrix_t(std::declval<real_matrix_t>()))) = default;
 
 private:
   /// @internal Prepare values of input parameters and resize containers.
