@@ -40,7 +40,6 @@ struct xtensor_storage {};
 /// operations.
 template<> struct storage_traits<xtensor_storage> {
 private:
-
   /// @name Private implementation details
   /// @note xtensor's
   /// [documentation](https://xtensor.readthedocs.io/en/latest/api/xview.html)
@@ -84,7 +83,6 @@ private:
   using dcomplex = std::complex<double>;
 
 public:
-
   /// @name Vector and matrix storage types
   /// @{
 

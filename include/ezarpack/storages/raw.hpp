@@ -40,13 +40,11 @@ struct raw_storage {};
 /// library could be found.
 template<> struct storage_traits<raw_storage> {
 private:
-
   // Implementation details
 
   using dcomplex = std::complex<double>;
 
 public:
-
   /// @name Vector and matrix storage types
   /// @{
 
@@ -186,9 +184,8 @@ public:
   /// @param size **[ignored]** Number of elements in the partial view.
   /// @return Subvector view.
   template<typename T>
-  inline static T const* make_vector_const_view(std::unique_ptr<T[]> const& v,
-                                                int start,
-                                                int size) {
+  inline static T const*
+  make_vector_const_view(std::unique_ptr<T[]> const& v, int start, int size) {
     return v.get() + start;
   }
 
@@ -210,9 +207,8 @@ public:
   /// view.
   /// @return Submatrix view.
   template<typename T>
-  inline static T const* make_matrix_const_view(std::unique_ptr<T[]> const& m,
-                                                int rows,
-                                                int cols) {
+  inline static T const*
+  make_matrix_const_view(std::unique_ptr<T[]> const& m, int rows, int cols) {
     return m.get();
   }
 

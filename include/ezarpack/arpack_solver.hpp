@@ -14,7 +14,9 @@
 /// @brief This header file includes all specializations of `arpack_solver`.
 #pragma once
 
+// clang-format off
 #include "solver_base.hpp"
 #include "solver_asymmetric.hpp"
 #include "solver_complex.hpp"
 #include "solver_symmetric.hpp"
+// clang-format on

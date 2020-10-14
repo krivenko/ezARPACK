@@ -38,7 +38,6 @@ struct triqs_storage {};
 /// operations.
 template<> struct storage_traits<triqs_storage> {
 private:
-
   /// @name Private implementation details
   /// @{
 
@@ -70,7 +69,6 @@ private:
   using range = triqs::arrays::range;
 
 public:
-
   /// @name Vector and matrix storage types
   /// @{
 

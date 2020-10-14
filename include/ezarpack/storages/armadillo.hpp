@@ -37,7 +37,6 @@ struct armadillo_storage {};
 /// operations.
 template<> struct storage_traits<armadillo_storage> {
 private:
-
   /// @name Private implementation details
   /// @{
 
@@ -66,7 +65,6 @@ private:
   using span = arma::span;
 
 public:
-
   /// @name Vector and matrix storage types
   /// @{
 

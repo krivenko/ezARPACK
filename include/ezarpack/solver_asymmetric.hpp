@@ -188,10 +188,12 @@ public:
   }
 
   arpack_solver(arpack_solver const&) = delete;
+  // clang-format off
   arpack_solver(arpack_solver&&) noexcept(
     noexcept(int_vector_t(std::declval<int_vector_t>())) &&
     noexcept(real_vector_t(std::declval<real_vector_t>())) &&
     noexcept(real_matrix_t(std::declval<real_matrix_t>()))) = default;
+  // clang-format on
 
 private:
   /// @internal Prepare values of input parameters and resize containers.

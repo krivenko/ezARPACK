@@ -36,7 +36,6 @@ struct blaze_storage {};
 /// operations.
 template<> struct storage_traits<blaze_storage> {
 private:
-
   /// @name Private implementation details
   /// @{
 
@@ -68,7 +67,6 @@ private:
   using dcomplex = std::complex<double>;
 
 public:
-
   /// @name Vector and matrix storage types
   /// @{
 
