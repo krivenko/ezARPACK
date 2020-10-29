@@ -29,7 +29,7 @@ if(POLICY CMP0074)
 endif(POLICY CMP0074)
 
 # CMake options
-option(Skip_ARPACK-NG "Skip detection of ARPACK-NG" OFF)
+option(Skip_arpack-ng "Skip detection of ARPACK-NG" OFF)
 option(Tests "Build unit tests" ON)
 option(Examples "Build examples" ON)
 option(Documentation "Build documentation" OFF)
