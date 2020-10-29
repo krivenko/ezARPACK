@@ -93,6 +93,8 @@ meaning.
 +----------------------------+-------------------------------------------------+
 | ``Examples=[ON|OFF]``      | Enable/disable compilation of example programs. |
 +----------------------------+-------------------------------------------------+
+| ``Skip_arpack-ng=[ON|OFF]``| Skip detection of ARPACK-NG altogether.         |
++----------------------------+-------------------------------------------------+
 | ``ARPACK_NG_ROOT``         | Path to ARPACK-NG installation.                 |
 +----------------------------+-------------------------------------------------+
 | ``Eigen3_ROOT``            | Path to Eigen 3 installation.                   |
