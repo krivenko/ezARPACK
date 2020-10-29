@@ -79,45 +79,46 @@ Documentation of ezARPACK can optionally be built and installed using the
 The table below gives a complete lists of supported CMake options with their
 meaning.
 
-+----------------------------+-------------------------------------------------+
-| Option name                | Description                                     |
-+============================+=================================================+
-| ``CMAKE_INSTALL_PREFIX``   | Path to the directory ezARPACK will be          |
-|                            | installed into.                                 |
-+----------------------------+-------------------------------------------------+
-| ``CMAKE_BUILD_TYPE``       | CMake build type (``Release``, ``Debug`` or     |
-|                            | ``RelWithDebInfo``) used to compile unit tests  |
-|                            | and examples.                                   |
-+----------------------------+-------------------------------------------------+
-| ``Tests=[ON|OFF]``         | Enable/disable compilation of unit tests.       |
-+----------------------------+-------------------------------------------------+
-| ``Examples=[ON|OFF]``      | Enable/disable compilation of example programs. |
-+----------------------------+-------------------------------------------------+
-| ``Skip_arpack-ng=[ON|OFF]``| Skip detection of ARPACK-NG altogether.         |
-+----------------------------+-------------------------------------------------+
-| ``ARPACK_NG_ROOT``         | Path to ARPACK-NG installation.                 |
-+----------------------------+-------------------------------------------------+
-| ``Eigen3_ROOT``            | Path to Eigen 3 installation.                   |
-+----------------------------+-------------------------------------------------+
-| ``blaze_ROOT``             | Path to Blaze installation.                     |
-+----------------------------+-------------------------------------------------+
-| ``Armadillo_ROOT``         | Path to Armadillo installation.                 |
-+----------------------------+-------------------------------------------------+
-| ``BOOST_ROOT``             | Path to Boost (uBLAS) installation.             |
-+----------------------------+-------------------------------------------------+
-| ``TRIQS_ROOT``             | Path to TRIQS installation.                     |
-+----------------------------+-------------------------------------------------+
-| ``xtensor_ROOT``           | Path to xtensor installation.                   |
-+----------------------------+-------------------------------------------------+
-| ``xtensor-blas_ROOT``      | Path to xtensor-blas installation.              |
-+----------------------------+-------------------------------------------------+
-| ``Documentation=[ON|OFF]`` | Enable/disable generation of ezARPACK's         |
-|                            | Doxygen and Sphinx documentation.               |
-+----------------------------+-------------------------------------------------+
-| ``Doxygen_ROOT``           | Path to Doxygen installation.                   |
-+----------------------------+-------------------------------------------------+
-| ``Sphinx_ROOT``            | Path to Sphinx installation.                    |
-+----------------------------+-------------------------------------------------+
-| ``MathJax_ROOT``           | Path to MathJax installation (directory         |
-|                            | containing ``MathJax.js``).                     |
-+----------------------------+-------------------------------------------------+
++-----------------------------+------------------------------------------------+
+| Option name                 | Description                                    |
++=============================+================================================+
+| ``CMAKE_INSTALL_PREFIX``    | Path to the directory ezARPACK will be         |
+|                             | installed into.                                |
++-----------------------------+------------------------------------------------+
+| ``CMAKE_BUILD_TYPE``        | CMake build type (``Release``, ``Debug`` or    |
+|                             | ``RelWithDebInfo``) used to compile unit tests |
+|                             | and examples.                                  |
++-----------------------------+------------------------------------------------+
+| ``Tests=[ON|OFF]``          | Enable/disable compilation of unit tests.      |
++-----------------------------+------------------------------------------------+
+| ``Examples=[ON|OFF]``       | Enable/disable compilation of example          |
+|                             | programs.                                      |
++-----------------------------+------------------------------------------------+
+| ``Skip_arpack-ng=[ON|OFF]`` | Skip detection of ARPACK-NG altogether.        |
++-----------------------------+------------------------------------------------+
+| ``ARPACK_NG_ROOT``          | Path to ARPACK-NG installation.                |
++-----------------------------+------------------------------------------------+
+| ``Eigen3_ROOT``             | Path to Eigen 3 installation.                  |
++-----------------------------+------------------------------------------------+
+| ``blaze_ROOT``              | Path to Blaze installation.                    |
++-----------------------------+------------------------------------------------+
+| ``Armadillo_ROOT``          | Path to Armadillo installation.                |
++-----------------------------+------------------------------------------------+
+| ``BOOST_ROOT``              | Path to Boost (uBLAS) installation.            |
++-----------------------------+------------------------------------------------+
+| ``TRIQS_ROOT``              | Path to TRIQS installation.                    |
++-----------------------------+------------------------------------------------+
+| ``xtensor_ROOT``            | Path to xtensor installation.                  |
++-----------------------------+------------------------------------------------+
+| ``xtensor-blas_ROOT``       | Path to xtensor-blas installation.             |
++-----------------------------+------------------------------------------------+
+| ``Documentation=[ON|OFF]``  | Enable/disable generation of ezARPACK's        |
+|                             | Doxygen and Sphinx documentation.              |
++-----------------------------+------------------------------------------------+
+| ``Doxygen_ROOT``            | Path to Doxygen installation.                  |
++-----------------------------+------------------------------------------------+
+| ``Sphinx_ROOT``             | Path to Sphinx installation.                   |
++-----------------------------+------------------------------------------------+
+| ``MathJax_ROOT``            | Path to MathJax installation (directory        |
+|                             | containing ``MathJax.js``).                    |
++-----------------------------+------------------------------------------------+
