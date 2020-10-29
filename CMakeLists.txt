@@ -29,21 +29,26 @@ if(POLICY CMP0074)
 endif(POLICY CMP0074)
 
 # CMake options
+option(Skip_ARPACK-NG "Skip detection of ARPACK-NG" OFF)
 option(Tests "Build unit tests" ON)
 option(Examples "Build examples" ON)
 option(Documentation "Build documentation" OFF)
 
 # Detect ARPACK-NG as an optional dependency
-message(STATUS "Detecting ARPACK-NG libraries")
-set(arpack-ng_DIR ${ARPACK_NG_ROOT}/lib/cmake)
-find_package(arpack-ng CONFIG 3.6.0)
-if(arpack-ng_FOUND)
-  message(STATUS "Found ARPACK-NG version ${arpack-ng_VERSION}")
-  message(STATUS "  arpack_ng_LIBRARIES: ${arpack_ng_LIBRARIES}")
-else(arpack-ng_FOUND)
-  message(STATUS "ARPACK-NG not found."
-                 "Disabling compilation of examples and unit tests.")
-endif(arpack-ng_FOUND)
+if(Skip_arpack-ng)
+  message(STATUS "Skipping detection of ARPACK-NG libraries")
+else(Skip_arpack-ng)
+  message(STATUS "Detecting ARPACK-NG libraries")
+  set(arpack-ng_DIR ${ARPACK_NG_ROOT}/lib/cmake)
+  find_package(arpack-ng CONFIG 3.6.0)
+  if(arpack-ng_FOUND)
+    message(STATUS "Found ARPACK-NG version ${arpack-ng_VERSION}")
+    message(STATUS "  arpack_ng_LIBRARIES: ${arpack_ng_LIBRARIES}")
+  else(arpack-ng_FOUND)
+    message(STATUS "ARPACK-NG not found. "
+                   "Disabling compilation of examples and unit tests.")
+  endif(arpack-ng_FOUND)
+endif(Skip_arpack-ng)
 
 # Are we building any components?
 if(arpack-ng_FOUND AND (Tests OR Examples))
