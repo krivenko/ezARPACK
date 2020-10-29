@@ -15,7 +15,7 @@ foreach(t symmetric asymmetric complex)
   target_include_directories(${t} PRIVATE ${CMAKE_SOURCE_DIR}/test
                                           ${xtensor_INCLUDE_DIRS}
                                           ${xtensor_blas_INCLUDE_DIR})
-  target_link_libraries(${t} PRIVATE ezarpack catch2)
+  target_link_libraries(${t} PRIVATE ezarpack catch2 ${arpack_ng_LIBRARIES})
   target_compile_definitions(${t} PRIVATE -DXTENSOR_USE_FLENS_BLAS)
   set_property(TARGET ${t} PROPERTY CXX_STANDARD 14)
   add_test(NAME ${t} COMMAND ${t})

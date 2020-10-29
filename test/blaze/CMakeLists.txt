@@ -16,7 +16,8 @@ if(LAPACK_FOUND)
     add_executable(${t} ${s})
     target_include_directories(${t} PRIVATE ${CMAKE_SOURCE_DIR}/test)
     target_link_libraries(${t} PRIVATE ezarpack catch2
-                                       blaze::blaze ${LAPACK_LIBRARIES})
+                                       blaze::blaze ${LAPACK_LIBRARIES}
+                                       ${arpack_ng_LIBRARIES})
     set_property(TARGET ${t} PROPERTY CXX_STANDARD 11)
     add_test(NAME ${t} COMMAND ${t})
   endforeach()

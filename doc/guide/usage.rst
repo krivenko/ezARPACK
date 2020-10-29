@@ -51,6 +51,10 @@ project.
   set(ezARPACK_DIR ${EZARPACK_ROOT}/lib/cmake)
 
   # Import ezARPACK target
+  #
+  # Setting EZARPACK_LINK_TO_ARPACK_NG to ON will trigger detection of
+  # ARPACK-NG and linking of the 'ezarpack' target to the ARPACK-NG library.
+  set(EZARPACK_LINK_TO_ARPACK_NG ON)
   find_package(ezARPACK 0.9 CONFIG REQUIRED)
 
   # Import Eigen (Blaze, Armadillo, etc) targets
@@ -60,9 +64,7 @@ project.
   add_executable(myprog myprog.cpp)
   target_link_libraries(myprog PRIVATE ezarpack Eigen3::Eigen)
 
-If no usable ARPACK-NG lib has been detected by ezARPACK during
-installation, you will have to link ``myprog`` to a ARPACK-NG library
-explicitly.
+Alternatively, you can link ``myprog`` to ARPACK-NG manually.
 
 .. code:: cmake
 

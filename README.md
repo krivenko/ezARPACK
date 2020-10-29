@@ -128,7 +128,7 @@ set(ezARPACK_DIR ${EZARPACK_ROOT}/lib/cmake)
 # Import ARPACK-NG targets
 find_package(arpack-ng 3.6.0 REQUIRED)
 # Import ezARPACK targets
-find_package(ezARPACK 0.6 CONFIG REQUIRED)
+find_package(ezARPACK 0.9 CONFIG REQUIRED)
 # Import Eigen (Blaze, Armadillo, etc) targets
 find_package(Eigen3 CONFIG)
 
@@ -137,10 +137,8 @@ add_executable(test test.cpp)
 
 # Make ezARPACK and Eigen headers visible to the compiler
 # and link to ARPACK-NG libraries.
-#
-# NB: If no usable ARPACK-NG has been detected by ezARPACK during installation,
-# you will have to link 'test' to ARPACK-NG libraries explicitly.
-target_link_libraries(test PRIVATE ezarpack Eigen3::Eigen)
+target_link_libraries(test PRIVATE
+                      ezarpack Eigen3::Eigen ${arpack_ng_LIBRARIES})
 ```
 
 Here is how `test.cpp` could look like.

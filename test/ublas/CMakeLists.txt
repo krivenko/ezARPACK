@@ -14,7 +14,7 @@ foreach(t symmetric asymmetric complex)
   add_executable(${t} ${s})
   target_include_directories(${t} PRIVATE ${Boost_INCLUDE_DIRS}
                                           ${CMAKE_SOURCE_DIR}/test)
-  target_link_libraries(${t} PRIVATE ezarpack catch2)
+  target_link_libraries(${t} PRIVATE ezarpack catch2 ${arpack_ng_LIBRARIES})
   set_property(TARGET ${t} PROPERTY CXX_STANDARD 11)
   add_test(NAME ${t} COMMAND ${t})
 endforeach()

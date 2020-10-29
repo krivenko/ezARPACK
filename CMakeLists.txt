@@ -35,12 +35,13 @@ option(Examples "Build examples" ON)
 option(Documentation "Build documentation" OFF)
 
 # Detect ARPACK-NG as an optional dependency
+set(arpack-ng_REQUIRED_VERSION 3.6.0)
 if(Skip_arpack-ng)
   message(STATUS "Skipping detection of ARPACK-NG libraries")
 else(Skip_arpack-ng)
   message(STATUS "Detecting ARPACK-NG libraries")
   set(arpack-ng_DIR ${ARPACK_NG_ROOT}/lib/cmake)
-  find_package(arpack-ng CONFIG 3.6.0)
+  find_package(arpack-ng CONFIG ${arpack-ng_REQUIRED_VERSION})
   if(arpack-ng_FOUND)
     message(STATUS "Found ARPACK-NG version ${arpack-ng_VERSION}")
     message(STATUS "  arpack_ng_LIBRARIES: ${arpack_ng_LIBRARIES}")
@@ -75,11 +76,6 @@ target_include_directories(ezarpack INTERFACE
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-
-# Optionally add the ARPACK-NG libraries to our interface library
-if(arpack-ng_FOUND)
-  target_link_libraries(ezarpack INTERFACE ${arpack_ng_LIBRARIES})
-endif(arpack-ng_FOUND)
 
 # Write config version file
 include(CMakePackageConfigHelpers)
