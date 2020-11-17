@@ -596,12 +596,12 @@ public:
 private:
   /// @internal Translate dsaupd's INFO codes into C++ exceptions.
   ///
-  /// @param info dsaupd's INFO code.
-  void handle_aupd_error_codes(int info, real_vector_t& workl) {
-    if(info == 0) return;
+  /// @param error_code dsaupd's INFO code.
+  void handle_aupd_error_codes(int error_code, real_vector_t& workl) {
+    if(error_code == 0) return;
 
     storage::destroy(workl);
-    switch(info) {
+    switch(error_code) {
       case 1: throw(maxiter_reached(iparam[2]));
       case 3: throw(ncv_insufficient(ncv));
       case -8:
@@ -618,15 +618,15 @@ private:
             std::to_string(nconv()));
       default:
         throw ARPACK_SOLVER_ERROR("dsaupd failed with error code " +
-                                  std::to_string(info));
+                                  std::to_string(error_code));
     }
   }
 
   /// @internal Translate dseupd's INFO codes into C++ exceptions.
   ///
-  /// @param info dseupd's INFO code.
-  void handle_eupd_error_codes(int info) {
-    switch(info) {
+  /// @param error_code dseupd's INFO code.
+  void handle_eupd_error_codes(int error_code) {
+    switch(error_code) {
       case 0: return;
       case -8:
         throw ARPACK_SOLVER_ERROR(
@@ -640,7 +640,7 @@ private:
             "dsaupd did not find any eigenvalues to sufficient accuracy");
       default:
         throw ARPACK_SOLVER_ERROR("dseupd failed with error code " +
-                                  std::to_string(info));
+                                  std::to_string(error_code));
     }
   }
 };

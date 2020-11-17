@@ -609,15 +609,15 @@ public:
 private:
   /// @internal Translate znaupd's INFO codes into C++ exceptions.
   ///
-  /// @param info znaupd's INFO code.
-  void handle_aupd_error_codes(int info,
+  /// @param error_code znaupd's INFO code.
+  void handle_aupd_error_codes(int error_code,
                                real_vector_t& rwork,
                                complex_vector_t& workl) {
-    if(info == 0) return;
+    if(error_code == 0) return;
 
     storage::destroy(rwork);
     storage::destroy(workl);
-    switch(info) {
+    switch(error_code) {
       case 1: throw(maxiter_reached(iparam[2]));
       case 3: throw(ncv_insufficient(ncv));
       case -8:
@@ -630,15 +630,15 @@ private:
             std::to_string(nconv()));
       default:
         throw ARPACK_SOLVER_ERROR("znaupd failed with error code " +
-                                  std::to_string(info));
+                                  std::to_string(error_code));
     }
   }
 
   /// @internal Translate zneupd's INFO codes into C++ exceptions.
   ///
-  /// @param info zneupd's INFO code.
-  void handle_eupd_error_codes(int info) {
-    switch(info) {
+  /// @param error_code zneupd's INFO code.
+  void handle_eupd_error_codes(int error_code) {
+    switch(error_code) {
       case 0: return;
       case 1:
         throw ARPACK_SOLVER_ERROR(
@@ -654,7 +654,7 @@ private:
             "znaupd did not find any eigenvalues to sufficient accuracy");
       default:
         throw ARPACK_SOLVER_ERROR("zneupd failed with error code " +
-                                  std::to_string(info));
+                                  std::to_string(error_code));
     }
   }
 };
