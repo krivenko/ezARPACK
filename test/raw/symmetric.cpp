@@ -234,4 +234,27 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
       check_basis_vectors(ar, M.get(), N, nev);
     }
   }
+
+  SECTION("Indirect access to workspace vectors") {
+    solver_t ar(N);
+
+    auto Aop = [&](vector_const_view_t, vector_view_t) {
+      auto in = ar.workspace_vector(ar.in_vector_n());
+      auto out = ar.workspace_vector(ar.out_vector_n());
+      mv_product(A.get(), in, out, N);
+    };
+
+    for(auto e : spectrum_parts) {
+      params_t params(nev, e, true);
+      params.random_residual_vector = false;
+      set_init_residual_vector(ar);
+      ar(Aop, params);
+      CHECK(ar.nconv() >= nev);
+      check_eigenvectors(ar, A.get(), N, nev);
+      check_basis_vectors(ar, N, nev);
+    }
+
+    CHECK_THROWS(ar.workspace_vector(-1));
+    CHECK_THROWS(ar.workspace_vector(3));
+  }
 }

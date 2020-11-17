@@ -522,7 +522,7 @@ public:
   ///
   /// @param n Index of the workspace vector. Valid values are 0, 1 and 2.
   /// @throws std::runtime_error Invalid index value.
-  complex_vector_view_t workspace_vector(int n) const {
+  complex_vector_view_t workspace_vector(int n) {
     if(n < 0 || n > 2)
       throw ARPACK_SOLVER_ERROR(
           "Valid indices of workspace vectors are 0, 1 and 2 (got " +

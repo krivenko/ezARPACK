@@ -114,6 +114,28 @@ TEST_CASE("Complex eigenproblem is solved", "[solver_complex]") {
     }
   }
 
+  SECTION("Indirect access to workspace vectors") {
+    solver_t ar(A.shape(0));
+
+    auto Aop = [&](vector_const_view_t, vector_view_t) {
+      auto in = ar.workspace_vector(ar.in_vector_n());
+      auto out = ar.workspace_vector(ar.out_vector_n());
+      out = dot(A, in);
+    };
+
+    for(auto e : spectrum_parts) {
+      params_t params(nev, e, params_t::Ritz);
+      params.random_residual_vector = false;
+      set_init_residual_vector(ar);
+      ar(Aop, params);
+      check_eigenvectors(ar, A);
+      check_basis_vectors(ar);
+    }
+
+    CHECK_THROWS(ar.workspace_vector(-1));
+    CHECK_THROWS(ar.workspace_vector(3));
+  }
+
   SECTION("Custom implementation of the Exact Shift Strategy") {
     std::vector<int> p;
     p.reserve(A.shape(0));
