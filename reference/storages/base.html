@@ -12,7 +12,6 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="ezarpack/storages/eigen.hpp - Eigen 3" href="eigen.html" />
@@ -46,7 +45,7 @@
 <span id="refbase"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/base.hpp</span></code> - definition of <code class="docutils literal notranslate"><span class="pre">storage_traits</span></code> structure<a class="headerlink" href="#ezarpack-storages-base-hpp-definition-of-storage-traits-structure" title="Permalink to this headline">¶</a></h1>
 <dl class="cpp struct">
 <dt id="_CPPv4I0EN8ezarpack14storage_traitsE">
-<span id="_CPPv3I0EN8ezarpack14storage_traitsE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsE"></span>template&lt;typename <code class="sig-name descname">Backend</code>&gt;<br /><span class="target" id="structezarpack_1_1storage__traits"></span><em class="property">struct </em><code class="sig-name descname">storage_traits</code><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0EN8ezarpack14storage_traitsE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsE"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">Backend</span></code><span class="pre">&gt;</span><br /><span class="target" id="structezarpack_1_1storage__traits"></span><em class="property"><span class="pre">struct</span> </em><code class="sig-name descname"><span class="pre">storage_traits</span></code><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Specializations of this traits structure describe the way <a class="reference internal" href="../solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref">ezarpack::arpack_solver</span></a> class makes use of a particular vector/matrix algebra library. The primary template cannot be instantiated, unless there is a valid specialization for the requested tag type <code class="docutils literal notranslate"><span class="pre">Backend</span></code>. <dl class="simple">
 <dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Backend</span></code>: A tag type denoting a storage backend (vector/matrix algebra library). </p></li>
@@ -112,7 +111,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Igor Krivenko.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
     </div>
   </body>
 </html>
