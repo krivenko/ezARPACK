@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ezarpack/solver_base.hpp - primary arpack_solver class template &#8212; ezARPACK 0.9 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
@@ -42,7 +41,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="ezarpack-solver-base-hpp-primary-arpack-solver-class-template">
+  <div class="section" id="ezarpack-solver-base-hpp-primary-arpack-solver-class-template">
 <span id="refsolverbase"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template<a class="headerlink" href="#ezarpack-solver-base-hpp-primary-arpack-solver-class-template" title="Permalink to this headline">¶</a></h1>
 <p>Definition of ezARPACK’s main class template <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> and related
 types.</p>
@@ -75,11 +74,12 @@ types.</p>
 <dt id="_CPPv4I_13operator_kind0EN8ezarpack13arpack_solverE">
 <span id="_CPPv3I_13operator_kind0EN8ezarpack13arpack_solverE"></span><span id="_CPPv2I_13operator_kind0EN8ezarpack13arpack_solverE"></span><span class="pre">template&lt;</span><a class="reference internal" href="#_CPPv4N8ezarpack13operator_kindE" title="ezarpack::operator_kind"><span class="pre">operator_kind</span></a> <code class="sig-name descname"><span class="pre">OpKind</span></code><span class="pre">,</span> <span class="pre">typename</span> <code class="sig-name descname"><span class="pre">Backend</span></code><span class="pre">&gt;</span><br /><span class="target" id="classezarpack_1_1arpack__solver"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">arpack_solver</span></code><a class="headerlink" href="#_CPPv4I_13operator_kind0EN8ezarpack13arpack_solverE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Main class template of ezARPACK’s API. </p>
-<p>Instances of this class are used to solve all kinds of eigenproblems supported by ezARPACK. <dl class="simple">
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">OpKind</span></code>: Kind of eigenproblem to be solved. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Backend</span></code>: Tag type specifying what <em>storage backend</em> (matrix/vector algebra library) must be used by <code class="docutils literal notranslate"><a class="reference internal" href="#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code>. The storage backend determines types of internally stored data arrays and input/output view objects exposed by methods of the class. </p></li>
-</ul>
+<p>Instances of this class are used to solve all kinds of eigenproblems supported by ezARPACK. <dl class="field-list simple">
+<dt class="field-odd">tparam OpKind</dt>
+<dd class="field-odd"><p>Kind of eigenproblem to be solved. </p>
+</dd>
+<dt class="field-even">tparam Backend</dt>
+<dd class="field-even"><p>Tag type specifying what <em>storage backend</em> (matrix/vector algebra library) must be used by <code class="docutils literal notranslate"><a class="reference internal" href="#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code>. The storage backend determines types of internally stored data arrays and input/output view objects exposed by methods of the class. </p>
 </dd>
 </dl>
 </p>
@@ -95,13 +95,11 @@ types.</p>
 <dl class="cpp function">
 <dt id="_CPPv4N8ezarpack15maxiter_reached15maxiter_reachedEi">
 <span id="_CPPv3N8ezarpack15maxiter_reached15maxiter_reachedEi"></span><span id="_CPPv2N8ezarpack15maxiter_reached15maxiter_reachedEi"></span><span id="ezarpack::maxiter_reached::maxiter_reached__i"></span><span class="target" id="structezarpack_1_1maxiter__reached_1adf5a0059a99aaee601a8b26732f2cf39"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">maxiter_reached</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">maxiter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack15maxiter_reached15maxiter_reachedEi" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">maxiter</span></code>: Maximum number of IRLM/IRAM iterations allowed. </p></li>
-</ul>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>maxiter</strong> – Maximum number of IRLM/IRAM iterations allowed. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 </div>
@@ -126,13 +124,11 @@ types.</p>
 <dl class="cpp function">
 <dt id="_CPPv4N8ezarpack16ncv_insufficient16ncv_insufficientEi">
 <span id="_CPPv3N8ezarpack16ncv_insufficient16ncv_insufficientEi"></span><span id="_CPPv2N8ezarpack16ncv_insufficient16ncv_insufficientEi"></span><span id="ezarpack::ncv_insufficient::ncv_insufficient__i"></span><span class="target" id="structezarpack_1_1ncv__insufficient_1aec8cd9d8cc70955765a6421042d13a4c"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">ncv_insufficient</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">ncv</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack16ncv_insufficient16ncv_insufficientEi" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ncv</span></code>: Number of Lanczos/Arnoldi vectors to be generated. </p></li>
-</ul>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ncv</strong> – Number of Lanczos/Arnoldi vectors to be generated. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 </div>
@@ -147,7 +143,7 @@ types.</p>
 </div>
 </dd></dl>
 
-</section>
+</div>
 
 
             <div class="clearer"></div>
@@ -203,7 +199,7 @@ types.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Igor Krivenko.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
   </body>
 </html>

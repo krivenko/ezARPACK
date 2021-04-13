@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ezarpack/arpack.hpp - Low level C++ interface to FORTRAN routines of ARPACK &#8212; ezARPACK 0.9 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
@@ -43,7 +42,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="ezarpack-arpack-hpp-low-level-c-interface-to-fortran-routines-of-arpack">
+  <div class="section" id="ezarpack-arpack-hpp-low-level-c-interface-to-fortran-routines-of-arpack">
 <span id="refarpack"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack.hpp</span></code> - Low level C++ interface to FORTRAN routines of ARPACK<a class="headerlink" href="#ezarpack-arpack-hpp-low-level-c-interface-to-fortran-routines-of-arpack" title="Permalink to this headline">¶</a></h1>
 <dl class="cpp type">
 <dt id="_CPPv4N8ezarpack8dcomplexE">
@@ -152,174 +151,173 @@
 <dt id="_CPPv4I_bEN8ezarpack3f774aupdEvR8rci_flagPKciPKcidPdiPdiPiPiPdPdiRi">
 <span id="_CPPv3I_bEN8ezarpack3f774aupdER8rci_flagPKciPKcidPdiPdiPiPiPdPdiRi"></span><span id="_CPPv2I_bEN8ezarpack3f774aupdER8rci_flagPKciPKcidPdiPdiPiPiPdPdiRi"></span><span class="pre">template&lt;</span><span class="pre">bool</span> <code class="sig-name descname"><span class="pre">Symmetric</span></code> <span class="pre">=</span> <span class="pre">false</span><span class="pre">&gt;</span><br /><span class="target" id="arpack_8hpp_1ac1ebe424d17a4a87834eb9af32e165fe"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">aupd</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack8rci_flagE" title="ezarpack::rci_flag"><span class="pre">rci_flag</span></a> <span class="pre">&amp;</span><em><span class="pre">ido</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">bmat</span></em>, <span class="pre">int</span> <em><span class="pre">n</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">which</span></em>, <span class="pre">int</span> <em><span class="pre">nev</span></em>, <span class="pre">double</span> <em><span class="pre">tol</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">resid</span></em>, <span class="pre">int</span> <em><span class="pre">ncv</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">v</span></em>, <span class="pre">int</span> <em><span class="pre">ldv</span></em>, <span class="pre">int</span> <span class="pre">*</span><em><span class="pre">iparam</span></em>, <span class="pre">int</span> <span class="pre">*</span><em><span class="pre">ipntr</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">workd</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">workl</span></em>, <span class="pre">int</span> <em><span class="pre">lworkl</span></em>, <span class="pre">int</span> <span class="pre">&amp;</span><em><span class="pre">info</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_bEN8ezarpack3f774aupdEvR8rci_flagPKciPKcidPdiPdiPiPiPdPdiRi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>C++ wrapper for the Reverse Communication Interface ARPACK-NG subroutines <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a0be60c021404ba112e95ad9e3925b224"><span class="std std-ref"><span class="pre">dsaupd_()</span></span></a></code> and <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a42e2f3f68ec9cebb3ca237d0a11ea529"><span class="std std-ref"><span class="pre">dnaupd_()</span></span></a></code>. </p>
-<p><dl class="simple">
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Symmetric</span></code>: If <code class="docutils literal notranslate"><span class="pre">true</span></code>, calls <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a0be60c021404ba112e95ad9e3925b224"><span class="std std-ref"><span class="pre">dsaupd_()</span></span></a></code>, otherwise calls <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a42e2f3f68ec9cebb3ca237d0a11ea529"><span class="std std-ref"><span class="pre">dnaupd_()</span></span></a></code>. </p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Symmetric</strong> – If <code class="docutils literal notranslate"><span class="pre">true</span></code>, calls <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a0be60c021404ba112e95ad9e3925b224"><span class="std std-ref"><span class="pre">dsaupd_()</span></span></a></code>, otherwise calls <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a42e2f3f68ec9cebb3ca237d0a11ea529"><span class="std std-ref"><span class="pre">dnaupd_()</span></span></a></code>. </p>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ido</span></code>: Reverse communication flag. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">bmat</span></code>: Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code>: Dimension of the eigenproblem. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">which</span></code>: Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nev</span></code>: Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">tol</span></code>: Stopping criterion: relative tolerance of the Ritz value. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">resid</span></code>: Initial residual vector. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ncv</span></code>: How many Lanczos/Arnoldi vectors to generate at each iteration. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Contains the final set of Lanczos/Arnoldi basis vectors. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ldv</span></code>: Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">iparam</span></code>: Array of input/output parameter flags. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ipntr</span></code>: Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Lanczos/Arnoldi iteration. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">workd</span></code>: Array to be used in the basic Lanczos/Arnoldi iteration for reverse communication. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">workl</span></code>: Work array. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lworkl</span></code>: Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">info</span></code>: Initial residual vector type (input) and error codes (output). </p></li>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ido</strong> – Reverse communication flag. </p></li>
+<li><p><strong>bmat</strong> – Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
+<li><p><strong>n</strong> – Dimension of the eigenproblem. </p></li>
+<li><p><strong>which</strong> – Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
+<li><p><strong>nev</strong> – Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
+<li><p><strong>tol</strong> – Stopping criterion: relative tolerance of the Ritz value. </p></li>
+<li><p><strong>resid</strong> – Initial residual vector. </p></li>
+<li><p><strong>ncv</strong> – How many Lanczos/Arnoldi vectors to generate at each iteration. </p></li>
+<li><p><strong>v</strong> – Contains the final set of Lanczos/Arnoldi basis vectors. </p></li>
+<li><p><strong>ldv</strong> – Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
+<li><p><strong>iparam</strong> – Array of input/output parameter flags. </p></li>
+<li><p><strong>ipntr</strong> – Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Lanczos/Arnoldi iteration. </p></li>
+<li><p><strong>workd</strong> – Array to be used in the basic Lanczos/Arnoldi iteration for reverse communication. </p></li>
+<li><p><strong>workl</strong> – Work array. </p></li>
+<li><p><strong>lworkl</strong> – Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
+<li><p><strong>info</strong> – Initial residual vector type (input) and error codes (output). </p></li>
 </ul>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N8ezarpack3f774aupdER8rci_flagPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi">
 <span id="_CPPv3N8ezarpack3f774aupdER8rci_flagPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi"></span><span id="_CPPv2N8ezarpack3f774aupdER8rci_flagPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi"></span><span id="ezarpack::f77::aupd__rci_flagR.cCP.i.cCP.i.double.dcomplexP.i.dcomplexP.i.iP.iP.dcomplexP.dcomplexP.i.doubleP.iR"></span><span class="target" id="arpack_8hpp_1aa92603fe1c4876c34d725fea550165eb"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">aupd</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack8rci_flagE" title="ezarpack::rci_flag"><span class="pre">rci_flag</span></a> <span class="pre">&amp;</span><em><span class="pre">ido</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">bmat</span></em>, <span class="pre">int</span> <em><span class="pre">n</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">which</span></em>, <span class="pre">int</span> <em><span class="pre">nev</span></em>, <span class="pre">double</span> <em><span class="pre">tol</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex"><span class="pre">dcomplex</span></a> <span class="pre">*</span><em><span class="pre">resid</span></em>, <span class="pre">int</span> <em><span class="pre">ncv</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex"><span class="pre">dcomplex</span></a> <span class="pre">*</span><em><span class="pre">v</span></em>, <span class="pre">int</span> <em><span class="pre">ldv</span></em>, <span class="pre">int</span> <span class="pre">*</span><em><span class="pre">iparam</span></em>, <span class="pre">int</span> <span class="pre">*</span><em><span class="pre">ipntr</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex"><span class="pre">dcomplex</span></a> <span class="pre">*</span><em><span class="pre">workd</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex"><span class="pre">dcomplex</span></a> <span class="pre">*</span><em><span class="pre">workl</span></em>, <span class="pre">int</span> <em><span class="pre">lworkl</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">rwork</span></em>, <span class="pre">int</span> <span class="pre">&amp;</span><em><span class="pre">info</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3f774aupdER8rci_flagPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>C++ wrapper for the Reverse Communication Interface ARPACK-NG subroutine <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a286b6b5e09618af87174c0765f8c2e0c"><span class="std std-ref"><span class="pre">znaupd_()</span></span></a></code>. </p>
-<p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ido</span></code>: Reverse communication flag. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">bmat</span></code>: Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code>: Dimension of the eigenproblem. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">which</span></code>: Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nev</span></code>: Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">tol</span></code>: Stopping criterion: relative tolerance of the Ritz value. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">resid</span></code>: Initial residual vector. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ncv</span></code>: How many Arnoldi vectors to generate at each iteration. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Contains the final set of Arnoldi basis vectors. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ldv</span></code>: Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">iparam</span></code>: Array of input/output parameter flags. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ipntr</span></code>: Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Arnoldi iteration. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">workd</span></code>: Array to be used in the basic Arnoldi iteration for reverse communication. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">workl</span></code>: Work array. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lworkl</span></code>: Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rwork</span></code>: Work array of dimension <code class="docutils literal notranslate"><span class="pre">ncv</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">info</span></code>: Initial residual vector type (input) and error codes (output). </p></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ido</strong> – Reverse communication flag. </p></li>
+<li><p><strong>bmat</strong> – Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
+<li><p><strong>n</strong> – Dimension of the eigenproblem. </p></li>
+<li><p><strong>which</strong> – Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
+<li><p><strong>nev</strong> – Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
+<li><p><strong>tol</strong> – Stopping criterion: relative tolerance of the Ritz value. </p></li>
+<li><p><strong>resid</strong> – Initial residual vector. </p></li>
+<li><p><strong>ncv</strong> – How many Arnoldi vectors to generate at each iteration. </p></li>
+<li><p><strong>v</strong> – Contains the final set of Arnoldi basis vectors. </p></li>
+<li><p><strong>ldv</strong> – Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
+<li><p><strong>iparam</strong> – Array of input/output parameter flags. </p></li>
+<li><p><strong>ipntr</strong> – Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Arnoldi iteration. </p></li>
+<li><p><strong>workd</strong> – Array to be used in the basic Arnoldi iteration for reverse communication. </p></li>
+<li><p><strong>workl</strong> – Work array. </p></li>
+<li><p><strong>lworkl</strong> – Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
+<li><p><strong>rwork</strong> – Work array of dimension <code class="docutils literal notranslate"><span class="pre">ncv</span></code>. </p></li>
+<li><p><strong>info</strong> – Initial residual vector type (input) and error codes (output). </p></li>
 </ul>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N8ezarpack3f774eupdEiPKcPKiPdPdidPKciPKcidPdiPdiPiPiPdPdiRi">
 <span id="_CPPv3N8ezarpack3f774eupdEiPKcPKiPdPdidPKciPKcidPdiPdiPiPiPdPdiRi"></span><span id="_CPPv2N8ezarpack3f774eupdEiPKcPKiPdPdidPKciPKcidPdiPdiPiPiPdPdiRi"></span><span id="ezarpack::f77::eupd__i.cCP.iCP.doubleP.doubleP.i.double.cCP.i.cCP.i.double.doubleP.i.doubleP.i.iP.iP.doubleP.doubleP.i.iR"></span><span class="target" id="arpack_8hpp_1a412e046be25347b1e4a2cb848d302648"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">eupd</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">rvec</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">howmny</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">int</span> <span class="pre">*</span><em><span class="pre">select</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">d</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">z</span></em>, <span class="pre">int</span> <em><span class="pre">ldz</span></em>, <span class="pre">double</span> <em><span class="pre">sigma</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">bmat</span></em>, <span class="pre">int</span> <em><span class="pre">n</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">which</span></em>, <span class="pre">int</span> <em><span class="pre">nev</span></em>, <span class="pre">double</span> <em><span class="pre">tol</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">resid</span></em>, <span class="pre">int</span> <em><span class="pre">ncv</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">v</span></em>, <span class="pre">int</span> <em><span class="pre">ldv</span></em>, <span class="pre">int</span> <span class="pre">*</span><em><span class="pre">iparam</span></em>, <span class="pre">int</span> <span class="pre">*</span><em><span class="pre">ipntr</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">workd</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">workl</span></em>, <span class="pre">int</span> <em><span class="pre">lworkl</span></em>, <span class="pre">int</span> <span class="pre">&amp;</span><em><span class="pre">info</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3f774eupdEiPKcPKiPdPdidPKciPKcidPdiPdiPiPiPdPdiRi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>C++ wrapper for the post-processing ARPACK-NG subroutine <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1af76d811db3454edaa00d500ab8ccc44e"><span class="std std-ref"><span class="pre">dseupd_()</span></span></a></code>. </p>
-<p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">rvec</span></code>: Specifies whether to compute Ritz vectors. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">howmny</span></code>: Specifies how many Ritz vectors are wanted. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">select</span></code>: Selection of Ritz vectors to be computed. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">d</span></code>: Approximate Ritz values (output). </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>: Approximate <code class="docutils literal notranslate"><span class="pre">B</span></code>-orthonormal Ritz vectors (output). </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ldz</span></code>: The leading dimension of the array <code class="docutils literal notranslate"><span class="pre">Z</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sigma</span></code>: Shift for spectral transformations. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">bmat</span></code>: Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code>: Dimension of the eigenproblem. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">which</span></code>: Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nev</span></code>: Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">tol</span></code>: Stopping criterion: relative tolerance of the Ritz value. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">resid</span></code>: Initial residual vector. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ncv</span></code>: How many Lanczos vectors to generate at each iteration. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Contains the final set of Lanczos basis vectors. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ldv</span></code>: Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">iparam</span></code>: Array of input/output parameter flags. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ipntr</span></code>: Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Lanczos iteration. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">workd</span></code>: Array to be used in the basic Lanczos iteration for reverse communication. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">workl</span></code>: Work array. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lworkl</span></code>: Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">info</span></code>: Initial residual vector type (input) and error codes (output). </p></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rvec</strong> – Specifies whether to compute Ritz vectors. </p></li>
+<li><p><strong>howmny</strong> – Specifies how many Ritz vectors are wanted. </p></li>
+<li><p><strong>select</strong> – Selection of Ritz vectors to be computed. </p></li>
+<li><p><strong>d</strong> – Approximate Ritz values (output). </p></li>
+<li><p><strong>z</strong> – Approximate <code class="docutils literal notranslate"><span class="pre">B</span></code>-orthonormal Ritz vectors (output). </p></li>
+<li><p><strong>ldz</strong> – The leading dimension of the array <code class="docutils literal notranslate"><span class="pre">Z</span></code>. </p></li>
+<li><p><strong>sigma</strong> – Shift for spectral transformations. </p></li>
+<li><p><strong>bmat</strong> – Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
+<li><p><strong>n</strong> – Dimension of the eigenproblem. </p></li>
+<li><p><strong>which</strong> – Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
+<li><p><strong>nev</strong> – Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
+<li><p><strong>tol</strong> – Stopping criterion: relative tolerance of the Ritz value. </p></li>
+<li><p><strong>resid</strong> – Initial residual vector. </p></li>
+<li><p><strong>ncv</strong> – How many Lanczos vectors to generate at each iteration. </p></li>
+<li><p><strong>v</strong> – Contains the final set of Lanczos basis vectors. </p></li>
+<li><p><strong>ldv</strong> – Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
+<li><p><strong>iparam</strong> – Array of input/output parameter flags. </p></li>
+<li><p><strong>ipntr</strong> – Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Lanczos iteration. </p></li>
+<li><p><strong>workd</strong> – Array to be used in the basic Lanczos iteration for reverse communication. </p></li>
+<li><p><strong>workl</strong> – Work array. </p></li>
+<li><p><strong>lworkl</strong> – Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
+<li><p><strong>info</strong> – Initial residual vector type (input) and error codes (output). </p></li>
 </ul>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N8ezarpack3f774eupdEiPKcPKiPdPdPdiddPdPKciPKcidPdiPdiPiPiPdPdiRi">
 <span id="_CPPv3N8ezarpack3f774eupdEiPKcPKiPdPdPdiddPdPKciPKcidPdiPdiPiPiPdPdiRi"></span><span id="_CPPv2N8ezarpack3f774eupdEiPKcPKiPdPdPdiddPdPKciPKcidPdiPdiPiPiPdPdiRi"></span><span id="ezarpack::f77::eupd__i.cCP.iCP.doubleP.doubleP.doubleP.i.double.double.doubleP.cCP.i.cCP.i.double.doubleP.i.doubleP.i.iP.iP.doubleP.doubleP.i.iR"></span><span class="target" id="arpack_8hpp_1a8e9418a6c2e6b26fe68eea6ebd0e9c30"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">eupd</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">rvec</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">howmny</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">int</span> <span class="pre">*</span><em><span class="pre">select</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">dr</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">di</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">z</span></em>, <span class="pre">int</span> <em><span class="pre">ldz</span></em>, <span class="pre">double</span> <em><span class="pre">sigmar</span></em>, <span class="pre">double</span> <em><span class="pre">sigmai</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">workev</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">bmat</span></em>, <span class="pre">int</span> <em><span class="pre">n</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">which</span></em>, <span class="pre">int</span> <em><span class="pre">nev</span></em>, <span class="pre">double</span> <em><span class="pre">tol</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">resid</span></em>, <span class="pre">int</span> <em><span class="pre">ncv</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">v</span></em>, <span class="pre">int</span> <em><span class="pre">ldv</span></em>, <span class="pre">int</span> <span class="pre">*</span><em><span class="pre">iparam</span></em>, <span class="pre">int</span> <span class="pre">*</span><em><span class="pre">ipntr</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">workd</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">workl</span></em>, <span class="pre">int</span> <em><span class="pre">lworkl</span></em>, <span class="pre">int</span> <span class="pre">&amp;</span><em><span class="pre">info</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3f774eupdEiPKcPKiPdPdPdiddPdPKciPKcidPdiPdiPiPiPdPdiRi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>C++ wrapper for the post-processing ARPACK-NG subroutine <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a489214a822cde96633d8341736043de7"><span class="std std-ref"><span class="pre">dneupd_()</span></span></a></code>. </p>
-<p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">rvec</span></code>: Specifies whether to compute Ritz/Schur vectors. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">howmny</span></code>: Specifies the form of the basis for the invariant subspace. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">select</span></code>: Selection of Ritz vectors to be computed. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">dr</span></code>: Real parts of approximate Ritz values (output). </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">di</span></code>: Imaginary parts of approximate Ritz values (output). </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>: Approximate <code class="docutils literal notranslate"><span class="pre">B</span></code>-orthonormal Ritz vectors (output). </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ldz</span></code>: The leading dimension of the array <code class="docutils literal notranslate"><span class="pre">Z</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sigmar</span></code>: Real part of the shift for spectral transformations. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sigmai</span></code>: Imaginary part of the shift for spectral transformations. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">workev</span></code>: Work array. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">bmat</span></code>: Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code>: Dimension of the eigenproblem. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">which</span></code>: Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nev</span></code>: Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">tol</span></code>: Stopping criterion: relative tolerance of the Ritz value. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">resid</span></code>: Initial residual vector. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ncv</span></code>: How many Arnoldi vectors to generate at each iteration. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Contains the final set of Arnoldi basis vectors. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ldv</span></code>: Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">iparam</span></code>: Array of input/output parameter flags. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ipntr</span></code>: Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Arnoldi iteration. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">workd</span></code>: Array to be used in the basic Arnoldi iteration for reverse communication. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">workl</span></code>: Work array. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lworkl</span></code>: Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">info</span></code>: Initial residual vector type (input) and error codes (output). </p></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rvec</strong> – Specifies whether to compute Ritz/Schur vectors. </p></li>
+<li><p><strong>howmny</strong> – Specifies the form of the basis for the invariant subspace. </p></li>
+<li><p><strong>select</strong> – Selection of Ritz vectors to be computed. </p></li>
+<li><p><strong>dr</strong> – Real parts of approximate Ritz values (output). </p></li>
+<li><p><strong>di</strong> – Imaginary parts of approximate Ritz values (output). </p></li>
+<li><p><strong>z</strong> – Approximate <code class="docutils literal notranslate"><span class="pre">B</span></code>-orthonormal Ritz vectors (output). </p></li>
+<li><p><strong>ldz</strong> – The leading dimension of the array <code class="docutils literal notranslate"><span class="pre">Z</span></code>. </p></li>
+<li><p><strong>sigmar</strong> – Real part of the shift for spectral transformations. </p></li>
+<li><p><strong>sigmai</strong> – Imaginary part of the shift for spectral transformations. </p></li>
+<li><p><strong>workev</strong> – Work array. </p></li>
+<li><p><strong>bmat</strong> – Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
+<li><p><strong>n</strong> – Dimension of the eigenproblem. </p></li>
+<li><p><strong>which</strong> – Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
+<li><p><strong>nev</strong> – Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
+<li><p><strong>tol</strong> – Stopping criterion: relative tolerance of the Ritz value. </p></li>
+<li><p><strong>resid</strong> – Initial residual vector. </p></li>
+<li><p><strong>ncv</strong> – How many Arnoldi vectors to generate at each iteration. </p></li>
+<li><p><strong>v</strong> – Contains the final set of Arnoldi basis vectors. </p></li>
+<li><p><strong>ldv</strong> – Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
+<li><p><strong>iparam</strong> – Array of input/output parameter flags. </p></li>
+<li><p><strong>ipntr</strong> – Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Arnoldi iteration. </p></li>
+<li><p><strong>workd</strong> – Array to be used in the basic Arnoldi iteration for reverse communication. </p></li>
+<li><p><strong>workl</strong> – Work array. </p></li>
+<li><p><strong>lworkl</strong> – Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
+<li><p><strong>info</strong> – Initial residual vector type (input) and error codes (output). </p></li>
 </ul>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N8ezarpack3f774eupdEiPKcPKiP8dcomplexP8dcomplexi8dcomplexP8dcomplexPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi">
 <span id="_CPPv3N8ezarpack3f774eupdEiPKcPKiP8dcomplexP8dcomplexi8dcomplexP8dcomplexPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi"></span><span id="_CPPv2N8ezarpack3f774eupdEiPKcPKiP8dcomplexP8dcomplexi8dcomplexP8dcomplexPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi"></span><span id="ezarpack::f77::eupd__i.cCP.iCP.dcomplexP.dcomplexP.i.dcomplex.dcomplexP.cCP.i.cCP.i.double.dcomplexP.i.dcomplexP.i.iP.iP.dcomplexP.dcomplexP.i.doubleP.iR"></span><span class="target" id="arpack_8hpp_1a9169bcf5ea308d136040118a15af32f7"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">eupd</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">rvec</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">howmny</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">int</span> <span class="pre">*</span><em><span class="pre">select</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex"><span class="pre">dcomplex</span></a> <span class="pre">*</span><em><span class="pre">d</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex"><span class="pre">dcomplex</span></a> <span class="pre">*</span><em><span class="pre">z</span></em>, <span class="pre">int</span> <em><span class="pre">ldz</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex"><span class="pre">dcomplex</span></a> <em><span class="pre">sigma</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex"><span class="pre">dcomplex</span></a> <span class="pre">*</span><em><span class="pre">workev</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">bmat</span></em>, <span class="pre">int</span> <em><span class="pre">n</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">which</span></em>, <span class="pre">int</span> <em><span class="pre">nev</span></em>, <span class="pre">double</span> <em><span class="pre">tol</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex"><span class="pre">dcomplex</span></a> <span class="pre">*</span><em><span class="pre">resid</span></em>, <span class="pre">int</span> <em><span class="pre">ncv</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex"><span class="pre">dcomplex</span></a> <span class="pre">*</span><em><span class="pre">v</span></em>, <span class="pre">int</span> <em><span class="pre">ldv</span></em>, <span class="pre">int</span> <span class="pre">*</span><em><span class="pre">iparam</span></em>, <span class="pre">int</span> <span class="pre">*</span><em><span class="pre">ipntr</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex"><span class="pre">dcomplex</span></a> <span class="pre">*</span><em><span class="pre">workd</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex"><span class="pre">dcomplex</span></a> <span class="pre">*</span><em><span class="pre">workl</span></em>, <span class="pre">int</span> <em><span class="pre">lworkl</span></em>, <span class="pre">double</span> <span class="pre">*</span><em><span class="pre">rwork</span></em>, <span class="pre">int</span> <span class="pre">&amp;</span><em><span class="pre">info</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3f774eupdEiPKcPKiP8dcomplexP8dcomplexi8dcomplexP8dcomplexPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>C++ wrapper for the post-processing ARPACK-NG subroutine <code class="docutils literal notranslate"><a class="reference internal" href="#arpack_8hpp_1a212312f9df18095ddeb0c43ff8ffc956"><span class="std std-ref"><span class="pre">zneupd_()</span></span></a></code>. </p>
-<p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">rvec</span></code>: Specifies whether to compute Ritz/Schur vectors. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">howmny</span></code>: Specifies the form of the basis for the invariant subspace. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">select</span></code>: Selection of Ritz vectors to be computed. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">d</span></code>: Approximate Ritz values (output). </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>: Approximate <code class="docutils literal notranslate"><span class="pre">B</span></code>-orthonormal Ritz vectors (output). </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ldz</span></code>: The leading dimension of the array <code class="docutils literal notranslate"><span class="pre">Z</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sigma</span></code>: Shift for spectral transformations. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">workev</span></code>: Work array. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">bmat</span></code>: Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code>: Dimension of the eigenproblem. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">which</span></code>: Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nev</span></code>: Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">tol</span></code>: Stopping criterion: relative tolerance of the Ritz value. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">resid</span></code>: Initial residual vector. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ncv</span></code>: How many Arnoldi vectors to generate at each iteration. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Contains the final set of Arnoldi basis vectors. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ldv</span></code>: Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">iparam</span></code>: Array of input/output parameter flags. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ipntr</span></code>: Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Arnoldi iteration. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">workd</span></code>: Array to be used in the basic Arnoldi iteration for reverse communication. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">workl</span></code>: Work array. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lworkl</span></code>: Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rwork</span></code>: Work array of dimension <code class="docutils literal notranslate"><span class="pre">ncv</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">info</span></code>: Initial residual vector type (input) and error codes (output). </p></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rvec</strong> – Specifies whether to compute Ritz/Schur vectors. </p></li>
+<li><p><strong>howmny</strong> – Specifies the form of the basis for the invariant subspace. </p></li>
+<li><p><strong>select</strong> – Selection of Ritz vectors to be computed. </p></li>
+<li><p><strong>d</strong> – Approximate Ritz values (output). </p></li>
+<li><p><strong>z</strong> – Approximate <code class="docutils literal notranslate"><span class="pre">B</span></code>-orthonormal Ritz vectors (output). </p></li>
+<li><p><strong>ldz</strong> – The leading dimension of the array <code class="docutils literal notranslate"><span class="pre">Z</span></code>. </p></li>
+<li><p><strong>sigma</strong> – Shift for spectral transformations. </p></li>
+<li><p><strong>workev</strong> – Work array. </p></li>
+<li><p><strong>bmat</strong> – Specifies the type of the semi-inner product matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>. </p></li>
+<li><p><strong>n</strong> – Dimension of the eigenproblem. </p></li>
+<li><p><strong>which</strong> – Specifies which of the Ritz values of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to compute. </p></li>
+<li><p><strong>nev</strong> – Number of eigenvalues of <code class="docutils literal notranslate"><span class="pre">OP</span></code> to be computed. </p></li>
+<li><p><strong>tol</strong> – Stopping criterion: relative tolerance of the Ritz value. </p></li>
+<li><p><strong>resid</strong> – Initial residual vector. </p></li>
+<li><p><strong>ncv</strong> – How many Arnoldi vectors to generate at each iteration. </p></li>
+<li><p><strong>v</strong> – Contains the final set of Arnoldi basis vectors. </p></li>
+<li><p><strong>ldv</strong> – Leading dimension of <code class="docutils literal notranslate"><span class="pre">v</span></code> as declared in the calling program. </p></li>
+<li><p><strong>iparam</strong> – Array of input/output parameter flags. </p></li>
+<li><p><strong>ipntr</strong> – Pointer to mark the starting locations in the <code class="docutils literal notranslate"><span class="pre">workd</span></code> and <code class="docutils literal notranslate"><span class="pre">workl</span></code> arrays for matrices/vectors used by the Arnoldi iteration. </p></li>
+<li><p><strong>workd</strong> – Array to be used in the basic Arnoldi iteration for reverse communication. </p></li>
+<li><p><strong>workl</strong> – Work array. </p></li>
+<li><p><strong>lworkl</strong> – Dimension of <code class="docutils literal notranslate"><span class="pre">workl</span></code>. </p></li>
+<li><p><strong>rwork</strong> – Work array of dimension <code class="docutils literal notranslate"><span class="pre">ncv</span></code>. </p></li>
+<li><p><strong>info</strong> – Initial residual vector type (input) and error codes (output). </p></li>
 </ul>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 </div>
 </dd></dl>
 
-</section>
+</div>
 
 
             <div class="clearer"></div>
@@ -375,7 +373,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Igor Krivenko.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
   </body>
 </html>

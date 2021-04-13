@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ezarpack/storages/eigen.hpp - Eigen 3 &#8212; ezARPACK 0.9 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
@@ -43,7 +42,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="ezarpack-storages-eigen-hpp-eigen-3">
+  <div class="section" id="ezarpack-storages-eigen-hpp-eigen-3">
 <span id="refeigen"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/eigen.hpp</span></code> - Eigen 3<a class="headerlink" href="#ezarpack-storages-eigen-hpp-eigen-3" title="Permalink to this headline">¶</a></h1>
 <p>This storage backend depends on <a class="reference external" href="http://eigen.tuxfamily.org">Eigen</a> version
 3.3 or newer.</p>
@@ -64,73 +63,67 @@
 <dl class="cpp type">
 <dt id="_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6vectorE">
 <span id="_CPPv3N8ezarpack14storage_traitsI13eigen_storageE6vectorE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13eigen_storageE6vectorE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1a69eda91296246ecd33e8bff86f45dc71"></span><em class="property"><span class="pre">using</span> </em><code class="sig-name descname"><span class="pre">vector</span></code> <span class="pre">=</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">Matrix</span><span class="pre">&lt;</span><span class="pre">T</span><span class="pre">,</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">Dynamic</span><span class="pre">,</span> <span class="pre">1</span><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6vectorE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Eigen vector (matrix with one column and a dynamic number of rows). <dl class="simple">
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
-</ul>
+<dd><p>Eigen vector (matrix with one column and a dynamic number of rows). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt id="_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6matrixE">
 <span id="_CPPv3N8ezarpack14storage_traitsI13eigen_storageE6matrixE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13eigen_storageE6matrixE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1afd5d4a614aac0c72c73398656f4801ba"></span><em class="property"><span class="pre">using</span> </em><code class="sig-name descname"><span class="pre">matrix</span></code> <span class="pre">=</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">Matrix</span><span class="pre">&lt;</span><span class="pre">T</span><span class="pre">,</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">Dynamic</span><span class="pre">,</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">Dynamic</span><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6matrixE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Dynamic Eigen matrix. <dl class="simple">
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
-</ul>
+<dd><p>Dynamic Eigen matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt id="_CPPv4N8ezarpack14storage_traitsI13eigen_storageE11vector_viewE">
 <span id="_CPPv3N8ezarpack14storage_traitsI13eigen_storageE11vector_viewE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13eigen_storageE11vector_viewE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1a21a5d7abbcf2a58856fd2696a26e0a49"></span><em class="property"><span class="pre">using</span> </em><code class="sig-name descname"><span class="pre">vector_view</span></code> <span class="pre">=</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">VectorBlock</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6vectorE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::vector"><span class="pre">vector</span></a><span class="pre">&lt;</span><span class="pre">T</span><span class="pre">&gt;</span><span class="pre">,</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">Dynamic</span><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE11vector_viewE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Vector view type (block of a vector). <dl class="simple">
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
-</ul>
+<dd><p>Vector view type (block of a vector). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt id="_CPPv4N8ezarpack14storage_traitsI13eigen_storageE17vector_const_viewE">
 <span id="_CPPv3N8ezarpack14storage_traitsI13eigen_storageE17vector_const_viewE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13eigen_storageE17vector_const_viewE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1a93d3026e707126d63201aed8df06ffb7"></span><em class="property"><span class="pre">using</span> </em><code class="sig-name descname"><span class="pre">vector_const_view</span></code> <span class="pre">=</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">VectorBlock</span><span class="pre">&lt;</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6vectorE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::vector"><span class="pre">vector</span></a><span class="pre">&lt;</span><span class="pre">T</span><span class="pre">&gt;</span><span class="pre">,</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">Dynamic</span><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE17vector_const_viewE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Constant vector view type (block of a constant vector). <dl class="simple">
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
-</ul>
+<dd><p>Constant vector view type (block of a constant vector). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt id="_CPPv4N8ezarpack14storage_traitsI13eigen_storageE11matrix_viewE">
 <span id="_CPPv3N8ezarpack14storage_traitsI13eigen_storageE11matrix_viewE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13eigen_storageE11matrix_viewE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1a4d0bff6cff0ccb502f147367097d4ed5"></span><em class="property"><span class="pre">using</span> </em><code class="sig-name descname"><span class="pre">matrix_view</span></code> <span class="pre">=</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">Block</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6matrixE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::matrix"><span class="pre">matrix</span></a><span class="pre">&lt;</span><span class="pre">T</span><span class="pre">&gt;</span><span class="pre">,</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">Dynamic</span><span class="pre">,</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">Dynamic</span><span class="pre">,</span> <span class="pre">true</span><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE11matrix_viewE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Matrix view type (block of a matrix). <dl class="simple">
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
-</ul>
+<dd><p>Matrix view type (block of a matrix). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt id="_CPPv4N8ezarpack14storage_traitsI13eigen_storageE17matrix_const_viewE">
 <span id="_CPPv3N8ezarpack14storage_traitsI13eigen_storageE17matrix_const_viewE"></span><span id="_CPPv2N8ezarpack14storage_traitsI13eigen_storageE17matrix_const_viewE"></span><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1aaf450f8b5e1f63c3d256552d09f315ce"></span><em class="property"><span class="pre">using</span> </em><code class="sig-name descname"><span class="pre">matrix_const_view</span></code> <span class="pre">=</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">Block</span><span class="pre">&lt;</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6matrixE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::matrix"><span class="pre">matrix</span></a><span class="pre">&lt;</span><span class="pre">T</span><span class="pre">&gt;</span><span class="pre">,</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">Dynamic</span><span class="pre">,</span> <span class="pre">Eigen</span><span class="pre">::</span><span class="pre">Dynamic</span><span class="pre">,</span> <span class="pre">true</span><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE17matrix_const_viewE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Constant matrix view type (block of a constant matrix). <dl class="simple">
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
-</ul>
+<dd><p>Constant matrix view type (block of a constant matrix). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 </div>
@@ -211,168 +204,168 @@
 <dl class="cpp function">
 <dt id="_CPPv4N8ezarpack14storage_traitsI13eigen_storageE16make_real_vectorEi">
 <span id="_CPPv3N8ezarpack14storage_traitsI13eigen_storageE16make_real_vectorEi"></span><span id="_CPPv2N8ezarpack14storage_traitsI13eigen_storageE16make_real_vectorEi"></span><span id="ezarpack::storage_traits:eigen_storage:::make_real_vector__i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1ad0d445288fd17e4d22b416a07c87a6b6"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::real_vector_type"><span class="pre">real_vector_type</span></a> <code class="sig-name descname"><span class="pre">make_real_vector</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE16make_real_vectorEi" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Constructs a real vector container. <dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>Constructed vector. </p>
+<dd><p>Constructs a real vector container. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>size</strong> – Size of the vector. </p>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the vector. </p></li>
-</ul>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Constructed vector. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N8ezarpack14storage_traitsI13eigen_storageE19make_complex_vectorEi">
 <span id="_CPPv3N8ezarpack14storage_traitsI13eigen_storageE19make_complex_vectorEi"></span><span id="_CPPv2N8ezarpack14storage_traitsI13eigen_storageE19make_complex_vectorEi"></span><span id="ezarpack::storage_traits:eigen_storage:::make_complex_vector__i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1a873980d0e824c9bde81a0858a3db083e"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE19complex_vector_typeE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::complex_vector_type"><span class="pre">complex_vector_type</span></a> <code class="sig-name descname"><span class="pre">make_complex_vector</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE19make_complex_vectorEi" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Constructs a complex vector container. <dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>Constructed vector. </p>
+<dd><p>Constructs a complex vector container. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>size</strong> – Size of the vector. </p>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the vector. </p></li>
-</ul>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Constructed vector. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N8ezarpack14storage_traitsI13eigen_storageE15make_int_vectorEi">
 <span id="_CPPv3N8ezarpack14storage_traitsI13eigen_storageE15make_int_vectorEi"></span><span id="_CPPv2N8ezarpack14storage_traitsI13eigen_storageE15make_int_vectorEi"></span><span id="ezarpack::storage_traits:eigen_storage:::make_int_vector__i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1a348328569371dca0be16d824d4191250"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE15int_vector_typeE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::int_vector_type"><span class="pre">int_vector_type</span></a> <code class="sig-name descname"><span class="pre">make_int_vector</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE15make_int_vectorEi" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Constructs an integer vector container. <dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>Constructed vector. </p>
+<dd><p>Constructs an integer vector container. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>size</strong> – Size of the vector. </p>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the vector. </p></li>
-</ul>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Constructed vector. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N8ezarpack14storage_traitsI13eigen_storageE16make_real_matrixEii">
 <span id="_CPPv3N8ezarpack14storage_traitsI13eigen_storageE16make_real_matrixEii"></span><span id="_CPPv2N8ezarpack14storage_traitsI13eigen_storageE16make_real_matrixEii"></span><span id="ezarpack::storage_traits:eigen_storage:::make_real_matrix__i.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1adbdcffaae6edc7fd084f32b31ae80445"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE16real_matrix_typeE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::real_matrix_type"><span class="pre">real_matrix_type</span></a> <code class="sig-name descname"><span class="pre">make_real_matrix</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">rows</span></em>, <span class="pre">int</span> <em><span class="pre">cols</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE16make_real_matrixEii" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Constructs a real matrix container. <dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>Constructed matrix. </p>
-</dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">rows</span></code>: Number of matrix rows. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cols</span></code>: Number of matrix columns. </p></li>
+<dd><p>Constructs a real matrix container. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rows</strong> – Number of matrix rows. </p></li>
+<li><p><strong>cols</strong> – Number of matrix columns. </p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Constructed matrix. </p>
+</dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N8ezarpack14storage_traitsI13eigen_storageE19make_complex_matrixEii">
 <span id="_CPPv3N8ezarpack14storage_traitsI13eigen_storageE19make_complex_matrixEii"></span><span id="_CPPv2N8ezarpack14storage_traitsI13eigen_storageE19make_complex_matrixEii"></span><span id="ezarpack::storage_traits:eigen_storage:::make_complex_matrix__i.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1a260190e5c670826b343cf349498ca43e"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE19complex_matrix_typeE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::complex_matrix_type"><span class="pre">complex_matrix_type</span></a> <code class="sig-name descname"><span class="pre">make_complex_matrix</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">rows</span></em>, <span class="pre">int</span> <em><span class="pre">cols</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE19make_complex_matrixEii" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Constructs a complex matrix container. <dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>Constructed matrix. </p>
-</dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">rows</span></code>: Number of matrix rows. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cols</span></code>: Number of matrix columns. </p></li>
+<dd><p>Constructs a complex matrix container. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rows</strong> – Number of matrix rows. </p></li>
+<li><p><strong>cols</strong> – Number of matrix columns. </p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Constructed matrix. </p>
+</dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE7destroyEvR6vectorI1TE">
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI13eigen_storageE7destroyER6vectorI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13eigen_storageE7destroyER6vectorI1TE"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">T</span></code><span class="pre">&gt;</span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1aa00dbe59a9fd4e0803ade1588b5ed4f3"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">destroy</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6vectorE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::vector"><span class="pre">vector</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE7destroyEvR6vectorI1TE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::destroy::T"><span class="pre">T</span></a><span class="pre">&gt;</span><span class="pre">&amp;</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE7destroyEvR6vectorI1TE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Destroys a vector container. This function is, in fact, no-op, because memory owned by an Eigen vector will automatically be freed by its destructor. <dl class="simple">
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
-</ul>
+<dd><p>Destroys a vector container. This function is, in fact, no-op, because memory owned by an Eigen vector will automatically be freed by its destructor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE7destroyEvR6matrixI1TE">
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI13eigen_storageE7destroyER6matrixI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13eigen_storageE7destroyER6matrixI1TE"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">T</span></code><span class="pre">&gt;</span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1a13487981a93a720b67efda70640428eb"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">destroy</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6matrixE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::matrix"><span class="pre">matrix</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE7destroyEvR6matrixI1TE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::destroy::T"><span class="pre">T</span></a><span class="pre">&gt;</span><span class="pre">&amp;</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE7destroyEvR6matrixI1TE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Destroys a matrix container. This function is, in fact, no-op, because memory owned by an Eigen matrix will automatically be freed by its destructor. <dl class="simple">
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
-</ul>
+<dd><p>Destroys a matrix container. This function is, in fact, no-op, because memory owned by an Eigen matrix will automatically be freed by its destructor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE6resizeEvR6vectorI1TEi">
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI13eigen_storageE6resizeER6vectorI1TEi"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13eigen_storageE6resizeER6vectorI1TEi"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">T</span></code><span class="pre">&gt;</span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1adf633947cd8a30bc21c964af9d2ef33a"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">resize</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6vectorE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::vector"><span class="pre">vector</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE6resizeEvR6vectorI1TEi" title="ezarpack::storage_traits&lt;eigen_storage&gt;::resize::T"><span class="pre">T</span></a><span class="pre">&gt;</span> <span class="pre">&amp;</span><em><span class="pre">v</span></em>, <span class="pre">int</span> <em><span class="pre">size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE6resizeEvR6vectorI1TEi" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Resizes a vector container. <dl class="simple">
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
-</ul>
+<dd><p>Resizes a vector container. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector container to resize. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: New vector size. </p></li>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>v</strong> – Vector container to resize. </p></li>
+<li><p><strong>size</strong> – New vector size. </p></li>
 </ul>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE6resizeEvR6matrixI1TEii">
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI13eigen_storageE6resizeER6matrixI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13eigen_storageE6resizeER6matrixI1TEii"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">T</span></code><span class="pre">&gt;</span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1a2c250ebbe1a470d68db392121a8848c5"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">resize</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6matrixE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::matrix"><span class="pre">matrix</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE6resizeEvR6matrixI1TEii" title="ezarpack::storage_traits&lt;eigen_storage&gt;::resize::T"><span class="pre">T</span></a><span class="pre">&gt;</span> <span class="pre">&amp;</span><em><span class="pre">m</span></em>, <span class="pre">int</span> <em><span class="pre">rows</span></em>, <span class="pre">int</span> <em><span class="pre">cols</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE6resizeEvR6matrixI1TEii" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Resizes a matrix container. <dl class="simple">
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
-</ul>
+<dd><p>Resizes a matrix container. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code>: Matrix container to resize. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rows</span></code>: New number of matrix rows. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cols</span></code>: New number of matrix columns. </p></li>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>m</strong> – Matrix container to resize. </p></li>
+<li><p><strong>rows</strong> – New number of matrix rows. </p></li>
+<li><p><strong>cols</strong> – New number of matrix columns. </p></li>
 </ul>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE12get_data_ptrEP1TR6vectorI1TE">
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI13eigen_storageE12get_data_ptrER6vectorI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13eigen_storageE12get_data_ptrER6vectorI1TE"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">T</span></code><span class="pre">&gt;</span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1aeb3c9b0507ee5af3276785a1f66c921d"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE12get_data_ptrEP1TR6vectorI1TE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::get_data_ptr::T"><span class="pre">T</span></a> <span class="pre">*</span><code class="sig-name descname"><span class="pre">get_data_ptr</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6vectorE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::vector"><span class="pre">vector</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE12get_data_ptrEP1TR6vectorI1TE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::get_data_ptr::T"><span class="pre">T</span></a><span class="pre">&gt;</span> <span class="pre">&amp;</span><em><span class="pre">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE12get_data_ptrEP1TR6vectorI1TE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Returns a pointer to the underlying data array owned by a vector. <dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>Pointer to the data array. </p>
+<dd><p>Returns a pointer to the underlying data array owned by a vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
-</ul>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>v</strong> – Vector to retrieve the data pointer from. </p>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector to retrieve the data pointer from. </p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Pointer to the data array. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE12get_data_ptrEP1TR6matrixI1TE">
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI13eigen_storageE12get_data_ptrER6matrixI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13eigen_storageE12get_data_ptrER6matrixI1TE"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">T</span></code><span class="pre">&gt;</span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1ab6e0a2ac596f01492bb0579b943d5579"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE12get_data_ptrEP1TR6matrixI1TE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::get_data_ptr::T"><span class="pre">T</span></a> <span class="pre">*</span><code class="sig-name descname"><span class="pre">get_data_ptr</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6matrixE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::matrix"><span class="pre">matrix</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE12get_data_ptrEP1TR6matrixI1TE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::get_data_ptr::T"><span class="pre">T</span></a><span class="pre">&gt;</span> <span class="pre">&amp;</span><em><span class="pre">m</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE12get_data_ptrEP1TR6matrixI1TE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Returns a pointer to the underlying data array owned by a matrix. <dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>Pointer to the data array. </p>
+<dd><p>Returns a pointer to the underlying data array owned by a matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
-</ul>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>m</strong> – Matrix to retrieve the data pointer from. </p>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code>: Matrix to retrieve the data pointer from. </p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Pointer to the data array. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 </div>
@@ -381,98 +374,98 @@
 <dl class="cpp function">
 <dt id="_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE">
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI13eigen_storageE16make_vector_viewER6vectorI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13eigen_storageE16make_vector_viewER6vectorI1TE"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">T</span></code><span class="pre">&gt;</span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1a997a8de544da91dd36098cb4e4b26692"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE11vector_viewE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::vector_view"><span class="pre">vector_view</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::make_vector_view::T"><span class="pre">T</span></a><span class="pre">&gt;</span> <code class="sig-name descname"><span class="pre">make_vector_view</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6vectorE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::vector"><span class="pre">vector</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::make_vector_view::T"><span class="pre">T</span></a><span class="pre">&gt;</span> <span class="pre">&amp;</span><em><span class="pre">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Makes a complete view of a vector. <dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>View of the full vector. </p>
+<dd><p>Makes a complete view of a vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
-</ul>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>v</strong> – Vector container to make a view of. </p>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector container to make a view of. </p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>View of the full vector. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii">
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI13eigen_storageE16make_vector_viewER6vectorI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13eigen_storageE16make_vector_viewER6vectorI1TEii"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">T</span></code><span class="pre">&gt;</span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1afcfeb7339772f79df14f860cb6472898"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE11vector_viewE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::vector_view"><span class="pre">vector_view</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii" title="ezarpack::storage_traits&lt;eigen_storage&gt;::make_vector_view::T"><span class="pre">T</span></a><span class="pre">&gt;</span> <code class="sig-name descname"><span class="pre">make_vector_view</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6vectorE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::vector"><span class="pre">vector</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii" title="ezarpack::storage_traits&lt;eigen_storage&gt;::make_vector_view::T"><span class="pre">T</span></a><span class="pre">&gt;</span> <span class="pre">&amp;</span><em><span class="pre">v</span></em>, <span class="pre">int</span> <em><span class="pre">start</span></em>, <span class="pre">int</span> <em><span class="pre">size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Makes a partial view of a vector. <dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>Subvector view. </p>
+<dd><p>Makes a partial view of a vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>v</strong> – Vector container to make a view of. </p></li>
+<li><p><strong>start</strong> – Position of the starting element in the partial view. </p></li>
+<li><p><strong>size</strong> – Number of elements in the partial view. </p></li>
 </ul>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector container to make a view of. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">start</span></code>: Position of the starting element in the partial view. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of elements in the partial view. </p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Subvector view. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii">
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI13eigen_storageE22make_vector_const_viewERK6vectorI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13eigen_storageE22make_vector_const_viewERK6vectorI1TEii"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">T</span></code><span class="pre">&gt;</span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1a21b73ec6e7b85382667c91ad3504c0f3"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE17vector_const_viewE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::vector_const_view"><span class="pre">vector_const_view</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii" title="ezarpack::storage_traits&lt;eigen_storage&gt;::make_vector_const_view::T"><span class="pre">T</span></a><span class="pre">&gt;</span> <code class="sig-name descname"><span class="pre">make_vector_const_view</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6vectorE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::vector"><span class="pre">vector</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii" title="ezarpack::storage_traits&lt;eigen_storage&gt;::make_vector_const_view::T"><span class="pre">T</span></a><span class="pre">&gt;</span> <em class="property"><span class="pre">const</span></em> <span class="pre">&amp;</span><em><span class="pre">v</span></em>, <span class="pre">int</span> <em><span class="pre">start</span></em>, <span class="pre">int</span> <em><span class="pre">size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Makes a constant partial view of a vector. <dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>Subvector view. </p>
+<dd><p>Makes a constant partial view of a vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Vector element type. </p></li>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>v</strong> – Vector container to make a view of. </p></li>
+<li><p><strong>start</strong> – Position of the starting element in the partial view. </p></li>
+<li><p><strong>size</strong> – Number of elements in the partial view. </p></li>
 </ul>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: Vector container to make a view of. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">start</span></code>: Position of the starting element in the partial view. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of elements in the partial view. </p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Subvector view. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE">
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI13eigen_storageE22make_matrix_const_viewERK6matrixI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13eigen_storageE22make_matrix_const_viewERK6matrixI1TE"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">T</span></code><span class="pre">&gt;</span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1a22d8a6e2b67f16263d7551dec693832e"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE17matrix_const_viewE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::matrix_const_view"><span class="pre">matrix_const_view</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::make_matrix_const_view::T"><span class="pre">T</span></a><span class="pre">&gt;</span> <code class="sig-name descname"><span class="pre">make_matrix_const_view</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6matrixE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::matrix"><span class="pre">matrix</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::make_matrix_const_view::T"><span class="pre">T</span></a><span class="pre">&gt;</span> <em class="property"><span class="pre">const</span></em> <span class="pre">&amp;</span><em><span class="pre">m</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Makes a complete view of a matrix. <dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>View of the full matrix. </p>
+<dd><p>Makes a complete view of a matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
-</ul>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>m</strong> – Matrix container to make a view of. </p>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code>: Matrix container to make a view of. </p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>View of the full matrix. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii">
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI13eigen_storageE22make_matrix_const_viewERK6matrixI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13eigen_storageE22make_matrix_const_viewERK6matrixI1TEii"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">T</span></code><span class="pre">&gt;</span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1a3124dda89acddba52f9b763a04dd9428"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE17matrix_const_viewE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::matrix_const_view"><span class="pre">matrix_const_view</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii" title="ezarpack::storage_traits&lt;eigen_storage&gt;::make_matrix_const_view::T"><span class="pre">T</span></a><span class="pre">&gt;</span> <code class="sig-name descname"><span class="pre">make_matrix_const_view</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE6matrixE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::matrix"><span class="pre">matrix</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii" title="ezarpack::storage_traits&lt;eigen_storage&gt;::make_matrix_const_view::T"><span class="pre">T</span></a><span class="pre">&gt;</span> <em class="property"><span class="pre">const</span></em> <span class="pre">&amp;</span><em><span class="pre">m</span></em>, <span class="pre">int</span> <em><span class="pre">rows</span></em>, <span class="pre">int</span> <em><span class="pre">cols</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Makes a constant partial view of a matrix including a number of the leftmost columns. </p>
-<p><dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>Submatrix view. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: Matrix element type. </p></li>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>m</strong> – Matrix container to make a view of. </p></li>
+<li><p><strong>rows</strong> – <strong>[ignored]</strong> Number of matrix rows. </p></li>
+<li><p><strong>cols</strong> – Number of the leftmost columns in the resulting view. </p></li>
 </ul>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code>: Matrix container to make a view of. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rows</span></code>: <strong>[ignored]</strong> Number of matrix rows. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cols</span></code>: Number of the leftmost columns in the resulting view. </p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Submatrix view. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 </div>
@@ -482,64 +475,66 @@
 <dt id="_CPPv4N8ezarpack14storage_traitsI13eigen_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei">
 <span id="_CPPv3N8ezarpack14storage_traitsI13eigen_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei"></span><span id="_CPPv2N8ezarpack14storage_traitsI13eigen_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei"></span><span id="ezarpack::storage_traits:eigen_storage:::make_asymm_eigenvalues__real_vector_typeCR.real_vector_typeCR.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1aaa390f6f5d6691baf47156300128fc76"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE19complex_vector_typeE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::complex_vector_type"><span class="pre">complex_vector_type</span></a> <code class="sig-name descname"><span class="pre">make_asymm_eigenvalues</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::real_vector_type"><span class="pre">real_vector_type</span></a> <em class="property"><span class="pre">const</span></em> <span class="pre">&amp;</span><em><span class="pre">dr</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::real_vector_type"><span class="pre">real_vector_type</span></a> <em class="property"><span class="pre">const</span></em> <span class="pre">&amp;</span><em><span class="pre">di</span></em>, <span class="pre">int</span> <em><span class="pre">nconv</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Combines real and imaginary parts of eigenvalues computed by <a class="reference internal" href="../solver_asymmetric.html#classezarpack_1_1arpack__solver_3_01Asymmetric_00_01Backend_01_4"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;</span></a>. </p>
-<p><dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>Complex vector of eigenvalues. </p>
-</dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">dr</span></code>: Real parts of the computed eigenvalues. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">di</span></code>: Imaginary parts of the computed eigenvalues. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nconv</span></code>: Number of the converged eigenvalues. </p></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dr</strong> – Real parts of the computed eigenvalues. </p></li>
+<li><p><strong>di</strong> – Imaginary parts of the computed eigenvalues. </p></li>
+<li><p><strong>nconv</strong> – Number of the converged eigenvalues. </p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Complex vector of eigenvalues. </p>
+</dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_asymm_eigenvaluesE19complex_vector_typeRK16real_vector_typeRK16real_vector_typeRR1Aii">
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI13eigen_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typeRR1Aii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI13eigen_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typeRR1Aii"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">A</span></code><span class="pre">&gt;</span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1a8dc7a65ec65db6832d1f5d78fa6b1940"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE19complex_vector_typeE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::complex_vector_type"><span class="pre">complex_vector_type</span></a> <code class="sig-name descname"><span class="pre">make_asymm_eigenvalues</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::real_vector_type"><span class="pre">real_vector_type</span></a> <em class="property"><span class="pre">const</span></em> <span class="pre">&amp;</span><em><span class="pre">z</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::real_vector_type"><span class="pre">real_vector_type</span></a> <em class="property"><span class="pre">const</span></em> <span class="pre">&amp;</span><em><span class="pre">di</span></em>, <a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_asymm_eigenvaluesE19complex_vector_typeRK16real_vector_typeRK16real_vector_typeRR1Aii" title="ezarpack::storage_traits&lt;eigen_storage&gt;::make_asymm_eigenvalues::A"><span class="pre">A</span></a> <span class="pre">&amp;</span><span class="pre">&amp;</span><em><span class="pre">a</span></em>, <span class="pre">int</span> <em><span class="pre">N</span></em>, <span class="pre">int</span> <em><span class="pre">nconv</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI13eigen_storageE22make_asymm_eigenvaluesE19complex_vector_typeRK16real_vector_typeRK16real_vector_typeRR1Aii" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Given a linear operator <span class="math notranslate nohighlight">\( \hat A \)</span>, computes <code class="docutils literal notranslate"><span class="pre">nconv</span></code> eigenvalues from Ritz vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> as Rayleigh quotients <span class="math notranslate nohighlight">\( \frac{\mathbf{x}^\dagger \hat A \mathbf{x}} {\mathbf{x}^\dagger \hat M \mathbf{x}} \)</span>. This function is called by <a class="reference internal" href="../solver_asymmetric.html#classezarpack_1_1arpack__solver_3_01Asymmetric_00_01Backend_01_4_1a21418268f530673f2ad39d1e89a142f5"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;::eigenvalues(A &amp;&amp;) const</span></a>. </p>
-<p><dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>Complex vector of eigenvalues. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – Type of the callable object representing the linear operator <span class="math notranslate nohighlight">\( \hat A \)</span>. </p>
 </dd>
-<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code>: Type of the callable object representing the linear operator <span class="math notranslate nohighlight">\( \hat A \)</span>. </p></li>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>z</strong> – Holds components of the Ritz vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> as a sequence of <code class="docutils literal notranslate"><span class="pre">nconv</span></code> length-<code class="docutils literal notranslate"><span class="pre">N</span></code> chunks. Meaning of each chunk depends on the corresponding component of <code class="docutils literal notranslate"><span class="pre">di</span></code>, see below. </p></li>
+<li><p><strong>di</strong> – If <code class="docutils literal notranslate"><span class="pre">di[i]</span></code> is zero, then the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th chunk of <code class="docutils literal notranslate"><span class="pre">z</span></code> contains a real Ritz vector. Otherwise, <code class="docutils literal notranslate"><span class="pre">di[i]</span> <span class="pre">=</span> <span class="pre">-di[i+1]</span> <span class="pre">!=</span> <span class="pre">0</span></code>, in which case the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th and <code class="docutils literal notranslate"><span class="pre">(i+1)</span></code>-th chunks of <code class="docutils literal notranslate"><span class="pre">z</span></code> are real and imaginary parts of a complex Ritz vector respectively. Every real Ritz vector corresponds to one real eigenvalue, while every complex vector gives rise to a complex conjugate pair of eigenvalues. </p></li>
+<li><p><strong>a</strong> – Callable object representing <span class="math notranslate nohighlight">\( \hat A \)</span>. </p></li>
+<li><p><strong>N</strong> – Dimension of the eigenproblem. </p></li>
+<li><p><strong>nconv</strong> – Number of the converged Ritz vectors. </p></li>
 </ul>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>: Holds components of the Ritz vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> as a sequence of <code class="docutils literal notranslate"><span class="pre">nconv</span></code> length-<code class="docutils literal notranslate"><span class="pre">N</span></code> chunks. Meaning of each chunk depends on the corresponding component of <code class="docutils literal notranslate"><span class="pre">di</span></code>, see below. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">di</span></code>: If <code class="docutils literal notranslate"><span class="pre">di[i]</span></code> is zero, then the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th chunk of <code class="docutils literal notranslate"><span class="pre">z</span></code> contains a real Ritz vector. Otherwise, <code class="docutils literal notranslate"><span class="pre">di[i]</span> <span class="pre">=</span> <span class="pre">-di[i+1]</span> <span class="pre">!=</span> <span class="pre">0</span></code>, in which case the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th and <code class="docutils literal notranslate"><span class="pre">(i+1)</span></code>-th chunks of <code class="docutils literal notranslate"><span class="pre">z</span></code> are real and imaginary parts of a complex Ritz vector respectively. Every real Ritz vector corresponds to one real eigenvalue, while every complex vector gives rise to a complex conjugate pair of eigenvalues. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Callable object representing <span class="math notranslate nohighlight">\( \hat A \)</span>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">N</span></code>: Dimension of the eigenproblem. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nconv</span></code>: Number of the converged Ritz vectors. </p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Complex vector of eigenvalues. </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N8ezarpack14storage_traitsI13eigen_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii">
 <span id="_CPPv3N8ezarpack14storage_traitsI13eigen_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii"></span><span id="_CPPv2N8ezarpack14storage_traitsI13eigen_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii"></span><span id="ezarpack::storage_traits:eigen_storage:::make_asymm_eigenvectors__real_vector_typeCR.real_vector_typeCR.i.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01eigen__storage_01_4_1acfe9a4ebb6dc7cf80eab316c9e7c92f4"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE19complex_matrix_typeE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::complex_matrix_type"><span class="pre">complex_matrix_type</span></a> <code class="sig-name descname"><span class="pre">make_asymm_eigenvectors</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::real_vector_type"><span class="pre">real_vector_type</span></a> <em class="property"><span class="pre">const</span></em> <span class="pre">&amp;</span><em><span class="pre">z</span></em>, <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;eigen_storage&gt;::real_vector_type"><span class="pre">real_vector_type</span></a> <em class="property"><span class="pre">const</span></em> <span class="pre">&amp;</span><em><span class="pre">di</span></em>, <span class="pre">int</span> <em><span class="pre">N</span></em>, <span class="pre">int</span> <em><span class="pre">nconv</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI13eigen_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Extracts <code class="docutils literal notranslate"><span class="pre">nconv</span></code> complex Ritz vectors from ARPACK-NG’s internal representation. This function is called by <a class="reference internal" href="../solver_asymmetric.html#classezarpack_1_1arpack__solver_3_01Asymmetric_00_01Backend_01_4_1a7271edb1ffde24e37bb3a0c959cfbd1c"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;::eigenvectors() const</span></a>. </p>
-<p><dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>Complex matrix, whose columns are Ritz vectors (eigenvectors). </p>
-</dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>: Holds components of the Ritz vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> as a sequence of <code class="docutils literal notranslate"><span class="pre">nconv</span></code> length-<code class="docutils literal notranslate"><span class="pre">N</span></code> chunks. Meaning of each chunk depends on the corresponding component of <code class="docutils literal notranslate"><span class="pre">di</span></code>, see below. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">di</span></code>: If <code class="docutils literal notranslate"><span class="pre">di[i]</span></code> is zero, then the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th chunk of <code class="docutils literal notranslate"><span class="pre">z</span></code> contains a real Ritz vector. Otherwise, <code class="docutils literal notranslate"><span class="pre">di[i]</span> <span class="pre">=</span> <span class="pre">-di[i+1]</span> <span class="pre">!=</span> <span class="pre">0</span></code>, in which case the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th and <code class="docutils literal notranslate"><span class="pre">(i+1)</span></code>-th chunks of <code class="docutils literal notranslate"><span class="pre">z</span></code> are real and imaginary parts of a complex Ritz vector respectively. Every such pair corresponds to a complex conjugate pair of Ritz vectors, so that the total amount of vectors stored in <code class="docutils literal notranslate"><span class="pre">z</span></code> is exactly <code class="docutils literal notranslate"><span class="pre">nconv</span></code>. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">N</span></code>: Dimension of the eigenproblem. </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nconv</span></code>: Number of the converged Ritz vectors. </p></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> – Holds components of the Ritz vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> as a sequence of <code class="docutils literal notranslate"><span class="pre">nconv</span></code> length-<code class="docutils literal notranslate"><span class="pre">N</span></code> chunks. Meaning of each chunk depends on the corresponding component of <code class="docutils literal notranslate"><span class="pre">di</span></code>, see below. </p></li>
+<li><p><strong>di</strong> – If <code class="docutils literal notranslate"><span class="pre">di[i]</span></code> is zero, then the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th chunk of <code class="docutils literal notranslate"><span class="pre">z</span></code> contains a real Ritz vector. Otherwise, <code class="docutils literal notranslate"><span class="pre">di[i]</span> <span class="pre">=</span> <span class="pre">-di[i+1]</span> <span class="pre">!=</span> <span class="pre">0</span></code>, in which case the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th and <code class="docutils literal notranslate"><span class="pre">(i+1)</span></code>-th chunks of <code class="docutils literal notranslate"><span class="pre">z</span></code> are real and imaginary parts of a complex Ritz vector respectively. Every such pair corresponds to a complex conjugate pair of Ritz vectors, so that the total amount of vectors stored in <code class="docutils literal notranslate"><span class="pre">z</span></code> is exactly <code class="docutils literal notranslate"><span class="pre">nconv</span></code>. </p></li>
+<li><p><strong>N</strong> – Dimension of the eigenproblem. </p></li>
+<li><p><strong>nconv</strong> – Number of the converged Ritz vectors. </p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Complex matrix, whose columns are Ritz vectors (eigenvectors). </p>
+</dd>
 </dl>
-</p>
 </dd></dl>
 
 </div>
 </dd></dl>
 
-</section>
+</div>
 
 
             <div class="clearer"></div>
@@ -595,7 +590,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Igor Krivenko.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
   </body>
 </html>
