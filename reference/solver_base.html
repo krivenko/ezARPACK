@@ -4,11 +4,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>ezarpack/solver_base.hpp - primary arpack_solver class template &#8212; ezARPACK 0.9 documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -41,38 +42,38 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="ezarpack-solver-base-hpp-primary-arpack-solver-class-template">
+  <section id="ezarpack-solver-base-hpp-primary-arpack-solver-class-template">
 <span id="refsolverbase"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template<a class="headerlink" href="#ezarpack-solver-base-hpp-primary-arpack-solver-class-template" title="Permalink to this headline">¶</a></h1>
 <p>Definition of ezARPACK’s main class template <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> and related
 types.</p>
 <dl class="cpp enum">
-<dt id="_CPPv4N8ezarpack13operator_kindE">
-<span id="_CPPv3N8ezarpack13operator_kindE"></span><span id="_CPPv2N8ezarpack13operator_kindE"></span><span class="target" id="solver__base_8hpp_1aa7129995e15fe88fad106cc4b8201401"></span><em class="property"><span class="pre">enum</span> </em><code class="sig-prename descclassname"><span class="pre">ezarpack</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">operator_kind</span></code><a class="headerlink" href="#_CPPv4N8ezarpack13operator_kindE" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack13operator_kindE">
+<span id="_CPPv3N8ezarpack13operator_kindE"></span><span id="_CPPv2N8ezarpack13operator_kindE"></span><span class="target" id="solver__base_8hpp_1aa7129995e15fe88fad106cc4b8201401"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">ezarpack</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">operator_kind</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack13operator_kindE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Kind of square matrix (linear operator) to solve an eigenproblem for. </p>
 <p><em>Values:</em></p>
 <dl class="cpp enumerator">
-<dt id="_CPPv4N8ezarpack13operator_kind9SymmetricE">
-<span id="_CPPv3N8ezarpack13operator_kind9SymmetricE"></span><span id="_CPPv2N8ezarpack13operator_kind9SymmetricE"></span><span class="target" id="solver__base_8hpp_1aa7129995e15fe88fad106cc4b8201401ae1a19f1713e11a197dfd8c214e44116a"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">Symmetric</span></code><a class="headerlink" href="#_CPPv4N8ezarpack13operator_kind9SymmetricE" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack13operator_kind9SymmetricE">
+<span id="_CPPv3N8ezarpack13operator_kind9SymmetricE"></span><span id="_CPPv2N8ezarpack13operator_kind9SymmetricE"></span><span class="target" id="solver__base_8hpp_1aa7129995e15fe88fad106cc4b8201401ae1a19f1713e11a197dfd8c214e44116a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Symmetric</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack13operator_kind9SymmetricE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Symmetric real matrix. </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
-<dt id="_CPPv4N8ezarpack13operator_kind10AsymmetricE">
-<span id="_CPPv3N8ezarpack13operator_kind10AsymmetricE"></span><span id="_CPPv2N8ezarpack13operator_kind10AsymmetricE"></span><span class="target" id="solver__base_8hpp_1aa7129995e15fe88fad106cc4b8201401a04bebb584cedf474fe8ff4ba012de30e"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">Asymmetric</span></code><a class="headerlink" href="#_CPPv4N8ezarpack13operator_kind10AsymmetricE" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack13operator_kind10AsymmetricE">
+<span id="_CPPv3N8ezarpack13operator_kind10AsymmetricE"></span><span id="_CPPv2N8ezarpack13operator_kind10AsymmetricE"></span><span class="target" id="solver__base_8hpp_1aa7129995e15fe88fad106cc4b8201401a04bebb584cedf474fe8ff4ba012de30e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Asymmetric</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack13operator_kind10AsymmetricE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>General real matrix. </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
-<dt id="_CPPv4N8ezarpack13operator_kind7ComplexE">
-<span id="_CPPv3N8ezarpack13operator_kind7ComplexE"></span><span id="_CPPv2N8ezarpack13operator_kind7ComplexE"></span><span class="target" id="solver__base_8hpp_1aa7129995e15fe88fad106cc4b8201401af41ddfa282ab1d8bcc07f18d0bcd8786"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">Complex</span></code><a class="headerlink" href="#_CPPv4N8ezarpack13operator_kind7ComplexE" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack13operator_kind7ComplexE">
+<span id="_CPPv3N8ezarpack13operator_kind7ComplexE"></span><span id="_CPPv2N8ezarpack13operator_kind7ComplexE"></span><span class="target" id="solver__base_8hpp_1aa7129995e15fe88fad106cc4b8201401af41ddfa282ab1d8bcc07f18d0bcd8786"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Complex</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack13operator_kind7ComplexE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>General complex matrix. </p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="cpp class">
-<dt id="_CPPv4I_13operator_kind0EN8ezarpack13arpack_solverE">
-<span id="_CPPv3I_13operator_kind0EN8ezarpack13arpack_solverE"></span><span id="_CPPv2I_13operator_kind0EN8ezarpack13arpack_solverE"></span><span class="pre">template&lt;</span><a class="reference internal" href="#_CPPv4N8ezarpack13operator_kindE" title="ezarpack::operator_kind"><span class="pre">operator_kind</span></a> <code class="sig-name descname"><span class="pre">OpKind</span></code><span class="pre">,</span> <span class="pre">typename</span> <code class="sig-name descname"><span class="pre">Backend</span></code><span class="pre">&gt;</span><br /><span class="target" id="classezarpack_1_1arpack__solver"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">arpack_solver</span></code><a class="headerlink" href="#_CPPv4I_13operator_kind0EN8ezarpack13arpack_solverE" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4I_13operator_kind0EN8ezarpack13arpack_solverE">
+<span id="_CPPv3I_13operator_kind0EN8ezarpack13arpack_solverE"></span><span id="_CPPv2I_13operator_kind0EN8ezarpack13arpack_solverE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N8ezarpack13operator_kindE" title="ezarpack::operator_kind"><span class="n"><span class="pre">operator_kind</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpKind</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Backend</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classezarpack_1_1arpack__solver"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">arpack_solver</span></span></span><a class="headerlink" href="#_CPPv4I_13operator_kind0EN8ezarpack13arpack_solverE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Main class template of ezARPACK’s API. </p>
 <p>Instances of this class are used to solve all kinds of eigenproblems supported by ezARPACK. <dl class="field-list simple">
 <dt class="field-odd">tparam OpKind</dt>
@@ -86,15 +87,15 @@ types.</p>
 </dd></dl>
 
 <span class="target" id="maxiter-reached"></span><dl class="cpp struct">
-<dt id="_CPPv4N8ezarpack15maxiter_reachedE">
-<span id="_CPPv3N8ezarpack15maxiter_reachedE"></span><span id="_CPPv2N8ezarpack15maxiter_reachedE"></span><span id="ezarpack::maxiter_reached"></span><span class="target" id="structezarpack_1_1maxiter__reached"></span><em class="property"><span class="pre">struct</span> </em><code class="sig-prename descclassname"><span class="pre">ezarpack</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">maxiter_reached</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">runtime_error</span><a class="headerlink" href="#_CPPv4N8ezarpack15maxiter_reachedE" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack15maxiter_reachedE">
+<span id="_CPPv3N8ezarpack15maxiter_reachedE"></span><span id="_CPPv2N8ezarpack15maxiter_reachedE"></span><span id="ezarpack::maxiter_reached"></span><span class="target" id="structezarpack_1_1maxiter__reached"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">ezarpack</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">maxiter_reached</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">runtime_error</span></span><a class="headerlink" href="#_CPPv4N8ezarpack15maxiter_reachedE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Exception: Maximum number of Implicitly restarted Arnoldi iterations has been reached. </p>
 <p>This exception can be thrown by <code class="docutils literal notranslate"><span class="pre">operator()</span></code> of <code class="docutils literal notranslate"><a class="reference internal" href="#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code> specializations. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
-<dt id="_CPPv4N8ezarpack15maxiter_reached15maxiter_reachedEi">
-<span id="_CPPv3N8ezarpack15maxiter_reached15maxiter_reachedEi"></span><span id="_CPPv2N8ezarpack15maxiter_reached15maxiter_reachedEi"></span><span id="ezarpack::maxiter_reached::maxiter_reached__i"></span><span class="target" id="structezarpack_1_1maxiter__reached_1adf5a0059a99aaee601a8b26732f2cf39"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">maxiter_reached</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">maxiter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack15maxiter_reached15maxiter_reachedEi" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack15maxiter_reached15maxiter_reachedEi">
+<span id="_CPPv3N8ezarpack15maxiter_reached15maxiter_reachedEi"></span><span id="_CPPv2N8ezarpack15maxiter_reached15maxiter_reachedEi"></span><span id="ezarpack::maxiter_reached::maxiter_reached__i"></span><span class="target" id="structezarpack_1_1maxiter__reached_1adf5a0059a99aaee601a8b26732f2cf39"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxiter_reached</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxiter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack15maxiter_reached15maxiter_reachedEi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>maxiter</strong> – Maximum number of IRLM/IRAM iterations allowed. </p>
@@ -106,8 +107,8 @@ types.</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
-<dt id="_CPPv4N8ezarpack15maxiter_reached7maxiterE">
-<span id="_CPPv3N8ezarpack15maxiter_reached7maxiterE"></span><span id="_CPPv2N8ezarpack15maxiter_reached7maxiterE"></span><span id="ezarpack::maxiter_reached::maxiter__i"></span><span class="target" id="structezarpack_1_1maxiter__reached_1a85d424fb45f82817c571cc69cf23143f"></span><span class="pre">int</span> <code class="sig-name descname"><span class="pre">maxiter</span></code><a class="headerlink" href="#_CPPv4N8ezarpack15maxiter_reached7maxiterE" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack15maxiter_reached7maxiterE">
+<span id="_CPPv3N8ezarpack15maxiter_reached7maxiterE"></span><span id="_CPPv2N8ezarpack15maxiter_reached7maxiterE"></span><span id="ezarpack::maxiter_reached::maxiter__i"></span><span class="target" id="structezarpack_1_1maxiter__reached_1a85d424fb45f82817c571cc69cf23143f"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxiter</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack15maxiter_reached7maxiterE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Maximum number of IRLM/IRAM iterations allowed. </p>
 </dd></dl>
 
@@ -115,15 +116,15 @@ types.</p>
 </dd></dl>
 
 <span class="target" id="ncv-insufficient"></span><dl class="cpp struct">
-<dt id="_CPPv4N8ezarpack16ncv_insufficientE">
-<span id="_CPPv3N8ezarpack16ncv_insufficientE"></span><span id="_CPPv2N8ezarpack16ncv_insufficientE"></span><span id="ezarpack::ncv_insufficient"></span><span class="target" id="structezarpack_1_1ncv__insufficient"></span><em class="property"><span class="pre">struct</span> </em><code class="sig-prename descclassname"><span class="pre">ezarpack</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">ncv_insufficient</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">runtime_error</span><a class="headerlink" href="#_CPPv4N8ezarpack16ncv_insufficientE" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack16ncv_insufficientE">
+<span id="_CPPv3N8ezarpack16ncv_insufficientE"></span><span id="_CPPv2N8ezarpack16ncv_insufficientE"></span><span id="ezarpack::ncv_insufficient"></span><span class="target" id="structezarpack_1_1ncv__insufficient"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">ezarpack</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">ncv_insufficient</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">runtime_error</span></span><a class="headerlink" href="#_CPPv4N8ezarpack16ncv_insufficientE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Exception: No shifts could be applied during a cycle of the Implicitly restarted Arnoldi iteration. Consider increasing the number of Lanczos/Arnoldi vectors generated at each iteration. </p>
 <p>This exception can be thrown by <code class="docutils literal notranslate"><span class="pre">operator()</span></code> of <code class="docutils literal notranslate"><a class="reference internal" href="#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code> specializations. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
-<dt id="_CPPv4N8ezarpack16ncv_insufficient16ncv_insufficientEi">
-<span id="_CPPv3N8ezarpack16ncv_insufficient16ncv_insufficientEi"></span><span id="_CPPv2N8ezarpack16ncv_insufficient16ncv_insufficientEi"></span><span id="ezarpack::ncv_insufficient::ncv_insufficient__i"></span><span class="target" id="structezarpack_1_1ncv__insufficient_1aec8cd9d8cc70955765a6421042d13a4c"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">ncv_insufficient</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">ncv</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack16ncv_insufficient16ncv_insufficientEi" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack16ncv_insufficient16ncv_insufficientEi">
+<span id="_CPPv3N8ezarpack16ncv_insufficient16ncv_insufficientEi"></span><span id="_CPPv2N8ezarpack16ncv_insufficient16ncv_insufficientEi"></span><span id="ezarpack::ncv_insufficient::ncv_insufficient__i"></span><span class="target" id="structezarpack_1_1ncv__insufficient_1aec8cd9d8cc70955765a6421042d13a4c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ncv_insufficient</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ncv</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack16ncv_insufficient16ncv_insufficientEi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>ncv</strong> – Number of Lanczos/Arnoldi vectors to be generated. </p>
@@ -135,15 +136,15 @@ types.</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
-<dt id="_CPPv4N8ezarpack16ncv_insufficient3ncvE">
-<span id="_CPPv3N8ezarpack16ncv_insufficient3ncvE"></span><span id="_CPPv2N8ezarpack16ncv_insufficient3ncvE"></span><span id="ezarpack::ncv_insufficient::ncv__i"></span><span class="target" id="structezarpack_1_1ncv__insufficient_1a5fdb149647b121135678b86284e74782"></span><span class="pre">int</span> <code class="sig-name descname"><span class="pre">ncv</span></code><a class="headerlink" href="#_CPPv4N8ezarpack16ncv_insufficient3ncvE" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack16ncv_insufficient3ncvE">
+<span id="_CPPv3N8ezarpack16ncv_insufficient3ncvE"></span><span id="_CPPv2N8ezarpack16ncv_insufficient3ncvE"></span><span id="ezarpack::ncv_insufficient::ncv__i"></span><span class="target" id="structezarpack_1_1ncv__insufficient_1a5fdb149647b121135678b86284e74782"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ncv</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack16ncv_insufficient3ncvE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Number of Lanczos/Arnoldi vectors to be generated. </p>
 </dd></dl>
 
 </div>
 </dd></dl>
 
-</div>
+</section>
 
 
             <div class="clearer"></div>
@@ -199,7 +200,7 @@ types.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Igor Krivenko.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
     </div>
   </body>
 </html>

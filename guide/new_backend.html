@@ -4,11 +4,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Advanced: Adding a new storage backend &#8212; ezARPACK 0.9 documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -41,7 +42,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="advanced-adding-a-new-storage-backend">
+  <section id="advanced-adding-a-new-storage-backend">
 <span id="new-backend"></span><h1>Advanced: Adding a new storage backend<a class="headerlink" href="#advanced-adding-a-new-storage-backend" title="Permalink to this headline">¶</a></h1>
 <p>ezARPACK offers support for a few numerical linear algebra frameworks
 <a class="reference internal" href="backends.html#backends"><span class="std std-ref">out of the box</span></a>. Thanks to the decoupled design of ezARPACK’s
@@ -79,7 +80,7 @@ requirements. One lets ezARPACK know about the new library by implementing a
 we give step-by-step instructions on how to write such a header.</p>
 <p>For a complete example of a storage backend implementation, see
 <code class="docutils literal notranslate"><span class="pre">&lt;ezarpack/storages/eigen.hpp&gt;</span></code> (<a class="reference internal" href="../reference/storages/eigen.html#refeigen"><span class="std std-ref">Eigen 3</span></a> backend).</p>
-<div class="section" id="basic-header-structure">
+<section id="basic-header-structure">
 <h2>Basic header structure<a class="headerlink" href="#basic-header-structure" title="Permalink to this headline">¶</a></h2>
 <p>Our storage backend header must include <code class="docutils literal notranslate"><span class="pre">&lt;complex&gt;</span></code>,
 <code class="docutils literal notranslate"><span class="pre">&lt;ezarpack/storages/base.hpp&gt;</span></code> and all relevant headers of <code class="docutils literal notranslate"><span class="pre">mylib</span></code>.
@@ -120,8 +121,8 @@ member functions to handle <code class="docutils literal notranslate"><span clas
 </div>
 <p>The rest of this HOWTO gives a detailed description of mandatory and optional
 members of the <code class="docutils literal notranslate"><span class="pre">storage_traits</span></code> specialization.</p>
-</div>
-<div class="section" id="member-type-definitions-of-the-traits-structure">
+</section>
+<section id="member-type-definitions-of-the-traits-structure">
 <h2>Member type definitions of the traits structure<a class="headerlink" href="#member-type-definitions-of-the-traits-structure" title="Permalink to this headline">¶</a></h2>
 <p>The member type definitions of <code class="docutils literal notranslate"><span class="pre">storage_traits</span></code> form two groups. The first one
 is for the container (vector/matrix) types.</p>
@@ -174,8 +175,8 @@ error-prone user code.</p>
   <span class="n">mylib</span><span class="o">::</span><span class="n">matrix_cview</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="static-member-functions-of-the-traits-structure">
+</section>
+<section id="static-member-functions-of-the-traits-structure">
 <h2>Static member functions of the traits structure<a class="headerlink" href="#static-member-functions-of-the-traits-structure" title="Permalink to this headline">¶</a></h2>
 <p>The following member functions are mandatory for any specialization of
 <code class="docutils literal notranslate"><span class="pre">storage_traits</span></code>.</p>
@@ -320,8 +321,8 @@ templates instead.</p>
 <a class="reference internal" href="../reference/solver_symmetric.html#refsolversymmetric"><span class="std std-ref">arpack_solver&lt;Symmetric,mylib_storage&gt;</span></a> and
 <a class="reference internal" href="../reference/solver_complex.html#refsolvercomplex"><span class="std std-ref">arpack_solver&lt;Complex,mylib_storage&gt;</span></a>. The asymmetric case, however, requires more work, as
 described in the next section.</p>
-</div>
-<div class="section" id="optional-eigenvalue-eigenvector-post-processing-functions">
+</section>
+<section id="optional-eigenvalue-eigenvector-post-processing-functions">
 <h2>Optional: Eigenvalue/eigenvector post-processing functions<a class="headerlink" href="#optional-eigenvalue-eigenvector-post-processing-functions" title="Permalink to this headline">¶</a></h2>
 <p>Because of specifics of the internal data storage format and numerical
 algorithm, extracting eigenvalues and eigenvectors after a completed
@@ -404,8 +405,8 @@ ARPACK-NG guarantees that <span class="math notranslate nohighlight">\(\mathbf{x
 \mathbf{x} = 1\)</span>, so there is no need to consider matrix
 <span class="math notranslate nohighlight">\(\hat M\)</span> at all.</p>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -471,7 +472,7 @@ ARPACK-NG guarantees that <span class="math notranslate nohighlight">\(\mathbf{x
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Igor Krivenko.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
     </div>
   </body>
 </html>

@@ -4,11 +4,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>How to use ezARPACK in your project &#8212; ezARPACK 0.9 documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -40,7 +41,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="how-to-use-ezarpack-in-your-project">
+  <section id="how-to-use-ezarpack-in-your-project">
 <span id="usage"></span><h1>How to use ezARPACK in your project<a class="headerlink" href="#how-to-use-ezarpack-in-your-project" title="Permalink to this headline">¶</a></h1>
 <p>Depending on what build system your C++ project is based on, there are
 two ways to use ezARPACK. Either way, you would need</p>
@@ -50,7 +51,7 @@ two ways to use ezARPACK. Either way, you would need</p>
 <li><p>One of supported <a class="reference internal" href="backends.html#backends"><span class="std std-ref">linear algebra libraries</span></a> (unless
 you are going to <a class="reference internal" href="new_backend.html#new-backend"><span class="std std-ref">add support for a new one</span></a>).</p></li>
 </ul>
-<div class="section" id="makefiles-no-build-system">
+<section id="makefiles-no-build-system">
 <h2>Makefiles/no build system<a class="headerlink" href="#makefiles-no-build-system" title="Permalink to this headline">¶</a></h2>
 <p>Assume that <code class="docutils literal notranslate"><span class="pre">&lt;EZARPACK_ROOT&gt;</span></code> is either a directory with unpacked
 ezARPACK sources or its <a class="reference internal" href="../installation.html#installation"><span class="std std-ref">installation</span></a>
@@ -69,8 +70,8 @@ default.</p>
 a BLAS/LAPACK implementation. A common symptom of this problem is
 undefined references to <code class="docutils literal notranslate"><span class="pre">dgemv_</span></code> and other LAPACK subroutines.</p>
 </div>
-</div>
-<div class="section" id="cmake">
+</section>
+<section id="cmake">
 <h2>CMake<a class="headerlink" href="#cmake" title="Permalink to this headline">¶</a></h2>
 <p>Here is a minimal example of a root <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> script for your
 project.</p>
@@ -107,8 +108,8 @@ project.</p>
 <span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span> <span class="o">${</span><span class="nv">arpack_ng_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -172,7 +173,7 @@ project.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Igor Krivenko.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
     </div>
   </body>
 </html>
