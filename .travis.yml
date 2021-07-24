@@ -1,6 +1,6 @@
 language: cpp
 os: linux
-dist: xenial
+dist: bionic
 cache: bundler
 
 branches:
@@ -33,14 +33,14 @@ jobs:
         - libgmp-dev
         - hdf5-tools
         - libhdf5-serial-dev
-        - python-dev
-        - python-h5py
-        - python-numpy
-        - python-scipy
-        - python-jinja2
-        - python-matplotlib
-        - python-mpi4py
-        - python-mako
+        - python3-dev
+        - python3-pip
+        - python3-h5py
+        - python3-numpy
+        - python3-scipy
+        - python3-matplotlib
+        - python3-mpi4py
+        - python3-mako
         # For documentation
         - doxygen
         - libjs-mathjax
@@ -68,14 +68,13 @@ jobs:
         - libgmp-dev
         - hdf5-tools
         - libhdf5-serial-dev
-        - python-dev
-        - python-h5py
-        - python-numpy
-        - python-scipy
-        - python-jinja2
-        - python-matplotlib
-        - python-mpi4py
-        - python-mako
+        - python3-dev
+        - python3-h5py
+        - python3-numpy
+        - python3-scipy
+        - python3-matplotlib
+        - python3-mpi4py
+        - python3-mako
     before_install:
       - |
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 \
@@ -92,10 +91,13 @@ before_script:
       CMAKE_CXX_FLAGS="-stdlib=libc++ -D_LIBCPP_ENABLE_CXX17_REMOVED_AUTO_PTR";
       export LD_LIBRARY_PATH=/usr/local/clang-7.0.0/lib:$LD_LIBRARY_PATH;
     fi
+
   # Conditionally build documentation
   - |
     if [[ "${CXX}" == "clang++" ]]; then
       export DOCS=ON
+      # Install Sphinx and Breathe for documentation
+      pip3 install -U sphinx breathe
     else
       export DOCS=OFF
     fi
@@ -129,7 +131,7 @@ before_script:
 
   # Build and install TRIQS
   - git clone https://github.com/TRIQS/triqs.git triqs.git
-  - pushd triqs.git && git checkout 2.2.x && popd
+  - pushd triqs.git && git checkout 3.0.x && popd
   - mkdir triqs.build && pushd triqs.build
   - |
     cmake ../triqs.git                                              \
@@ -165,12 +167,6 @@ before_script:
     -Dxtensor_DIR=$TRAVIS_BUILD_DIR/../xtensor.installed
   - make install
   - popd
-
-  # Install Sphinx and Breathe for documentation
-  # (have to do it after TRIQS installation that still depends on Python 2.7)
-  - pyenv global 3.7.1
-  - pip3 install -U sphinx breathe
-
 
 script:
   # Build ezARPACK
