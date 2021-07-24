@@ -9,7 +9,7 @@
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2018 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@
  */
 
 MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
-  var VERSION = "2.6.0";
+  var VERSION = "2.7.3";
   var MML = MathJax.ElementJax.mml,
       SVG = MathJax.OutputJax.SVG,
       BBOX = SVG.BBOX;
@@ -40,6 +40,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
     badbreak:    [+200],
     auto:           [0],
     
+    maxwidth:     1.33,  // stop looking for breaks after this time the line-break width
     toobig:        800,
     nestfactor:    400,
     spacefactor:  -100,
@@ -65,7 +66,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
       //
       var parent = this;
       while (parent.inferred || (parent.parent && parent.parent.type === "mrow" &&
-             parent.parent.data.length === 1)) {parent = parent.parent}
+             parent.isEmbellished())) {parent = parent.parent}
       var isTop = ((parent.type === "math" && parent.Get("display") === "block") ||
                     parent.type === "mtd");
       parent.isMultiline = true;
@@ -162,7 +163,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
       //  Look through the line for breakpoints,
       //    (as long as we are not too far past the breaking width)
       //
-      while (i < m && info.scanW < 1.33*SVG.linebreakWidth) {
+      while (i < m && (info.scanW < PENALTY.maxwidth*SVG.linebreakWidth || info.w === 0)) {
         if (this.data[i]) {
           if (this.data[i].SVGbetterBreak(info,state)) {
             better = true; index = [i].concat(info.index); W = info.W; w = info.w;
@@ -308,7 +309,9 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
       var slice = BBOX();
       this.SVGmoveLine(start,end,slice,state,values);
       slice.Clean();
+      if (this.href) {this.SVGaddHref(slice)}
       this.SVGhandleColor(slice);
+      if (start.length == 0) this.SVGhandleSpace(slice);
       svg.Add(slice,svg.w,0,true);
       return slice;
     },
@@ -368,7 +371,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
       //  Look through the line for breakpoints, including the open, close, and separators
       //    (as long as we are not too far past the breaking width)
       //
-      while (i < m && info.scanW < 1.33*SVG.linebreakWidth) {
+      while (i < m && (info.scanW < PENALTY.maxwidth*SVG.linebreakWidth || info.w === 0)) {
         var k = this.dataI[i];
         if (this.data[k]) {
           if (this.data[k].SVGbetterBreak(info,state)) {
@@ -605,7 +608,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
       //    use it to modify the default penalty
       //
       var linebreak = PENALTY[values.linebreak||MML.LINEBREAK.AUTO];
-      if (!(linebreak instanceof Array)) {
+      if (!MathJax.Object.isArray(linebreak)) {
         //  for breaks past the width, don't modify penalty
         if (offset >= 0) {penalty = linebreak * info.nest}
       } else {penalty = Math.max(1,penalty + linebreak[0] * info.nest)}
@@ -654,7 +657,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
       if (linebreakValue === MML.LINEBREAK.AUTO && w >= PENALTY.spacelimit*1000 &&
           !this.mathbackground && !this.backrgound)
         {linebreak = [(w/1000+PENALTY.spaceoffset)*PENALTY.spacefactor]}
-      if (!(linebreak instanceof Array)) {
+      if (!MathJax.Object.isArray(linebreak)) {
         //  for breaks past the width, don't modify penalty
         if (offset >= 0) {penalty = linebreak * info.nest}
       } else {penalty = Math.max(1,penalty + linebreak[0] * info.nest)}

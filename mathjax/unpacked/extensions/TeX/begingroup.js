@@ -10,7 +10,7 @@
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2018 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
  */
 
 MathJax.Extension["TeX/begingroup"] = {
-  version: "2.6.0"
+  version: "2.7.3"
 };
 
 MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
@@ -118,7 +118,7 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
         //  so they can be made global when merged with the root stack.
         //
         while (n > 0) {this.stack[n].Undef(name,type); n--}
-        if (!(value instanceof Array)) {value = [value]}
+        if (!MathJax.Object.isArray(value)) {value = [value]}
         if (this.isEqn) {value.global = true}
       }
       this.stack[n].Def(name,value,type);
@@ -193,9 +193,9 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
     macros: {
       begingroup: "BeginGroup",
       endgroup:   "EndGroup",
-      global:     ["Extension","newcommand"],
-      gdef:       ["Extension","newcommand"]
-    }
+      global:     "Global",
+      gdef:      ["Macro","\\global\\def"]
+     }
   },null,true);
   
   TEX.Parse.Augment({
@@ -232,8 +232,34 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
     },
     envFindName: function (name) {
       return (TEX.eqnStack.Find(name,"environments") || TEX.rootStack.Find(name,"environments"));
-    }
+    },
 
+    //
+    //  Modify the way macros and environments are defined
+    //  to make them go into the equation namespace stack
+    //
+    setDef: function (name,value) {
+      value.isUser = true;
+      TEX.eqnStack.Def(name,value,"macros",this.stack.env.isGlobal);
+      delete this.stack.env.isGlobal;
+    },
+    setEnv: function (name,value) {
+      value.isUser = true;
+      TEX.eqnStack.Def(name,value,"environments")
+    },
+
+    //
+    //  Implement \global (for \global\let, \global\def and \global\newcommand)
+    //
+    Global: function (name) {
+      var i = this.i; var cs = this.GetCSname(name); this.i = i;
+      if (cs !== "let" && cs !== "def" && cs !== "newcommand" &&
+          cs !== "DeclareMathOperator" && cs !== "Newextarrow") {
+        TEX.Error(["GlobalNotFollowedBy",
+                   "%1 not followed by \\let, \\def, or \\newcommand",name]);
+      }
+      this.stack.env.isGlobal = true;
+    }
   });
 
   /****************************************************/
@@ -258,49 +284,6 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
   TEX.postfilterHooks.Add(function () {TEX.rootStack.Merge(TEX.eqnStack)});
   
   /*********************************************************/
-
-  MathJax.Hub.Register.StartupHook("TeX newcommand Ready",function () {
-
-    //
-    //  Add the commands that depend on the newcommand code
-    //
-    TEXDEF.Add({
-      macros: {
-        global: "Global",
-        gdef:   ["Macro","\\global\\def"]
-      }
-    },null,true);
-
-    TEX.Parse.Augment({
-      //
-      //  Modify the way macros and environments are defined
-      //  to make them go into the equation namespace stack
-      //
-      setDef: function (name,value) {
-        value.isUser = true;
-        TEX.eqnStack.Def(name,value,"macros",this.stack.env.isGlobal);
-        delete this.stack.env.isGlobal;
-      },
-      setEnv: function (name,value) {
-        value.isUser = true;
-        TEX.eqnStack.Def(name,value,"environments")
-      },
-
-      //
-      //  Implement \global (for \global\let, \global\def and \global\newcommand)
-      //
-      Global: function (name) {
-        var i = this.i; var cs = this.GetCSname(name); this.i = i;
-        if (cs !== "let" && cs !== "def" && cs !== "newcommand") {
-          TEX.Error(["GlobalNotFollowedBy",
-                     "%1 not followed by \\let, \\def, or \\newcommand",name]);
-        }
-        this.stack.env.isGlobal = true;
-      }
-
-    });
-
-  });
 
   MathJax.Hub.Startup.signal.Post("TeX begingroup Ready");
 

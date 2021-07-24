@@ -9,7 +9,7 @@
  *  
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2009-2015 The MathJax Consortium
+ *  Copyright (c) 2009-2018 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@
  */
 
 MathJax.Extension["TeX/AMSmath"] = {
-  version: "2.6.1",
+  version: "2.7.3",
   
   number: 0,        // current equation number
   startNumber: 0,   // current starting equation number (for when equation is restarted)
@@ -52,6 +52,14 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
       {WW[i] = TEX.Parse.prototype.Em(W[i])}
     return WW.join(" ");
   };
+  
+  //
+  //  Get the URL of the page (for use with formatURL) when there
+  //  is a <base> element on the page.
+  //  
+  var baseURL = (document.getElementsByTagName("base").length === 0) ? "" :
+                String(document.location).replace(/#.*$/,"");
+
   
   /******************************************************************************/
   
@@ -145,10 +153,10 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
     },
     
     delimiter: {
-      '\\lvert':     ['2223',{texClass:MML.TEXCLASS.OPEN}],
-      '\\rvert':     ['2223',{texClass:MML.TEXCLASS.CLOSE}],
-      '\\lVert':     ['2225',{texClass:MML.TEXCLASS.OPEN}],
-      '\\rVert':     ['2225',{texClass:MML.TEXCLASS.CLOSE}]
+      '\\lvert':     ['007C',{texClass:MML.TEXCLASS.OPEN}],
+      '\\rvert':     ['007C',{texClass:MML.TEXCLASS.CLOSE}],
+      '\\lVert':     ['2016',{texClass:MML.TEXCLASS.OPEN}],
+      '\\rVert':     ['2016',{texClass:MML.TEXCLASS.CLOSE}]
     }
   },null,true);
     
@@ -203,7 +211,7 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
       if (!ref) {ref = {tag:"???",id:""}; AMS.badref = !AMS.refUpdate}
       var tag = ref.tag; if (eqref) {tag = CONFIG.formatTag(tag)}
       this.Push(MML.mrow.apply(MML,this.InternalMath(tag)).With({
-        href:CONFIG.formatURL(ref.id), "class":"MathJax_ref"
+        href:CONFIG.formatURL(ref.id,baseURL), "class":"MathJax_ref"
       }));
     },
     
@@ -216,7 +224,7 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
       if (cs.charAt(0) == "\\") {cs = cs.substr(1)}
       var op = this.GetArgument(name);
       op = op.replace(/\*/g,'\\text{*}').replace(/-/g,'\\text{-}');
-      TEX.Definitions.macros[cs] = ['Macro','\\mathop{\\rm '+op+'}'+limits];
+      this.setDef(cs, ['Macro', '\\mathop{\\rm '+op+'}'+limits]);
     },
     
     HandleOperatorName: function (name) {
@@ -237,7 +245,11 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
      */
     HandleShove: function (name,shove) {
       var top = this.stack.Top();
-      if (top.type !== "multline" || top.data.length) {
+      if (top.type !== "multline") {
+        TEX.Error(["CommandInMultline",
+                   "%1 can only appear within the multline environment",name]);
+      }
+      if (top.data.length) {
         TEX.Error(["CommandAtTheBeginingOfLine",
                    "%1 must come at the beginning of the line",name]);
       }
@@ -467,7 +479,7 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
     /*
      *  If the initial child, skipping any initial space or
      *  empty braces (TeXAtom with child being an empty inferred row),
-     *  is an <mo>, preceed it by an empty <mi> to force the <mo> to
+     *  is an <mo>, precede it by an empty <mi> to force the <mo> to
      *  be infix.
      */
     fixInitialMO: function (data) {
@@ -541,7 +553,7 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
       stack.global.tagged = !numbered && !stack.global.forcetag; // prevent automatic tagging in starred environments
     },
     EndEntry: function () {
-      if (this.row.length) {this.fixInitialMO(this.data)}
+      if (this.row.length % 2 === 1) {this.fixInitialMO(this.data)}
       this.row.push(MML.mtd.apply(MML,this.data));
       this.data = [];
     },
@@ -590,12 +602,14 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
   /******************************************************************************/
 
   /*
-   *  Add pre- and post-filters to handle the equation number maintainance.
+   *  Add pre- and post-filters to handle the equation number maintenance.
    */
   TEX.prefilterHooks.Add(function (data) {
     AMS.display = data.display;
     AMS.number = AMS.startNumber;  // reset equation numbers (in case the equation restarted)
-    AMS.eqlabels = AMS.eqIDs = {}; AMS.badref = false;
+    AMS.eqlabels = {};
+    AMS.eqIDs = {}; 
+    AMS.badref = false;
     if (AMS.refUpdate) {AMS.number = data.script.MathJax.startNumber}
   });
   TEX.postfilterHooks.Add(function (data) {
@@ -629,7 +643,10 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
   //
   TEX.resetEquationNumbers = function (n,keepLabels) {
     AMS.startNumber = (n || 0);
-    if (!keepLabels) {AMS.labels = AMS.IDs = {}}
+    if (!keepLabels) {
+      AMS.labels = {};
+      AMS.IDs = {};
+    }
   }
 
   /******************************************************************************/
