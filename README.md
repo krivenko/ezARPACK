@@ -1,8 +1,8 @@
 ezARPACK
 ========
 
-[![Build Status](https://travis-ci.org/krivenko/ezARPACK.svg?branch=master)](
-https://travis-ci.org/krivenko/ezARPACK)
+[![Build Status](https://travis-ci.com/krivenko/ezARPACK.svg?branch=master)](
+https://travis-ci.com/krivenko/ezARPACK)
 [![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-red)](
 https://krivenko.github.io/ezARPACK)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3930203.svg)](
