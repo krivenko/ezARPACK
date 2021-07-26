@@ -1,8 +1,8 @@
 ezARPACK
 ========
 
-[![Build Status](https://travis-ci.com/krivenko/ezARPACK.svg?branch=master)](
-https://travis-ci.com/krivenko/ezARPACK)
+[![Build status](https://github.com/krivenko/ezARPACK/actions/workflows/CI.yml/badge.svg)](
+https://github.com/krivenko/ezARPACK/actions/workflows/CI.yml)
 [![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-red)](
 https://krivenko.github.io/ezARPACK)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3930203.svg)](

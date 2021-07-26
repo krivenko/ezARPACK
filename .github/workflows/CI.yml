@@ -1,0 +1,169 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - ci
+  pull_request:
+    branches:
+      - master
+  schedule:
+    - cron:  '0 0 * * 5'
+
+jobs:
+  build:
+
+    strategy:
+      matrix:
+        include:
+          - {os: ubuntu-18.04, cc: gcc-7, cxx: g++-7}
+          - {os: ubuntu-18.04, cc: clang-7, cxx: clang++-7}
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Update apt-get cache
+      run: sudo apt-get update
+
+    - name: Install Ubuntu dependencies
+      run: >
+        sudo apt-get install
+        g++-7
+        clang-7
+        libgfortran3
+        gfortran
+        libopenblas-dev
+        libboost-dev
+        libeigen3-dev
+        libarmadillo-dev
+        libgmp-dev
+        openmpi-bin
+        openmpi-common
+        openmpi-doc
+        libopenmpi-dev
+        libblas-dev
+        liblapack-dev
+        libfftw3-dev
+        hdf5-tools
+        libhdf5-serial-dev
+
+    - name: Install dependencies needed to build docs
+      if: startsWith(matrix.cxx, 'clang')
+      run: |
+        sudo apt-get install doxygen libjs-mathjax
+        pip3 install -U sphinx breathe
+
+    - name: Build and install ARPACK-NG
+      run: |
+        git clone https://github.com/opencollab/arpack-ng.git arpack-ng
+        pushd arpack-ng
+        cmake . -DCMAKE_BUILD_TYPE=Release                                     \
+                -DCMAKE_INSTALL_PREFIX=$HOME/arpack-ng.installed               \
+                -DBUILD_SHARED_LIBS=ON
+        make -j2
+        ctest --output-on-failure
+        make install
+        popd
+
+    - name: Install Blaze
+      run: |
+        git clone https://bitbucket.org/blaze-lib/blaze.git blaze
+        pushd blaze
+        cmake . -DCMAKE_INSTALL_PREFIX=$HOME/blaze.installed                   \
+                -DBLAZE_SHARED_MEMORY_PARALLELIZATION=OFF
+        make install
+        popd
+
+    - name: Build and install TRIQS
+      env:
+        CC: ${{ matrix.cc }}
+        CXX: ${{ matrix.cxx }}
+      run: |
+        git clone https://github.com/TRIQS/triqs.git triqs --branch 3.0.x
+        mkdir triqs.build && pushd triqs.build
+        if [[ "${CXX}" == clang* ]]; then
+          CMAKE_CXX_FLAGS="-stdlib=libc++"
+        fi
+        cmake ../triqs                                                         \
+          -DCMAKE_BUILD_TYPE=Release                                           \
+          -DCMAKE_INSTALL_PREFIX=$HOME/triqs.installed                         \
+          -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}"                               \
+          -DPythonSupport=OFF                                                  \
+          -DBuild_Documentation=OFF                                            \
+          -DBuild_Tests=OFF
+        make -j2 install VERBOSE=1
+        popd
+
+    - name: Install xtl, xtensor and xtensor-blas
+      run: |
+        git clone https://github.com/xtensor-stack/xtl.git xtl
+        pushd xtl
+        cmake . -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed
+        make install
+        popd
+        git clone https://github.com/xtensor-stack/xtensor.git xtensor
+        mkdir xtensor.build && pushd xtensor.build
+        cmake ../xtensor                                                       \
+          -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed                       \
+          -Dxtl_DIR=$HOME/xtensor.installed
+        make install
+        popd
+        git clone https://github.com/xtensor-stack/xtensor-blas.git xtensor-blas
+        mkdir xtensor-blas.build && pushd xtensor-blas.build
+        cmake ../xtensor-blas                                                  \
+          -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed                       \
+          -Dxtensor_DIR=$HOME/xtensor.installed
+        make install
+        popd
+
+    - name: Build and test ezARPACK
+      env:
+        CC: ${{ matrix.cc }}
+        CXX: ${{ matrix.cxx }}
+      run: |
+        if [[ "${CXX}" == clang* ]]; then
+          CMAKE_CXX_FLAGS="-stdlib=libc++ -Wno-ignored-attributes"
+          DOCS_CMAKE_ARGS="-DDocumentation=ON \
+                           -DMathJax_ROOT=/usr/share/javascript/mathjax"
+        else
+          CMAKE_CXX_FLAGS="-Wno-ignored-attributes"
+          DOCS_CMAKE_ARGS="-DDocumentation=OFF"
+        fi
+
+        source $HOME/triqs.installed/share/triqsvars.sh
+        mkdir ezARPACK.build && pushd ezARPACK.build
+        cmake ..                                                               \
+          -DCMAKE_BUILD_TYPE=Release                                           \
+          -DCMAKE_INSTALL_PREFIX=$(readlink -f ../ezARPACK.installed)          \
+          -DARPACK_NG_ROOT=$HOME/arpack-ng.installed                           \
+          -Dblaze_ROOT=$HOME/blaze.installed                                   \
+          -DTRIQS_ROOT=$HOME/triqs.installed                                   \
+          -Dxtensor_ROOT=$HOME/xtensor.installed                               \
+          -Dxtensor-blas_ROOT=$HOME/xtensor.installed                          \
+          -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}"                               \
+          ${DOCS_CMAKE_ARGS}
+        make -j2 VERBOSE=1
+        ctest --output-on-failure
+        make install
+        popd
+
+    - name: Prepare documentation for deployment
+      if: startsWith(matrix.cxx, 'clang')
+      run: |
+        pushd ezARPACK.installed/share/doc/ezARPACK/sphinx
+        find . -name "*.html" -type f -exec sed -i                             \
+          's/\/usr\/share\/javascript\/mathjax/\/ezARPACK\/mathjax/g' {} \;
+        cp -r /usr/share/javascript/mathjax mathjax
+        touch .nojekyll
+        popd
+
+    - name: Deploy documentation
+      if: github.ref == 'refs/heads/master' && startsWith(matrix.cxx, 'clang')
+      uses: JamesIves/github-pages-deploy-action@4.1.0
+      with:
+        branch: gh-pages
+        token: ${{ secrets.GITHUB_TOKEN }}
+        folder: ezARPACK.installed/share/doc/ezARPACK/sphinx
