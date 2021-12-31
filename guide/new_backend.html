@@ -100,7 +100,7 @@ Normally, it is a good idea to also use some include guard macros of
 <p>Every storage backend must define a tag type associated with it. The actual type
 does not really matter, so it can be an empty structure.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// mylib storage backend tag.</span>
-<span class="k">struct</span> <span class="nc">mylib_storage</span><span class="w"> </span><span class="p">{};</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">mylib_storage</span><span class="w"> </span><span class="p">{};</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Passing the defined tag type as the second template parameter to
@@ -111,7 +111,7 @@ layer between <a class="reference internal" href="../reference/solver_base.html#
 <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> extracts <code class="docutils literal notranslate"><span class="pre">mylib</span></code>-specific type
 information from typedef members of <code class="docutils literal notranslate"><span class="pre">storage_traits</span></code> and calls its static
 member functions to handle <code class="docutils literal notranslate"><span class="pre">mylib</span></code>’s vector/matrix/view objects.</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="k">struct</span> <span class="nc">storage_traits</span><span class="o">&lt;</span><span class="n">mylib_storage</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">storage_traits</span><span class="o">&lt;</span><span class="n">mylib_storage</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">  </span><span class="c1">// Member typedefs.</span>
 <span class="w">  </span><span class="p">...</span><span class="w"></span>
 <span class="w">  </span><span class="c1">// Static members functions.</span>
@@ -368,7 +368,7 @@ Every such pair corresponds to a complex conjugate pair of eigenvectors,
 so that the total amount of vectors stored in <code class="docutils literal notranslate"><span class="pre">z</span></code> is exactly <code class="docutils literal notranslate"><span class="pre">nconv</span></code>.
 The extracted eigenvectors must be returned as columns of a complex
 <code class="docutils literal notranslate"><span class="pre">N</span></code> x <code class="docutils literal notranslate"><span class="pre">nconv</span></code> matrix.</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">A</span><span class="o">&gt;</span><span class="w"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">A</span><span class="o">&gt;</span><span class="w"></span>
 <span class="kr">inline</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">complex_vector_type</span><span class="w"></span>
 <span class="n">make_asymm_eigenvalues</span><span class="p">(</span><span class="n">real_vector_type</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">z</span><span class="p">,</span><span class="w"></span>
 <span class="w">                      </span><span class="n">real_vector_type</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">di</span><span class="p">,</span><span class="w"></span>
