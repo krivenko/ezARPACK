@@ -75,15 +75,15 @@ types.</p>
 <dt class="sig sig-object cpp" id="_CPPv4I_13operator_kind0EN8ezarpack13arpack_solverE">
 <span id="_CPPv3I_13operator_kind0EN8ezarpack13arpack_solverE"></span><span id="_CPPv2I_13operator_kind0EN8ezarpack13arpack_solverE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N8ezarpack13operator_kindE" title="ezarpack::operator_kind"><span class="n"><span class="pre">operator_kind</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpKind</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Backend</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classezarpack_1_1arpack__solver"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">arpack_solver</span></span></span><a class="headerlink" href="#_CPPv4I_13operator_kind0EN8ezarpack13arpack_solverE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Main class template of ezARPACK’s API. </p>
-<p>Instances of this class are used to solve all kinds of eigenproblems supported by ezARPACK. <dl class="field-list simple">
-<dt class="field-odd">tparam OpKind</dt>
-<dd class="field-odd"><p>Kind of eigenproblem to be solved. </p>
-</dd>
-<dt class="field-even">tparam Backend</dt>
-<dd class="field-even"><p>Tag type specifying what <em>storage backend</em> (matrix/vector algebra library) must be used by <code class="docutils literal notranslate"><a class="reference internal" href="#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code>. The storage backend determines types of internally stored data arrays and input/output view objects exposed by methods of the class. </p>
+<p>Instances of this class are used to solve all kinds of eigenproblems supported by ezARPACK. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>OpKind</strong> – Kind of eigenproblem to be solved. </p></li>
+<li><p><strong>Backend</strong> – Tag type specifying what <em>storage backend</em> (matrix/vector algebra library) must be used by <code class="docutils literal notranslate"><a class="reference internal" href="#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code>. The storage backend determines types of internally stored data arrays and input/output view objects exposed by methods of the class. </p></li>
+</ul>
 </dd>
 </dl>
-</p>
 </dd></dl>
 
 <span class="target" id="maxiter-reached"></span><dl class="cpp struct">
@@ -203,7 +203,7 @@ types.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Igor Krivenko.
+        &#169; Copyright 2016-2022, Igor Krivenko.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
     </div>
   </body>

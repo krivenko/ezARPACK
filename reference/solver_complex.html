@@ -50,16 +50,15 @@
 <span id="_CPPv3I0EN8ezarpack13arpack_solverI7Complex7BackendEE"></span><span id="_CPPv2I0EN8ezarpack13arpack_solverI7Complex7BackendEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Backend</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">ezarpack</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">arpack_solver</span></span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="solver_base.html#_CPPv4N8ezarpack13operator_kind7ComplexE" title="ezarpack::Complex"><span class="n"><span class="pre">Complex</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN8ezarpack13arpack_solverI7Complex7BackendEE" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::Backend"><span class="n"><span class="pre">Backend</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN8ezarpack13arpack_solverI7Complex7BackendEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Main solver class wrapping the Implicitly Restarted Arnoldi Method (IRAM) for general complex eigenproblems. </p>
 <p>This specialization of <code class="docutils literal notranslate"><a class="reference internal" href="solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code> calls ARPACK-NG routines <code class="docutils literal notranslate"><span class="pre">znaupd()</span></code> and <code class="docutils literal notranslate"><span class="pre">zneupd()</span></code> to compute approximations to a few eigenpairs of a complex linear operator <span class="math notranslate nohighlight">\( \hat O \)</span> with respect to a semi-inner product defined by a Hermitian positive semi-definite matrix <span class="math notranslate nohighlight">\( \hat B \)</span>.</p>
-<p><div class="admonition note">
+<div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If both <span class="math notranslate nohighlight">\( \hat O \)</span> and <span class="math notranslate nohighlight">\( \hat B\)</span> are real and symmetric, then <a class="reference internal" href="solver_symmetric.html#classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4"><span class="std std-ref">arpack_solver&lt;Symmetric, Backend&gt;</span></a> should be used instead.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">tparam Backend</dt>
-<dd class="field-odd"><p>Tag type specifying what <em>storage backend</em> (matrix/vector algebra library) must be used by <code class="docutils literal notranslate"><a class="reference internal" href="solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code>. The storage backend determines types of internally stored data arrays and input/output view objects returned by methods of the class. </p>
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Backend</strong> – Tag type specifying what <em>storage backend</em> (matrix/vector algebra library) must be used by <code class="docutils literal notranslate"><a class="reference internal" href="solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code>. The storage backend determines types of internally stored data arrays and input/output view objects returned by methods of the class. </p>
 </dd>
 </dl>
-</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-backend-specific-array-and-view-types">Backend-specific array and view types</p>
 <dl class="cpp type">
@@ -315,10 +314,10 @@
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE14exact_shifts_fE">
 <span id="_CPPv3N8ezarpack13arpack_solverI7Complex7BackendE14exact_shifts_fE"></span><span id="_CPPv2N8ezarpack13arpack_solverI7Complex7BackendE14exact_shifts_fE"></span><span id="ezarpack::arpack_solver:Complex.Backend:::exact_shifts_f"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1exact__shifts__f"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">exact_shifts_f</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE14exact_shifts_fE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>If this functor is used to provide shifts for implicit restart, then the default ARPACK-NG’s shift strategy (Exact Shift Strategy) will be employed. <dl class="simple">
-<dt><strong>See</strong></dt><dd><p>Paragraph 4.4.1 of ARPACK Users’ Guide: Solution of Large Scale Eigenvalue Problems with Implicitly Restarted Arnoldi Methods (R. B. Lehoucq, D. C. Sorensen, C. Yang, SIAM, 1998), <a class="reference external" href="https://www.caam.rice.edu/software/ARPACK/UG/node50.html">https://www.caam.rice.edu/software/ARPACK/UG/node50.html</a>. </p>
-</dd>
-</dl>
+<dd><p>If this functor is used to provide shifts for implicit restart, then the default ARPACK-NG’s shift strategy (Exact Shift Strategy) will be employed. <div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Paragraph 4.4.1 of ARPACK Users’ Guide: Solution of Large Scale Eigenvalue Problems with Implicitly Restarted Arnoldi Methods (R. B. Lehoucq, D. C. Sorensen, C. Yang, SIAM, 1998), <a class="reference external" href="https://www.caam.rice.edu/software/ARPACK/UG/node50.html">https://www.caam.rice.edu/software/ARPACK/UG/node50.html</a>. </p>
+</div>
 </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
@@ -571,7 +570,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Igor Krivenko.
+        &#169; Copyright 2016-2022, Igor Krivenko.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
     </div>
   </body>
