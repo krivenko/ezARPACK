@@ -70,6 +70,17 @@ if(TRIQS_FOUND)
   list(APPEND EXAMPLES ${t})
 endif(TRIQS_FOUND)
 
+# TRIQS/nda example
+if(nda_FOUND)
+  set(t "nda.example")
+  add_executable(${t} nda.example.cpp)
+  # FIXME: Setting CXX_STANDARD to 20 would require CMake >= 3.12,
+  # which is too new to ask for.
+  target_compile_options(${t} PRIVATE "-std=c++20")
+  target_link_libraries(${t} ezarpack nda::nda_c ${arpack_ng_LIBRARIES})
+  list(APPEND EXAMPLES ${t})
+endif(nda_FOUND)
+
 # xtensor example
 if(xtensor_FOUND AND xtensor-blas_FOUND)
   set(t "xtensor.example")

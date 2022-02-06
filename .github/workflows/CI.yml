@@ -97,6 +97,27 @@ jobs:
         make -j2 install VERBOSE=1
         popd
 
+    - name: Build and install nda
+      env:
+        CC: ${{ matrix.cc }}
+        CXX: ${{ matrix.cxx }}
+      run: |
+        git clone https://github.com/TRIQS/nda.git nda --branch 1.1.x
+        mkdir nda.build && pushd nda.build
+        if [[ "${CXX}" == clang* ]]; then
+          CMAKE_CXX_FLAGS="-stdlib=libc++"
+        fi
+        cmake ../nda                                                           \
+          -DCMAKE_BUILD_TYPE=Release                                           \
+          -DCMAKE_INSTALL_PREFIX=$HOME/nda.installed                           \
+          -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}"                               \
+          -DBUILD_SHARED_LIBS=ON                                               \
+          -DPythonSupport=OFF                                                  \
+          -DBuild_Documentation=OFF                                            \
+          -DBuild_Tests=OFF
+        make -j2 install VERBOSE=1
+        popd
+
     - name: Install xtl, xtensor and xtensor-blas
       run: |
         git clone https://github.com/xtensor-stack/xtl.git xtl
@@ -141,6 +162,7 @@ jobs:
           -DARPACK_NG_ROOT=$HOME/arpack-ng.installed                           \
           -Dblaze_ROOT=$HOME/blaze.installed                                   \
           -DTRIQS_ROOT=$HOME/triqs.installed                                   \
+          -Dnda_ROOT=$HOME/nda.installed                                       \
           -Dxtensor_ROOT=$HOME/xtensor.installed                               \
           -Dxtensor-blas_ROOT=$HOME/xtensor.installed                          \
           -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}"                               \

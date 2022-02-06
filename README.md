@@ -29,7 +29,8 @@ libraries (storage backends):
 * Armadillo [4];
 * Boost uBLAS >= 1.58 [5];
 * TRIQS arrays >= 2.0 [6];
-* xtensor >= 0.20.0 [7];
+* TRIQS/nda library >= 1.1.0 [7];
+* xtensor >= 0.20.0 [8];
 * Raw memory buffers *(for unit testing, not recommended for general use)*.
 
 One can easily add support for their favorite vector/matrix framework by
@@ -72,7 +73,7 @@ ezARPACK is usable without installation, just add
 `-I/<path_to_ezARPACK_sources>/include` to the compiler command line and
 `-L/<ARPACK-NG_installation_prefix>/lib -larpack` to the linker command line.
 
-You will need CMake version 3.1.0 or newer [8] to build examples/unit tests and
+You will need CMake version 3.1.0 or newer [9] to build examples/unit tests and
 to install ezARPACK so that it can be used from other CMake projects.
 
 Assuming that ezARPACK is to be installed in `<ezARPACK_installation_prefix>`,
@@ -89,6 +90,7 @@ $ -DCMAKE_INSTALL_PREFIX=<ezARPACK_installation_prefix>   \
   -DArmadillo_ROOT=<Armadillo_installation_prefix>        \
   -DBOOST_ROOT=<Boost_installation_prefix>                \
   -DTRIQS_ROOT=<TRIQS_installation_prefix>                \
+  -Dnda_ROOT=<nda_installation_prefix>                    \
   -Dxtensor_ROOT=<xtensor_installation_prefix>            \
   -Dxtensor-blas_ROOT=<xtensor-blas_installation_prefix>  \
   -DExamples=ON                                           \
@@ -104,7 +106,7 @@ Compilation of the tests can be disabled with CMake flag `-DTests=OFF`
 Examples are compiled by default, disable them with `-DExamples=OFF`.
 
 CMake options specific to individual storage backends (`Eigen3_ROOT`,
-`blaze_ROOT`, `Armadillo_ROOT`, `BOOST_ROOT`, `TRIQS_ROOT`,
+`blaze_ROOT`, `Armadillo_ROOT`, `BOOST_ROOT`, `TRIQS_ROOT`, `nda_ROOT`
 `xtensor_ROOT`/`xtensor-blas_ROOT`) can be omitted if the respective libraries
 are installed in the standard system locations. If some of the libraries are not
 found, CMake will skip the corresponding examples and unit tests.
@@ -289,5 +291,6 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 [4]: http://arma.sourceforge.net
 [5]: https://www.boost.org/doc/libs/1_58_0/libs/numeric/ublas/doc
 [6]: https://triqs.github.io/triqs/latest
-[7]: https://github.com/xtensor-stack/xtensor
-[8]: https://cmake.org/download
+[7]: https://github.com/triqs/nda
+[8]: https://github.com/xtensor-stack/xtensor
+[9]: https://cmake.org/download

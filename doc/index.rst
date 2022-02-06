@@ -33,6 +33,7 @@ implementing two crucial features.
   - `Boost uBLAS >= 1.58 \
     <https://www.boost.org/doc/libs/1_58_0/libs/numeric/ublas/doc>`_
   - `TRIQS arrays >= 2.0 <https://triqs.github.io/triqs/latest/>`_
+  - `TRIQS/nda library >= 1.1.0 <https://github.com/triqs/nda/>`_
   - `xtensor >= 0.20.0 <https://github.com/xtensor-stack/xtensor>`_
 
   Upon choosing the right backend via a template parameter of the main
