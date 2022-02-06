@@ -171,7 +171,6 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
                         solver_t::real_vector_view_t shifts_re,
                         solver_t::real_vector_view_t shifts_im) {
       int np = first_dim(shifts_re);
-      std::cout << np << std::endl;
       if(np == 0) return;
 
       p.resize(np);
