@@ -35,7 +35,7 @@ libraries (storage backends):
 One can easily add support for their favorite vector/matrix framework by
 defining a new specialization of the `storage_traits` structure.
 
-Copyright (C) 2016-2020 Igor Krivenko <igor.s.krivenko @ gmail.com>
+Copyright (C) 2016-2022 Igor Krivenko <igor.s.krivenko @ gmail.com>
 
 ---
 **ATTENTION**
@@ -256,7 +256,7 @@ If you find this library useful for your research, you can help me by citing it
 using the following BibTeX entry.
 
 ```
-@software{igor_krivenko_2020_3930203,
+@software{ezARPACK,
   author       = {Igor Krivenko},
   title        = {{ezARPACK - a C++ ARPACK-NG wrapper compatible with
                    multiple matrix/vector algebra libraries: Release
