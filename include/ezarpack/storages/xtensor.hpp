@@ -69,8 +69,9 @@ private:
   /// Matrix view type (`xt::xview`).
   /// @tparam T Matrix element type.
   template<typename T>
-  using matrix_view = decltype(
-      xt::view(std::declval<matrix<T>&>(), xt::range(0, 0), xt::range(0, 0)));
+  using matrix_view = decltype(xt::view(std::declval<matrix<T>&>(),
+                                        xt::range(0, 0),
+                                        xt::range(0, 0)));
   /// Constant matrix view type (`xt::xview`).
   /// @tparam T Matrix element type.
   template<typename T>

@@ -49,9 +49,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
   using vector_const_view_t = solver_t::vector_const_view_t;
 
   SECTION("Standard eigenproblem") {
-    auto Aop = [&](vector_const_view_t in, vector_view_t out) {
-      out = A * in;
-    };
+    auto Aop = [&](vector_const_view_t in, vector_view_t out) { out = A * in; };
 
     solver_t ar(A.rows());
 
@@ -72,9 +70,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
     auto op = [&](vector_const_view_t in, vector_view_t out) {
       out = op_matrix * in;
     };
-    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-      out = M * in;
-    };
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) { out = M * in; };
 
     solver_t ar(A.rows());
 
@@ -103,9 +99,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
     auto op = [&](vector_const_view_t in, vector_view_t out) {
       out = op_matrix * in;
     };
-    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-      out = M * in;
-    };
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) { out = M * in; };
 
     solver_t ar(A.rows());
 
@@ -135,9 +129,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
     auto op = [&](vector_const_view_t in, vector_view_t out) {
       out = op_matrix * in;
     };
-    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-      out = M * in;
-    };
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) { out = M * in; };
 
     solver_t ar(A.rows());
 
