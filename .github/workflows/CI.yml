@@ -17,8 +17,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - {os: ubuntu-18.04, cc: gcc-7, cxx: g++-7}
-          - {os: ubuntu-18.04, cc: clang-7, cxx: clang++-7}
+          - {os: ubuntu-20.04, cc: gcc-10, cxx: g++-10}
+          - {os: ubuntu-20.04, cc: clang-12, cxx: clang++-12}
 
     runs-on: ${{ matrix.os }}
 
@@ -31,9 +31,9 @@ jobs:
     - name: Install Ubuntu dependencies
       run: >
         sudo apt-get install
-        g++-7
-        clang-7
-        libgfortran3
+        g++-10
+        clang-12
+        libgfortran4
         gfortran
         libopenblas-dev
         libboost-dev
@@ -84,13 +84,9 @@ jobs:
       run: |
         git clone https://github.com/TRIQS/triqs.git triqs --branch 3.0.x
         mkdir triqs.build && pushd triqs.build
-        if [[ "${CXX}" == clang* ]]; then
-          CMAKE_CXX_FLAGS="-stdlib=libc++"
-        fi
         cmake ../triqs                                                         \
           -DCMAKE_BUILD_TYPE=Release                                           \
           -DCMAKE_INSTALL_PREFIX=$HOME/triqs.installed                         \
-          -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}"                               \
           -DPythonSupport=OFF                                                  \
           -DBuild_Documentation=OFF                                            \
           -DBuild_Tests=OFF
@@ -104,13 +100,9 @@ jobs:
       run: |
         git clone https://github.com/TRIQS/nda.git nda --branch 1.1.x
         mkdir nda.build && pushd nda.build
-        if [[ "${CXX}" == clang* ]]; then
-          CMAKE_CXX_FLAGS="-stdlib=libc++"
-        fi
         cmake ../nda                                                           \
           -DCMAKE_BUILD_TYPE=Release                                           \
           -DCMAKE_INSTALL_PREFIX=$HOME/nda.installed                           \
-          -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}"                               \
           -DBUILD_SHARED_LIBS=ON                                               \
           -DPythonSupport=OFF                                                  \
           -DBuild_Documentation=OFF                                            \
@@ -146,15 +138,15 @@ jobs:
         CXX: ${{ matrix.cxx }}
       run: |
         if [[ "${CXX}" == clang* ]]; then
-          CMAKE_CXX_FLAGS="-stdlib=libc++ -Wno-ignored-attributes"
+          CMAKE_CXX_FLAGS="-Wno-ignored-attributes"
           DOCS_CMAKE_ARGS="-DDocumentation=ON \
                            -DMathJax_ROOT=/usr/share/javascript/mathjax"
         else
           CMAKE_CXX_FLAGS="-Wno-ignored-attributes"
           DOCS_CMAKE_ARGS="-DDocumentation=OFF"
         fi
-
         source $HOME/triqs.installed/share/triqsvars.sh
+        source $HOME/nda.installed/share/nda/ndavars.sh
         mkdir ezARPACK.build && pushd ezARPACK.build
         cmake ..                                                               \
           -DCMAKE_BUILD_TYPE=Release                                           \
