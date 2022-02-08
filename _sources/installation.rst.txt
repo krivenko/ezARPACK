@@ -37,6 +37,7 @@ The following sequence of shell commands will build unit tests and examples.
       -DArmadillo_ROOT=<Armadillo_installation_prefix>        \
       -DBOOST_ROOT=<Boost_installation_prefix>                \
       -DTRIQS_ROOT=<TRIQS_installation_prefix>                \
+      -Dnda_ROOT=<nda_installation_prefix>                    \
       -Dxtensor_ROOT=<xtensor_installation_prefix>            \
       -Dxtensor-blas_ROOT=<xtensor-blas_installation_prefix>  \
       -DExamples=ON                                           \
@@ -107,6 +108,8 @@ meaning.
 | ``BOOST_ROOT``              | Path to Boost (uBLAS) installation.            |
 +-----------------------------+------------------------------------------------+
 | ``TRIQS_ROOT``              | Path to TRIQS installation.                    |
++-----------------------------+------------------------------------------------+
+| ``nda_ROOT``                | Path to TRIQS/nda installation.                |
 +-----------------------------+------------------------------------------------+
 | ``xtensor_ROOT``            | Path to xtensor installation.                  |
 +-----------------------------+------------------------------------------------+
