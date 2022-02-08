@@ -75,37 +75,37 @@ undefined references to <code class="docutils literal notranslate"><span class="
 <h2>CMake<a class="headerlink" href="#cmake" title="Permalink to this headline">¶</a></h2>
 <p>Here is a minimal example of a root <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> script for your
 project.</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.1.0</span><span class="w"> </span><span class="s">FATAL_ERROR</span><span class="p">)</span>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.1.0</span> <span class="s">FATAL_ERROR</span><span class="p">)</span>
 
-<span class="nb">project</span><span class="p">(</span><span class="s">myproject</span><span class="w"> </span><span class="s">LANGUAGES</span><span class="w"> </span><span class="s">CXX</span><span class="p">)</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">myproject</span> <span class="s">LANGUAGES</span> <span class="s">CXX</span><span class="p">)</span>
 
 <span class="c"># EZARPACK_ROOT is the installation prefix of ezARPACK</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">ezARPACK_DIR</span><span class="w"> </span><span class="o">${</span><span class="nv">EZARPACK_ROOT</span><span class="o">}</span><span class="s">/lib/cmake</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">ezARPACK_DIR</span> <span class="o">${</span><span class="nv">EZARPACK_ROOT</span><span class="o">}</span><span class="s">/lib/cmake</span><span class="p">)</span>
 
 <span class="c"># Import ezARPACK target</span>
 <span class="c">#</span>
 <span class="c"># Setting EZARPACK_LINK_TO_ARPACK_NG to ON will trigger detection of</span>
 <span class="c"># ARPACK-NG and linking of the &#39;ezarpack&#39; target to the ARPACK-NG library.</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">EZARPACK_LINK_TO_ARPACK_NG</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
-<span class="nb">find_package</span><span class="p">(</span><span class="s">ezARPACK</span><span class="w"> </span><span class="s">0.9</span><span class="w"> </span><span class="s">CONFIG</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">EZARPACK_LINK_TO_ARPACK_NG</span> <span class="s">ON</span><span class="p">)</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">ezARPACK</span> <span class="s">0.9</span> <span class="s">CONFIG</span> <span class="s">REQUIRED</span><span class="p">)</span>
 
 <span class="c"># Import Eigen (Blaze, Armadillo, etc) targets</span>
-<span class="nb">find_package</span><span class="p">(</span><span class="s">Eigen3</span><span class="w"> </span><span class="s">CONFIG</span><span class="p">)</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">Eigen3</span> <span class="s">CONFIG</span><span class="p">)</span>
 
 <span class="c"># Build an executable called &#39;myprog&#39;</span>
-<span class="nb">add_executable</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="s">myprog.cpp</span><span class="p">)</span>
-<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">ezarpack</span><span class="w"> </span><span class="s">Eigen3::Eigen</span><span class="p">)</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">myprog</span> <span class="s">myprog.cpp</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span> <span class="s">PRIVATE</span> <span class="s">ezarpack</span> <span class="s">Eigen3::Eigen</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Alternatively, you can link <code class="docutils literal notranslate"><span class="pre">myprog</span></code> to ARPACK-NG manually.</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># ARPACK_NG_ROOT is the installation prefix of ARPACK-NG</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">arpack-ng_DIR</span><span class="w"> </span><span class="o">${</span><span class="nv">ARPACK_NG_ROOT</span><span class="o">}</span><span class="s">/lib/cmake</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">arpack-ng_DIR</span> <span class="o">${</span><span class="nv">ARPACK_NG_ROOT</span><span class="o">}</span><span class="s">/lib/cmake</span><span class="p">)</span>
 
 <span class="c"># Import ARPACK-NG targets</span>
-<span class="nb">find_package</span><span class="p">(</span><span class="s">arpack-ng</span><span class="w"> </span><span class="s">3.6.0</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">arpack-ng</span> <span class="s">3.6.0</span> <span class="s">REQUIRED</span><span class="p">)</span>
 
 <span class="c"># Link to ARPACK-NG</span>
-<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="o">${</span><span class="nv">arpack_ng_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span> <span class="o">${</span><span class="nv">arpack_ng_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

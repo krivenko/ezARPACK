@@ -90,17 +90,17 @@ Normally, it is a good idea to also use some include guard macros of
 
 <span class="cp">#pragma once</span>
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;complex&gt;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ezarpack/storages/base.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;complex&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;ezarpack/storages/base.hpp&gt;</span><span class="cp"></span>
 
 <span class="c1">// Include all relevant parts of &#39;mylib&#39;.</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mylib.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;mylib.hpp&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
 <p>Every storage backend must define a tag type associated with it. The actual type
 does not really matter, so it can be an empty structure.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// mylib storage backend tag.</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">mylib_storage</span><span class="w"> </span><span class="p">{};</span><span class="w"></span>
+<span class="k">struct</span> <span class="n">mylib_storage</span> <span class="p">{};</span>
 </pre></div>
 </div>
 <p>Passing the defined tag type as the second template parameter to
@@ -111,12 +111,12 @@ layer between <a class="reference internal" href="../reference/solver_base.html#
 <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> extracts <code class="docutils literal notranslate"><span class="pre">mylib</span></code>-specific type
 information from typedef members of <code class="docutils literal notranslate"><span class="pre">storage_traits</span></code> and calls its static
 member functions to handle <code class="docutils literal notranslate"><span class="pre">mylib</span></code>’s vector/matrix/view objects.</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">storage_traits</span><span class="o">&lt;</span><span class="n">mylib_storage</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Member typedefs.</span>
-<span class="w">  </span><span class="p">...</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Static members functions.</span>
-<span class="w">  </span><span class="p">...</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">storage_traits</span><span class="o">&lt;</span><span class="n">mylib_storage</span><span class="o">&gt;</span> <span class="p">{</span>
+  <span class="c1">// Member typedefs.</span>
+  <span class="p">...</span>
+  <span class="c1">// Static members functions.</span>
+  <span class="p">...</span>
+<span class="p">};</span>
 </pre></div>
 </div>
 <p>The rest of this HOWTO gives a detailed description of mandatory and optional
@@ -127,22 +127,22 @@ members of the <code class="docutils literal notranslate"><span class="pre">stor
 <p>The member type definitions of <code class="docutils literal notranslate"><span class="pre">storage_traits</span></code> form two groups. The first one
 is for the container (vector/matrix) types.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// One-dimensional wrapper around a contiguous array of &#39;double&#39;</span>
-<span class="k">using</span><span class="w"> </span><span class="n">real_vector_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mylib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span> <span class="n">real_vector_type</span> <span class="o">=</span> <span class="n">mylib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span>
 
 <span class="c1">// One-dimensional wrapper around a contiguous array of</span>
 <span class="c1">// &#39;std::complex&lt;double&gt;&#39;.</span>
-<span class="k">using</span><span class="w"> </span><span class="n">complex_vector_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mylib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span> <span class="n">complex_vector_type</span> <span class="o">=</span> <span class="n">mylib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">;</span>
 
 <span class="c1">// One-dimensional wrapper around a contiguous array of &#39;int&#39;.</span>
-<span class="k">using</span><span class="w"> </span><span class="n">int_vector_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mylib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span> <span class="n">int_vector_type</span> <span class="o">=</span> <span class="n">mylib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">;</span>
 
 <span class="c1">// Two-dimensional wrapper around a contiguous array of &#39;double&#39;.</span>
 <span class="c1">// The storage order must be column-major.</span>
-<span class="k">using</span><span class="w"> </span><span class="n">real_matrix_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mylib</span><span class="o">::</span><span class="n">matrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span> <span class="n">real_matrix_type</span> <span class="o">=</span> <span class="n">mylib</span><span class="o">::</span><span class="n">matrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span>
 
 <span class="c1">// Two-dimensional wrapper around a contiguous array of</span>
 <span class="c1">// &#39;std::complex&lt;double&gt;&#39;. The storage order must be column-major.</span>
-<span class="k">using</span><span class="w"> </span><span class="n">complex_matrix_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mylib</span><span class="o">::</span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span> <span class="n">complex_matrix_type</span> <span class="o">=</span> <span class="n">mylib</span><span class="o">::</span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>The second group includes all <em>view</em> type declarations. ezARPACK makes a
@@ -153,26 +153,26 @@ recommended, it is still possible to use <code class="docutils literal notransla
 substitute for the constant views. This will result in functional albeit more
 error-prone user code.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Contiguous partial view of a real vector (subvector).</span>
-<span class="k">using</span><span class="w"> </span><span class="n">real_vector_view_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mylib</span><span class="o">::</span><span class="n">vector_view</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span> <span class="n">real_vector_view_type</span> <span class="o">=</span> <span class="n">mylib</span><span class="o">::</span><span class="n">vector_view</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span>
 
 <span class="c1">// Contiguous partial constant view of a real vector (subvector).</span>
-<span class="k">using</span><span class="w"> </span><span class="n">real_vector_const_view_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mylib</span><span class="o">::</span><span class="n">vector_cview</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span> <span class="n">real_vector_const_view_type</span> <span class="o">=</span> <span class="n">mylib</span><span class="o">::</span><span class="n">vector_cview</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span>
 
 <span class="c1">// Contiguous partial view of a complex vector (subvector).</span>
-<span class="k">using</span><span class="w"> </span><span class="n">complex_vector_view_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mylib</span><span class="o">::</span><span class="n">vector_view</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span> <span class="n">complex_vector_view_type</span> <span class="o">=</span> <span class="n">mylib</span><span class="o">::</span><span class="n">vector_view</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">;</span>
 
 <span class="c1">// Contiguous partial constant view of a complex vector (subvector).</span>
-<span class="k">using</span><span class="w"> </span><span class="n">complex_vector_const_view_type</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">  </span><span class="n">mylib</span><span class="o">::</span><span class="n">vector_cview</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span> <span class="n">complex_vector_const_view_type</span> <span class="o">=</span>
+  <span class="n">mylib</span><span class="o">::</span><span class="n">vector_cview</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">;</span>
 
 <span class="c1">// Contiguous partial constant view of a real matrix (matrix block) that</span>
 <span class="c1">// includes a number of the leftmost columns.</span>
-<span class="k">using</span><span class="w"> </span><span class="n">real_matrix_const_view_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mylib</span><span class="o">::</span><span class="n">matrix_cview</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span> <span class="n">real_matrix_const_view_type</span> <span class="o">=</span> <span class="n">mylib</span><span class="o">::</span><span class="n">matrix_cview</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span>
 
 <span class="c1">// Contiguous partial constant view of a complex matrix (matrix block) that</span>
 <span class="c1">// includes a number of the leftmost columns.</span>
-<span class="k">using</span><span class="w"> </span><span class="n">complex_matrix_const_view_type</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">  </span><span class="n">mylib</span><span class="o">::</span><span class="n">matrix_cview</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span> <span class="n">complex_matrix_const_view_type</span> <span class="o">=</span>
+  <span class="n">mylib</span><span class="o">::</span><span class="n">matrix_cview</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">;</span>
 </pre></div>
 </div>
 </section>
@@ -183,41 +183,41 @@ error-prone user code.</p>
 <ul>
 <li><p>Vector object factories.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Make a real vector of a given size.</span>
-<span class="k">static</span><span class="w"> </span><span class="n">real_vector_type</span><span class="w"> </span><span class="nf">make_real_vector</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call real_vector_type&#39;s constructor and return the result.</span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="n">real_vector_type</span> <span class="nf">make_real_vector</span><span class="p">(</span><span class="kt">int</span> <span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call real_vector_type&#39;s constructor and return the result.</span>
+<span class="p">}</span>
 <span class="c1">// Make a complex vector of a given size.</span>
-<span class="k">static</span><span class="w"> </span><span class="n">complex_vector_type</span><span class="w"> </span><span class="nf">make_complex_vector</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call complex_vector_type&#39;s constructor and return the result.</span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="n">complex_vector_type</span> <span class="nf">make_complex_vector</span><span class="p">(</span><span class="kt">int</span> <span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call complex_vector_type&#39;s constructor and return the result.</span>
+<span class="p">}</span>
 <span class="c1">// Make an integer vector of a given size.</span>
-<span class="k">static</span><span class="w"> </span><span class="n">int_vector_type</span><span class="w"> </span><span class="nf">make_int_vector</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call int_vector_type&#39;s constructor and return the result.</span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="n">int_vector_type</span> <span class="nf">make_int_vector</span><span class="p">(</span><span class="kt">int</span> <span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call int_vector_type&#39;s constructor and return the result.</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </li>
 <li><p>Matrix object factories.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Make a real matrix with given dimensions.</span>
-<span class="k">static</span><span class="w"> </span><span class="n">real_matrix_type</span><span class="w"> </span><span class="nf">make_real_matrix</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call real_matrix_type&#39;s constructor and return the result.</span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="n">real_matrix_type</span> <span class="nf">make_real_matrix</span><span class="p">(</span><span class="kt">int</span> <span class="n">rows</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cols</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call real_matrix_type&#39;s constructor and return the result.</span>
+<span class="p">}</span>
 <span class="c1">// Make a complex matrix with given dimensions.</span>
-<span class="k">static</span><span class="w"> </span><span class="n">complex_matrix_type</span><span class="w"> </span><span class="nf">make_complex_matrix</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call complex_matrix_type&#39;s constructor and return the result.</span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="n">complex_matrix_type</span> <span class="nf">make_complex_matrix</span><span class="p">(</span><span class="kt">int</span> <span class="n">rows</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cols</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call complex_matrix_type&#39;s constructor and return the result.</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </li>
 <li><p>Vector/matrix destructors.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Free memory occupied by vector &#39;v&#39;</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">destroy</span><span class="p">(</span><span class="n">real_vector_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">destroy</span><span class="p">(</span><span class="n">complex_vector_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">destroy</span><span class="p">(</span><span class="n">int_vector_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">destroy</span><span class="p">(</span><span class="n">real_vector_type</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">destroy</span><span class="p">(</span><span class="n">complex_vector_type</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">destroy</span><span class="p">(</span><span class="n">int_vector_type</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
 
 <span class="c1">// Free memory occupied by matrix &#39;m&#39;</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">destroy</span><span class="p">(</span><span class="n">real_matrix_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">destroy</span><span class="p">(</span><span class="n">complex_matrix_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">destroy</span><span class="p">(</span><span class="n">real_matrix_type</span> <span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">destroy</span><span class="p">(</span><span class="n">complex_matrix_type</span> <span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
 </pre></div>
 </div>
 <div class="admonition warning">
@@ -230,86 +230,86 @@ their own, bodies of <code class="docutils literal notranslate"><span class="pre
 </li>
 <li><p>Resize functions.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Resize vector &#39;v&#39;.</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">resize</span><span class="p">(</span><span class="n">real_vector_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">new_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">resize</span><span class="p">(</span><span class="n">complex_vector_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">new_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">resize</span><span class="p">(</span><span class="n">int_vector_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">new_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">resize</span><span class="p">(</span><span class="n">real_vector_type</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">new_size</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">resize</span><span class="p">(</span><span class="n">complex_vector_type</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">new_size</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">resize</span><span class="p">(</span><span class="n">int_vector_type</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">new_size</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
 
 <span class="c1">// Resize matrix &#39;m&#39;.</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">resize</span><span class="p">(</span><span class="n">real_matrix_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">new_rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">new_cols</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="p">...</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">resize</span><span class="p">(</span><span class="n">complex_matrix_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">new_rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">new_cols</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="p">...</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">resize</span><span class="p">(</span><span class="n">real_matrix_type</span> <span class="o">&amp;</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">new_rows</span><span class="p">,</span> <span class="kt">int</span> <span class="n">new_cols</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">resize</span><span class="p">(</span><span class="n">complex_matrix_type</span> <span class="o">&amp;</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">new_rows</span><span class="p">,</span> <span class="kt">int</span> <span class="n">new_cols</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </li>
 <li><p>Raw memory pointer accessors.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Return a pointer to the underlying data array owned by vector &#39;v&#39;.</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">double</span><span class="o">*</span><span class="w"> </span><span class="nf">get_data_ptr</span><span class="p">(</span><span class="n">real_vector_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">get_data_ptr</span><span class="p">(</span><span class="n">complex_vector_type</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">get_data_ptr</span><span class="p">(</span><span class="n">int_vector_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="kt">double</span><span class="o">*</span> <span class="nf">get_data_ptr</span><span class="p">(</span><span class="n">real_vector_type</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="k">static</span> <span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;*</span> <span class="n">get_data_ptr</span><span class="p">(</span><span class="n">complex_vector_type</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="k">static</span> <span class="kt">int</span><span class="o">*</span> <span class="n">get_data_ptr</span><span class="p">(</span><span class="n">int_vector_type</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
 
 <span class="c1">// Return a pointer to the underlying data array owned by matrix &#39;m&#39;.</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">double</span><span class="o">*</span><span class="w"> </span><span class="n">get_data_ptr</span><span class="p">(</span><span class="n">real_matrix_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">get_data_ptr</span><span class="p">(</span><span class="n">complex_matrix_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="kt">double</span><span class="o">*</span> <span class="n">get_data_ptr</span><span class="p">(</span><span class="n">real_matrix_type</span> <span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="k">static</span> <span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;*</span> <span class="n">get_data_ptr</span><span class="p">(</span><span class="n">complex_matrix_type</span> <span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
 </pre></div>
 </div>
 </li>
 <li><p>Vector view factories.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Make a complete view of vector &#39;v&#39;.</span>
-<span class="k">static</span><span class="w"> </span><span class="n">real_vector_view_type</span><span class="w"> </span><span class="nf">make_vector_view</span><span class="p">(</span><span class="n">real_vector_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call real_vector_view_type&#39;s constructor and return the result.</span>
-<span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="n">complex_vector_view_type</span><span class="w"> </span><span class="nf">make_vector_view</span><span class="p">(</span><span class="n">complex_vector_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call complex_vector_view_type&#39;s constructor and return the result.</span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="n">real_vector_view_type</span> <span class="nf">make_vector_view</span><span class="p">(</span><span class="n">real_vector_type</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call real_vector_view_type&#39;s constructor and return the result.</span>
+<span class="p">}</span>
+<span class="k">static</span> <span class="n">complex_vector_view_type</span> <span class="nf">make_vector_view</span><span class="p">(</span><span class="n">complex_vector_type</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call complex_vector_view_type&#39;s constructor and return the result.</span>
+<span class="p">}</span>
 
 <span class="c1">// Make a partial view of vector &#39;v&#39; starting at position &#39;start&#39; and</span>
 <span class="c1">// including &#39;size&#39; elements.</span>
-<span class="k">static</span><span class="w"> </span><span class="n">real_vector_view_type</span><span class="w"></span>
-<span class="nf">make_vector_view</span><span class="p">(</span><span class="n">real_vector_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call real_vector_view_type&#39;s constructor and return the result.</span>
-<span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="n">complex_vector_view_type</span><span class="w"></span>
-<span class="nf">make_vector_view</span><span class="p">(</span><span class="n">complex_vector_type</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call complex_vector_view_type&#39;s constructor and return the result.</span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="n">real_vector_view_type</span>
+<span class="nf">make_vector_view</span><span class="p">(</span><span class="n">real_vector_type</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call real_vector_view_type&#39;s constructor and return the result.</span>
+<span class="p">}</span>
+<span class="k">static</span> <span class="n">complex_vector_view_type</span>
+<span class="nf">make_vector_view</span><span class="p">(</span><span class="n">complex_vector_type</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call complex_vector_view_type&#39;s constructor and return the result.</span>
+<span class="p">}</span>
 
 <span class="c1">// Make a constant partial view of vector &#39;v&#39; starting at position &#39;start&#39;</span>
 <span class="c1">// and including &#39;size&#39; elements.</span>
-<span class="k">static</span><span class="w"> </span><span class="n">real_vector_const_view_type</span><span class="w"></span>
-<span class="nf">make_vector_const_view</span><span class="p">(</span><span class="n">real_vector_type</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call real_vector_const_view_type&#39;s constructor and return the result.</span>
-<span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="n">complex_vector_const_view_type</span><span class="w"></span>
-<span class="nf">make_vector_const_view</span><span class="p">(</span><span class="n">complex_vector_type</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call complex_vector_const_view_type&#39;s constructor and return the result</span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="n">real_vector_const_view_type</span>
+<span class="nf">make_vector_const_view</span><span class="p">(</span><span class="n">real_vector_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call real_vector_const_view_type&#39;s constructor and return the result.</span>
+<span class="p">}</span>
+<span class="k">static</span> <span class="n">complex_vector_const_view_type</span>
+<span class="nf">make_vector_const_view</span><span class="p">(</span><span class="n">complex_vector_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call complex_vector_const_view_type&#39;s constructor and return the result</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </li>
 <li><p>Matrix constant view factories.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Make a complete constant view of matrix &#39;m&#39;.</span>
-<span class="k">static</span><span class="w"> </span><span class="n">real_matrix_const_view_type</span><span class="w"></span>
-<span class="nf">make_matrix_const_view</span><span class="p">(</span><span class="n">real_matrix_type</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call real_matrix_const_view_type&#39;s constructor and return the result.</span>
-<span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="n">complex_matrix_const_view_type</span><span class="w"></span>
-<span class="nf">make_matrix_const_view</span><span class="p">(</span><span class="n">complex_matrix_type</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call complex_matrix_const_view_type&#39;s constructor and return the result</span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="n">real_matrix_const_view_type</span>
+<span class="nf">make_matrix_const_view</span><span class="p">(</span><span class="n">real_matrix_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call real_matrix_const_view_type&#39;s constructor and return the result.</span>
+<span class="p">}</span>
+<span class="k">static</span> <span class="n">complex_matrix_const_view_type</span>
+<span class="nf">make_matrix_const_view</span><span class="p">(</span><span class="n">complex_matrix_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call complex_matrix_const_view_type&#39;s constructor and return the result</span>
+<span class="p">}</span>
 
 <span class="c1">// Make a partial constant view of matrix &#39;m&#39; including &#39;cols&#39;</span>
 <span class="c1">// leftmost columns.</span>
-<span class="k">static</span><span class="w"> </span><span class="n">real_matrix_const_view_type</span><span class="w"></span>
-<span class="nf">make_matrix_const_view</span><span class="p">(</span><span class="n">real_matrix_type</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call real_matrix_const_view_type&#39;s constructor and return the result.</span>
-<span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="n">complex_matrix_const_view_type</span><span class="w"></span>
-<span class="nf">make_matrix_const_view</span><span class="p">(</span><span class="n">complex_matrix_type</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Call complex_matrix_const_view_type&#39;s constructor and return the result</span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">static</span> <span class="n">real_matrix_const_view_type</span>
+<span class="nf">make_matrix_const_view</span><span class="p">(</span><span class="n">real_matrix_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rows</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cols</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call real_matrix_const_view_type&#39;s constructor and return the result.</span>
+<span class="p">}</span>
+<span class="k">static</span> <span class="n">complex_matrix_const_view_type</span>
+<span class="nf">make_matrix_const_view</span><span class="p">(</span><span class="n">complex_matrix_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rows</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cols</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call complex_matrix_const_view_type&#39;s constructor and return the result</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </li>
@@ -332,12 +332,12 @@ The storage traits structure may optionally implement three static
 member functions, which will be called by the asymmetric solver to extract a
 computed eigensystem from memory buffers and return it to the user in
 a convenient form.</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">complex_vector_type</span><span class="w"></span>
-<span class="nf">make_asymm_eigenvalues</span><span class="p">(</span><span class="n">real_vector_type</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">dr</span><span class="p">,</span><span class="w"></span>
-<span class="w">                       </span><span class="n">real_vector_type</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">di</span><span class="p">,</span><span class="w"></span>
-<span class="w">                       </span><span class="kt">int</span><span class="w"> </span><span class="n">nconv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Compute and return dr + i*di</span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="n">complex_vector_type</span>
+<span class="nf">make_asymm_eigenvalues</span><span class="p">(</span><span class="n">real_vector_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">dr</span><span class="p">,</span>
+                       <span class="n">real_vector_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">di</span><span class="p">,</span>
+                       <span class="kt">int</span> <span class="n">nconv</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Compute and return dr + i*di</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">make_asymm_eigenvalues()</span></code> is the simplest of the three functions. It is
@@ -347,13 +347,13 @@ imaginary (<code class="docutils literal notranslate"><span class="pre">di</span
 first elements of <code class="docutils literal notranslate"><span class="pre">dr</span></code> and <code class="docutils literal notranslate"><span class="pre">di</span></code> must be used to form the complex vector
 (<code class="docutils literal notranslate"><span class="pre">dr</span></code> and <code class="docutils literal notranslate"><span class="pre">di</span></code> can, in general, be longer or not providing size information
 at all).</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kr">inline</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">complex_matrix_type</span><span class="w"></span>
-<span class="nf">make_asymm_eigenvectors</span><span class="p">(</span><span class="n">real_vector_type</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">z</span><span class="p">,</span><span class="w"></span>
-<span class="w">                        </span><span class="n">real_vector_type</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">di</span><span class="p">,</span><span class="w"></span>
-<span class="w">                        </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"></span>
-<span class="w">                        </span><span class="kt">int</span><span class="w"> </span><span class="n">nconv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Extract and return eigenvectors as columns of a complex matrix.</span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kr">inline</span> <span class="k">static</span> <span class="n">complex_matrix_type</span>
+<span class="nf">make_asymm_eigenvectors</span><span class="p">(</span><span class="n">real_vector_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">z</span><span class="p">,</span>
+                        <span class="n">real_vector_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">di</span><span class="p">,</span>
+                        <span class="kt">int</span> <span class="n">N</span><span class="p">,</span>
+                        <span class="kt">int</span> <span class="n">nconv</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Extract and return eigenvectors as columns of a complex matrix.</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>This function extracts eigenvectors from a real vector <code class="docutils literal notranslate"><span class="pre">z</span></code> according to
@@ -368,16 +368,16 @@ Every such pair corresponds to a complex conjugate pair of eigenvectors,
 so that the total amount of vectors stored in <code class="docutils literal notranslate"><span class="pre">z</span></code> is exactly <code class="docutils literal notranslate"><span class="pre">nconv</span></code>.
 The extracted eigenvectors must be returned as columns of a complex
 <code class="docutils literal notranslate"><span class="pre">N</span></code> x <code class="docutils literal notranslate"><span class="pre">nconv</span></code> matrix.</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">A</span><span class="o">&gt;</span><span class="w"></span>
-<span class="kr">inline</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">complex_vector_type</span><span class="w"></span>
-<span class="n">make_asymm_eigenvalues</span><span class="p">(</span><span class="n">real_vector_type</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">z</span><span class="p">,</span><span class="w"></span>
-<span class="w">                      </span><span class="n">real_vector_type</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">di</span><span class="p">,</span><span class="w"></span>
-<span class="w">                      </span><span class="n">A</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"></span>
-<span class="w">                      </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"></span>
-<span class="w">                      </span><span class="kt">int</span><span class="w"> </span><span class="n">nconv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// Compute eigenvalues as Rayleigh quotients and return them in</span>
-<span class="w">  </span><span class="c1">// a complex vector.</span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">A</span><span class="o">&gt;</span>
+<span class="kr">inline</span> <span class="k">static</span> <span class="n">complex_vector_type</span>
+<span class="n">make_asymm_eigenvalues</span><span class="p">(</span><span class="n">real_vector_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">z</span><span class="p">,</span>
+                      <span class="n">real_vector_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">di</span><span class="p">,</span>
+                      <span class="n">A</span><span class="o">&amp;&amp;</span> <span class="n">a</span><span class="p">,</span>
+                      <span class="kt">int</span> <span class="n">N</span><span class="p">,</span>
+                      <span class="kt">int</span> <span class="n">nconv</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Compute eigenvalues as Rayleigh quotients and return them in</span>
+  <span class="c1">// a complex vector.</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>In the <code class="docutils literal notranslate"><span class="pre">ShiftAndInvertReal</span></code> and <code class="docutils literal notranslate"><span class="pre">ShiftAndInvertImag</span></code> spectral transformation

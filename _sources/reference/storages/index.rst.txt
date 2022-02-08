@@ -12,4 +12,5 @@ visible to the compiler.
     armadillo
     ublas
     triqs
+    nda
     xtensor

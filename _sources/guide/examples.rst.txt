@@ -58,6 +58,16 @@ TRIQS arrays
   :lines: 14-
   :linenos:
 
+.. _example_nda:
+
+TRIQS/nda
+---------
+
+.. literalinclude:: ../../example/nda.example.cpp
+  :language: cpp
+  :lines: 14-
+  :linenos:
+
 .. _example_xtensor:
 
 xtensor
