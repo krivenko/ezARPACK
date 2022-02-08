@@ -275,7 +275,6 @@ using the following BibTeX entry.
 Known issues
 ------------
 
-* ezARPACK is still in beta, use with caution!
 * Parallel ARPACK routines (PARPACK) are not supported.
 
 License
