@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Changelog &#8212; ezARPACK 0.10 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Index" href="genindex.html" />
+    <link rel="prev" title="ezarpack/version.hpp - ezARPACK version information" href="reference/version.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="genindex.html" title="Index"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="reference/version.html" title="ezarpack/version.hpp - ezARPACK version information"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ezARPACK 0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Changelog</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<p>All notable changes to ezARPACK will be documented in this file.</p>
+<section id="id1">
+<h2>[0.10] - 2022-02-08<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>A new storage backend for the <a class="reference external" href="https://github.com/TRIQS/nda">TRIQS/nda</a> library
+has been added. This is the first release that is considered stable.</p>
+</section>
+<section id="id2">
+<h2>[0.9] - 2020-07-04<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>Version 0.9 comes with a complete set of documentation and a few breaking
+changes.</p>
+<ul class="simple">
+<li><p>A more common term ‘solver’ is now used instead of ‘worker’ everywhere in the
+code. In particular, <code class="docutils literal notranslate"><span class="pre">arpack_worker</span></code> has been renamed to <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code>.</p></li>
+<li><p>Method <code class="docutils literal notranslate"><span class="pre">arpack_solver::from_vector_n()</span></code> has been renamed to
+<code class="docutils literal notranslate"><span class="pre">arpack_solver::in_vector_n()</span></code>.</p></li>
+<li><p>Method <code class="docutils literal notranslate"><span class="pre">arpack_solver::to_vector_n()</span></code> has been renamed to
+<code class="docutils literal notranslate"><span class="pre">arpack_solver::out_vector_n()</span></code>.</p></li>
+<li><p>Computational mode <code class="docutils literal notranslate"><span class="pre">Invert</span></code> has been renamed to <code class="docutils literal notranslate"><span class="pre">Inverse</span></code>.</p></li>
+<li><p>Field <code class="docutils literal notranslate"><span class="pre">n_converged</span></code> has been removed from the <code class="docutils literal notranslate"><span class="pre">stats_t</span></code> structures.
+The number of converged Ritz values is now returned by method
+<code class="docutils literal notranslate"><span class="pre">arpack_solver::nconv()</span></code>.</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Changelog</a><ul>
+<li><a class="reference internal" href="#id1">[0.10] - 2022-02-08</a></li>
+<li><a class="reference internal" href="#id2">[0.9] - 2020-07-04</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="reference/version.html"
+                          title="previous chapter"><code class="docutils literal notranslate"><span class="pre">ezarpack/version.hpp</span></code> - ezARPACK version information</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="genindex.html"
+                          title="next chapter">Index</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/changelog.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="genindex.html" title="Index"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="reference/version.html" title="ezarpack/version.hpp - ezARPACK version information"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ezARPACK 0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Changelog</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016-2022, Igor Krivenko.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>
