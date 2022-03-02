@@ -38,24 +38,6 @@ defining a new specialization of the `storage_traits` structure.
 
 Copyright (C) 2016-2022 Igor Krivenko <igor.s.krivenko @ gmail.com>
 
----
-**ATTENTION**
-
-Version 0.9 comes with a complete set of documentation and a few breaking
-changes.
-
-* A more common term 'solver' is now used instead of 'worker' everywhere in the
-  code. In particular, `arpack_worker` has been renamed to `arpack_solver`.
-* Method `arpack_solver::from_vector_n()` has been renamed to
-  `arpack_solver::in_vector_n()`.
-* Method `arpack_solver::to_vector_n()` has been renamed to
-  `arpack_solver::out_vector_n()`.
-* Computational mode `Invert` has been renamed to `Inverse`.
-* Field `n_converged` has been removed from the `stats_t` structures.
-  The number of converged Ritz values is now returned by method
-  `arpack_solver::nconv()`.
----
-
 Dependencies
 ------------
 

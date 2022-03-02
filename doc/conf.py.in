@@ -22,7 +22,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
-    'breathe'
+    'breathe',
+    'myst_parser'
 ]
 
 # Breathe Configuration

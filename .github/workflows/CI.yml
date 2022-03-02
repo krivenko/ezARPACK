@@ -54,7 +54,7 @@ jobs:
       if: startsWith(matrix.cxx, 'clang')
       run: |
         sudo apt-get install doxygen libjs-mathjax
-        pip3 install -U sphinx breathe
+        pip3 install -U sphinx breathe myst-parser
 
     - name: Build and install ARPACK-NG
       run: |

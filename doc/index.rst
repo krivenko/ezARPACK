@@ -68,5 +68,6 @@ Contents
     installation
     guide/index
     reference/index
+    changelog
     genindex
     search
