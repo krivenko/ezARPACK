@@ -171,7 +171,6 @@ jobs:
         find . -name "*.html" -type f -exec sed -i                             \
           's/\/usr\/share\/javascript\/mathjax/\/ezARPACK\/mathjax/g' {} \;
         cp -r /usr/share/javascript/mathjax mathjax
-        touch .nojekyll
         popd
 
     - name: Deploy documentation
