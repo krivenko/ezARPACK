@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>ezarpack/storages/armadillo.hpp - Armadillo &#8212; ezARPACK 0.10 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -44,7 +45,7 @@
           <div class="body" role="main">
             
   <section id="ezarpack-storages-armadillo-hpp-armadillo">
-<span id="refarmadillo"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/armadillo.hpp</span></code> - Armadillo<a class="headerlink" href="#ezarpack-storages-armadillo-hpp-armadillo" title="Permalink to this headline">¶</a></h1>
+<span id="refarmadillo"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/storages/armadillo.hpp</span></code> - Armadillo<a class="headerlink" href="#ezarpack-storages-armadillo-hpp-armadillo" title="Permalink to this heading">¶</a></h1>
 <p>This storage backend depends on <a class="reference external" href="http://arma.sourceforge.net">Armadillo</a>.</p>
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4N8ezarpack17armadillo_storageE">
@@ -65,7 +66,7 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE6vectorE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE6vectorE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a7db1faa864a771812211072f850ad9fa"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vector</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">arma</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Col</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6vectorE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::vector::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6vectorE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Armadillo dense column vector. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
 </dl>
@@ -82,7 +83,7 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE11vector_viewE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE11vector_viewE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a59e468daeffc2195cea88c33220db6f4"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vector_view</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">arma</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">subview_col</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE11vector_viewE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::vector_view::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE11vector_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Vector view type (block of a column vector). </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
 </dl>
@@ -93,7 +94,7 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE17vector_const_viewE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE17vector_const_viewE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1aadc54c3972347590bc6f6f6182878c9a"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vector_const_view</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">arma</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">subview_col</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE17vector_const_viewE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::vector_const_view::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE17vector_const_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Constant vector view type (block of a constant column vector). </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
 </dl>
@@ -104,7 +105,7 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE11matrix_viewE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE11matrix_viewE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a5593def02ded3567971d8efabdbe4c2d"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">matrix_view</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">arma</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">subview</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE11matrix_viewE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::matrix_view::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE11matrix_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Matrix view type (block of a matrix). </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
 </dl>
@@ -115,7 +116,7 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE17matrix_const_viewE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE17matrix_const_viewE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a203026badaa315e4423cf4773e747947"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">matrix_const_view</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">arma</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">subview</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE17matrix_const_viewE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::matrix_const_view::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE17matrix_const_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Constant matrix view type (block of a constant matrix). </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
 </dl>
@@ -201,10 +202,10 @@
 <span id="_CPPv3N8ezarpack14storage_traitsI17armadillo_storageE16make_real_vectorEi"></span><span id="_CPPv2N8ezarpack14storage_traitsI17armadillo_storageE16make_real_vectorEi"></span><span id="ezarpack::storage_traits:armadillo_storage:::make_real_vector__i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1aad87a160887dc36297bdedce873a0ed0"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::real_vector_type"><span class="n"><span class="pre">real_vector_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_real_vector</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE16make_real_vectorEi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Constructs a real vector container. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>size</strong> – Size of the vector. </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Constructed vector. </p>
 </dd>
 </dl>
@@ -215,10 +216,10 @@
 <span id="_CPPv3N8ezarpack14storage_traitsI17armadillo_storageE19make_complex_vectorEi"></span><span id="_CPPv2N8ezarpack14storage_traitsI17armadillo_storageE19make_complex_vectorEi"></span><span id="ezarpack::storage_traits:armadillo_storage:::make_complex_vector__i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a5c7032520b92cd1aab7117c2291659fb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE19complex_vector_typeE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::complex_vector_type"><span class="n"><span class="pre">complex_vector_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_complex_vector</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE19make_complex_vectorEi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Constructs a complex vector container. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>size</strong> – Size of the vector. </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Constructed vector. </p>
 </dd>
 </dl>
@@ -229,10 +230,10 @@
 <span id="_CPPv3N8ezarpack14storage_traitsI17armadillo_storageE15make_int_vectorEi"></span><span id="_CPPv2N8ezarpack14storage_traitsI17armadillo_storageE15make_int_vectorEi"></span><span id="ezarpack::storage_traits:armadillo_storage:::make_int_vector__i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a8a02c9d7f3fcefbfc056c2a5404355ef"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE15int_vector_typeE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::int_vector_type"><span class="n"><span class="pre">int_vector_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_int_vector</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE15make_int_vectorEi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Constructs an integer vector container. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>size</strong> – Size of the vector. </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Constructed vector. </p>
 </dd>
 </dl>
@@ -243,13 +244,13 @@
 <span id="_CPPv3N8ezarpack14storage_traitsI17armadillo_storageE16make_real_matrixEii"></span><span id="_CPPv2N8ezarpack14storage_traitsI17armadillo_storageE16make_real_matrixEii"></span><span id="ezarpack::storage_traits:armadillo_storage:::make_real_matrix__i.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a872aac85c29fce2d17c24da62b41d613"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE16real_matrix_typeE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::real_matrix_type"><span class="n"><span class="pre">real_matrix_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_real_matrix</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cols</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE16make_real_matrixEii" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Constructs a real matrix container. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rows</strong> – Number of matrix rows. </p></li>
 <li><p><strong>cols</strong> – Number of matrix columns. </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Constructed matrix. </p>
 </dd>
 </dl>
@@ -260,13 +261,13 @@
 <span id="_CPPv3N8ezarpack14storage_traitsI17armadillo_storageE19make_complex_matrixEii"></span><span id="_CPPv2N8ezarpack14storage_traitsI17armadillo_storageE19make_complex_matrixEii"></span><span id="ezarpack::storage_traits:armadillo_storage:::make_complex_matrix__i.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a58fd4f395de377968c9af4864386c464"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE19complex_matrix_typeE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::complex_matrix_type"><span class="n"><span class="pre">complex_matrix_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_complex_matrix</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cols</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE19make_complex_matrixEii" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Constructs a complex matrix container. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rows</strong> – Number of matrix rows. </p></li>
 <li><p><strong>cols</strong> – Number of matrix columns. </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Constructed matrix. </p>
 </dd>
 </dl>
@@ -277,7 +278,7 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE7destroyER6vectorI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE7destroyER6vectorI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a893845d517a8400942f017c0e2724be7"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">destroy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6vectorE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::vector"><span class="n"><span class="pre">vector</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE7destroyEvR6vectorI1TE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::destroy::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE7destroyEvR6vectorI1TE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Destroys a vector container. This function is, in fact, no-op, because memory owned by an Armadillo column will automatically be freed by its destructor. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
 </dl>
@@ -288,7 +289,7 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE7destroyER6matrixI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE7destroyER6matrixI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a6d93e298910985bfb577d49e3d6c934d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">destroy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6matrixE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::matrix"><span class="n"><span class="pre">matrix</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE7destroyEvR6matrixI1TE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::destroy::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE7destroyEvR6matrixI1TE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Destroys a matrix container. This function is, in fact, no-op, because memory owned by an Armadillo matrix will automatically be freed by its destructor. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
 </dl>
@@ -299,10 +300,10 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE6resizeER6vectorI1TEi"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE6resizeER6vectorI1TEi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a5d1d964f9e9e1ab80cfb1cebd7aa2f65"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">resize</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6vectorE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::vector"><span class="n"><span class="pre">vector</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6resizeEvR6vectorI1TEi" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::resize::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6resizeEvR6vectorI1TEi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Resizes a vector container. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>v</strong> – Vector container to resize. </p></li>
 <li><p><strong>size</strong> – New vector size. </p></li>
@@ -316,10 +317,10 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE6resizeER6matrixI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE6resizeER6matrixI1TEii"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a8cd841520fc6acf531c643442dc5d078"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">resize</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6matrixE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::matrix"><span class="n"><span class="pre">matrix</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6resizeEvR6matrixI1TEii" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::resize::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">m</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cols</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6resizeEvR6matrixI1TEii" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Resizes a matrix container. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>m</strong> – Matrix container to resize. </p></li>
 <li><p><strong>rows</strong> – New number of matrix rows. </p></li>
@@ -334,13 +335,13 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE12get_data_ptrER6vectorI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE12get_data_ptrER6vectorI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1af44f08b8dd914929fe7cb91ff1e1b931"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE12get_data_ptrEP1TR6vectorI1TE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::get_data_ptr::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_data_ptr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6vectorE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::vector"><span class="n"><span class="pre">vector</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE12get_data_ptrEP1TR6vectorI1TE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::get_data_ptr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE12get_data_ptrEP1TR6vectorI1TE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns a pointer to the underlying data array owned by a vector. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>v</strong> – Vector to retrieve the data pointer from. </p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Pointer to the data array. </p>
 </dd>
 </dl>
@@ -351,13 +352,13 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE12get_data_ptrER6matrixI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE12get_data_ptrER6matrixI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a4e0a35436b7c3db74a26dc6c7a833f22"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE12get_data_ptrEP1TR6matrixI1TE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::get_data_ptr::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_data_ptr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6matrixE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::matrix"><span class="n"><span class="pre">matrix</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE12get_data_ptrEP1TR6matrixI1TE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::get_data_ptr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">m</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE12get_data_ptrEP1TR6matrixI1TE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns a pointer to the underlying data array owned by a matrix. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>m</strong> – Matrix to retrieve the data pointer from. </p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Pointer to the data array. </p>
 </dd>
 </dl>
@@ -371,13 +372,13 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE16make_vector_viewER6vectorI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE16make_vector_viewER6vectorI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a2fc4c63bd2ed8b9ab058479c1bae3c69"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE11vector_viewE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::vector_view"><span class="n"><span class="pre">vector_view</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::make_vector_view::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_vector_view</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6vectorE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::vector"><span class="n"><span class="pre">vector</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::make_vector_view::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Makes a complete view of a vector. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>v</strong> – Vector container to make a view of. </p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>View of the full vector. </p>
 </dd>
 </dl>
@@ -388,17 +389,17 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE16make_vector_viewER6vectorI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE16make_vector_viewER6vectorI1TEii"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a719bf5fe5d2ac7f8affded5701946bb4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE11vector_viewE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::vector_view"><span class="n"><span class="pre">vector_view</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::make_vector_view::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_vector_view</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6vectorE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::vector"><span class="n"><span class="pre">vector</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::make_vector_view::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">start</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE16make_vector_viewE11vector_viewI1TER6vectorI1TEii" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Makes a partial view of a vector. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>v</strong> – Vector container to make a view of. </p></li>
 <li><p><strong>start</strong> – Position of the starting element in the partial view. </p></li>
 <li><p><strong>size</strong> – Number of elements in the partial view. </p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Subvector view. </p>
 </dd>
 </dl>
@@ -409,17 +410,17 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_vector_const_viewERK6vectorI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_vector_const_viewERK6vectorI1TEii"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a6c814e395da149e57d2888952bbbe00d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE17vector_const_viewE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::vector_const_view"><span class="n"><span class="pre">vector_const_view</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::make_vector_const_view::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_vector_const_view</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6vectorE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::vector"><span class="n"><span class="pre">vector</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::make_vector_const_view::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">start</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_vector_const_viewE17vector_const_viewI1TERK6vectorI1TEii" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Makes a constant partial view of a vector. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Vector element type. </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>v</strong> – Vector container to make a view of. </p></li>
 <li><p><strong>start</strong> – Position of the starting element in the partial view. </p></li>
 <li><p><strong>size</strong> – Number of elements in the partial view. </p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Subvector view. </p>
 </dd>
 </dl>
@@ -430,13 +431,13 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_matrix_const_viewERK6matrixI1TE"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_matrix_const_viewERK6matrixI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a99ec6cfadcd761d8009278d6ccf6ce01"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE17matrix_const_viewE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::matrix_const_view"><span class="n"><span class="pre">matrix_const_view</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::make_matrix_const_view::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_matrix_const_view</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6matrixE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::matrix"><span class="n"><span class="pre">matrix</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::make_matrix_const_view::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">m</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Makes a complete view of a matrix. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>m</strong> – Matrix container to make a view of. </p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>View of the full matrix. </p>
 </dd>
 </dl>
@@ -447,17 +448,17 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_matrix_const_viewERK6matrixI1TEii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_matrix_const_viewERK6matrixI1TEii"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a48ee56b4f8e505026d1929b9ad5d848d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE17matrix_const_viewE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::matrix_const_view"><span class="n"><span class="pre">matrix_const_view</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::make_matrix_const_view::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_matrix_const_view</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE6matrixE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::matrix"><span class="n"><span class="pre">matrix</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::make_matrix_const_view::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">m</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cols</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_matrix_const_viewE17matrix_const_viewI1TERK6matrixI1TEii" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Makes a constant partial view of a matrix including a number of the leftmost columns. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – Matrix element type. </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>m</strong> – Matrix container to make a view of. </p></li>
 <li><p><strong>rows</strong> – <strong>[ignored]</strong> Number of matrix rows. </p></li>
 <li><p><strong>cols</strong> – Number of the leftmost columns in the resulting view. </p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Submatrix view. </p>
 </dd>
 </dl>
@@ -471,14 +472,14 @@
 <span id="_CPPv3N8ezarpack14storage_traitsI17armadillo_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei"></span><span id="_CPPv2N8ezarpack14storage_traitsI17armadillo_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei"></span><span id="ezarpack::storage_traits:armadillo_storage:::make_asymm_eigenvalues__real_vector_typeCR.real_vector_typeCR.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a41e2fb8325a6c16cdfa49a68c8b31ee4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE19complex_vector_typeE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::complex_vector_type"><span class="n"><span class="pre">complex_vector_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_asymm_eigenvalues</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::real_vector_type"><span class="n"><span class="pre">real_vector_type</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dr</span></span>, <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::real_vector_type"><span class="n"><span class="pre">real_vector_type</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">di</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nconv</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typei" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Combines real and imaginary parts of eigenvalues computed by <a class="reference internal" href="../solver_asymmetric.html#classezarpack_1_1arpack__solver_3_01Asymmetric_00_01Backend_01_4"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;</span></a>. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dr</strong> – Real parts of the computed eigenvalues. </p></li>
 <li><p><strong>di</strong> – Imaginary parts of the computed eigenvalues. </p></li>
 <li><p><strong>nconv</strong> – Number of the converged eigenvalues. </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Complex vector of eigenvalues. </p>
 </dd>
 </dl>
@@ -489,10 +490,10 @@
 <span id="_CPPv3I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typeRR1Aii"></span><span id="_CPPv2I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_asymm_eigenvaluesERK16real_vector_typeRK16real_vector_typeRR1Aii"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">A</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1a4c441a3cd60192f5195436928dfb55f8"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE19complex_vector_typeE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::complex_vector_type"><span class="n"><span class="pre">complex_vector_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_asymm_eigenvalues</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::real_vector_type"><span class="n"><span class="pre">real_vector_type</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">z</span></span>, <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::real_vector_type"><span class="n"><span class="pre">real_vector_type</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">di</span></span>, <a class="reference internal" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_asymm_eigenvaluesE19complex_vector_typeRK16real_vector_typeRK16real_vector_typeRR1Aii" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::make_asymm_eigenvalues::A"><span class="n"><span class="pre">A</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">a</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">N</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nconv</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8ezarpack14storage_traitsI17armadillo_storageE22make_asymm_eigenvaluesE19complex_vector_typeRK16real_vector_typeRK16real_vector_typeRR1Aii" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Given a linear operator <span class="math notranslate nohighlight">\( \hat A \)</span>, computes <code class="docutils literal notranslate"><span class="pre">nconv</span></code> eigenvalues from Ritz vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> as Rayleigh quotients <span class="math notranslate nohighlight">\( \frac{\mathbf{x}^\dagger \hat A \mathbf{x}} {\mathbf{x}^\dagger \hat M \mathbf{x}} \)</span>. This function is called by <a class="reference internal" href="../solver_asymmetric.html#classezarpack_1_1arpack__solver_3_01Asymmetric_00_01Backend_01_4_1a04fea372636fbf4ef9a179c92b030fd5"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;::eigenvalues(A &amp;&amp;) const</span></a>. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>A</strong> – Type of the callable object representing the linear operator <span class="math notranslate nohighlight">\( \hat A \)</span>. </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>z</strong> – Holds components of the Ritz vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> as a sequence of <code class="docutils literal notranslate"><span class="pre">nconv</span></code> length-<code class="docutils literal notranslate"><span class="pre">N</span></code> chunks. Meaning of each chunk depends on the corresponding component of <code class="docutils literal notranslate"><span class="pre">di</span></code>, see below. </p></li>
 <li><p><strong>di</strong> – If <code class="docutils literal notranslate"><span class="pre">di[i]</span></code> is zero, then the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th chunk of <code class="docutils literal notranslate"><span class="pre">z</span></code> contains a real Ritz vector. Otherwise, <code class="docutils literal notranslate"><span class="pre">di[i]</span> <span class="pre">=</span> <span class="pre">-di[i+1]</span> <span class="pre">!=</span> <span class="pre">0</span></code>, in which case the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th and <code class="docutils literal notranslate"><span class="pre">(i+1)</span></code>-th chunks of <code class="docutils literal notranslate"><span class="pre">z</span></code> are real and imaginary parts of a complex Ritz vector respectively. Every real Ritz vector corresponds to one real eigenvalue, while every complex vector gives rise to a complex conjugate pair of eigenvalues. </p></li>
@@ -501,7 +502,7 @@
 <li><p><strong>nconv</strong> – Number of the converged Ritz vectors. </p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Complex vector of eigenvalues. </p>
 </dd>
 </dl>
@@ -512,7 +513,7 @@
 <span id="_CPPv3N8ezarpack14storage_traitsI17armadillo_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii"></span><span id="_CPPv2N8ezarpack14storage_traitsI17armadillo_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii"></span><span id="ezarpack::storage_traits:armadillo_storage:::make_asymm_eigenvectors__real_vector_typeCR.real_vector_typeCR.i.i"></span><span class="target" id="structezarpack_1_1storage__traits_3_01armadillo__storage_01_4_1aee898354a334e4aff59d7fe9cdd2f5c4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE19complex_matrix_typeE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::complex_matrix_type"><span class="n"><span class="pre">complex_matrix_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_asymm_eigenvectors</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::real_vector_type"><span class="n"><span class="pre">real_vector_type</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">z</span></span>, <a class="reference internal" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE16real_vector_typeE" title="ezarpack::storage_traits&lt;armadillo_storage&gt;::real_vector_type"><span class="n"><span class="pre">real_vector_type</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">di</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">N</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nconv</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack14storage_traitsI17armadillo_storageE23make_asymm_eigenvectorsERK16real_vector_typeRK16real_vector_typeii" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Extracts <code class="docutils literal notranslate"><span class="pre">nconv</span></code> complex Ritz vectors from ARPACK-NG’s internal representation. This function is called by <a class="reference internal" href="../solver_asymmetric.html#classezarpack_1_1arpack__solver_3_01Asymmetric_00_01Backend_01_4_1ace70f060ab1de0b3de52d5271aade723"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;::eigenvectors() const</span></a>. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>z</strong> – Holds components of the Ritz vectors <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> as a sequence of <code class="docutils literal notranslate"><span class="pre">nconv</span></code> length-<code class="docutils literal notranslate"><span class="pre">N</span></code> chunks. Meaning of each chunk depends on the corresponding component of <code class="docutils literal notranslate"><span class="pre">di</span></code>, see below. </p></li>
 <li><p><strong>di</strong> – If <code class="docutils literal notranslate"><span class="pre">di[i]</span></code> is zero, then the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th chunk of <code class="docutils literal notranslate"><span class="pre">z</span></code> contains a real Ritz vector. Otherwise, <code class="docutils literal notranslate"><span class="pre">di[i]</span> <span class="pre">=</span> <span class="pre">-di[i+1]</span> <span class="pre">!=</span> <span class="pre">0</span></code>, in which case the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th and <code class="docutils literal notranslate"><span class="pre">(i+1)</span></code>-th chunks of <code class="docutils literal notranslate"><span class="pre">z</span></code> are real and imaginary parts of a complex Ritz vector respectively. Every such pair corresponds to a complex conjugate pair of Ritz vectors, so that the total amount of vectors stored in <code class="docutils literal notranslate"><span class="pre">z</span></code> is exactly <code class="docutils literal notranslate"><span class="pre">nconv</span></code>. </p></li>
@@ -520,7 +521,7 @@
 <li><p><strong>nconv</strong> – Number of the converged Ritz vectors. </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Complex matrix, whose columns are Ritz vectors (eigenvectors). </p>
 </dd>
 </dl>
@@ -564,7 +565,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -589,7 +590,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2022, Igor Krivenko.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.1.
     </div>
   </body>
 </html>

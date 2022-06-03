@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>ezarpack/solver_complex.hpp - general complex eigenproblems &#8212; ezARPACK 0.10 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -44,7 +45,7 @@
           <div class="body" role="main">
             
   <section id="ezarpack-solver-complex-hpp-general-complex-eigenproblems">
-<span id="refsolvercomplex"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_complex.hpp</span></code> - general complex eigenproblems<a class="headerlink" href="#ezarpack-solver-complex-hpp-general-complex-eigenproblems" title="Permalink to this headline">¶</a></h1>
+<span id="refsolvercomplex"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_complex.hpp</span></code> - general complex eigenproblems<a class="headerlink" href="#ezarpack-solver-complex-hpp-general-complex-eigenproblems" title="Permalink to this heading">¶</a></h1>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN8ezarpack13arpack_solverI7Complex7BackendEE">
 <span id="_CPPv3I0EN8ezarpack13arpack_solverI7Complex7BackendEE"></span><span id="_CPPv2I0EN8ezarpack13arpack_solverI7Complex7BackendEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Backend</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">ezarpack</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">arpack_solver</span></span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="solver_base.html#_CPPv4N8ezarpack13operator_kind7ComplexE" title="ezarpack::Complex"><span class="n"><span class="pre">Complex</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN8ezarpack13arpack_solverI7Complex7BackendEE" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::Backend"><span class="n"><span class="pre">Backend</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN8ezarpack13arpack_solverI7Complex7BackendEE" title="Permalink to this definition">¶</a><br /></dt>
@@ -55,7 +56,7 @@
 <p>If both <span class="math notranslate nohighlight">\( \hat O \)</span> and <span class="math notranslate nohighlight">\( \hat B\)</span> are real and symmetric, then <a class="reference internal" href="solver_symmetric.html#classezarpack_1_1arpack__solver_3_01Symmetric_00_01Backend_01_4"><span class="std std-ref">arpack_solver&lt;Symmetric, Backend&gt;</span></a> should be used instead.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Backend</strong> – Tag type specifying what <em>storage backend</em> (matrix/vector algebra library) must be used by <code class="docutils literal notranslate"><a class="reference internal" href="solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code>. The storage backend determines types of internally stored data arrays and input/output view objects returned by methods of the class. </p>
 </dd>
 </dl>
@@ -147,7 +148,7 @@
 <span id="_CPPv3N8ezarpack13arpack_solverI7Complex7BackendE13arpack_solverEj"></span><span id="_CPPv2N8ezarpack13arpack_solverI7Complex7BackendE13arpack_solverEj"></span><span id="ezarpack::arpack_solver:Complex.Backend:::arpack_solver__unsigned-i"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1a400945643724f45507c461a403e805c7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">arpack_solver</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">N</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE13arpack_solverEj" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Constructs a solver object and allocates internal data buffers to be used by ARPACK-NG. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>N</strong> – Dimension of the eigenproblem. </p>
 </dd>
 </dl>
@@ -158,7 +159,7 @@
 <span id="_CPPv3I00EN8ezarpack13arpack_solverI7Complex7BackendEclERR1ARK8params_t7ShiftsF"></span><span id="_CPPv2I00EN8ezarpack13arpack_solverI7Complex7BackendEclERR1ARK8params_t7ShiftsF"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">A</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ShiftsF</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE14exact_shifts_fE" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::exact_shifts_f"><span class="n"><span class="pre">exact_shifts_f</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1a27be6eb8d9d72327a01fec2bde1bdfe2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN8ezarpack13arpack_solverI7Complex7BackendEclEvRR1ARK8params_t7ShiftsF" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::operator()::A"><span class="n"><span class="pre">A</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">a</span></span>, <a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_tE" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::params_t"><span class="n"><span class="pre">params_t</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">params</span></span>, <a class="reference internal" href="#_CPPv4I00EN8ezarpack13arpack_solverI7Complex7BackendEclEvRR1ARK8params_t7ShiftsF" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::operator()::ShiftsF"><span class="n"><span class="pre">ShiftsF</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">shifts_f</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN8ezarpack13arpack_solverI7Complex7BackendEclEvRR1ARK8params_t7ShiftsF" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Solve a standard eigenproblem <span class="math notranslate nohighlight">\( \hat A\mathbf{x} = \lambda\mathbf{x}\)</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>a</strong> – A callable object representing the linear operator <span class="math notranslate nohighlight">\( \hat A \)</span>. It must take two arguments, <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="p">(</span><span class="n">vector_const_view_t</span> <span class="ow">in</span><span class="p">,</span> <span class="n">vector_view_t</span> <span class="n">out</span><span class="p">)</span>
 </pre></div>
@@ -174,7 +175,7 @@
 <li><p><strong>shifts_f</strong> – Functor that implements a shift selection strategy for the implicit restarts. For the expected signature of the functor, see <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1exact__shifts__f_1ac8793c919a2e6bc05cda332a9f1486e8"><span class="std std-ref">exact_shifts_f::operator()()</span></a>. When this argument is omitted, the default <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1exact__shifts__f"><span class="std std-ref">“Exact Shift Strategy”</span></a> is used, which is the right choice in most cases.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Throws</dt>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">ezarpack</span><span class="p">::</span><a class="reference internal" href="solver_base.html#_CPPv4N8ezarpack16ncv_insufficientE" title="ezarpack::ncv_insufficient"><span class="n">ncv_insufficient</span></a></span></span> – No shifts could be applied during a cycle of the IRA iteration. </p></li>
 <li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">ezarpack</span><span class="p">::</span><a class="reference internal" href="solver_base.html#_CPPv4N8ezarpack15maxiter_reachedE" title="ezarpack::maxiter_reached"><span class="n">maxiter_reached</span></a></span></span> – Maximum number of IRA iterations has been reached. All possible eigenvalues of <span class="math notranslate nohighlight">\( \hat O \)</span> have been found. </p></li>
@@ -190,7 +191,7 @@
 <dd><p>Solve a generalized eigenproblem <span class="math notranslate nohighlight">\( \hat A\mathbf{x} = \lambda\hat M\mathbf{x}\)</span>.</p>
 <p>Operators <span class="math notranslate nohighlight">\( \hat O \)</span> and <span class="math notranslate nohighlight">\( \hat B \)</span> mentioned below are related to <span class="math notranslate nohighlight">\( \hat A \)</span> and <span class="math notranslate nohighlight">\( \hat M \)</span> via a <a class="reference internal" href="#classezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1af94ac83a841d426ab35e7f9fd172d663"><span class="std std-ref">Mode</span></a> -dependent spectral transformation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>op</strong> – A callable object representing the linear operator <span class="math notranslate nohighlight">\( \hat O \)</span>. It must take two arguments, <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">op</span><span class="p">(</span><span class="n">vector_const_view_t</span> <span class="ow">in</span><span class="p">,</span> <span class="n">vector_view_t</span> <span class="n">out</span><span class="p">)</span>
 </pre></div>
@@ -211,7 +212,7 @@
 <li><p><strong>shifts_f</strong> – Functor that implements a shift selection strategy for the implicit restarts. For the expected signature of the functor, see <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1exact__shifts__f_1ac8793c919a2e6bc05cda332a9f1486e8"><span class="std std-ref">exact_shifts_f::operator()()</span></a>. When this argument is omitted, the default <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1exact__shifts__f"><span class="std std-ref">“Exact Shift Strategy”</span></a> is used, which is the right choice in most cases.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Throws</dt>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">ezarpack</span><span class="p">::</span><a class="reference internal" href="solver_base.html#_CPPv4N8ezarpack16ncv_insufficientE" title="ezarpack::ncv_insufficient"><span class="n">ncv_insufficient</span></a></span></span> – No shifts could be applied during a cycle of the IRA iteration. </p></li>
 <li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">ezarpack</span><span class="p">::</span><a class="reference internal" href="solver_base.html#_CPPv4N8ezarpack15maxiter_reachedE" title="ezarpack::maxiter_reached"><span class="n">maxiter_reached</span></a></span></span> – Maximum number of IRA iterations has been reached. All possible eigenvalues of <span class="math notranslate nohighlight">\( \hat O \)</span> have been found. </p></li>
@@ -238,10 +239,10 @@
 <span id="_CPPv3N8ezarpack13arpack_solverI7Complex7BackendE16workspace_vectorEi"></span><span id="_CPPv2N8ezarpack13arpack_solverI7Complex7BackendE16workspace_vectorEi"></span><span id="ezarpack::arpack_solver:Complex.Backend:::workspace_vector__i"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1a9ed4a0df254f6e8b088d819c0a319f43"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE21complex_vector_view_tE" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::complex_vector_view_t"><span class="n"><span class="pre">complex_vector_view_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">workspace_vector</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE16workspace_vectorEi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns a view of a vector within ARPACK-NG’s workspace array.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n</strong> – Index of the workspace vector. Valid values are 0, 1 and 2. </p>
 </dd>
-<dt class="field-even">Throws</dt>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
 <dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">runtime_error</span></span></span> – Invalid index value. </p>
 </dd>
 </dl>
@@ -268,7 +269,7 @@
 <span id="_CPPv3NK8ezarpack13arpack_solverI7Complex7BackendE12eigenvectorsEv"></span><span id="_CPPv2NK8ezarpack13arpack_solverI7Complex7BackendE12eigenvectorsEv"></span><span id="ezarpack::arpack_solver:Complex.Backend:::eigenvectorsC"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1abf01a0a5eb307d6823bfc629a38f69b6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE27complex_matrix_const_view_tE" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::complex_matrix_const_view_t"><span class="n"><span class="pre">complex_matrix_const_view_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">eigenvectors</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK8ezarpack13arpack_solverI7Complex7BackendE12eigenvectorsEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns a constant view of a matrix, whose <a class="reference internal" href="#classezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1a1ac06e8ada8b84ee293a40dbeb806614"><span class="std std-ref">nconv()</span></a> columns are converged Ritz vectors (eigenvectors).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Throws</dt>
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">runtime_error</span></span></span> – Ritz vectors have not been computed in the last IRAM run. </p>
 </dd>
 </dl>
@@ -279,7 +280,7 @@
 <span id="_CPPv3NK8ezarpack13arpack_solverI7Complex7BackendE13schur_vectorsEv"></span><span id="_CPPv2NK8ezarpack13arpack_solverI7Complex7BackendE13schur_vectorsEv"></span><span id="ezarpack::arpack_solver:Complex.Backend:::schur_vectorsC"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1ae8f9dfb5a83862a03fa884709c1c2533"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE27complex_matrix_const_view_tE" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::complex_matrix_const_view_t"><span class="n"><span class="pre">complex_matrix_const_view_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">schur_vectors</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK8ezarpack13arpack_solverI7Complex7BackendE13schur_vectorsEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns a view of a matrix, whose <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1params__t_1a653f48f185ffc9e6012f3476935e9d24"><span class="std std-ref">params_t::ncv</span></a> columns are Schur basis vectors. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Throws</dt>
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">runtime_error</span></span></span> – Schur vectors have not been computed in the last IRAM run. </p>
 </dd>
 </dl>
@@ -326,7 +327,7 @@
 <span id="_CPPv3N8ezarpack13arpack_solverI7Complex7BackendE14exact_shifts_fclE27complex_vector_const_view_t27complex_vector_const_view_t21complex_vector_view_t"></span><span id="_CPPv2N8ezarpack13arpack_solverI7Complex7BackendE14exact_shifts_fclE27complex_vector_const_view_t27complex_vector_const_view_t21complex_vector_view_t"></span><span id="ezarpack::arpack_solver:Complex.Backend:::exact_shifts_f::call-operator__complex_vector_const_view_t.complex_vector_const_view_t.complex_vector_view_t"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1exact__shifts__f_1ac8793c919a2e6bc05cda332a9f1486e8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE27complex_vector_const_view_tE" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::complex_vector_const_view_t"><span class="n"><span class="pre">complex_vector_const_view_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ritz_values</span></span>, <a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE27complex_vector_const_view_tE" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::complex_vector_const_view_t"><span class="n"><span class="pre">complex_vector_const_view_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ritz_bounds</span></span>, <a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE21complex_vector_view_tE" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::complex_vector_view_t"><span class="n"><span class="pre">complex_vector_view_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">shifts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE14exact_shifts_fclE27complex_vector_const_view_t27complex_vector_const_view_t21complex_vector_view_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Trivial call operator. The actual shifts will be internally computed by ARPACK-NG.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ritz_values</strong> – <strong>[in]</strong> View of a complex vector with current <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1params__t_1a653f48f185ffc9e6012f3476935e9d24"><span class="std std-ref">params_t::ncv</span></a> Ritz values. </p></li>
 <li><p><strong>ritz_bounds</strong> – <strong>[in]</strong> View of a complex vector with current estimated error bounds of the Ritz values. </p></li>
@@ -546,7 +547,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -571,7 +572,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2022, Igor Krivenko.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.1.
     </div>
   </body>
 </html>
