@@ -10,21 +10,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  ******************************************************************************/
-/// @file ezarpack/solver_base.hpp
-/// @brief Definition of ezARPACK's primary class template `arpack_solver`.
+/// @file ezarpack/mpi/solver_base.hpp
+/// @brief Definition of ezARPACK's primary class template `mpi::arpack_solver`.
 #pragma once
 
 #include <array>
 #include <limits.h>
 #include <utility>
 
-#include "arpack.hpp"
+#include "parpack.hpp"
 
-#include "storages/base.hpp"
+#include "../storages/base.hpp"
 
 namespace ezarpack {
+namespace mpi {
 
-/// @brief Main class template of ezARPACK's API.
+/// @brief Main class template of ezARPACK's API (MPI version).
 ///
 /// Instances of this class are used to solve all kinds of eigenproblems
 /// supported by ezARPACK.
@@ -35,4 +36,5 @@ namespace ezarpack {
 /// objects exposed by methods of the class.
 template<operator_kind OpKind, typename Backend> class arpack_solver {};
 
+} // namespace mpi
 } // namespace ezarpack

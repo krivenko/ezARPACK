@@ -15,28 +15,9 @@
 /// and their C++ wrappers.
 #pragma once
 
-#include <complex>
+#include "common.hpp"
 
 namespace ezarpack {
-
-/*! The double precision complex type used in ARPACK-NG calls. */
-using dcomplex = std::complex<double>;
-
-/// The ARPACK-NG `*aupd_()` procedures set the output argument `IDO` to one of
-/// these values to signal the state of the Reverse Communication Interface
-/// (RCI).
-enum rci_flag : int {
-  Init = 0,         /**< First call of the RCI.                             */
-  ApplyOpInit = -1, /**< Compute @f$ \mathbf{y} = \hat O \mathbf{x} @f$
-                        (force the starting vector into the range of
-                        @f$ \hat O @f$).                                    */
-  ApplyOp = 1,      /**< Compute @f$ \mathbf{y} = \hat O \mathbf{x} @f$.    */
-  ApplyB = 2,       /**< Compute @f$ \mathbf{y} = \hat B \mathbf{x} @f$.    */
-  Shifts = 3,       /**< Compute and return the shifts for the Implicitly
-                         Restarted Lanczos/Arnoldi Method.                  */
-  Done = 99         /**< Done with the iterations.                          */
-};
-
 namespace f77 {
 
 extern "C" {
