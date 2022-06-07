@@ -142,6 +142,11 @@ if(Documentation)
   add_subdirectory(doc)
 endif(Documentation)
 
+# Detect an MPI implementation for MPI-tests and/or examples
+if(Tests OR Examples)
+  find_package(MPI)
+endif()
+
 # Build unit tests
 if(arpack-ng_FOUND AND Tests)
   enable_testing()

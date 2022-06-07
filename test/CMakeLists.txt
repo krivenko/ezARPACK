@@ -12,6 +12,16 @@
 add_library(catch2 STATIC catch2/catch2-main.cpp)
 set_property(TARGET catch2 PROPERTY CXX_STANDARD 11)
 
+if(MPI_FOUND)
+  macro(add_mpi_test name)
+    foreach(NP ${ARGN})
+      add_test(NAME "${name}.np${NP}"
+               COMMAND ${MPIEXEC} ${MPIEXEC_NUMPROC_FLAG} ${NP}
+                       ${MPIEXEC_PREFLAGS} ${name} ${MPIEXEC_POSTFLAGS})
+    endforeach()
+  endmacro()
+endif()
+
 # Tests of raw memory storage backend
 add_subdirectory(raw)
 
