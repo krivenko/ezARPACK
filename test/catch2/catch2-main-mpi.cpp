@@ -11,4 +11,15 @@
  *
  ******************************************************************************/
 
-int main() { return 1; }
+#define CATCH_CONFIG_RUNNER
+#include "catch.hpp"
+
+#include <mpi.h>
+
+// A custom main() that takes care of MPI initialization/finalization
+int main(int argc, char* argv[]) {
+  MPI_Init(&argc, &argv);
+  int result = Catch::Session().run(argc, argv);
+  MPI_Finalize();
+  return result;
+}

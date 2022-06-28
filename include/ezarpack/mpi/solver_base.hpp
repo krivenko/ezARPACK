@@ -28,7 +28,7 @@ namespace mpi {
 /// @brief Main class template of ezARPACK's API (MPI version).
 ///
 /// Instances of this class are used to solve all kinds of eigenproblems
-/// supported by ezARPACK.
+/// supported by ezARPACK in MPI parallelized mode.
 /// @tparam OpKind Kind of eigenproblem to be solved.
 /// @tparam Backend Tag type specifying what *storage backend* (matrix/vector
 /// algebra library) must be used by `arpack_solver`. The storage backend

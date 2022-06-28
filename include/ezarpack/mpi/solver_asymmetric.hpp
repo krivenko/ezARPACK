@@ -20,6 +20,6 @@
 
 namespace ezarpack {
 namespace mpi {
-  // TODO
+// TODO
 } // namespace mpi
 } // namespace ezarpack

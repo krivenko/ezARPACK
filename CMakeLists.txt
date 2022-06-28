@@ -9,7 +9,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 # Start configuration
-cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.10.0 FATAL_ERROR)
 
 # Project name and version
 set(EZARPACK_VERSION 1.0)
@@ -33,6 +33,15 @@ option(Skip_arpack-ng "Skip detection of ARPACK-NG" OFF)
 option(Tests "Build unit tests" ON)
 option(Examples "Build examples" ON)
 option(Documentation "Build documentation" OFF)
+
+# Detect an MPI implementation for MPI-tests and/or examples
+if(Tests OR Examples)
+  find_package(MPI 3.0)
+  if(MPI_FOUND)
+    message(STATUS "MPI_CXX_INCLUDE_PATH: ${MPI_CXX_INCLUDE_PATH}")
+    message(STATUS "MPI_CXX_LIBRARIES: ${MPI_CXX_LIBRARIES}")
+  endif(MPI_FOUND)
+endif()
 
 # Detect ARPACK-NG as an optional dependency
 set(arpack-ng_REQUIRED_VERSION 3.6.0)
@@ -60,10 +69,12 @@ else(Skip_arpack-ng)
     find_package(LAPACK)
     if(LAPACK_FOUND)
       if(arpack_ng_LIBRARIES) # ARPACK-NG prior to version 3.8.0
-        message(STATUS "  arpack_ng_LIBRARIES: ${arpack_ng_LIBRARIES}")
         set(arpack_ng_LIBRARIES ${arpack_ng_LIBRARIES} ${LAPACK_LIBRARIES})
       else(arpack_ng_LIBRARIES) # ARPACK-NG 3.8.0 and newer
         set(arpack_ng_LIBRARIES ARPACK::ARPACK ${LAPACK_LIBRARIES})
+        if(MPI_FOUND)
+          set(arpack_ng_LIBRARIES ${arpack_ng_LIBRARIES} PARPACK::PARPACK)
+        endif(MPI_FOUND)
       endif(arpack_ng_LIBRARIES)
     else(LAPACK_FOUND)
       message(STATUS "LAPACK not found. "
@@ -74,6 +85,10 @@ else(Skip_arpack-ng)
   else(arpack-ng_FOUND)
     message(STATUS "ARPACK-NG not found. "
                    "Disabling compilation of examples and unit tests.")
+  endif(arpack-ng_FOUND)
+
+  if(arpack-ng_FOUND)
+    message(STATUS "arpack_ng_LIBRARIES: ${arpack_ng_LIBRARIES}")
   endif(arpack-ng_FOUND)
 endif(Skip_arpack-ng)
 
@@ -141,11 +156,6 @@ if(Documentation)
 
   add_subdirectory(doc)
 endif(Documentation)
-
-# Detect an MPI implementation for MPI-tests and/or examples
-if(Tests OR Examples)
-  find_package(MPI)
-endif()
 
 # Build unit tests
 if(arpack-ng_FOUND AND Tests)

@@ -63,10 +63,8 @@ endif(Boost_FOUND)
 if(TRIQS_FOUND)
   set(t "triqs.example")
   add_executable(${t} triqs.example.cpp)
-  # FIXME: Setting CXX_STANDARD to 17 would require CMake >= 3.8,
-  # which is too new to ask for.
-  target_compile_options(${t} PRIVATE "-std=c++17")
   target_link_libraries(${t} ezarpack triqs ${arpack_ng_LIBRARIES})
+  set_property(TARGET ${t} PROPERTY CXX_STANDARD 17)
   list(APPEND EXAMPLES ${t})
 endif(TRIQS_FOUND)
 

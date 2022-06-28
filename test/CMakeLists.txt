@@ -13,14 +13,22 @@ add_library(catch2 STATIC catch2/catch2-main.cpp)
 set_property(TARGET catch2 PROPERTY CXX_STANDARD 11)
 
 if(MPI_FOUND)
+  # Build Catch2 object file with a custom main() that initializes and
+  # finalizes MPI.
+  add_library(catch2_mpi STATIC catch2/catch2-main-mpi.cpp)
+  set_property(TARGET catch2_mpi PROPERTY CXX_STANDARD 11)
+  target_include_directories(catch2_mpi PUBLIC ${MPI_CXX_INCLUDE_PATH})
+  target_link_libraries(catch2_mpi PUBLIC ${MPI_CXX_LIBRARIES})
+
+  # Add an MPI-enabled test
   macro(add_mpi_test name)
     foreach(NP ${ARGN})
       add_test(NAME "${name}.np${NP}"
                COMMAND ${MPIEXEC} ${MPIEXEC_NUMPROC_FLAG} ${NP}
                        ${MPIEXEC_PREFLAGS} ${name} ${MPIEXEC_POSTFLAGS})
-    endforeach()
-  endmacro()
-endif()
+    endforeach(NP ${ARGN})
+  endmacro(add_mpi_test name)
+endif(MPI_FOUND)
 
 # Tests of raw memory storage backend
 add_subdirectory(raw)

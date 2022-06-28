@@ -105,19 +105,20 @@ void pznaupd_(const MPI_Fint&, // COMM
 /// @param comm MPI communicator.
 /// @param ido Reverse communication flag.
 /// @param bmat Specifies the type of the semi-inner product matrix `B`.
-/// @param n Dimension of the eigenproblem.
+/// @param n Dimension of the MPI rank-local vector block.
 /// @param which Specifies which of the Ritz values of `OP` to compute.
 /// @param nev Number of eigenvalues of `OP` to be computed.
 /// @param tol Stopping criterion: relative tolerance of the Ritz value.
-/// @param resid Initial residual vector.
+/// @param resid MPI rank-local block of the initial residual vector.
 /// @param ncv How many Lanczos/Arnoldi vectors to generate at each iteration.
-/// @param v Contains the final set of Lanczos/Arnoldi basis vectors.
+/// @param v Contains the final set of Lanczos/Arnoldi basis vectors
+/// (MPI rank-local portion).
 /// @param ldv Leading dimension of `v` as declared in the calling program.
 /// @param iparam Array of input/output parameter flags.
 /// @param ipntr Pointer to mark the starting locations in the `workd` and
 /// `workl` arrays for matrices/vectors used by the Lanczos/Arnoldi iteration.
 /// @param workd Array to be used in the basic Lanczos/Arnoldi iteration for
-/// reverse communication.
+/// reverse communication (MPI rank-local portion).
 /// @param workl Work array.
 /// @param lworkl Dimension of `workl`.
 /// @param info Initial residual vector type (input) and error codes (output).
@@ -152,19 +153,20 @@ inline void paupd(const MPI_Comm& comm,
 /// @param comm MPI communicator.
 /// @param ido Reverse communication flag.
 /// @param bmat Specifies the type of the semi-inner product matrix `B`.
-/// @param n Dimension of the eigenproblem.
+/// @param n Dimension of the MPI rank-local vector block.
 /// @param which Specifies which of the Ritz values of `OP` to compute.
 /// @param nev Number of eigenvalues of `OP` to be computed.
 /// @param tol Stopping criterion: relative tolerance of the Ritz value.
-/// @param resid Initial residual vector.
+/// @param resid MPI rank-local block of the initial residual vector.
 /// @param ncv How many Arnoldi vectors to generate at each iteration.
-/// @param v Contains the final set of Arnoldi basis vectors.
+/// @param v Contains the final set of Arnoldi basis vectors (MPI rank-local
+/// portion).
 /// @param ldv Leading dimension of `v` as declared in the calling program.
 /// @param iparam Array of input/output parameter flags.
 /// @param ipntr Pointer to mark the starting locations in the `workd` and
 /// `workl` arrays for matrices/vectors used by the Arnoldi iteration.
 /// @param workd Array to be used in the basic Arnoldi iteration for
-/// reverse communication.
+/// reverse communication (MPI rank-local portion).
 /// @param workl Work array.
 /// @param lworkl Dimension of `workl`.
 /// @param rwork Work array of dimension `ncv`.
@@ -301,23 +303,25 @@ void pzneupd_(const MPI_Fint&, // COMM
 /// @param howmny Specifies how many Ritz vectors are wanted.
 /// @param select Selection of Ritz vectors to be computed.
 /// @param d Approximate Ritz values (output).
-/// @param z Approximate `B`-orthonormal Ritz vectors (output).
+/// @param z Approximate `B`-orthonormal Ritz vectors (output, MPI rank-local
+/// portion).
 /// @param ldz The leading dimension of the array `Z`.
 /// @param sigma Shift for spectral transformations.
 /// @param bmat Specifies the type of the semi-inner product matrix `B`.
-/// @param n Dimension of the eigenproblem.
+/// @param n Dimension of the MPI rank-local vector block.
 /// @param which Specifies which of the Ritz values of `OP` to compute.
 /// @param nev Number of eigenvalues of `OP` to be computed.
 /// @param tol Stopping criterion: relative tolerance of the Ritz value.
-/// @param resid Initial residual vector.
+/// @param resid MPI rank-local block of the initial residual vector.
 /// @param ncv How many Lanczos vectors to generate at each iteration.
-/// @param v Contains the final set of Lanczos basis vectors.
+/// @param v Contains the final set of Lanczos basis vectors (MPI rank-local
+/// portion).
 /// @param ldv Leading dimension of `v` as declared in the calling program.
 /// @param iparam Array of input/output parameter flags.
 /// @param ipntr Pointer to mark the starting locations in the `workd` and
 /// `workl` arrays for matrices/vectors used by the Lanczos iteration.
 /// @param workd Array to be used in the basic Lanczos iteration for
-/// reverse communication.
+/// reverse communication (MPI rank-local portion).
 /// @param workl Work array.
 /// @param lworkl Dimension of `workl`.
 /// @param info Initial residual vector type (input) and error codes (output).
@@ -357,25 +361,27 @@ inline void peupd(const MPI_Comm& comm,
 /// @param select Selection of Ritz vectors to be computed.
 /// @param dr Real parts of approximate Ritz values (output).
 /// @param di Imaginary parts of approximate Ritz values (output).
-/// @param z Approximate `B`-orthonormal Ritz vectors (output).
+/// @param z Approximate `B`-orthonormal Ritz vectors (output, MPI rank-local
+/// portion).
 /// @param ldz The leading dimension of the array `Z`.
 /// @param sigmar Real part of the shift for spectral transformations.
 /// @param sigmai Imaginary part of the shift for spectral transformations.
 /// @param workev Work array.
 /// @param bmat Specifies the type of the semi-inner product matrix `B`.
-/// @param n Dimension of the eigenproblem.
+/// @param n Dimension of the MPI rank-local vector block.
 /// @param which Specifies which of the Ritz values of `OP` to compute.
 /// @param nev Number of eigenvalues of `OP` to be computed.
 /// @param tol Stopping criterion: relative tolerance of the Ritz value.
-/// @param resid Initial residual vector.
+/// @param resid MPI rank-local block of the initial residual vector.
 /// @param ncv How many Arnoldi vectors to generate at each iteration.
-/// @param v Contains the final set of Arnoldi basis vectors.
+/// @param v Contains the final set of Arnoldi basis vectors (MPI rank-local
+/// portion).
 /// @param ldv Leading dimension of `v` as declared in the calling program.
 /// @param iparam Array of input/output parameter flags.
 /// @param ipntr Pointer to mark the starting locations in the `workd` and
 /// `workl` arrays for matrices/vectors used by the Arnoldi iteration.
 /// @param workd Array to be used in the basic Arnoldi iteration for
-/// reverse communication.
+/// reverse communication (MPI rank-local portion).
 /// @param workl Work array.
 /// @param lworkl Dimension of `workl`.
 /// @param info Initial residual vector type (input) and error codes (output).
@@ -417,24 +423,26 @@ inline void peupd(const MPI_Comm& comm,
 /// @param howmny Specifies the form of the basis for the invariant subspace.
 /// @param select Selection of Ritz vectors to be computed.
 /// @param d Approximate Ritz values (output).
-/// @param z Approximate `B`-orthonormal Ritz vectors (output).
+/// @param z Approximate `B`-orthonormal Ritz vectors (output, MPI rank-local
+/// portion).
 /// @param ldz The leading dimension of the array `Z`.
 /// @param sigma Shift for spectral transformations.
 /// @param workev Work array.
 /// @param bmat Specifies the type of the semi-inner product matrix `B`.
-/// @param n Dimension of the eigenproblem.
+/// @param n Dimension of the MPI rank-local vector block.
 /// @param which Specifies which of the Ritz values of `OP` to compute.
 /// @param nev Number of eigenvalues of `OP` to be computed.
 /// @param tol Stopping criterion: relative tolerance of the Ritz value.
-/// @param resid Initial residual vector.
+/// @param resid MPI rank-local block of the initial residual vector.
 /// @param ncv How many Arnoldi vectors to generate at each iteration.
-/// @param v Contains the final set of Arnoldi basis vectors.
+/// @param v Contains the final set of Arnoldi basis vectors (MPI rank-local
+/// portion).
 /// @param ldv Leading dimension of `v` as declared in the calling program.
 /// @param iparam Array of input/output parameter flags.
 /// @param ipntr Pointer to mark the starting locations in the `workd` and
 /// `workl` arrays for matrices/vectors used by the Arnoldi iteration.
 /// @param workd Array to be used in the basic Arnoldi iteration for
-/// reverse communication.
+/// reverse communication (MPI rank-local portion).
 /// @param workl Work array.
 /// @param lworkl Dimension of `workl`.
 /// @param rwork Work array of dimension `ncv`.
