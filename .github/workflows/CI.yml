@@ -16,11 +16,10 @@ jobs:
 
     strategy:
       matrix:
-        include:
-          - {os: ubuntu-20.04, cc: gcc-10, cxx: g++-10}
-          - {os: ubuntu-20.04, cc: clang-12, cxx: clang++-12}
+        compiler: [{cc: gcc-10, cxx: g++-10}, {cc: clang-12, cxx: clang++-12}]
+        arpackng: [3.6.0, 3.7.0, 3.8.0, master]
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v2
@@ -51,14 +50,16 @@ jobs:
         libhdf5-serial-dev
 
     - name: Install dependencies needed to build docs
-      if: startsWith(matrix.cxx, 'clang')
+      if: startsWith(matrix.compiler.cxx, 'clang') &&
+          matrix.arpackng == 'master'
       run: |
         sudo apt-get install doxygen libjs-mathjax
         pip3 install -U sphinx breathe myst-parser
 
     - name: Build and install ARPACK-NG
       run: |
-        git clone https://github.com/opencollab/arpack-ng.git arpack-ng
+        git clone --branch ${{ matrix.arpackng }}                              \
+                  https://github.com/opencollab/arpack-ng.git arpack-ng
         pushd arpack-ng
         cmake . -DCMAKE_BUILD_TYPE=Release                                     \
                 -DCMAKE_INSTALL_PREFIX=$HOME/arpack-ng.installed               \
@@ -79,8 +80,8 @@ jobs:
 
     - name: Build and install TRIQS
       env:
-        CC: ${{ matrix.cc }}
-        CXX: ${{ matrix.cxx }}
+        CC: ${{ matrix.compiler.cc }}
+        CXX: ${{ matrix.compiler.cxx }}
       run: |
         git clone https://github.com/TRIQS/triqs.git triqs --branch 3.0.x
         mkdir triqs.build && pushd triqs.build
@@ -95,8 +96,8 @@ jobs:
 
     - name: Build and install nda
       env:
-        CC: ${{ matrix.cc }}
-        CXX: ${{ matrix.cxx }}
+        CC: ${{ matrix.compiler.cc }}
+        CXX: ${{ matrix.compiler.cxx }}
       run: |
         git clone https://github.com/TRIQS/nda.git nda --branch 1.1.x
         mkdir nda.build && pushd nda.build
@@ -134,10 +135,11 @@ jobs:
 
     - name: Build and test ezARPACK
       env:
-        CC: ${{ matrix.cc }}
-        CXX: ${{ matrix.cxx }}
+        CC: ${{ matrix.compiler.cc }}
+        CXX: ${{ matrix.compiler.cxx }}
+        ARPACKNG_VERSION: ${{ matrix.arpackng }}
       run: |
-        if [[ "${CXX}" == clang* ]]; then
+        if [[ "${CXX}" == clang* && "${ARPACKNG_VERSION}" == master ]]; then
           CMAKE_CXX_FLAGS="-Wno-ignored-attributes"
           DOCS_CMAKE_ARGS="-DDocumentation=ON \
                            -DMathJax_ROOT=/usr/share/javascript/mathjax"
@@ -165,7 +167,8 @@ jobs:
         popd
 
     - name: Prepare documentation for deployment
-      if: startsWith(matrix.cxx, 'clang')
+      if: startsWith(matrix.compiler.cxx, 'clang') &&
+          matrix.arpackng == 'master'
       run: |
         pushd ezARPACK.installed/share/doc/ezARPACK/sphinx
         find . -name "*.html" -type f -exec sed -i                             \
@@ -174,7 +177,9 @@ jobs:
         popd
 
     - name: Deploy documentation
-      if: github.ref == 'refs/heads/master' && startsWith(matrix.cxx, 'clang')
+      if: github.ref == 'refs/heads/master' &&
+          startsWith(matrix.compiler.cxx, 'clang') &&
+          matrix.arpackng == 'master'
       uses: JamesIves/github-pages-deploy-action@4.1.0
       with:
         branch: gh-pages
