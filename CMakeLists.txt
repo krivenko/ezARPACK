@@ -41,6 +41,7 @@ if(Skip_arpack-ng)
   message(STATUS "Skipping detection of ARPACK-NG libraries")
 else(Skip_arpack-ng)
   message(STATUS "Detecting ARPACK-NG libraries")
+
   if((NOT arpack-ng_DIR) AND ARPACK_NG_ROOT)
     find_package(arpack-ng CONFIG ${arpack-ng_REQUIRED_VERSION}
                  NAMES arpackng arpack-ng
@@ -51,21 +52,25 @@ else(Skip_arpack-ng)
     find_package(arpack-ng CONFIG ${arpack-ng_REQUIRED_VERSION}
                  NAMES arpackng arpack-ng)
   endif((NOT arpack-ng_DIR) AND ARPACK_NG_ROOT)
+
   if(arpack-ng_FOUND)
     message(STATUS "Found ARPACK-NG version ${arpack-ng_VERSION}")
-    if(arpack_ng_LIBRARIES) # ARPACK-NG prior to version 3.8.0
-      message(STATUS "  arpack_ng_LIBRARIES: ${arpack_ng_LIBRARIES}")
-    else(arpack_ng_LIBRARIES) # ARPACK-NG 3.8.0 and newer
-      # Link to ARPACK::ARPACK target and to LAPACK
-      find_package(LAPACK)
-      if(LAPACK_FOUND)
+
+    # Find LAPACK
+    find_package(LAPACK)
+    if(LAPACK_FOUND)
+      if(arpack_ng_LIBRARIES) # ARPACK-NG prior to version 3.8.0
+        message(STATUS "  arpack_ng_LIBRARIES: ${arpack_ng_LIBRARIES}")
+        set(arpack_ng_LIBRARIES ${arpack_ng_LIBRARIES} ${LAPACK_LIBRARIES})
+      else(arpack_ng_LIBRARIES) # ARPACK-NG 3.8.0 and newer
         set(arpack_ng_LIBRARIES ARPACK::ARPACK ${LAPACK_LIBRARIES})
-      else(LAPACK_FOUND)
-        unset(arpack-ng_FOUND)
-        message(STATUS "LAPACK not found. "
-                       "Disabling compilation of examples and unit tests.")
-      endif(LAPACK_FOUND)
-    endif(arpack_ng_LIBRARIES)
+      endif(arpack_ng_LIBRARIES)
+    else(LAPACK_FOUND)
+      message(STATUS "LAPACK not found. "
+                     "Disabling compilation of examples and unit tests.")
+      unset(arpack-ng_FOUND)
+    endif(LAPACK_FOUND)
+
   else(arpack-ng_FOUND)
     message(STATUS "ARPACK-NG not found. "
                    "Disabling compilation of examples and unit tests.")
