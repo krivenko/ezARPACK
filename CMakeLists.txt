@@ -36,16 +36,20 @@ option(Documentation "Build documentation" OFF)
 
 # Detect ARPACK-NG as an optional dependency
 set(arpack-ng_REQUIRED_VERSION 3.6.0)
+
 if(Skip_arpack-ng)
   message(STATUS "Skipping detection of ARPACK-NG libraries")
 else(Skip_arpack-ng)
   message(STATUS "Detecting ARPACK-NG libraries")
   if((NOT arpack-ng_DIR) AND ARPACK_NG_ROOT)
     find_package(arpack-ng CONFIG ${arpack-ng_REQUIRED_VERSION}
+                 NAMES arpackng arpack-ng
                  PATHS ${ARPACK_NG_ROOT}/lib/cmake
-                       ${ARPACK_NG_ROOT}/lib/cmake/arpack-ng)
+                       ${ARPACK_NG_ROOT}/lib/cmake/arpack-ng
+                 NO_DEFAULT_PATH)
   else((NOT arpack-ng_DIR) AND ARPACK_NG_ROOT)
-    find_package(arpack-ng CONFIG ${arpack-ng_REQUIRED_VERSION})
+    find_package(arpack-ng CONFIG ${arpack-ng_REQUIRED_VERSION}
+                 NAMES arpackng arpack-ng)
   endif((NOT arpack-ng_DIR) AND ARPACK_NG_ROOT)
   if(arpack-ng_FOUND)
     message(STATUS "Found ARPACK-NG version ${arpack-ng_VERSION}")
