@@ -24,23 +24,14 @@
 #include "ezarpack/arpack_solver.hpp"
 #include "ezarpack/storages/raw.hpp"
 
+#include "../common.hpp"
+
 using namespace ezarpack;
-
-////////////////////////////////////////////////////////////////////////////////
-
-template<operator_kind MKind>
-using scalar_t =
-    typename std::conditional<MKind == Complex, dcomplex, double>::type;
 
 double conj(double x) { return x; }
 dcomplex conj(dcomplex x) { return std::conj(x); }
 
-template<operator_kind MKind> scalar_t<MKind> reflect_coeff(scalar_t<MKind> x);
-template<> double reflect_coeff<Symmetric>(double x) { return x; }
-template<> double reflect_coeff<Asymmetric>(double x) { return -x; }
-template<> dcomplex reflect_coeff<Complex>(dcomplex x) { return -x; }
-
-// Make memory buffer ro accommodate N elements of type T
+// Make memory buffer to accommodate N elements of type T
 template<typename T> std::unique_ptr<T[]> make_buffer(int N) {
   return std::unique_ptr<T[]>(new T[N]);
 }

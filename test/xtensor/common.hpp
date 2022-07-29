@@ -28,21 +28,13 @@
 #include <xtensor/xio.hpp>
 #include <xtensor/xnorm.hpp>
 
+#include "../common.hpp"
+
 using namespace ezarpack;
 using namespace xt;
 
-////////////////////////////////////////////////////////////////////////////////
-
-template<operator_kind MKind>
-using scalar_t =
-    typename std::conditional<MKind == Complex, dcomplex, double>::type;
 template<typename T> using vector = xtensor<T, 1>;
 template<typename T> using matrix = xtensor<T, 2, layout_type::column_major>;
-
-template<operator_kind MKind> scalar_t<MKind> reflect_coeff(scalar_t<MKind> x);
-template<> double reflect_coeff<Symmetric>(double x) { return x; }
-template<> double reflect_coeff<Asymmetric>(double x) { return -x; }
-template<> dcomplex reflect_coeff<Complex>(dcomplex x) { return -x; }
 
 // Make a test sparse matrix
 template<operator_kind MKind, typename T = scalar_t<MKind>>
