@@ -304,8 +304,9 @@ auto get_basis_vectors(arpack_solver<Symmetric, raw_storage> const& ar)
   return ar.eigenvectors();
 }
 // In the other two cases we must call schur_vectors()
-template<typename AR>
-auto get_basis_vectors(AR const& ar) -> decltype(ar.schur_vectors()) {
+template<operator_kind MKind>
+auto get_basis_vectors(arpack_solver<MKind, raw_storage> const& ar)
+    -> decltype(ar.schur_vectors()) {
   return ar.schur_vectors();
 }
 

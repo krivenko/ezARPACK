@@ -96,8 +96,9 @@ inline IsCloseToMatcher<typename T::elem_type> IsCloseTo(T&& ref,
 ////////////////////////////////////////////////////////////////////////////////
 
 // Check that 'ar' contains the correct solution of a standard eigenproblem
-template<typename AR, typename M>
-void check_eigenvectors(AR const& ar, M const& A) {
+template<operator_kind MKind, typename M>
+void check_eigenvectors(arpack_solver<MKind, armadillo_storage> const& ar,
+                        M const& A) {
   auto lambda = ar.eigenvalues();
   auto vecs = ar.eigenvectors();
   for(int i = 0; i < int(lambda.n_elem); ++i) {
@@ -107,8 +108,10 @@ void check_eigenvectors(AR const& ar, M const& A) {
 }
 
 // Check that 'ar' contains the correct solution of a generalized eigenproblem
-template<typename AR, typename MT>
-void check_eigenvectors(AR const& ar, MT const& A, MT const& M) {
+template<operator_kind MKind, typename MT>
+void check_eigenvectors(arpack_solver<MKind, armadillo_storage> const& ar,
+                        MT const& A,
+                        MT const& M) {
   auto lambda = ar.eigenvalues();
   auto vecs = ar.eigenvectors();
   for(int i = 0; i < int(lambda.n_elem); ++i) {
@@ -144,13 +147,15 @@ auto get_basis_vectors(arpack_solver<Symmetric, armadillo_storage> const& ar)
   return ar.eigenvectors();
 }
 // In the other two cases we must call schur_vectors()
-template<typename AR>
-auto get_basis_vectors(AR const& ar) -> decltype(ar.schur_vectors()) {
+template<operator_kind MKind>
+auto get_basis_vectors(arpack_solver<MKind, armadillo_storage> const& ar)
+    -> decltype(ar.schur_vectors()) {
   return ar.schur_vectors();
 }
 
 // Check orthogonality of basis vectors (standard eigenproblem)
-template<typename AR> void check_basis_vectors(AR const& ar) {
+template<operator_kind MKind>
+void check_basis_vectors(arpack_solver<MKind, armadillo_storage> const& ar) {
   auto vecs = get_basis_vectors(ar);
   for(int i = 0; i < int(vecs.n_cols); ++i) {
     auto vi = vecs.col(i);
@@ -161,8 +166,9 @@ template<typename AR> void check_basis_vectors(AR const& ar) {
   }
 }
 // Check orthogonality of basis vectors (generalized eigenproblem)
-template<typename AR, typename MT>
-void check_basis_vectors(AR const& ar, MT const& B) {
+template<operator_kind MKind, typename MT>
+void check_basis_vectors(arpack_solver<MKind, armadillo_storage> const& ar,
+                         MT const& B) {
   auto vecs = get_basis_vectors(ar);
   for(int i = 0; i < int(vecs.n_cols); ++i) {
     auto vi = vecs.col(i);
