@@ -2,6 +2,10 @@
 
 All notable changes to ezARPACK will be documented in this file.
 
+## [1.0] - Unreleased
+
+New accessor `arpack_solver::dim()` that returns dimension of the eigenproblem.
+
 ## [0.10] - 2022-02-08
 
 A new storage backend for the [TRIQS/nda](https://github.com/TRIQS/nda) library
