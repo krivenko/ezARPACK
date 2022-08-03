@@ -52,6 +52,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
     auto Aop = [&](vector_const_view_t in, vector_view_t out) { out = A * in; };
 
     solver_t ar(A.n_rows);
+    REQUIRE(ar.dim() == A.n_rows);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
@@ -73,6 +74,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
     auto Bop = [&](vector_const_view_t in, vector_view_t out) { out = M * in; };
 
     solver_t ar(A.n_rows);
+    REQUIRE(ar.dim() == A.n_rows);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
@@ -95,6 +97,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
     auto Bop = [&](vector_const_view_t in, vector_view_t out) { out = M * in; };
 
     solver_t ar(A.n_rows);
+    REQUIRE(ar.dim() == A.n_rows);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
@@ -118,6 +121,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
     auto Bop = [&](vector_const_view_t in, vector_view_t out) { out = M * in; };
 
     solver_t ar(A.n_rows);
+    REQUIRE(ar.dim() == A.n_rows);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, params_t::Ritz);
@@ -133,6 +137,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
 
   SECTION("Indirect access to workspace vectors") {
     solver_t ar(A.n_rows);
+    REQUIRE(ar.dim() == A.n_rows);
 
     auto Aop = [&](vector_const_view_t, vector_view_t) {
       auto in = ar.workspace_vector(ar.in_vector_n());
@@ -184,6 +189,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
       };
 
       solver_t ar(A.n_rows);
+      REQUIRE(ar.dim() == A.n_rows);
 
       params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
       params.random_residual_vector = false;
@@ -207,6 +213,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
       };
 
       solver_t ar(A.n_rows);
+      REQUIRE(ar.dim() == A.n_rows);
 
       params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
       params.random_residual_vector = false;

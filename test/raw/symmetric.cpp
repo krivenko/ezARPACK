@@ -87,6 +87,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     };
 
     solver_t ar(N);
+    REQUIRE(ar.dim() == N);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -115,6 +116,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     };
 
     solver_t ar(N);
+    REQUIRE(ar.dim() == N);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -149,6 +151,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     };
 
     solver_t ar(N);
+    REQUIRE(ar.dim() == N);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -184,6 +187,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     };
 
     solver_t ar(N);
+    REQUIRE(ar.dim() == N);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -222,6 +226,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     };
 
     solver_t ar(N);
+    REQUIRE(ar.dim() == N);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -237,6 +242,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
 
   SECTION("Indirect access to workspace vectors") {
     solver_t ar(N);
+    REQUIRE(ar.dim() == N);
 
     auto Aop = [&](vector_const_view_t, vector_view_t) {
       auto in = ar.workspace_vector(ar.in_vector_n());

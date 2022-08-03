@@ -569,6 +569,9 @@ public:
     handle_eupd_error_codes(info);
   }
 
+  /// Returns dimension of the eigenproblem.
+  inline int dim() const { return N; }
+
   /// Returns the index of the workspace vector, which is currently expected to
   /// be acted upon by linear operator @f$ \hat O @f$ or @f$ \hat B @f$.
   inline int in_vector_n() const { return (ipntr[0] - 1) / N; }

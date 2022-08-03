@@ -53,6 +53,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     };
 
     solver_t ar(A.size1());
+    REQUIRE(ar.dim() == A.size1());
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -77,6 +78,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     };
 
     solver_t ar(A.size1());
+    REQUIRE(ar.dim() == A.size1());
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -101,6 +103,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     };
 
     solver_t ar(A.size1());
+    REQUIRE(ar.dim() == A.size1());
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -126,6 +129,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     };
 
     solver_t ar(A.size1());
+    REQUIRE(ar.dim() == A.size1());
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -152,6 +156,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     };
 
     solver_t ar(A.size1());
+    REQUIRE(ar.dim() == A.size1());
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -167,6 +172,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
 
   SECTION("Indirect access to workspace vectors") {
     solver_t ar(A.size1());
+    REQUIRE(ar.dim() == A.size1());
 
     auto Aop = [&](vector_const_view_t, vector_view_t) {
       auto in = ar.workspace_vector(ar.in_vector_n());
@@ -214,6 +220,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
       };
 
       solver_t ar(A.size1());
+      REQUIRE(ar.dim() == A.size1());
 
       params_t params(nev, params_t::LargestMagnitude, true);
       params.random_residual_vector = false;
@@ -236,6 +243,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
       };
 
       solver_t ar(A.size1());
+      REQUIRE(ar.dim() == A.size1());
 
       params_t params(nev, params_t::LargestMagnitude, true);
       params.sigma = sigma;

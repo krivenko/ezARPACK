@@ -51,6 +51,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     auto Aop = [&](vector_const_view_t in, vector_view_t out) { out = A * in; };
 
     solver_t ar(A.n_rows);
+    REQUIRE(ar.dim() == A.n_rows);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -73,6 +74,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     auto Bop = [&](vector_const_view_t in, vector_view_t out) { out = M * in; };
 
     solver_t ar(A.n_rows);
+    REQUIRE(ar.dim() == A.n_rows);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -95,6 +97,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     auto Bop = [&](vector_const_view_t in, vector_view_t out) { out = M * in; };
 
     solver_t ar(A.n_rows);
+    REQUIRE(ar.dim() == A.n_rows);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -118,6 +121,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     auto Bop = [&](vector_const_view_t in, vector_view_t out) { out = M * in; };
 
     solver_t ar(A.n_rows);
+    REQUIRE(ar.dim() == A.n_rows);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -142,6 +146,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     auto Bop = [&](vector_const_view_t in, vector_view_t out) { out = M * in; };
 
     solver_t ar(A.n_rows);
+    REQUIRE(ar.dim() == A.n_rows);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -157,6 +162,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
 
   SECTION("Indirect access to workspace vectors") {
     solver_t ar(A.n_rows);
+    REQUIRE(ar.dim() == A.n_rows);
 
     auto Aop = [&](vector_const_view_t, vector_view_t) {
       auto in = ar.workspace_vector(ar.in_vector_n());
@@ -204,6 +210,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
       };
 
       solver_t ar(A.n_rows);
+      REQUIRE(ar.dim() == A.n_rows);
 
       params_t params(nev, params_t::LargestMagnitude, true);
       params.random_residual_vector = false;
@@ -226,6 +233,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
       };
 
       solver_t ar(A.n_rows);
+      REQUIRE(ar.dim() == A.n_rows);
 
       params_t params(nev, params_t::LargestMagnitude, true);
       params.sigma = sigma;
