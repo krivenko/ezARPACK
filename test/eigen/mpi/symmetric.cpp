@@ -47,7 +47,7 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
   };
 
   // Matrix-distributed vector multiplication
-  auto mat_vec = mpi_mat_vec<ezarpack::Symmetric>(N, MPI_COMM_WORLD);
+  auto mat_vec = mpi_mat_vec<false>(N, MPI_COMM_WORLD);
 
   using vector_view_t = solver_t::vector_view_t;
   using vector_const_view_t = solver_t::vector_const_view_t;
