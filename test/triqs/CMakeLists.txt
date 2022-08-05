@@ -8,16 +8,29 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+macro(add_triqs_executable name source)
+  add_executable(${name} ${source})
+  target_include_directories(${name} PRIVATE ${CMAKE_SOURCE_DIR}/test)
+  target_link_libraries(${name} PRIVATE ezarpack triqs ${arpack_ng_LIBRARIES})
+  triqs_set_rpath_for_target(${name})
+  set_property(TARGET ${name} PROPERTY CXX_STANDARD 17)
+endmacro()
+
 foreach(t symmetric asymmetric complex)
   set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
   set(t triqs.solver_${t})
-  add_executable(${t} ${s})
-  # FIXME: Setting CXX_STANDARD to 17 would require CMake >= 3.8,
-  # which is too new to ask for.
-  target_compile_options(${t} PRIVATE "-std=c++17")
-  target_include_directories(${t} PRIVATE ${CMAKE_SOURCE_DIR}/test)
-  target_link_libraries(${t} PRIVATE ezarpack catch2 triqs
-                        ${arpack_ng_LIBRARIES})
-  triqs_set_rpath_for_target(${t})
+  add_triqs_executable(${t} ${s})
+  target_link_libraries(${t} PRIVATE catch2)
   add_test(NAME ${t} COMMAND ${t})
 endforeach()
+
+# MPI tests
+if(MPI_FOUND)
+  foreach(t symmetric asymmetric complex)
+    set(s ${CMAKE_CURRENT_SOURCE_DIR}/mpi/${t}.cpp)
+    set(t triqs.solver_${t}.mpi)
+    add_triqs_executable(${t} ${s})
+    target_link_libraries(${t} PRIVATE catch2_mpi)
+    add_mpi_test(${t} 1 2 3 4)
+  endforeach()
+endif()
