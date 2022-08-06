@@ -230,7 +230,7 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
       params.tolerance = 1e-10;
       params.sigma = sigma;
       set_init_residual_vector(ar);
-      ar(op, Bop, solver_t::ShiftAndInvertReal, params);
+      ar(op, Bop, solver_t::ShiftAndInvertReal, params, shifts_f);
       CHECK(ar.nconv() >= nev);
       check_eigenvectors_shift_and_invert(ar, A, M);
       check_basis_vectors(ar, M);
