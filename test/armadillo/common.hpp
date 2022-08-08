@@ -88,9 +88,10 @@ public:
 };
 
 template<typename T>
-inline IsCloseToMatcher<typename T::elem_type> IsCloseTo(T&& ref,
-                                                         double tol = 1e-10) {
-  return IsCloseToMatcher<typename T::elem_type>(ref, tol);
+inline IsCloseToMatcher<typename std::remove_reference<T>::type::elem_type>
+IsCloseTo(T&& ref, double tol = 1e-10) {
+  return IsCloseToMatcher<typename std::remove_reference<T>::type::elem_type>(
+      ref, tol);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -133,7 +134,7 @@ void check_eigenvectors_shift_and_invert(
   auto Aop = [&](vector_const_view_t in, vector_view_t out) { out = A * in; };
   auto lambda = ar.eigenvalues(Aop);
   auto vecs = ar.eigenvectors();
-  for(int i = 0; i < int(lambda.size()); ++i) {
+  for(int i = 0; i < int(lambda.n_elem); ++i) {
     auto vec = vecs.col(i);
     CHECK_THAT(A * vec, IsCloseTo(lambda[i] * M * vec, 1e-9));
   }
