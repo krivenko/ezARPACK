@@ -367,6 +367,7 @@ public:
               iparam, ipntr, storage::get_data_ptr(workd),
               storage::get_data_ptr(workl), workl_size, info);
 
+    storage::destroy(workev);
     storage::destroy(workl);
 
     handle_eupd_error_codes(info);
