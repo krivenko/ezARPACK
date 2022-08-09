@@ -88,6 +88,7 @@ private:
   real_vector_t workd;        // Working space
   int ncv = 0;                // Number of Lanczos vectors to be generated
   real_matrix_t v;            // Matrix with Arnoldi basis vectors
+  int ldv = 0;                // Leading dimension of v
   real_vector_t z;            // Flattened matrix with Ritz vectors
   real_vector_t dr, di;       // Ritz values (real and imaginary parts)
   int iparam[11];             // Various input/output parameters
@@ -224,6 +225,7 @@ private:
                                 std::to_string(N) + "]");
 
     storage::resize(v, N, ncv);
+    ldv = storage::get_col_spacing(v) >= 0 ? storage::get_col_spacing(v) : N;
 
     // Eigenvectors
     rvec = (params.compute_vectors != params_t::None);
@@ -326,7 +328,7 @@ public:
     do {
       f77::aupd<false>(ido, "I", N, which, nev, tol,
                        storage::get_data_ptr(resid), ncv,
-                       storage::get_data_ptr(v), N, iparam, ipntr,
+                       storage::get_data_ptr(v), ldv, iparam, ipntr,
                        storage::get_data_ptr(workd),
                        storage::get_data_ptr(workl), workl_size, info);
       switch(ido) {
@@ -363,7 +365,7 @@ public:
               storage::get_data_ptr(dr), storage::get_data_ptr(di),
               storage::get_data_ptr(z), (rvec ? N : 0), sigmar, sigmai,
               storage::get_data_ptr(workev), "I", N, which, nev, tol,
-              storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v), N,
+              storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v), ldv,
               iparam, ipntr, storage::get_data_ptr(workd),
               storage::get_data_ptr(workl), workl_size, info);
 
@@ -505,7 +507,7 @@ public:
     do {
       f77::aupd<false>(ido, "G", N, which, nev, tol,
                        storage::get_data_ptr(resid), ncv,
-                       storage::get_data_ptr(v), N, iparam, ipntr,
+                       storage::get_data_ptr(v), ldv, iparam, ipntr,
                        storage::get_data_ptr(workd),
                        storage::get_data_ptr(workl), workl_size, info);
       switch(ido) {
@@ -560,7 +562,7 @@ public:
               storage::get_data_ptr(dr), storage::get_data_ptr(di),
               storage::get_data_ptr(z), (rvec ? N : 0), sigmar, sigmai,
               storage::get_data_ptr(workev), "G", N, which, nev, tol,
-              storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v), N,
+              storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v), ldv,
               iparam, ipntr, storage::get_data_ptr(workd),
               storage::get_data_ptr(workl), workl_size, info);
 

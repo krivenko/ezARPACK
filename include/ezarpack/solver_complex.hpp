@@ -85,7 +85,9 @@ private:
   complex_vector_t workd;     // Working space
   int ncv = 0;                // Number of Lanczos vectors to be generated
   complex_matrix_t v;         // Matrix with Arnoldi basis vectors
+  int ldv = 0;                // Leading dimension of v
   complex_matrix_t z;         // Matrix with Ritz vectors
+  int ldz = 0;                // Leading dimension of z
   complex_vector_t d;         // Ritz values (real and imaginary parts)
   int iparam[11];             // Various input/output parameters
   int ipntr[14];              // Starting locations in workd and workl
@@ -215,16 +217,21 @@ private:
       throw ARPACK_SOLVER_ERROR("ncv must be within ]" +
                                 std::to_string(params.n_eigenvalues + 1) + ";" +
                                 std::to_string(N) + "]");
+
     storage::resize(v, N, ncv);
+    ldv = storage::get_col_spacing(v) >= 0 ? storage::get_col_spacing(v) : N;
 
     // Eigenvectors
     rvec = (params.compute_vectors != params_t::None);
     howmny = params.compute_vectors == params_t::Schur ? 'P' : 'A';
     storage::resize(select, ncv);
-    if(rvec && params.compute_vectors == params_t::Ritz)
+    if(rvec && params.compute_vectors == params_t::Ritz) {
       storage::resize(z, N, nev + 1);
-    else
+      ldz = storage::get_col_spacing(z) >= 0 ? storage::get_col_spacing(z) : N;
+    } else {
       storage::resize(z, 1, nev + 1);
+      ldz = storage::get_col_spacing(z) >= 0 ? storage::get_col_spacing(z) : 1;
+    }
 
     // Tolerance
     tol = std::max(.0, params.tolerance);
@@ -311,7 +318,7 @@ public:
     Bx_available_ = false;
     do {
       f77::aupd(ido, "I", N, which, nev, tol, storage::get_data_ptr(resid), ncv,
-                storage::get_data_ptr(v), N, iparam, ipntr,
+                storage::get_data_ptr(v), ldv, iparam, ipntr,
                 storage::get_data_ptr(workd), storage::get_data_ptr(workl),
                 workl_size, storage::get_data_ptr(rwork), info);
       switch(ido) {
@@ -343,10 +350,10 @@ public:
 
     f77::eupd(rvec, &howmny, storage::get_data_ptr(select),
               storage::get_data_ptr(d), storage::get_data_ptr(z),
-              (rvec && params.compute_vectors == params_t::Ritz ? N : 1),
+              ((rvec && params.compute_vectors == params_t::Ritz) ? ldz : 1),
               params.sigma, storage::get_data_ptr(workev), "I", N, which, nev,
               tol, storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v),
-              N, iparam, ipntr, storage::get_data_ptr(workd),
+              ldv, iparam, ipntr, storage::get_data_ptr(workd),
               storage::get_data_ptr(workl), workl_size,
               storage::get_data_ptr(rwork), info);
 
@@ -449,7 +456,7 @@ public:
     Bx_available_ = false;
     do {
       f77::aupd(ido, "G", N, which, nev, tol, storage::get_data_ptr(resid), ncv,
-                storage::get_data_ptr(v), N, iparam, ipntr,
+                storage::get_data_ptr(v), ldv, iparam, ipntr,
                 storage::get_data_ptr(workd), storage::get_data_ptr(workl),
                 workl_size, storage::get_data_ptr(rwork), info);
       switch(ido) {
@@ -495,10 +502,10 @@ public:
 
     f77::eupd(rvec, &howmny, storage::get_data_ptr(select),
               storage::get_data_ptr(d), storage::get_data_ptr(z),
-              (rvec && params.compute_vectors == params_t::Ritz ? N : 1),
+              ((rvec && params.compute_vectors == params_t::Ritz) ? ldz : 1),
               params.sigma, storage::get_data_ptr(workev), "G", N, which, nev,
               tol, storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v),
-              N, iparam, ipntr, storage::get_data_ptr(workd),
+              ldv, iparam, ipntr, storage::get_data_ptr(workd),
               storage::get_data_ptr(workl), workl_size,
               storage::get_data_ptr(rwork), info);
 

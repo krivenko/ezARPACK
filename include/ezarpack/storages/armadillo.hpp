@@ -170,6 +170,11 @@ public:
     m.resize(rows, cols);
   }
 
+  /// @}
+
+  /// @name Access to underlying memory buffers
+  /// @{
+
   /// Returns a pointer to the underlying data array owned by a vector.
   /// @tparam T Vector element type.
   /// @param v Vector to retrieve the data pointer from.
@@ -183,6 +188,18 @@ public:
   /// @return Pointer to the data array.
   template<typename T> inline static T* get_data_ptr(matrix<T>& m) {
     return m.memptr();
+  }
+
+  /// Returns the spacing between the beginning of two columns of a matrix.
+  ///
+  /// The spacing can be different from the number of matrix rows if padding
+  /// elements are added to the stored data array. Returning a negative value
+  /// signals that the spacing equals the number of rows.
+  /// @tparam T Matrix element type.
+  /// @param m Matrix to retrieve the spacing from.
+  /// @return Column spacing.
+  template<typename T> inline static int get_col_spacing(matrix<T> const& m) {
+    return -1;
   }
 
   /// @}

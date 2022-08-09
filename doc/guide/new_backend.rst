@@ -221,7 +221,7 @@ The following member functions are mandatory for any specialization of
       ...
     }
 
-* Raw memory pointer accessors.
+* Access to underlying memory buffers.
 
   .. code:: cpp
 
@@ -233,6 +233,13 @@ The following member functions are mandatory for any specialization of
     // Return a pointer to the underlying data array owned by matrix 'm'.
     static double* get_data_ptr(real_matrix_type & m) { ... }
     static std::complex<double>* get_data_ptr(complex_matrix_type & m) { ... }
+
+    // Returns the spacing between the beginning of two columns of matrix 'm'.
+    // The spacing can be different from the number of matrix rows if padding
+    // elements are added to the stored data array. Returning a negative value
+    // signals that the spacing equals the number of rows.
+    static int get_col_spacing(real_matrix_type const& m) { ... }
+    static int get_col_spacing(complex_matrix_type const& m) { ... }
 
 * Vector view factories.
 
