@@ -19,7 +19,7 @@
 
 TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
 
-  using solver_t = arpack_solver<Asymmetric, blaze_storage>;
+  using solver_t = mpi::arpack_solver<ezarpack::Asymmetric, blaze_storage>;
   using params_t = solver_t::params_t;
 
   const int N = 100;
@@ -35,23 +35,50 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
       params_t::LargestImag,      params_t::SmallestImag};
 
   // Asymmetric matrix A
-  auto A = make_sparse_matrix<Asymmetric>(N, diag_coeff_shift, diag_coeff_amp,
-                                          offdiag_offset, offdiag_coeff);
+  auto A = make_sparse_matrix<ezarpack::Asymmetric>(
+      N, diag_coeff_shift, diag_coeff_amp, offdiag_offset, offdiag_coeff);
   // Inner product matrix
-  auto M = make_inner_prod_matrix<Asymmetric>(N);
+  auto M = make_inner_prod_matrix<ezarpack::Asymmetric>(N);
 
   auto set_init_residual_vector = [](solver_t& ar) {
-    for(int i = 0; i < N; ++i)
-      ar.residual_vector()[i] = double(i) / N;
+    int const block_start = ar.local_block_start();
+    int const block_size = ar.local_block_size();
+    for(int i = 0; i < block_size; ++i)
+      ar.residual_vector()[i] = double(i + block_start) / N;
   };
+
+  // Matrix-distributed vector multiplication
+  auto mat_vec = mpi_mat_vec<false>(N, MPI_COMM_WORLD);
 
   using vector_view_t = solver_t::vector_view_t;
   using vector_const_view_t = solver_t::vector_const_view_t;
 
-  SECTION("Standard eigenproblem") {
-    auto Aop = [&](vector_const_view_t in, vector_view_t out) { out = A * in; };
+  SECTION("Constructors") {
+    std::vector<std::vector<unsigned int>> block_sizes = {
+        {100}, {50, 50}, {34, 33, 33}, {25, 25, 25, 25}};
+    std::vector<std::vector<unsigned int>> block_starts = {
+        {0}, {0, 50}, {0, 34, 67}, {0, 25, 50, 75}};
 
-    solver_t ar(A.rows());
+    auto comm_size = mpi::size(MPI_COMM_WORLD);
+    auto comm_rank = mpi::rank(MPI_COMM_WORLD);
+
+    if(comm_size <= 4) {
+      solver_t ar1(N, MPI_COMM_WORLD);
+      CHECK(ar1.local_block_size() == block_sizes[comm_size - 1][comm_rank]);
+      CHECK(ar1.local_block_start() == block_starts[comm_size - 1][comm_rank]);
+
+      solver_t ar2(block_sizes[comm_size - 1], MPI_COMM_WORLD);
+      CHECK(ar2.local_block_size() == block_sizes[comm_size - 1][comm_rank]);
+      CHECK(ar2.local_block_start() == block_starts[comm_size - 1][comm_rank]);
+    }
+  }
+
+  SECTION("Standard eigenproblem") {
+    auto Aop = [&](vector_const_view_t in, vector_view_t out) {
+      mat_vec(A, in, out);
+    };
+
+    solver_t ar(A.rows(), MPI_COMM_WORLD);
     REQUIRE(ar.dim() == A.rows());
 
     for(auto e : spectrum_parts) {
@@ -69,11 +96,13 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
     decltype(A) op_matrix = inv(M) * A;
 
     auto op = [&](vector_const_view_t in, vector_view_t out) {
-      out = op_matrix * in;
+      mat_vec(op_matrix, in, out);
     };
-    auto Bop = [&](vector_const_view_t in, vector_view_t out) { out = M * in; };
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      mat_vec(M, in, out);
+    };
 
-    solver_t ar(A.rows());
+    solver_t ar(A.rows(), MPI_COMM_WORLD);
     REQUIRE(ar.dim() == A.rows());
 
     for(auto e : spectrum_parts) {
@@ -95,11 +124,13 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
         real(inv(cmat_type(A) - sigma * cmat_type(M)) * cmat_type(M));
 
     auto op = [&](vector_const_view_t in, vector_view_t out) {
-      out = op_matrix * in;
+      mat_vec(op_matrix, in, out);
     };
-    auto Bop = [&](vector_const_view_t in, vector_view_t out) { out = M * in; };
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      mat_vec(M, in, out);
+    };
 
-    solver_t ar(A.rows());
+    solver_t ar(A.rows(), MPI_COMM_WORLD);
     REQUIRE(ar.dim() == A.rows());
 
     for(auto e : spectrum_parts) {
@@ -115,16 +146,18 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
   }
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode (imaginary part)") {
-    dcomplex sigma(-0.1, 1.0);
+    dcomplex sigma(1.0, -0.1);
     decltype(A) op_matrix =
         imag(inv(cmat_type(A) - sigma * cmat_type(M)) * cmat_type(M));
 
     auto op = [&](vector_const_view_t in, vector_view_t out) {
-      out = op_matrix * in;
+      mat_vec(op_matrix, in, out);
     };
-    auto Bop = [&](vector_const_view_t in, vector_view_t out) { out = M * in; };
+    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+      mat_vec(M, in, out);
+    };
 
-    solver_t ar(A.rows());
+    solver_t ar(A.rows(), MPI_COMM_WORLD);
     REQUIRE(ar.dim() == A.rows());
 
     for(auto e : spectrum_parts) {
@@ -140,13 +173,13 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
   }
 
   SECTION("Indirect access to workspace vectors") {
-    solver_t ar(A.rows());
+    solver_t ar(A.rows(), MPI_COMM_WORLD);
     REQUIRE(ar.dim() == A.rows());
 
     auto Aop = [&](vector_const_view_t, vector_view_t) {
       auto in = ar.workspace_vector(ar.in_vector_n());
       auto out = ar.workspace_vector(ar.out_vector_n());
-      out = A * in;
+      mat_vec(A, in, out);
     };
 
     for(auto e : spectrum_parts) {
@@ -189,10 +222,10 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
 
     SECTION("Standard eigenproblem") {
       auto Aop = [&](vector_const_view_t in, vector_view_t out) {
-        out = A * in;
+        mat_vec(A, in, out);
       };
 
-      solver_t ar(A.rows());
+      solver_t ar(A.rows(), MPI_COMM_WORLD);
       REQUIRE(ar.dim() == A.rows());
 
       params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
@@ -211,13 +244,13 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
           real(inv(cmat_type(A) - sigma * cmat_type(M)) * cmat_type(M));
 
       auto op = [&](vector_const_view_t in, vector_view_t out) {
-        out = op_matrix * in;
+        mat_vec(op_matrix, in, out);
       };
       auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-        out = M * in;
+        mat_vec(M, in, out);
       };
 
-      solver_t ar(A.rows());
+      solver_t ar(A.rows(), MPI_COMM_WORLD);
       REQUIRE(ar.dim() == A.rows());
 
       params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);

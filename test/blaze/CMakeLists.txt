@@ -10,17 +10,35 @@
 
 find_package(LAPACK)
 if(LAPACK_FOUND)
+
+  macro(add_blaze_executable name source)
+    add_executable(${name} ${source})
+    target_include_directories(${name} PRIVATE ${CMAKE_SOURCE_DIR}/test)
+    target_link_libraries(${t} PRIVATE ezarpack
+                                       blaze::blaze ${LAPACK_LIBRARIES}
+                                       ${arpack_ng_LIBRARIES})
+    set_property(TARGET ${t} PROPERTY CXX_STANDARD 14)
+  endmacro()
+
   foreach(t symmetric asymmetric complex)
     set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
     set(t blaze.solver_${t})
-    add_executable(${t} ${s})
-    target_include_directories(${t} PRIVATE ${CMAKE_SOURCE_DIR}/test)
-    target_link_libraries(${t} PRIVATE ezarpack catch2
-                                       blaze::blaze ${LAPACK_LIBRARIES}
-                                       ${arpack_ng_LIBRARIES})
-    set_property(TARGET ${t} PROPERTY CXX_STANDARD 11)
+    add_blaze_executable(${t} ${s})
+    target_link_libraries(${t} PRIVATE catch2)
     add_test(NAME ${t} COMMAND ${t})
   endforeach()
+
+  # MPI tests
+  if(MPI_FOUND)
+    foreach(t symmetric asymmetric complex)
+      set(s ${CMAKE_CURRENT_SOURCE_DIR}/mpi/${t}.cpp)
+      set(t blaze.solver_${t}.mpi)
+      add_blaze_executable(${t} ${s})
+      target_link_libraries(${t} PRIVATE catch2_mpi)
+      add_mpi_test(${t} 1 2 3 4)
+    endforeach()
+  endif()
+
 else(LAPACK_FOUND)
   message(STATUS "Cannot build Blaze storage backend tests without LAPACK")
 endif(LAPACK_FOUND)

@@ -91,9 +91,10 @@ public:
 };
 
 template<typename T>
-inline IsCloseToMatcher<typename T::ElementType> IsCloseTo(T&& ref,
-                                                           double tol = 1e-10) {
-  return IsCloseToMatcher<typename T::ElementType>(ref, tol);
+inline IsCloseToMatcher<typename std::remove_reference<T>::type::ElementType>
+IsCloseTo(T&& ref, double tol = 1e-10) {
+  return IsCloseToMatcher<typename std::remove_reference<T>::type::ElementType>(
+      ref, tol);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
