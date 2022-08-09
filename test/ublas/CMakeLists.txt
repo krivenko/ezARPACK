@@ -8,13 +8,29 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+macro(add_ublas_executable name source)
+  add_executable(${name} ${source})
+  target_include_directories(${name} PRIVATE ${Boost_INCLUDE_DIRS}
+                                             ${CMAKE_SOURCE_DIR}/test)
+  target_link_libraries(${t} PRIVATE ezarpack ${arpack_ng_LIBRARIES})
+  set_property(TARGET ${t} PROPERTY CXX_STANDARD 11)
+endmacro()
+
 foreach(t symmetric asymmetric complex)
   set(s ${CMAKE_CURRENT_SOURCE_DIR}/${t}.cpp)
   set(t ublas.solver_${t})
-  add_executable(${t} ${s})
-  target_include_directories(${t} PRIVATE ${Boost_INCLUDE_DIRS}
-                                          ${CMAKE_SOURCE_DIR}/test)
-  target_link_libraries(${t} PRIVATE ezarpack catch2 ${arpack_ng_LIBRARIES})
-  set_property(TARGET ${t} PROPERTY CXX_STANDARD 11)
+  add_ublas_executable(${t} ${s})
+  target_link_libraries(${t} PRIVATE catch2)
   add_test(NAME ${t} COMMAND ${t})
 endforeach()
+
+# MPI tests
+if(MPI_FOUND)
+  foreach(t symmetric asymmetric complex)
+    set(s ${CMAKE_CURRENT_SOURCE_DIR}/mpi/${t}.cpp)
+    set(t ublas.solver_${t}.mpi)
+    add_ublas_executable(${t} ${s})
+    target_link_libraries(${t} PRIVATE catch2_mpi)
+    add_mpi_test(${t} 1 2 3 4)
+  endforeach()
+endif()
