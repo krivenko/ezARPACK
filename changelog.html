@@ -46,7 +46,14 @@
 <p>All notable changes to ezARPACK will be documented in this file.</p>
 <section id="unreleased">
 <h2>[1.0] - Unreleased<a class="headerlink" href="#unreleased" title="Permalink to this heading">¶</a></h2>
-<p>New accessor <code class="docutils literal notranslate"><span class="pre">arpack_solver::dim()</span></code> that returns dimension of the eigenproblem.</p>
+<ul class="simple">
+<li><p>New accessor <code class="docutils literal notranslate"><span class="pre">arpack_solver::dim()</span></code> that returns dimension of the eigenproblem.</p></li>
+<li><p>Fixed a serious bug in the Blaze storage backend. By default, Blaze adds
+padding elements to data arrays when storing matrices. This fact was
+overlooked, which resulted in ARPACK procedures being called with wrong <code class="docutils literal notranslate"><span class="pre">LDV</span></code>
+and <code class="docutils literal notranslate"><span class="pre">LDZ</span></code> arguments. Resolving the issue required adding a new function,
+<code class="docutils literal notranslate"><span class="pre">storage_traits&lt;Backend&gt;::get_col_spacing()</span></code>.</p></li>
+</ul>
 </section>
 <section id="id1">
 <h2>[0.10] - 2022-02-08<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>

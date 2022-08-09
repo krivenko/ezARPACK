@@ -245,7 +245,7 @@ their own, bodies of <code class="docutils literal notranslate"><span class="pre
 </pre></div>
 </div>
 </li>
-<li><p>Raw memory pointer accessors.</p>
+<li><p>Access to underlying memory buffers.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Return a pointer to the underlying data array owned by vector &#39;v&#39;.</span>
 <span class="k">static</span> <span class="kt">double</span><span class="o">*</span> <span class="nf">get_data_ptr</span><span class="p">(</span><span class="n">real_vector_type</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
 <span class="k">static</span> <span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;*</span> <span class="n">get_data_ptr</span><span class="p">(</span><span class="n">complex_vector_type</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
@@ -254,6 +254,13 @@ their own, bodies of <code class="docutils literal notranslate"><span class="pre
 <span class="c1">// Return a pointer to the underlying data array owned by matrix &#39;m&#39;.</span>
 <span class="k">static</span> <span class="kt">double</span><span class="o">*</span> <span class="n">get_data_ptr</span><span class="p">(</span><span class="n">real_matrix_type</span> <span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
 <span class="k">static</span> <span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;*</span> <span class="n">get_data_ptr</span><span class="p">(</span><span class="n">complex_matrix_type</span> <span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+
+<span class="c1">// Returns the spacing between the beginning of two columns of matrix &#39;m&#39;.</span>
+<span class="c1">// The spacing can be different from the number of matrix rows if padding</span>
+<span class="c1">// elements are added to the stored data array. Returning a negative value</span>
+<span class="c1">// signals that the spacing equals the number of rows.</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="n">get_col_spacing</span><span class="p">(</span><span class="n">real_matrix_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="n">get_col_spacing</span><span class="p">(</span><span class="n">complex_matrix_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
 </pre></div>
 </div>
 </li>

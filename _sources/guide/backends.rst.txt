@@ -47,6 +47,11 @@ to complete usage examples.
     - ``<ezarpack/storages/triqs.hpp>``
     - :ref:`example_triqs`
 
+  * - `TRIQS/nda >= 1.1.0 <https://triqs.github.io/nda/latest/>`_
+    - ``ezarpack::nda_storage``
+    - ``<ezarpack/storages/nda.hpp>``
+    - :ref:`example_nda`
+
   * -  `xtensor >= 0.20.0 <https://github.com/xtensor-stack/xtensor>`_
     - ``ezarpack::xtensor_storage``
     - ``<ezarpack/storages/xtensor.hpp>``

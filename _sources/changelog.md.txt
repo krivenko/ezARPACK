@@ -4,7 +4,12 @@ All notable changes to ezARPACK will be documented in this file.
 
 ## [1.0] - Unreleased
 
-New accessor `arpack_solver::dim()` that returns dimension of the eigenproblem.
+* New accessor `arpack_solver::dim()` that returns dimension of the eigenproblem.
+* Fixed a serious bug in the Blaze storage backend. By default, Blaze adds
+  padding elements to data arrays when storing matrices. This fact was
+  overlooked, which resulted in ARPACK procedures being called with wrong `LDV`
+  and `LDZ` arguments. Resolving the issue required adding a new function,
+  `storage_traits<Backend>::get_col_spacing()`.
 
 ## [0.10] - 2022-02-08
 
