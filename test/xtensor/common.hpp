@@ -96,9 +96,10 @@ public:
 };
 
 template<typename T>
-inline IsCloseToMatcher<typename T::value_type> IsCloseTo(T&& ref,
-                                                          double tol = 1e-10) {
-  return IsCloseToMatcher<typename T::value_type>(ref, tol);
+inline IsCloseToMatcher<typename std::remove_reference<T>::type::value_type>
+IsCloseTo(T&& ref, double tol = 1e-10) {
+  return IsCloseToMatcher<typename std::remove_reference<T>::type::value_type>(
+      ref, tol);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -124,7 +125,8 @@ void check_eigenvectors(arpack_solver<MKind, xtensor_storage> const& ar,
   auto const vecs = ar.eigenvectors();
   for(int i = 0; i < int(lambda.size()); ++i) {
     auto vec = view(vecs, all(), i);
-    CHECK_THAT(linalg::dot(A, vec), IsCloseTo(lambda(i) * linalg::dot(M, vec)));
+    using linalg::dot;
+    CHECK_THAT(dot(A, vec), IsCloseTo(lambda(i) * dot(M, vec)));
   }
 }
 
@@ -167,14 +169,12 @@ auto get_basis_vectors(arpack_solver<MKind, xtensor_storage> const& ar)
 // Check orthogonality of basis vectors (standard eigenproblem)
 template<operator_kind MKind>
 void check_basis_vectors(arpack_solver<MKind, xtensor_storage> const& ar) {
-  using linalg::dot;
   auto vecs = get_basis_vectors(ar);
-  int N = vecs.shape(0);
   for(int i = 0; i < int(vecs.shape(1)); ++i) {
-    auto vi = reshape_view(view(vecs, all(), i), {N});
+    auto vi = view(vecs, all(), i);
     for(int j = 0; j < int(vecs.shape(1)); ++j) {
-      auto vj = reshape_view(view(vecs, all(), j), {N});
-      CHECK(std::abs(dot(conj(vi), vj)[0] - double(i == j)) < 1e-10);
+      auto vj = view(vecs, all(), j);
+      CHECK(std::abs(linalg::vdot(vi, vj) - double(i == j)) < 1e-10);
     }
   }
 }
@@ -182,14 +182,13 @@ void check_basis_vectors(arpack_solver<MKind, xtensor_storage> const& ar) {
 template<operator_kind MKind, typename MT>
 void check_basis_vectors(arpack_solver<MKind, xtensor_storage> const& ar,
                          MT const& B) {
-  using linalg::dot;
   auto vecs = get_basis_vectors(ar);
-  int N = vecs.shape(0);
   for(int i = 0; i < int(vecs.shape(1)); ++i) {
-    auto vi = reshape_view(view(vecs, all(), i), {N});
+    auto vi = view(vecs, all(), i);
     for(int j = 0; j < int(vecs.shape(1)); ++j) {
-      auto vj = reshape_view(view(vecs, all(), j), {N});
-      CHECK(std::abs(dot(conj(vi), dot(B, vj))[0] - double(i == j)) < 1e-10);
+      auto vj = view(vecs, all(), j);
+      CHECK(std::abs(linalg::vdot(vi, linalg::dot(B, vj)) - double(i == j)) <
+            1e-10);
     }
   }
 }
