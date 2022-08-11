@@ -96,8 +96,8 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
       set_init_residual_vector(ar);
       ar(Aop, params);
       CHECK(ar.nconv() >= nev);
-      check_eigenvectors(ar, A.get(), N, nev);
-      check_basis_vectors(ar, N, nev);
+      check_eigenvectors(ar, A.get(), nev);
+      check_basis_vectors(ar, nev);
     }
   }
 
@@ -123,8 +123,8 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
       set_init_residual_vector(ar);
       ar(op, Bop, solver_t::Inverse, params);
       CHECK(ar.nconv() >= nev);
-      check_eigenvectors(ar, A.get(), M.get(), N, nev);
-      check_basis_vectors(ar, M.get(), N, nev);
+      check_eigenvectors(ar, A.get(), M.get(), nev);
+      check_basis_vectors(ar, M.get(), nev);
     }
   }
 
@@ -165,8 +165,8 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
       set_init_residual_vector(ar);
       ar(op, Bop, solver_t::ShiftAndInvertReal, params);
       CHECK(ar.nconv() >= nev);
-      check_eigenvectors_shift_and_invert(ar, A.get(), M.get(), N, nev);
-      check_basis_vectors(ar, M.get(), N, nev);
+      check_eigenvectors_shift_and_invert(ar, A.get(), M.get(), nev);
+      check_basis_vectors(ar, M.get(), nev);
     }
   }
 
@@ -207,8 +207,8 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
       set_init_residual_vector(ar);
       ar(op, Bop, solver_t::ShiftAndInvertImag, params);
       CHECK(ar.nconv() >= nev);
-      check_eigenvectors_shift_and_invert(ar, A.get(), M.get(), N, nev);
-      check_basis_vectors(ar, M.get(), N, nev);
+      check_eigenvectors_shift_and_invert(ar, A.get(), M.get(), nev);
+      check_basis_vectors(ar, M.get(), nev);
     }
   }
 
@@ -228,8 +228,8 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
       set_init_residual_vector(ar);
       ar(Aop, params);
       CHECK(ar.nconv() >= nev);
-      check_eigenvectors(ar, A.get(), N, nev);
-      check_basis_vectors(ar, N, nev);
+      check_eigenvectors(ar, A.get(), nev);
+      check_basis_vectors(ar, nev);
     }
 
     CHECK_THROWS(ar.workspace_vector(-1));

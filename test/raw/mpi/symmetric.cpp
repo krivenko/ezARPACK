@@ -53,7 +53,7 @@ TEST_CASE("Symmetric matrix is inverted", "[invert_symmetric]") {
 
 TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
 
-  using solver_t = arpack_solver<Symmetric, raw_storage>;
+  using solver_t = mpi::arpack_solver<Symmetric, raw_storage>;
   using params_t = solver_t::params_t;
 
   const int N = 100;
@@ -74,19 +74,24 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
   auto M = make_inner_prod_matrix<Symmetric>(N);
 
   auto set_init_residual_vector = [](solver_t& ar) {
-    for(int i = 0; i < N; ++i)
-      ar.residual_vector()[i] = double(i) / N;
+    int const block_start = ar.local_block_start();
+    int const block_size = ar.local_block_size();
+    for(int i = 0; i < block_size; ++i)
+      ar.residual_vector()[i] = double(i + block_start) / N;
   };
+
+  // Matrix-distributed vector multiplication
+  auto mat_vec = mpi_mat_vec<false>(N, MPI_COMM_WORLD);
 
   using vector_view_t = solver_t::vector_view_t;
   using vector_const_view_t = solver_t::vector_const_view_t;
 
   SECTION("Standard eigenproblem") {
     auto Aop = [&](vector_const_view_t in, vector_view_t out) {
-      mv_product(A.get(), in, out, N);
+      mat_vec(A.get(), in, out);
     };
 
-    solver_t ar(N);
+    solver_t ar(N, MPI_COMM_WORLD);
     REQUIRE(ar.dim() == N);
 
     for(auto e : spectrum_parts) {
@@ -104,19 +109,19 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     auto invM = make_buffer<double>(N * N);
     invert(M.get(), invM.get(), N);
 
-    auto tmp = make_buffer<double>(N);
-    auto op = [&](vector_view_t in, vector_view_t out) {
-      mv_product(A.get(), in, tmp.get(), N);
-      std::copy(tmp.get(), tmp.get() + N, in);
+    solver_t ar(N, MPI_COMM_WORLD);
+    REQUIRE(ar.dim() == N);
 
-      mv_product(invM.get(), in, out, N);
+    auto tmp = make_buffer<double>(ar.local_block_size());
+    auto op = [&](vector_view_t in, vector_view_t out) {
+      mat_vec(A.get(), in, tmp.get());
+      std::copy(tmp.get(), tmp.get() + ar.local_block_size(), in);
+
+      mat_vec(invM.get(), in, out);
     };
     auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-      mv_product(M.get(), in, out, N);
+      mat_vec(M.get(), in, out);
     };
-
-    solver_t ar(N);
-    REQUIRE(ar.dim() == N);
 
     for(auto e : spectrum_parts) {
       params_t params(nev, e, true);
@@ -144,13 +149,13 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     mm_product(invAmM.get(), M.get(), op_matrix.get(), N);
 
     auto op = [&](vector_view_t in, vector_view_t out) {
-      mv_product(op_matrix.get(), in, out, N);
+      mat_vec(op_matrix.get(), in, out);
     };
     auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-      mv_product(M.get(), in, out, N);
+      mat_vec(M.get(), in, out);
     };
 
-    solver_t ar(N);
+    solver_t ar(N, MPI_COMM_WORLD);
     REQUIRE(ar.dim() == N);
 
     for(auto e : spectrum_parts) {
@@ -180,13 +185,13 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     mm_product(invMmA.get(), M.get(), op_matrix.get(), N);
 
     auto op = [&](vector_view_t in, vector_view_t out) {
-      mv_product(op_matrix.get(), in, out, N);
+      mat_vec(op_matrix.get(), in, out);
     };
     auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-      mv_product(M.get(), in, out, N);
+      mat_vec(M.get(), in, out);
     };
 
-    solver_t ar(N);
+    solver_t ar(N, MPI_COMM_WORLD);
     REQUIRE(ar.dim() == N);
 
     for(auto e : spectrum_parts) {
@@ -219,13 +224,13 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     mm_product(invAmM.get(), ApM.get(), op_matrix.get(), N);
 
     auto op = [&](vector_view_t in, vector_view_t out) {
-      mv_product(op_matrix.get(), in, out, N);
+      mat_vec(op_matrix.get(), in, out);
     };
     auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-      mv_product(M.get(), in, out, N);
+      mat_vec(M.get(), in, out);
     };
 
-    solver_t ar(N);
+    solver_t ar(N, MPI_COMM_WORLD);
     REQUIRE(ar.dim() == N);
 
     for(auto e : spectrum_parts) {
@@ -241,13 +246,13 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
   }
 
   SECTION("Indirect access to workspace vectors") {
-    solver_t ar(N);
+    solver_t ar(N, MPI_COMM_WORLD);
     REQUIRE(ar.dim() == N);
 
     auto Aop = [&](vector_const_view_t, vector_view_t) {
       auto in = ar.workspace_vector(ar.in_vector_n());
       auto out = ar.workspace_vector(ar.out_vector_n());
-      mv_product(A.get(), in, out, N);
+      mat_vec(A.get(), in, out);
     };
 
     for(auto e : spectrum_parts) {

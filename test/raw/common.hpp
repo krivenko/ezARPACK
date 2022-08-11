@@ -224,10 +224,11 @@ template<
         typename std::conditional<MKind == Symmetric, double, dcomplex>::type>
 void check_eigenvectors(arpack_solver<MKind, raw_storage> const& ar,
                         M const* m,
-                        int N,
                         int nev) {
   auto eigenvalues = ar.eigenvalues();
   auto eigenvectors = ar.eigenvectors();
+
+  int const N = ar.dim();
   for(int i = 0; i < nev; ++i) {
     // RHS
     auto rhs = make_buffer<T>(N);
@@ -249,10 +250,11 @@ template<
 void check_eigenvectors(arpack_solver<MKind, raw_storage> const& ar,
                         M const* a,
                         M const* m,
-                        int N,
                         int nev) {
   auto eigenvalues = ar.eigenvalues();
   auto eigenvectors = ar.eigenvectors();
+
+  int const N = ar.dim();
   for(int i = 0; i < nev; ++i) {
     // RHS
     auto rhs = make_buffer<T>(N);
@@ -273,16 +275,18 @@ void check_eigenvectors_shift_and_invert(
     arpack_solver<Asymmetric, raw_storage> const& ar,
     M const* a,
     M const* m,
-    int N,
     int nev) {
   using solver_t = arpack_solver<Asymmetric, raw_storage>;
   using vector_view_t = solver_t::vector_view_t;
   using vector_const_view_t = solver_t::vector_const_view_t;
+
+  int const N = ar.dim();
   auto Aop = [&](vector_const_view_t in, vector_view_t out) {
     mv_product(a, in, out, N);
   };
   auto eigenvalues = ar.eigenvalues(Aop);
   auto eigenvectors = ar.eigenvectors();
+
   for(int i = 0; i < nev; ++i) {
     // RHS
     auto rhs = make_buffer<dcomplex>(N);
@@ -312,10 +316,10 @@ auto get_basis_vectors(arpack_solver<MKind, raw_storage> const& ar)
 
 // Check orthogonality of basis vectors (standard eigenproblem)
 template<operator_kind MKind>
-void check_basis_vectors(arpack_solver<MKind, raw_storage> const& ar,
-                         int N,
-                         int nev) {
+void check_basis_vectors(arpack_solver<MKind, raw_storage> const& ar, int nev) {
   auto vecs = get_basis_vectors(ar);
+
+  int const N = ar.dim();
   for(int i = 0; i < nev; ++i) {
     auto iptr = get_ptr(vecs) + i * N;
     for(int j = 0; j < nev; ++j) {
@@ -331,9 +335,10 @@ void check_basis_vectors(arpack_solver<MKind, raw_storage> const& ar,
 template<operator_kind MKind, typename M>
 void check_basis_vectors(arpack_solver<MKind, raw_storage> const& ar,
                          M const* b,
-                         int N,
                          int nev) {
   auto vecs = get_basis_vectors(ar);
+
+  int const N = ar.dim();
   auto bx = make_buffer<scalar_t<MKind>>(N);
   for(int i = 0; i < nev; ++i) {
     auto iptr = get_ptr(vecs) + i * N;
