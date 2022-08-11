@@ -125,3 +125,9 @@ meaning.
 | ``MathJax_ROOT``            | Path to MathJax installation (directory        |
 |                             | containing ``MathJax.js``).                    |
 +-----------------------------+------------------------------------------------+
+| ``ASAN=[ON|OFF]``           | *[Developer]* Build unit tests using           |
+|                             | the LLVM AddressSanitizer.                     |
++-----------------------------+------------------------------------------------+
+| ``UBSAN=[ON|OFF]``          | *[Developer]* Build unit tests using           |
+|                             | the LLVM UndefinedBehaviorSanitizer.           |
++-----------------------------+------------------------------------------------+

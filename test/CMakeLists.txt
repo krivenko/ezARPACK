@@ -12,6 +12,26 @@
 add_library(catch2 STATIC catch2/catch2-main.cpp)
 set_property(TARGET catch2 PROPERTY CXX_STANDARD 11)
 
+# Optionally use LLVM sanitizers
+option(ASAN "Compile unit tests with LLVM Address Sanitizer" OFF)
+option(UBSAN "Compile unit tests with LLVM Undefined Behavior Sanitizer" OFF)
+mark_as_advanced(ASAN)
+mark_as_advanced(UBSAN)
+
+if(ASAN)
+  if(NOT TARGET asan)
+    find_package(sanitizer REQUIRED "asan")
+  endif()
+  link_libraries(asan)
+endif()
+if(UBSAN)
+  if(NOT TARGET ubsan)
+    find_package(sanitizer REQUIRED "ubsan")
+  endif()
+  link_libraries(ubsan)
+endif()
+
+# MPI unit tests
 if(MPI_FOUND)
   # Build Catch2 object file with a custom main() that initializes and
   # finalizes MPI.
