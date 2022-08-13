@@ -20,6 +20,7 @@
 #include "../common.hpp"
 
 namespace ezarpack {
+namespace mpi {
 namespace f77 {
 
 extern "C" {
@@ -478,5 +479,5 @@ inline void peupd(const MPI_Comm& comm,
 }
 
 } // namespace f77
-
+} // namespace mpi
 } // namespace ezarpack
