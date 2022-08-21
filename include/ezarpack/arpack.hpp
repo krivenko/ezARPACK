@@ -185,9 +185,9 @@ extern "C" {
 /// These subroutines return the converged approximations to eigenvalues
 /// of @f$ \hat O \mathbf{z} = \lambda \hat B\mathbf{z} @f$
 /// and (optionally):
-///   -# the corresponding approximate eigenvectors;
-///   -# an orthonormal basis for the associated approximate invariant subspace;
-///   -# both.
+///   - the corresponding approximate eigenvectors;
+///   - an orthonormal basis for the associated approximate invariant subspace;
+///   - both.
 
 /// @{
 
