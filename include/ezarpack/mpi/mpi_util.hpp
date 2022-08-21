@@ -36,7 +36,7 @@ inline int rank(MPI_Comm const& comm) {
 }
 
 /// Compute the size of a vector block owned by an MPI process for the most
-/// uniform partition of a vector.
+/// even distribution of the vector among all processes.
 /// @param N size of the full vector.
 /// @param comm_size Size of the MPI communicator.
 /// @param comm_rank Rank within the MPI communicator.
@@ -50,7 +50,7 @@ inline int compute_local_block_size(int N, int comm_size, int comm_rank) {
 }
 
 /// Compute the starting index of a vector block owned by an MPI process for
-/// the most uniform partition of a vector.
+/// the most even distribution of the vector among all processes.
 /// @param N size of the full vector.
 /// @param comm_size Size of the MPI communicator.
 /// @param comm_rank Rank within the MPI communicator.

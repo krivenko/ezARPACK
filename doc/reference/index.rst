@@ -7,5 +7,6 @@ API reference
     :caption: List of C++ headers:
 
     solver
+    mpi/solver
     storages/index
     aux

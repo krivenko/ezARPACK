@@ -28,7 +28,7 @@ extern "C" {
 /// @name External ARPACK-NG subroutines p*aupd()
 ///
 /// These subroutines implement the Reverse Communication Interface for the
-/// Implicitly Restarted Arnoldi Iteration.
+/// Implicitly Restarted Arnoldi Iteration in MPI parallelized mode.
 
 /// @{
 
@@ -198,8 +198,8 @@ extern "C" {
 
 /// @name External ARPACK-NG subroutines p*eupd()
 ///
-/// These subroutines return the converged approximations to eigenvalues
-/// of @f$ \hat O \mathbf{z} = \lambda \hat B\mathbf{z} @f$
+/// These MPI parallelized subroutines return the converged approximations to
+/// eigenvalues of @f$ \hat O \mathbf{z} = \lambda \hat B\mathbf{z} @f$
 /// and (optionally):
 ///   -# the corresponding approximate eigenvectors;
 ///   -# an orthonormal basis for the associated approximate invariant subspace;
