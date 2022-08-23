@@ -4,6 +4,10 @@ All notable changes to ezARPACK will be documented in this file.
 
 ## [1.0] - Unreleased
 
+* Wrappers for Parallel ARPACK with MPI message passing layer have been added.
+  New wrapper classes `arpack_worker` are defined in a nested namespace
+  `ezarpack::mpi` and have an API very similar to that of their serial
+  counterparts.
 * New accessor `arpack_solver::dim()` that returns dimension of the eigenproblem.
 * Fixed a serious bug in the Blaze storage backend. By default, Blaze adds
   padding elements to data arrays when storing matrices. This fact was
