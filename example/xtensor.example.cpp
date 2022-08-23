@@ -11,7 +11,7 @@
  *
  ******************************************************************************/
 
-#include <algorithm>
+#include <cmath>
 #include <iostream>
 
 // This example shows how to use ezARPACK and the xtensor storage backend
@@ -48,7 +48,15 @@ int main() {
   //   real matrices;
   // * `arpack_solver<ezarpack::Complex, xtensor_storage>' for general
   //   complex matrices.
-  arpack_solver<ezarpack::Symmetric, xtensor_storage> solver(N);
+  using solver_t = arpack_solver<ezarpack::Symmetric, xtensor_storage>;
+  solver_t solver(N);
+
+  // Specify parameters for the solver
+  using params_t = solver_t::params_t;
+  params_t params(N_ev,               // Number of low-lying eigenvalues
+                  params_t::Smallest, // We want the smallest eigenvalues
+                  true);              // Yes, we want the eigenvectors
+                                      // (Ritz vectors) as well
 
   // Linear operator representing multiplication of a given vector by our matrix
   // The operator must act on the 'in' vector and store results in 'out'.
@@ -65,14 +73,6 @@ int main() {
       }
     }
   };
-
-  // Specify parameters for the solver
-  using params_t =
-      arpack_solver<ezarpack::Symmetric, xtensor_storage>::params_t;
-  params_t params(N_ev,               // Number of low-lying eigenvalues
-                  params_t::Smallest, // We want the smallest eigenvalues
-                  true);              // Yes, we want the eigenvectors
-                                      // (Ritz vectors) as well
 
   // Run diagonalization!
   solver(matrix_op, params);
@@ -93,11 +93,11 @@ int main() {
   auto rhs = xt::xtensor<double, 1>::from_shape({N});
 
   for(int i = 0; i < N_ev; ++i) { // For each eigenpair ...
-    auto col = xt::view(v, xt::all(), i);
-    matrix_op(col, xt::view(lhs, xt::all())); // calculate A*v
-    rhs = lambda(i) * col;                    // and \lambda*v
+    auto const eigenvec = xt::view(v, xt::all(), i);
+    matrix_op(eigenvec, xt::view(lhs, xt::all())); // calculate A*v
+    rhs = lambda(i) * eigenvec;                    // and \lambda*v
 
-    std::cout << i << ": deviation = " << xt::norm_sq(rhs - lhs) / (N * N)
+    std::cout << i << ": deviation = " << xt::norm_l2(rhs - lhs) / N
               << std::endl;
   }
 

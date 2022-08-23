@@ -12,6 +12,7 @@
  ******************************************************************************/
 
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 
 // This example shows how to use ezARPACK and the raw memory storage backend
@@ -42,15 +43,20 @@ int main() {
   // For the raw memory storage backend, other options would be
   // * `arpack_solver<Asymmetric, raw_storage>' for general real matrices;
   // * `arpack_solver<Complex, raw_storage>' for general complex matrices.
-  arpack_solver<Symmetric, raw_storage> solver(N);
+  using solver_t = arpack_solver<Symmetric, raw_storage>;
+  solver_t solver(N);
 
-  using vector_view_t = arpack_solver<Symmetric, raw_storage>::vector_view_t;
-  using vector_const_view_t =
-      arpack_solver<Symmetric, raw_storage>::vector_const_view_t;
+  // Specify parameters for the solver
+  using params_t = solver_t::params_t;
+  params_t params(N_ev,               // Number of low-lying eigenvalues
+                  params_t::Smallest, // We want the smallest eigenvalues
+                  true);              // Yes, we want the eigenvectors
+                                      // (Ritz vectors) as well
 
   // Linear operator representing multiplication of a given vector by our matrix
   // The operator must act on the 'in' vector and store results in 'out'.
-  auto matrix_op = [](vector_const_view_t in, vector_view_t out) {
+  auto matrix_op = [](solver_t::vector_const_view_t in,
+                      solver_t::vector_view_t out) {
     std::fill(out, out + N, 0); // Clear result
 
     // out_i = \sum_j A_{ij} in_j
@@ -63,13 +69,6 @@ int main() {
       }
     }
   };
-
-  // Specify parameters for the solver
-  using params_t = arpack_solver<Symmetric, raw_storage>::params_t;
-  params_t params(N_ev,               // Number of low-lying eigenvalues
-                  params_t::Smallest, // We want the smallest eigenvalues
-                  true);              // Yes, we want the eigenvectors
-                                      // (Ritz vectors) as well
 
   // Run diagonalization!
   solver(matrix_op, params);
@@ -93,9 +92,10 @@ int main() {
   double* lhs = new double[N];
   double* rhs = new double[N];
 
-  for(int i = 0; i < N_ev; ++i) {                   // For each eigenpair ...
-    matrix_op(v + N * i, lhs);                      // calculate A*v
-    std::transform(v + N * i, v + N * (i + 1), rhs, // and \lambda*v
+  for(int i = 0; i < N_ev; ++i) { // For each eigenpair ...
+    auto const eigenvec = v + N * i;
+    matrix_op(eigenvec, lhs);                   // calculate A*v
+    std::transform(eigenvec, eigenvec + N, rhs, // and \lambda*v
                    [&](double x) { return lambda[i] * x; });
 
     double deviation = 0;
@@ -103,7 +103,7 @@ int main() {
       double d = rhs[j] - lhs[j];
       deviation += d * d;
     }
-    deviation /= N * N;
+    deviation = std::sqrt(deviation) / N;
     std::cout << i << ": deviation = " << deviation << std::endl;
   }
 

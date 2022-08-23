@@ -11,7 +11,7 @@
  *
  ******************************************************************************/
 
-#include <algorithm>
+#include <cmath>
 #include <iostream>
 
 // This example shows how to use ezARPACK and the TRIQS storage backend
@@ -43,15 +43,19 @@ int main() {
   // For the TRIQS storage backend, other options would be
   // * `arpack_solver<Asymmetric, triqs_storage>' for general real matrices;
   // * `arpack_solver<Complex, triqs_storage>' for general complex matrices.
-  arpack_solver<Symmetric, triqs_storage> solver(N);
+  using solver_t = arpack_solver<Symmetric, triqs_storage>;
+  solver_t solver(N);
 
-  using vector_view_t = arpack_solver<Symmetric, triqs_storage>::vector_view_t;
-  using vector_const_view_t =
-      arpack_solver<Symmetric, triqs_storage>::vector_const_view_t;
+  // Specify parameters for the solver
+  using params_t = solver_t::params_t;
+  params_t params(N_ev,               // Number of low-lying eigenvalues
+                  params_t::Smallest, // We want the smallest eigenvalues
+                  true);              // Yes, we want the eigenvectors
+                                      // (Ritz vectors) as well
 
   // Linear operator representing multiplication of a given vector by our matrix
   // The operator must act on the 'in' vector and store results in 'out'.
-  auto matrix_op = [](vector_const_view_t in, vector_view_t out) {
+  auto matrix_op = [](auto in, auto out) {
     out() = 0; // Clear result
 
     // out_i = \sum_j A_{ij} in_j
@@ -64,13 +68,6 @@ int main() {
       }
     }
   };
-
-  // Specify parameters for the solver
-  using params_t = arpack_solver<Symmetric, triqs_storage>::params_t;
-  params_t params(N_ev,               // Number of low-lying eigenvalues
-                  params_t::Smallest, // We want the smallest eigenvalues
-                  true);              // Yes, we want the eigenvectors
-                                      // (Ritz vectors) as well
 
   // Run diagonalization!
   solver(matrix_op, params);
@@ -88,12 +85,12 @@ int main() {
   auto const& v = solver.eigenvectors();
   vector<double> lhs(N), rhs(N);
 
-  for(int i = 0; i < N_ev; ++i) {    // For each eigenpair ...
-    matrix_op(v(range(), i), lhs);   // calculate A*v
-    rhs = lambda(i) * v(range(), i); // and \lambda*v
+  for(int i = 0; i < N_ev; ++i) { // For each eigenpair ...
+    auto const eigenvec = v(range(), i);
+    matrix_op(eigenvec, lhs()); // calculate A*v
+    rhs = lambda(i) * eigenvec; // and \lambda*v
 
-    std::cout << i << ": deviation = " << norm2_sqr(rhs - lhs) / (N * N)
-              << std::endl;
+    std::cout << i << ": deviation = " << norm2(rhs - lhs) / N << std::endl;
   }
 
   // Print some computation statistics

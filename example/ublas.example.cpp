@@ -12,6 +12,7 @@
  ******************************************************************************/
 
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 
 // This example shows how to use ezARPACK and the uBLAS storage backend
@@ -36,17 +37,29 @@ const int bandwidth = 5;
 // The number of low-lying eigenvalues we want to compute
 const int N_ev = 10;
 
-// Linear operator representing multiplication of a given vector by our matrix.
-// The operator must act on the 'in' vector and store results in 'out'.
-//
-// NB: With C++14 one could use a generic lambda function instead,
-//
-//  auto matrix_op = [](auto in, auto out) {
-//                   ...
-//  };
-//
-struct {
-  template<typename TIn, typename TOut> void operator()(TIn in, TOut out) {
+int main() {
+
+  // Print ezARPACK version
+  std::cout << "Using ezARPACK version " << EZARPACK_VERSION << std::endl;
+
+  // Construct a solver object for the symmetric case.
+  // For the uBLAS storage backend, other options would be
+  // * `arpack_solver<Asymmetric, ublas_storage>' for general real matrices;
+  // * `arpack_solver<Complex, ublas_storage>' for general complex matrices.
+  using solver_t = arpack_solver<Symmetric, ublas_storage>;
+  solver_t solver(N);
+
+  // Specify parameters for the solver
+  using params_t = solver_t::params_t;
+  params_t params(N_ev,               // Number of low-lying eigenvalues
+                  params_t::Smallest, // We want the smallest eigenvalues
+                  true);              // Yes, we want the eigenvectors
+                                      // (Ritz vectors) as well
+
+  // Linear operator representing multiplication of a given vector by our matrix
+  // The operator must act on the 'in' vector and store results in 'out'.
+  auto matrix_op = [](solver_t::vector_const_view_t in,
+                      solver_t::vector_view_t out) {
     std::fill(out.begin(), out.end(), .0); // Clear result
 
     // out_i = \sum_j A_{ij} in_j
@@ -59,25 +72,6 @@ struct {
       }
     }
   };
-} matrix_op;
-
-int main() {
-
-  // Print ezARPACK version
-  std::cout << "Using ezARPACK version " << EZARPACK_VERSION << std::endl;
-
-  // Construct a solver object for the symmetric case.
-  // For the uBLAS storage backend, other options would be
-  // * `arpack_solver<Asymmetric, ublas_storage>' for general real matrices;
-  // * `arpack_solver<Complex, ublas_storage>' for general complex matrices.
-  arpack_solver<Symmetric, ublas_storage> solver(N);
-
-  // Specify parameters for the solver
-  using params_t = arpack_solver<Symmetric, ublas_storage>::params_t;
-  params_t params(N_ev,               // Number of low-lying eigenvalues
-                  params_t::Smallest, // We want the smallest eigenvalues
-                  true);              // Yes, we want the eigenvectors
-                                      // (Ritz vectors) as well
 
   // Run diagonalization!
   solver(matrix_op, params);
@@ -95,13 +89,12 @@ int main() {
   auto const& v = solver.eigenvectors();
   vector<double> lhs(N), rhs(N);
 
-  for(int i = 0; i < N_ev; ++i) {                 // For each eigenpair ...
-    matrix_op(column(v, i), subrange(lhs, 0, N)); // calculate A*v
-    rhs = lambda(i) * column(v, i);               // and \lambda*v
+  for(int i = 0; i < N_ev; ++i) { // For each eigenpair ...
+    const vector<double> eigenvec = column(v, i);
+    matrix_op(subrange(eigenvec, 0, N), subrange(lhs, 0, N)); // calculate A*v
+    rhs = lambda(i) * eigenvec;                               // and \lambda*v
 
-    std::cout << i
-              << ": deviation = " << std::pow(norm_2(rhs - lhs), 2) / (N * N)
-              << std::endl;
+    std::cout << i << ": deviation = " << norm_2(rhs - lhs) / N << std::endl;
   }
 
   // Print some computation statistics

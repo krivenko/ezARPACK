@@ -11,7 +11,7 @@
  *
  ******************************************************************************/
 
-#include <algorithm>
+#include <cmath>
 #include <iostream>
 
 // This example shows how to use ezARPACK and the Eigen3 storage backend
@@ -34,17 +34,31 @@ const int bandwidth = 5;
 // The number of low-lying eigenvalues we want to compute
 const int N_ev = 10;
 
-// Linear operator representing multiplication of a given vector by our matrix.
-// The operator must act on the 'in' vector and store results in 'out'.
-//
-// NB: With C++14 one could use a generic lambda function instead,
-//
-//  auto matrix_op = [](auto in, auto out) {
-//                   ...
-//  };
-//
-struct {
-  template<typename TIn, typename TOut> void operator()(TIn in, TOut out) {
+int main() {
+
+  // Print ezARPACK version
+  std::cout << "Using ezARPACK version " << EZARPACK_VERSION << std::endl;
+
+  // Construct a solver object for the symmetric case.
+  // For the Eigen3 storage backend, other options would be
+  // * `arpack_solver<ezarpack::Asymmetric, eigen_storage>' for general
+  //   real matrices;
+  // * `arpack_solver<ezarpack::Complex, eigen_storage>' for general
+  //   complex matrices.
+  using solver_t = arpack_solver<ezarpack::Symmetric, eigen_storage>;
+  solver_t solver(N);
+
+  // Specify parameters for the solver
+  using params_t = solver_t::params_t;
+  params_t params(N_ev,               // Number of low-lying eigenvalues
+                  params_t::Smallest, // We want the smallest eigenvalues
+                  true);              // Yes, we want the eigenvectors
+                                      // (Ritz vectors) as well
+
+  // Linear operator representing multiplication of a given vector by our matrix
+  // The operator must act on the 'in' vector and store results in 'out'.
+  auto matrix_op = [](solver_t::vector_const_view_t in,
+                      solver_t::vector_view_t out) {
     out.fill(0); // Clear result
 
     // out_i = \sum_j A_{ij} in_j
@@ -57,27 +71,6 @@ struct {
       }
     }
   };
-} matrix_op;
-
-int main() {
-
-  // Print ezARPACK version
-  std::cout << "Using ezARPACK version " << EZARPACK_VERSION << std::endl;
-
-  // Construct a solver object for the symmetric case.
-  // For the Eigen3 storage backend, other options would be
-  // * `arpack_solver<ezarpack::Asymmetric, eigen_storage>' for general
-  //   real matrices;
-  // * `arpack_solver<ezarpack::Complex, eigen_storage>' for general
-  //   complex matrices.
-  arpack_solver<ezarpack::Symmetric, eigen_storage> solver(N);
-
-  // Specify parameters for the solver
-  using params_t = arpack_solver<ezarpack::Symmetric, eigen_storage>::params_t;
-  params_t params(N_ev,               // Number of low-lying eigenvalues
-                  params_t::Smallest, // We want the smallest eigenvalues
-                  true);              // Yes, we want the eigenvectors
-                                      // (Ritz vectors) as well
 
   // Run diagonalization!
   solver(matrix_op, params);
@@ -95,12 +88,12 @@ int main() {
   auto const& v = solver.eigenvectors();
   VectorXd lhs(N), rhs(N);
 
-  for(int i = 0; i < N_ev; ++i) {     // For each eigenpair ...
-    matrix_op(v.col(i), lhs.head(N)); // calculate A*v
-    rhs = lambda(i) * v.col(i);       // and \lambda*v
+  for(int i = 0; i < N_ev; ++i) { // For each eigenpair ...
+    const VectorXd eigenvec = v.col(i);
+    matrix_op(eigenvec.head(N), lhs.head(N)); // calculate A*v
+    rhs = lambda(i) * eigenvec;               // and \lambda*v
 
-    std::cout << i << ": deviation = " << (rhs - lhs).squaredNorm() / (N * N)
-              << std::endl;
+    std::cout << i << ": deviation = " << (rhs - lhs).norm() / N << std::endl;
   }
 
   // Print some computation statistics
