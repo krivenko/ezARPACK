@@ -18,6 +18,8 @@ option(UBSAN "Compile unit tests with LLVM Undefined Behavior Sanitizer" OFF)
 mark_as_advanced(ASAN)
 mark_as_advanced(UBSAN)
 
+include_directories(${CMAKE_SOURCE_DIR}/test)
+
 if(ASAN)
   if(NOT TARGET asan)
     find_package(sanitizer REQUIRED "asan")
