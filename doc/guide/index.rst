@@ -13,3 +13,4 @@ User guide
     implicit_restarting
     new_backend
     examples
+    examples_mpi
