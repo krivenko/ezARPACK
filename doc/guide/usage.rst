@@ -46,16 +46,13 @@ project.
   cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 
   project(myproject LANGUAGES CXX)
+  set(CMAKE_CXX_STANDARD 11)
 
   # EZARPACK_ROOT is the installation prefix of ezARPACK
   set(ezARPACK_DIR ${EZARPACK_ROOT}/lib/cmake)
 
   # Import ezARPACK target
-  #
-  # Setting EZARPACK_LINK_TO_ARPACK_NG to ON will trigger detection of
-  # ARPACK-NG and linking of the 'ezarpack' target to the ARPACK-NG library.
-  set(EZARPACK_LINK_TO_ARPACK_NG ON)
-  find_package(ezARPACK 0.9 CONFIG REQUIRED)
+  find_package(ezARPACK 1.0 CONFIG REQUIRED)
 
   # Import Eigen (Blaze, Armadillo, etc) targets
   find_package(Eigen3 CONFIG)
@@ -64,16 +61,15 @@ project.
   add_executable(myprog myprog.cpp)
   target_link_libraries(myprog PRIVATE ezarpack Eigen3::Eigen)
 
-Alternatively, you can link ``myprog`` to ARPACK-NG manually.
-
-.. code:: cmake
-
   # ARPACK_NG_ROOT is the installation prefix of ARPACK-NG
   set(arpack-ng_DIR ${ARPACK_NG_ROOT}/lib/cmake)
 
-  # Import ARPACK-NG targets
+  # Find ARPACK-NG
   find_package(arpack-ng 3.6.0 REQUIRED)
 
-  # Link to ARPACK-NG
-  target_link_libraries(myprog ${arpack_ng_LIBRARIES})
-
+  # Link the executable to ARPACK-NG
+  if(arpack_ng_LIBRARIES) # Variable set by ARPACK-NG prior to version 3.8.0
+    target_link_libraries(myprog ${arpack_ng_LIBRARIES})
+  else()                  # ARPACK-NG 3.8.0 and newer
+    target_link_libraries(myprog ARPACK::ARPACK)
+  endif()

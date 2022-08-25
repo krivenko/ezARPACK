@@ -1,11 +1,4 @@
 @PACKAGE_INIT@
 
 include("${CMAKE_CURRENT_LIST_DIR}/ezARPACKTargets.cmake")
-
-# Optionally add the ARPACK-NG libraries to our interface library
-if(EZARPACK_LINK_TO_ARPACK_NG)
-  find_package(arpack-ng @arpack-ng_REQUIRED_VERSION@ REQUIRED CONFIG)
-  target_link_libraries(ezarpack INTERFACE ${arpack_ng_LIBRARIES})
-endif(EZARPACK_LINK_TO_ARPACK_NG)
-
 check_required_components("@PROJECT_NAME@")

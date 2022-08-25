@@ -14,6 +14,8 @@ All notable changes to ezARPACK will be documented in this file.
   overlooked, which resulted in ARPACK procedures being called with wrong `LDV`
   and `LDZ` arguments. Resolving the issue required adding a new function,
   `storage_traits<Backend>::get_col_spacing()`.
+* Drop support for the CMake option `EZARPACK_LINK_TO_ARPACK_NG`:
+  `find_package(ezARPACK)` will never try to detect ARPACK-NG.
 
 ## [0.10] - 2022-02-08
 
