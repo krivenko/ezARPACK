@@ -22,7 +22,7 @@ If your project uses `CMake <https://cmake.org/download/>`_ as its build system,
 you might want to install ezARPACK header files along with CMake configuration
 scripts. This will allow you to import ezARPACK targets, as well as to run unit
 tests and build example programs. The minimum required version of CMake is
-**3.1.0**.
+**3.10.0**.
 
 The following sequence of shell commands will build unit tests and examples.
 
@@ -70,6 +70,13 @@ also depend on external matrix manipulation libraries and will be automatically
 disabled if a usable installation of a respective library cannot be found.
 The ``*_ROOT`` CMake options allow to manually specify installation locations of
 said libraries.
+
+Building the Parallel ARPACK portion of the unit tests and examples requires
+a working implementation of MPI-3.0 or newer. If CMake is unable to detect one
+automatically, refer to
+`this list of environment variables
+<https://cmake.org/cmake/help/latest/module/FindMPI.html#variables-for-locating-mpi>`_
+that affect CMake's search procedure.
 
 Documentation of ezARPACK can optionally be built and installed using the
 ``Documentation`` CMake flag (requires `Doxygen <https://www.doxygen.nl/>`_,
