@@ -328,5 +328,5 @@ deeper overview of ARPACK-NG's capabilities you are referred to the definitive
   ARPACK Users' Guide: Solution of Large Scale Eigenvalue Problems
   with Implicitly Restarted Arnoldi Methods (R. B. Lehoucq, D. C. Sorensen,
   C. Yang, SIAM, 1998),
-  https://www.caam.rice.edu/software/ARPACK/UG/
+  https://epubs.siam.org/doi/book/10.1137/1.9780898719628
 

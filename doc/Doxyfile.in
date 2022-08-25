@@ -25,3 +25,5 @@ PREDEFINED = "DOXYGEN_IGNORE"
 SORT_MEMBER_DOCS = NO
 EXTRACT_PRIVATE = YES
 HIDE_UNDOC_MEMBERS = YES
+
+ALIASES = arpack_manual_url="http://li.mit.edu/Archive/Activities/Archive/CourseWork/Ju_Li/MITCourses/18.335/Doc/ARPACK/Lehoucq97.pdf"

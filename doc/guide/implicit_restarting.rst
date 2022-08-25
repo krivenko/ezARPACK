@@ -16,7 +16,7 @@ in a basis compression process, which helps filter unwanted information and
 enhance the components of the basis vectors belonging to the relevant
 subspace. A complete description of this restarting scheme can be found in
 `Section 4.4 of ARPACK Users' Guide \
-<https://www.caam.rice.edu/software/ARPACK/UG/node50.html>`_.
+<http://li.mit.edu/Archive/Activities/Archive/CourseWork/Ju_Li/MITCourses/18.335/Doc/ARPACK/Lehoucq97.pdf#page=64>`_.
 
 In some (rather rare) cases, one may want to deviate from the default
 "Exact Shift Strategy" and change the way those shifts are selected/computed.
