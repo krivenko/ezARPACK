@@ -11,6 +11,9 @@ two ways to use ezARPACK. Either way, you would need
   <https://github.com/opencollab/arpack-ng>`_ (version 3.6.0 or newer).
 * One of supported :ref:`linear algebra libraries <backends>` (unless
   you are going to :ref:`add support for a new one <new_backend>`).
+* A working implementation of MPI-3.0 or newer, such as
+  `OpenMPI <https://www.open-mpi.org/>`_ or `MPICH <https://www.mpich.org/>`_,
+  if you plan to use the :ref:`Parallel ARPACK solvers <mpi>`.
 
 Makefiles/no build system
 -------------------------
@@ -26,12 +29,13 @@ directory. A compiler command line for your program can be as simple as
 
 (similar for ``clang++`` and other compilers). More ``-I`` flags might be needed
 if the linear algebra framework you choose is not visible to the compiler by
-default.
+default. Similarly, adding ``-L<MPI_ROOT>/lib -lmpi`` may be necessary if you
+are using an MPI implementation installed in a non-system location.
 
 .. note::
 
   When linking to the static version of ARPACK-NG library
-  (``libarpack.a``), you might also need to explicitly link your code to
+  (``libarpack.a``), you might also need to explicitly link your executable to
   a BLAS/LAPACK implementation. A common symptom of this problem is
   undefined references to ``dgemv_`` and other LAPACK subroutines.
 
@@ -43,7 +47,7 @@ project.
 
 .. code:: cmake
 
-  cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+  cmake_minimum_required(VERSION 3.10.0 FATAL_ERROR)
 
   project(myproject LANGUAGES CXX)
   set(CMAKE_CXX_STANDARD 11)
@@ -68,8 +72,24 @@ project.
   find_package(arpack-ng 3.6.0 REQUIRED)
 
   # Link the executable to ARPACK-NG
-  if(arpack_ng_LIBRARIES) # Variable set by ARPACK-NG prior to version 3.8.0
-    target_link_libraries(myprog ${arpack_ng_LIBRARIES})
-  else()                  # ARPACK-NG 3.8.0 and newer
+  if(TARGET ARPACK::ARPACK) # ARPACK-NG 3.8.0 and newer
     target_link_libraries(myprog ARPACK::ARPACK)
+  else() # ARPACK-NG prior to version 3.8.0
+    target_link_libraries(myprog ${arpack_ng_LIBRARIES})
+  endif()
+
+In order to make the :ref:`Parallel ARPACK solvers <mpi>` work, ``myprog``
+must be additionally linked to MPI and PARPACK (only for ARPACK-NG>=3.8.0) .
+
+.. code:: cmake
+
+  # Find MPI-3.0 or newer
+  find_package(MPI 3.0)
+
+  # Add MPI include directories and link to MPI libraries
+  target_include_directories(myprog ${MPI_CXX_INCLUDE_PATH})
+  target_link_libraries(myprog ${MPI_CXX_LIBRARIES})
+
+  if(TARGET PARPACK::PARPACK) # ARPACK-NG 3.8.0 and newer
+    target_link_libraries(myprog PARPACK::PARPACK)
   endif()

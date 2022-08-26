@@ -22,9 +22,10 @@ In some (rather rare) cases, one may want to deviate from the default
 "Exact Shift Strategy" and change the way those shifts are selected/computed.
 ezARPACK allows for customization of the implicit restarting via an optional
 extra argument of ``operator()`` in specializations of
-:ref:`ezarpack::arpack_solver <refsolverbase>`. The argument is expected to be
-a callable object ``shifts_f`` that supplies a list of shifts. It must have one
-of the following signatures.
+:ref:`ezarpack::arpack_solver <refsolverbase>`
+(or :ref:`ezarpack::mpi::arpack_solver <refmpisolverbase>`). The argument is
+expected to be a callable object ``shifts_f`` that supplies a list of shifts.
+It must have one of the following signatures.
 
 * For :ref:`ezarpack::arpack_solver\<Symmetric, Backend\> <refsolversymmetric>`:
 

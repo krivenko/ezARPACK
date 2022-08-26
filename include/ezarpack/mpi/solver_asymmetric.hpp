@@ -759,8 +759,8 @@ public:
   /// IRAM iteration?
   bool Bx_available() const { return Bx_available_; }
 
-  /// Returns a constant view of the most recently computed vector
-  /// @f$ \hat B\mathbf{x} @f$.
+  /// Returns a constant view of the MPI rank-local block of the most recently
+  /// computed vector @f$ \hat B\mathbf{x} @f$.
   real_vector_const_view_t Bx_vector() const {
     int n = ipntr[2] - 1;
     return storage::make_vector_const_view(workd, n, block_size);

@@ -9,6 +9,7 @@ User guide
     symmetric
     asymmetric
     complex
+    mpi
     backends
     implicit_restarting
     new_backend
