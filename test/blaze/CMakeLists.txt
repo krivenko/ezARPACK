@@ -8,28 +8,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-find_package(LAPACK)
-if(LAPACK_FOUND)
+foreach(t symmetric asymmetric complex)
+  set(s ${t}.cpp)
+  set(t blaze.solver_${t})
+  add_blaze_executable(${t} ${s})
+  target_link_libraries(${t} PRIVATE catch2 ${ARPACK_LIBRARIES})
+  add_test(NAME ${t} COMMAND ${t})
+endforeach()
 
+# MPI tests
+if(MPI_FOUND)
   foreach(t symmetric asymmetric complex)
-    set(s ${t}.cpp)
-    set(t blaze.solver_${t})
+    set(s mpi/${t}.cpp)
+    set(t blaze.solver_${t}.mpi)
     add_blaze_executable(${t} ${s})
-    target_link_libraries(${t} PRIVATE catch2 ${LAPACK_LIBRARIES})
-    add_test(NAME ${t} COMMAND ${t})
+    target_link_libraries(${t} PRIVATE catch2_mpi ${PARPACK_LIBRARIES})
+    add_mpi_test(${t} 1 2 3 4)
   endforeach()
-
-  # MPI tests
-  if(MPI_FOUND)
-    foreach(t symmetric asymmetric complex)
-      set(s mpi/${t}.cpp)
-      set(t blaze.solver_${t}.mpi)
-      add_blaze_executable(${t} ${s})
-      target_link_libraries(${t} PRIVATE catch2_mpi ${LAPACK_LIBRARIES})
-      add_mpi_test(${t} 1 2 3 4)
-    endforeach()
-  endif()
-
-else(LAPACK_FOUND)
-  message(STATUS "Cannot build Blaze storage backend tests without LAPACK")
-endif(LAPACK_FOUND)
+endif()

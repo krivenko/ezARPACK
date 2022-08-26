@@ -28,78 +28,33 @@ option(Tests "Build unit tests" ON)
 option(Examples "Build examples" ON)
 option(Documentation "Build documentation" OFF)
 
-# Detect an MPI implementation for MPI-tests and/or examples
+# Are we building any executables?
 if(Tests OR Examples)
+
+  # Detect an MPI implementation for MPI-tests and/or examples
   find_package(MPI 3.0)
   if(MPI_FOUND)
     message(STATUS "MPI_CXX_INCLUDE_PATH: ${MPI_CXX_INCLUDE_PATH}")
     message(STATUS "MPI_CXX_LIBRARIES: ${MPI_CXX_LIBRARIES}")
   endif(MPI_FOUND)
-endif()
 
-# Detect ARPACK-NG as an optional dependency
-set(arpack-ng_REQUIRED_VERSION 3.6.0)
-
-if(Skip_arpack-ng)
-  message(STATUS "Skipping detection of ARPACK-NG libraries")
-else(Skip_arpack-ng)
-  message(STATUS "Detecting ARPACK-NG libraries")
-
-  if((NOT arpack-ng_DIR) AND ARPACK_NG_ROOT)
-    find_package(arpack-ng CONFIG ${arpack-ng_REQUIRED_VERSION}
-                 NAMES arpackng arpack-ng
-                 PATHS ${ARPACK_NG_ROOT}/lib/cmake
-                       ${ARPACK_NG_ROOT}/lib/cmake/arpack-ng
-                 NO_DEFAULT_PATH)
-  else((NOT arpack-ng_DIR) AND ARPACK_NG_ROOT)
-    find_package(arpack-ng CONFIG ${arpack-ng_REQUIRED_VERSION}
-                 NAMES arpackng arpack-ng)
-  endif((NOT arpack-ng_DIR) AND ARPACK_NG_ROOT)
+  # Detect ARPACK-NG
+  include(cmake/FindARPACKNG.cmake)
 
   if(arpack-ng_FOUND)
-    message(STATUS "Found ARPACK-NG version ${arpack-ng_VERSION}")
+    # Set default build type to Release
+    if(NOT DEFINED CMAKE_BUILD_TYPE)
+      set(CMAKE_BUILD_TYPE Release CACHE)
+    endif(NOT DEFINED CMAKE_BUILD_TYPE)
 
-    # Find LAPACK
-    find_package(LAPACK)
-    if(LAPACK_FOUND)
-      if(arpack_ng_LIBRARIES) # ARPACK-NG prior to version 3.8.0
-        set(arpack_ng_LIBRARIES ${arpack_ng_LIBRARIES} ${LAPACK_LIBRARIES})
-      else(arpack_ng_LIBRARIES) # ARPACK-NG 3.8.0 and newer
-        set(arpack_ng_LIBRARIES ARPACK::ARPACK ${LAPACK_LIBRARIES})
-        if(MPI_FOUND)
-          set(arpack_ng_LIBRARIES ${arpack_ng_LIBRARIES} PARPACK::PARPACK)
-        endif(MPI_FOUND)
-      endif(arpack_ng_LIBRARIES)
-    else(LAPACK_FOUND)
-      message(STATUS "LAPACK not found. "
-                     "Disabling compilation of examples and unit tests.")
-      unset(arpack-ng_FOUND)
-    endif(LAPACK_FOUND)
+    # Find all storage backends
+    include(cmake/FindBackends.cmake)
 
-  else(arpack-ng_FOUND)
-    message(STATUS "ARPACK-NG not found. "
-                   "Disabling compilation of examples and unit tests.")
+    # Add ezARPACK include directory to all targets that require building
+    include_directories(${CMAKE_SOURCE_DIR}/include)
   endif(arpack-ng_FOUND)
 
-  if(arpack-ng_FOUND)
-    message(STATUS "arpack_ng_LIBRARIES: ${arpack_ng_LIBRARIES}")
-  endif(arpack-ng_FOUND)
-endif(Skip_arpack-ng)
-
-# Are we building any components?
-if(arpack-ng_FOUND AND (Tests OR Examples))
-
-  # Set default build type to Release
-  if(NOT DEFINED CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release CACHE)
-  endif(NOT DEFINED CMAKE_BUILD_TYPE)
-
-  # Add ezARPACK include directory to all targets that require building
-  include_directories(${CMAKE_SOURCE_DIR}/include)
-
-  # Find all storage backends
-  include(cmake/FindBackends.cmake)
-endif()
+endif(Tests OR Examples)
 
 # Install C++ headers
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include
