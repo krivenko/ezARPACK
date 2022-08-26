@@ -125,7 +125,6 @@ if(TRIQS_FOUND)
     add_executable(${name} ${source})
     target_link_libraries(${name} PRIVATE ezarpack triqs ${arpack_ng_LIBRARIES})
     triqs_set_rpath_for_target(${name})
-    set_property(TARGET ${name} PROPERTY CXX_STANDARD 17)
   endmacro()
 endif(TRIQS_FOUND)
 
