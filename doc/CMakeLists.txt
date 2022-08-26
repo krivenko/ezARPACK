@@ -38,6 +38,8 @@ set(SPHINX_CONFIG ${CMAKE_CURRENT_BINARY_DIR}/conf.py)
 set(SPHINX_INDEX_FILE ${SPHINX_BUILD}/index.html)
 set(BREATHE_PROJECT ${DOXYGEN_OUTPUT_DIR}/xml)
 
+file(GLOB_RECURSE ALL_RST ${CMAKE_CURRENT_SOURCE_DIR}/*.rst)
+
 # Generate Sphinx config
 configure_file(conf.py.in conf.py @ONLY)
 
@@ -47,9 +49,7 @@ add_custom_command(OUTPUT ${SPHINX_INDEX_FILE}
                    ${SPHINX_COMMAND} -c ${CMAKE_CURRENT_BINARY_DIR} -b html
                    ${SPHINX_SOURCE} ${SPHINX_BUILD}
                    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-                   DEPENDS
-                   ${CMAKE_CURRENT_SOURCE_DIR}/index.rst
-                   ${DOXYGEN_INDEX_FILE}
+                   DEPENDS ${ALL_RST} ${DOXYGEN_INDEX_FILE}
                    MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/conf.py
                    COMMENT "Generating documentation with Sphinx")
 
