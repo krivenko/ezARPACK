@@ -63,7 +63,8 @@ jobs:
         pushd arpack-ng
         cmake . -DCMAKE_BUILD_TYPE=Release                                     \
                 -DCMAKE_INSTALL_PREFIX=$HOME/arpack-ng.installed               \
-                -DBUILD_SHARED_LIBS=ON
+                -DBUILD_SHARED_LIBS=ON                                         \
+                -DMPI=ON
         make -j2
         ctest --output-on-failure
         make install
