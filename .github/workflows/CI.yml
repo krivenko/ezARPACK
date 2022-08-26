@@ -134,7 +134,7 @@ jobs:
         make install
         popd
 
-    - name: Build and test ezARPACK
+    - name: Build ezARPACK
       env:
         CC: ${{ matrix.compiler.cc }}
         CXX: ${{ matrix.compiler.cxx }}
@@ -163,8 +163,17 @@ jobs:
           -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}"                               \
           ${DOCS_CMAKE_ARGS}
         make -j2 VERBOSE=1
-        ctest --output-on-failure
         make install
+        popd
+
+    - name: Test ezARPACK
+      run: |
+        sudo sh -c 'echo -e "\nrmaps_base_oversubscribe = 1" >>                \
+          /etc/openmpi/openmpi-mca-params.conf'
+        source $HOME/triqs.installed/share/triqsvars.sh
+        source $HOME/nda.installed/share/nda/ndavars.sh
+        pushd ezARPACK.build
+        ctest --output-on-failure
         popd
 
     - name: Prepare documentation for deployment
