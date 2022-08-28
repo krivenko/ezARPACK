@@ -16,10 +16,10 @@ jobs:
 
     strategy:
       matrix:
-        compiler: [{cc: gcc-10, cxx: g++-10}, {cc: clang-12, cxx: clang++-12}]
+        compiler: [{cc: gcc-11, cxx: g++-11}, {cc: clang-14, cxx: clang++-14}]
         arpackng: [3.6.0, 3.7.0, 3.8.0, master]
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v2
@@ -30,10 +30,9 @@ jobs:
     - name: Install Ubuntu dependencies
       run: >
         sudo apt-get install
-        g++-10
-        clang-12
-        libgfortran4
-        gfortran
+        g++-11
+        gfortran-11
+        clang-14
         libopenblas-dev
         libboost-dev
         libeigen3-dev
@@ -57,6 +56,9 @@ jobs:
         pip3 install -U sphinx breathe myst-parser
 
     - name: Build and install ARPACK-NG
+      env:
+        # To fix compilation of versions 3.6.0 and 3.7.0 with gfortran 11
+        FFLAGS: -fallow-argument-mismatch
       run: |
         git clone --branch ${{ matrix.arpackng }}                              \
                   https://github.com/opencollab/arpack-ng.git arpack-ng
