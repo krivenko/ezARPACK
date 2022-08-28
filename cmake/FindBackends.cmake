@@ -17,9 +17,6 @@ macro(add_raw_executable name source)
 endmacro()
 
 # Find Eigen3
-if(NOT POLICY CMP0074)
-  set(Eigen3_DIR ${Eigen3_ROOT}/share/eigen3/cmake)
-endif(NOT POLICY CMP0074)
 find_package(Eigen3 CONFIG)
 if(Eigen3_FOUND)
   if(Eigen3_VERSION)
@@ -52,9 +49,6 @@ if(Eigen3_FOUND)
 endif(Eigen3_FOUND)
 
 # Find Blaze
-if(NOT POLICY CMP0074)
-  set(blaze_DIR ${blaze_ROOT}/share/blaze/cmake)
-endif(NOT POLICY CMP0074)
 find_package(blaze 3.0 QUIET CONFIG)
 if(blaze_FOUND)
   message(STATUS "Found Blaze version ${blaze_VERSION}")
@@ -69,9 +63,6 @@ if(blaze_FOUND)
 endif(blaze_FOUND)
 
 # Armadillo
-if(NOT POLICY CMP0074)
-  set(Armadillo_DIR ${Armadillo_ROOT}/share/Armadillo/CMake)
-endif(NOT POLICY CMP0074)
 find_package(Armadillo QUIET CONFIG)
 if(NOT Armadillo_FOUND)
   if(Armadillo_ROOT)
@@ -114,10 +105,6 @@ if(Boost_FOUND)
 endif(Boost_FOUND)
 
 # Find TRIQS
-if(NOT POLICY CMP0074)
-  set(Cpp2Py_DIR ${TRIQS_ROOT}/lib/cmake/cpp2py)
-  set(TRIQS_DIR ${TRIQS_ROOT}/lib/cmake/triqs)
-endif(NOT POLICY CMP0074)
 find_package(Cpp2Py CONFIG)
 find_package(TRIQS CONFIG)
 if(TRIQS_FOUND)
@@ -129,9 +116,6 @@ if(TRIQS_FOUND)
 endif(TRIQS_FOUND)
 
 # Find TRIQS nda
-if(NOT POLICY CMP0074)
-  set(nda_DIR ${nda_ROOT}/lib/cmake/nda)
-endif(NOT POLICY CMP0074)
 find_package(nda 1.1.0 CONFIG)
 if(nda_FOUND)
   macro(add_nda_executable name source)
@@ -148,18 +132,10 @@ if(nda_FOUND)
     set_target_properties(${name} PROPERTIES BUILD_WITH_INSTALL_RPATH FALSE)
     set_target_properties(${name} PROPERTIES SKIP_BUILD_RPATH FALSE)
     set_target_properties(${name} PROPERTIES SKIP_INSTALL_RPATH FALSE)
-    # FIXME: Setting CXX_STANDARD to 20 would require CMake >= 3.12,
-    # which is too new to ask for.
-    target_compile_options(${name} PRIVATE "-std=c++20")
   endmacro()
 endif(nda_FOUND)
 
 # Find xtensor
-if(NOT POLICY CMP0074)
-  set(xtl_DIR ${xtensor_ROOT}/lib/cmake/xtl)
-  set(xtensor_DIR ${xtensor_ROOT}/lib/cmake/xtensor)
-  set(xtensor-blas_DIR ${xtensor-blas_ROOT}/lib/cmake/xtensor-blas)
-endif(NOT POLICY CMP0074)
 find_package(xtensor CONFIG 0.20)
 find_package(xtensor-blas CONFIG 0.16)
 if(xtensor_FOUND AND xtensor-blas_FOUND)

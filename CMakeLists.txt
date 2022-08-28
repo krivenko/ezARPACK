@@ -9,7 +9,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 # Start configuration
-cmake_minimum_required(VERSION 3.10.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
 
 # Project name and version
 set(EZARPACK_VERSION 1.0)
@@ -21,12 +21,6 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
   message(FATAL_ERROR "In-source builds are not allowed."
                       "Please make a separate build directory.")
 endif(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-
-# find_package() should take into account <PackageName>_ROOT
-# CMake variables and environment variables. Requires CMake 3.12 or newer.
-if(POLICY CMP0074)
-  cmake_policy(SET CMP0074 NEW)
-endif(POLICY CMP0074)
 
 # CMake options
 option(Skip_arpack-ng "Skip detection of ARPACK-NG" OFF)
