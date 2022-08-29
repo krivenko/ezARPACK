@@ -125,9 +125,10 @@ public:
     /// Kinds of vectors to compute.
     enum compute_vectors_t {
       None, /**< Do not compute neither Ritz nor Schur vectors. */
-      Ritz, /**< Compute Ritz vectors (eigenvectors). */
-      Schur /**< Compute Schur vectors (orthogonal basis vectors of
+      Schur, /**< Compute Schur vectors (orthogonal basis vectors of
                  the @ref n_eigenvalues -dimensional subspace). */
+      Ritz /**< Compute Ritz vectors (eigenvectors) in addition
+                 to the orthogonal basis vectors (Schur vectors). */
     };
 
     /// Compute Ritz or Schur vectors?
