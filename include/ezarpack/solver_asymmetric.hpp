@@ -645,7 +645,7 @@ public:
     return storage::make_asymm_eigenvectors(z, di, N, nconv());
   }
 
-  /// Returns a view of a matrix, whose @ref params_t::ncv columns are
+  /// Returns a view of a matrix, whose @ref nconv() columns are
   /// Schur basis vectors.
   /// @throws std::runtime_error Schur vectors have not been computed in the
   /// last IRAM run.

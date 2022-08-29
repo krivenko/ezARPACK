@@ -654,7 +654,7 @@ public:
     return storage::make_matrix_const_view(z, block_size, nconv());
   }
 
-  /// Returns a view of a matrix, whose @ref params_t::ncv columns are
+  /// Returns a view of a matrix, whose @ref nconv() columns are
   /// MPI rank-local blocks of Schur basis vectors.
   /// @throws std::runtime_error Schur vectors have not been computed in the
   /// last IRAM run.
