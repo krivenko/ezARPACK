@@ -103,6 +103,7 @@ private:
   real_matrix_t v;            // Matrix with Arnoldi basis vectors
   int ldv = 0;                // Leading dimension of v
   real_vector_t z;            // Flattened matrix with Ritz vectors
+  int ldz = 0;                // Leading dimension of z
   real_vector_t dr, di;       // Ritz values (real and imaginary parts)
   int iparam[11];             // Various input/output parameters
   int ipntr[14];              // Starting locations in workd and workl
@@ -298,10 +299,17 @@ private:
     rvec = (params.compute_vectors != params_t::None);
     howmny = params.compute_vectors == params_t::Schur ? 'P' : 'A';
     storage::resize(select, ncv);
-    if(rvec)
+
+    // According to pdneupd() docs, 'z' is not referenced if howmny == 'P'.
+    // In fact, however, passing a zero-size 'z' in the Schur vector mode
+    // results in a SEGFAULT.
+    if(rvec) {
       storage::resize(z, block_size * (nev + 1));
-    else
+      ldz = block_size;
+    } else {
       storage::resize(z, 0);
+      ldz = 1;
+    }
 
     // Tolerance
     tol = std::max(.0, params.tolerance);
@@ -434,12 +442,11 @@ public:
 
     f77::peupd(comm, rvec, &howmny, storage::get_data_ptr(select),
                storage::get_data_ptr(dr), storage::get_data_ptr(di),
-               storage::get_data_ptr(z), (rvec ? block_size : 0), sigmar,
-               sigmai, storage::get_data_ptr(workev), "I", block_size, which,
-               nev, tol, storage::get_data_ptr(resid), ncv,
-               storage::get_data_ptr(v), ldv, iparam, ipntr,
-               storage::get_data_ptr(workd), storage::get_data_ptr(workl),
-               workl_size, info);
+               storage::get_data_ptr(z), ldz, sigmar, sigmai,
+               storage::get_data_ptr(workev), "I", block_size, which, nev, tol,
+               storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v), ldv,
+               iparam, ipntr, storage::get_data_ptr(workd),
+               storage::get_data_ptr(workl), workl_size, info);
 
     storage::destroy(workev);
     storage::destroy(workl);
@@ -640,12 +647,11 @@ public:
 
     f77::peupd(comm, rvec, &howmny, storage::get_data_ptr(select),
                storage::get_data_ptr(dr), storage::get_data_ptr(di),
-               storage::get_data_ptr(z), (rvec ? block_size : 0), sigmar,
-               sigmai, storage::get_data_ptr(workev), "G", block_size, which,
-               nev, tol, storage::get_data_ptr(resid), ncv,
-               storage::get_data_ptr(v), ldv, iparam, ipntr,
-               storage::get_data_ptr(workd), storage::get_data_ptr(workl),
-               workl_size, info);
+               storage::get_data_ptr(z), ldz, sigmar, sigmai,
+               storage::get_data_ptr(workev), "G", block_size, which, nev, tol,
+               storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v), ldv,
+               iparam, ipntr, storage::get_data_ptr(workd),
+               storage::get_data_ptr(workl), workl_size, info);
 
     storage::destroy(workev);
     storage::destroy(workl);

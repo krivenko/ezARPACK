@@ -90,6 +90,7 @@ private:
   real_matrix_t v;            // Matrix with Arnoldi basis vectors
   int ldv = 0;                // Leading dimension of v
   real_vector_t z;            // Flattened matrix with Ritz vectors
+  int ldz = 0;                // Leading dimension of z
   real_vector_t dr, di;       // Ritz values (real and imaginary parts)
   int iparam[11];             // Various input/output parameters
   int ipntr[14];              // Starting locations in workd and workl
@@ -128,11 +129,11 @@ public:
 
     /// Kinds of vectors to compute.
     enum compute_vectors_t {
-      None, /**< Do not compute neither Ritz nor Schur vectors. */
+      None,  /**< Do not compute neither Ritz nor Schur vectors. */
       Schur, /**< Compute Schur vectors (orthogonal basis vectors of
                  the @ref n_eigenvalues -dimensional subspace). */
-      Ritz /**< Compute Ritz vectors (eigenvectors) in addition
-                 to the orthogonal basis vectors (Schur vectors). */
+      Ritz   /**< Compute Ritz vectors (eigenvectors) in addition
+                   to the orthogonal basis vectors (Schur vectors). */
     };
 
     /// Compute Ritz or Schur vectors?
@@ -232,10 +233,17 @@ private:
     rvec = (params.compute_vectors != params_t::None);
     howmny = params.compute_vectors == params_t::Schur ? 'P' : 'A';
     storage::resize(select, ncv);
-    if(rvec)
+
+    // According to dneupd() docs, 'z' is not referenced if howmny == 'P'.
+    // In fact, however, passing a zero-size 'z' in the Schur vector mode
+    // results in a SEGFAULT.
+    if(rvec) {
       storage::resize(z, N * (nev + 1));
-    else
+      ldz = N;
+    } else {
       storage::resize(z, 0);
+      ldz = 1;
+    }
 
     // Tolerance
     tol = std::max(.0, params.tolerance);
@@ -364,7 +372,7 @@ public:
 
     f77::eupd(rvec, &howmny, storage::get_data_ptr(select),
               storage::get_data_ptr(dr), storage::get_data_ptr(di),
-              storage::get_data_ptr(z), (rvec ? N : 0), sigmar, sigmai,
+              storage::get_data_ptr(z), ldz, sigmar, sigmai,
               storage::get_data_ptr(workev), "I", N, which, nev, tol,
               storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v), ldv,
               iparam, ipntr, storage::get_data_ptr(workd),
@@ -561,7 +569,7 @@ public:
 
     f77::eupd(rvec, &howmny, storage::get_data_ptr(select),
               storage::get_data_ptr(dr), storage::get_data_ptr(di),
-              storage::get_data_ptr(z), (rvec ? N : 0), sigmar, sigmai,
+              storage::get_data_ptr(z), ldz, sigmar, sigmai,
               storage::get_data_ptr(workev), "G", N, which, nev, tol,
               storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v), ldv,
               iparam, ipntr, storage::get_data_ptr(workd),
