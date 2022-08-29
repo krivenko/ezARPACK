@@ -638,9 +638,14 @@ public:
   }
 
   /// Returns a constant view of a matrix, whose
-  /// @ref nconv() columns are MPI rank-local blocks of converged Lanczos basis
+  /// @ref nconv() columns are MPI rank-local blocks of converged Ritz basis
   /// vectors (eigenvectors).
+  /// @throws std::runtime_error Ritz vectors have not been computed in the
+  /// last IRLM run.
   real_matrix_const_view_t eigenvectors() const {
+    if(!rvec)
+      throw ARPACK_SOLVER_ERROR(
+          "Invalid method call: Ritz vectors have not been computed");
     return storage::make_matrix_const_view(v, block_size, nconv());
   }
 

@@ -219,6 +219,42 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     CHECK_THROWS(ar.workspace_vector(3));
   }
 
+  SECTION("Skip computation of eigenvectors") {
+    solver_t ar(first_dim(A), MPI_COMM_WORLD);
+    REQUIRE(ar.dim() == first_dim(A));
+
+    params_t params(nev, params_t::Smallest, false);
+    params.random_residual_vector = false;
+
+    SECTION("Standard eigenproblem") {
+      auto Aop = [&](vector_const_view_t in, vector_view_t out) {
+        mat_vec(A, in, out);
+      };
+
+      set_init_residual_vector(ar);
+      ar(Aop, params);
+      CHECK(ar.nconv() >= nev);
+      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
+    }
+
+    SECTION("Generalized eigenproblem: invert mode") {
+      decltype(A) invM = inverse(M);
+
+      auto op = [&](vector_view_t in, vector_view_t out) {
+        mat_vec(A, in, in);
+        mat_vec(invM, in, out);
+      };
+      auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+        mat_vec(M, in, out);
+      };
+
+      set_init_residual_vector(ar);
+      ar(op, Bop, solver_t::Inverse, params);
+      CHECK(ar.nconv() >= nev);
+      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
+    }
+  }
+
   SECTION("Custom implementation of the Exact Shift Strategy") {
     std::vector<int> p;
     p.reserve(first_dim(A));

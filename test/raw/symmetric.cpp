@@ -263,4 +263,44 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     CHECK_THROWS(ar.workspace_vector(-1));
     CHECK_THROWS(ar.workspace_vector(3));
   }
+
+  SECTION("Skip computation of eigenvectors") {
+    solver_t ar(N);
+    REQUIRE(ar.dim() == N);
+
+    params_t params(nev, params_t::Smallest, false);
+    params.random_residual_vector = false;
+
+    SECTION("Standard eigenproblem") {
+      auto Aop = [&](vector_const_view_t in, vector_view_t out) {
+        mv_product(A.get(), in, out, N);
+      };
+
+      set_init_residual_vector(ar);
+      ar(Aop, params);
+      CHECK(ar.nconv() >= nev);
+      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
+    }
+
+    SECTION("Generalized eigenproblem: invert mode") {
+      auto invM = make_buffer<double>(N * N);
+      invert(M.get(), invM.get(), N);
+
+      auto tmp = make_buffer<double>(N);
+      auto op = [&](vector_view_t in, vector_view_t out) {
+        mv_product(A.get(), in, tmp.get(), N);
+        std::copy(tmp.get(), tmp.get() + N, in);
+
+        mv_product(invM.get(), in, out, N);
+      };
+      auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+        mv_product(M.get(), in, out, N);
+      };
+
+      set_init_residual_vector(ar);
+      ar(op, Bop, solver_t::Inverse, params);
+      CHECK(ar.nconv() >= nev);
+      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
+    }
+  }
 }
