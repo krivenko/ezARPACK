@@ -124,11 +124,11 @@ public:
 
     /// Kinds of vectors to compute.
     enum compute_vectors_t {
-      None, /**< Do not compute neither Ritz nor Schur vectors. */
+      None,  /**< Do not compute neither Ritz nor Schur vectors. */
       Schur, /**< Compute Schur vectors (orthogonal basis vectors of
                  the @ref n_eigenvalues -dimensional subspace). */
-      Ritz /**< Compute Ritz vectors (eigenvectors) in addition
-                 to the orthogonal basis vectors (Schur vectors). */
+      Ritz   /**< Compute Ritz vectors (eigenvectors) in addition
+                   to the orthogonal basis vectors (Schur vectors). */
     };
 
     /// Compute Ritz or Schur vectors?
@@ -226,12 +226,16 @@ private:
     rvec = (params.compute_vectors != params_t::None);
     howmny = params.compute_vectors == params_t::Schur ? 'P' : 'A';
     storage::resize(select, ncv);
-    if(rvec && params.compute_vectors == params_t::Ritz) {
+
+    // According to zneupd() docs, 'z' is not referenced if howmny == 'P'.
+    // In fact, however, passing a zero-size 'z' in the Schur vector mode
+    // results in a SEGFAULT.
+    if(rvec) {
       storage::resize(z, N, nev + 1);
       ldz = storage::get_col_spacing(z) >= 0 ? storage::get_col_spacing(z) : N;
     } else {
-      storage::resize(z, 1, nev + 1);
-      ldz = storage::get_col_spacing(z) >= 0 ? storage::get_col_spacing(z) : 1;
+      storage::resize(z, 0, nev + 1);
+      ldz = 1;
     }
 
     // Tolerance
@@ -350,8 +354,7 @@ public:
     complex_vector_t workev = storage::make_complex_vector(2 * ncv);
 
     f77::eupd(rvec, &howmny, storage::get_data_ptr(select),
-              storage::get_data_ptr(d), storage::get_data_ptr(z),
-              ((rvec && params.compute_vectors == params_t::Ritz) ? ldz : 1),
+              storage::get_data_ptr(d), storage::get_data_ptr(z), ldz,
               params.sigma, storage::get_data_ptr(workev), "I", N, which, nev,
               tol, storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v),
               ldv, iparam, ipntr, storage::get_data_ptr(workd),
@@ -502,8 +505,7 @@ public:
     complex_vector_t workev = storage::make_complex_vector(2 * ncv);
 
     f77::eupd(rvec, &howmny, storage::get_data_ptr(select),
-              storage::get_data_ptr(d), storage::get_data_ptr(z),
-              ((rvec && params.compute_vectors == params_t::Ritz) ? ldz : 1),
+              storage::get_data_ptr(d), storage::get_data_ptr(z), ldz,
               params.sigma, storage::get_data_ptr(workev), "G", N, which, nev,
               tol, storage::get_data_ptr(resid), ncv, storage::get_data_ptr(v),
               ldv, iparam, ipntr, storage::get_data_ptr(workd),

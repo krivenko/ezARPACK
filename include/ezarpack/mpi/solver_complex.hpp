@@ -291,13 +291,17 @@ private:
     rvec = (params.compute_vectors != params_t::None);
     howmny = params.compute_vectors == params_t::Schur ? 'P' : 'A';
     storage::resize(select, ncv);
-    if(rvec && params.compute_vectors == params_t::Ritz) {
+
+    // According to pzneupd() docs, 'z' is not referenced if howmny == 'P'.
+    // In fact, however, passing a zero-size 'z' in the Schur vector mode
+    // results in a SEGFAULT.
+    if(rvec) {
       storage::resize(z, block_size, nev + 1);
       ldz = storage::get_col_spacing(z) >= 0 ? storage::get_col_spacing(z)
                                              : block_size;
     } else {
-      storage::resize(z, 1, nev + 1);
-      ldz = storage::get_col_spacing(z) >= 0 ? storage::get_col_spacing(z) : 1;
+      storage::resize(z, 0, nev + 1);
+      ldz = 1;
     }
 
     // Tolerance
@@ -421,8 +425,7 @@ public:
     complex_vector_t workev = storage::make_complex_vector(2 * ncv);
 
     f77::peupd(comm, rvec, &howmny, storage::get_data_ptr(select),
-               storage::get_data_ptr(d), storage::get_data_ptr(z),
-               ((rvec && params.compute_vectors == params_t::Ritz) ? ldz : 1),
+               storage::get_data_ptr(d), storage::get_data_ptr(z), ldz,
                params.sigma, storage::get_data_ptr(workev), "I", block_size,
                which, nev, tol, storage::get_data_ptr(resid), ncv,
                storage::get_data_ptr(v), ldv, iparam, ipntr,
@@ -582,8 +585,7 @@ public:
     complex_vector_t workev = storage::make_complex_vector(2 * ncv);
 
     f77::peupd(comm, rvec, &howmny, storage::get_data_ptr(select),
-               storage::get_data_ptr(d), storage::get_data_ptr(z),
-               ((rvec && params.compute_vectors == params_t::Ritz) ? ldz : 1),
+               storage::get_data_ptr(d), storage::get_data_ptr(z), ldz,
                params.sigma, storage::get_data_ptr(workev), "G", block_size,
                which, nev, tol, storage::get_data_ptr(resid), ncv,
                storage::get_data_ptr(v), ldv, iparam, ipntr,

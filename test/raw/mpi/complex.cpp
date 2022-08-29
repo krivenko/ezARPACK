@@ -192,4 +192,69 @@ TEST_CASE("Complex eigenproblem is solved", "[solver_complex]") {
     CHECK_THROWS(ar.workspace_vector(-1));
     CHECK_THROWS(ar.workspace_vector(3));
   }
+
+  SECTION("Various compute_vectors") {
+    solver_t ar(N, MPI_COMM_WORLD);
+    REQUIRE(ar.dim() == N);
+
+    SECTION("Standard eigenproblem") {
+      auto Aop = [&](vector_const_view_t in, vector_view_t out) {
+        mat_vec(A.get(), in, out);
+      };
+
+      params_t params(nev, params_t::LargestMagnitude, params_t::None);
+      params.random_residual_vector = false;
+
+      set_init_residual_vector(ar);
+      ar(Aop, params);
+      CHECK_THROWS_AS(ar.schur_vectors(), std::runtime_error);
+      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
+
+      params.compute_vectors = params_t::Schur;
+      set_init_residual_vector(ar);
+      ar(Aop, params);
+      check_basis_vectors(ar, nev);
+      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
+
+      params.compute_vectors = params_t::Ritz;
+      set_init_residual_vector(ar);
+      ar(Aop, params);
+      check_basis_vectors(ar, nev);
+      check_eigenvectors(ar, A.get(), nev);
+    }
+
+    SECTION("Generalized eigenproblem: invert mode") {
+      auto invM = make_buffer<dcomplex>(N * N);
+      invert(M.get(), invM.get(), N);
+      auto op_matrix = make_buffer<dcomplex>(N * N);
+      mm_product(invM.get(), A.get(), op_matrix.get(), N);
+
+      auto op = [&](vector_const_view_t in, vector_view_t out) {
+        mat_vec(op_matrix.get(), in, out);
+      };
+      auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+        mat_vec(M.get(), in, out);
+      };
+
+      params_t params(nev, params_t::LargestMagnitude, params_t::None);
+      params.random_residual_vector = false;
+
+      set_init_residual_vector(ar);
+      ar(op, Bop, solver_t::Inverse, params);
+      CHECK_THROWS_AS(ar.schur_vectors(), std::runtime_error);
+      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
+
+      params.compute_vectors = params_t::Schur;
+      set_init_residual_vector(ar);
+      ar(op, Bop, solver_t::Inverse, params);
+      check_basis_vectors(ar, M.get(), nev);
+      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
+
+      params.compute_vectors = params_t::Ritz;
+      set_init_residual_vector(ar);
+      ar(op, Bop, solver_t::Inverse, params);
+      check_basis_vectors(ar, M.get(), nev);
+      check_eigenvectors(ar, A.get(), M.get(), nev);
+    }
+  }
 }

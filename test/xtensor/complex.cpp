@@ -144,6 +144,68 @@ TEST_CASE("Complex eigenproblem is solved", "[solver_complex]") {
     CHECK_THROWS(ar.workspace_vector(3));
   }
 
+  SECTION("Various compute_vectors") {
+    solver_t ar(A.shape(0));
+    REQUIRE(ar.dim() == A.shape(0));
+
+    SECTION("Standard eigenproblem") {
+      auto Aop = [&](vector_const_view_t in, vector_view_t out) {
+        out = dot(A, in);
+      };
+
+      params_t params(nev, params_t::LargestMagnitude, params_t::None);
+      params.random_residual_vector = false;
+
+      set_init_residual_vector(ar);
+      ar(Aop, params);
+      CHECK_THROWS_AS(ar.schur_vectors(), std::runtime_error);
+      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
+
+      params.compute_vectors = params_t::Schur;
+      set_init_residual_vector(ar);
+      ar(Aop, params);
+      check_basis_vectors(ar);
+      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
+
+      params.compute_vectors = params_t::Ritz;
+      set_init_residual_vector(ar);
+      ar(Aop, params);
+      check_basis_vectors(ar);
+      check_eigenvectors(ar, A);
+    }
+
+    SECTION("Generalized eigenproblem: invert mode") {
+      decltype(A) op_matrix = dot(inv(M), A);
+
+      auto op = [&](vector_const_view_t in, vector_view_t out) {
+        out = dot(op_matrix, in);
+      };
+      auto Bop = [&](vector_const_view_t in, vector_view_t out) {
+        out = dot(M, in);
+      };
+
+      params_t params(nev, params_t::LargestMagnitude, params_t::None);
+      params.random_residual_vector = false;
+
+      set_init_residual_vector(ar);
+      ar(op, Bop, solver_t::Inverse, params);
+      CHECK_THROWS_AS(ar.schur_vectors(), std::runtime_error);
+      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
+
+      params.compute_vectors = params_t::Schur;
+      set_init_residual_vector(ar);
+      ar(op, Bop, solver_t::Inverse, params);
+      check_basis_vectors(ar, M);
+      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
+
+      params.compute_vectors = params_t::Ritz;
+      set_init_residual_vector(ar);
+      ar(op, Bop, solver_t::Inverse, params);
+      check_basis_vectors(ar, M);
+      check_eigenvectors(ar, A, M);
+    }
+  }
+
   SECTION("Custom implementation of the Exact Shift Strategy") {
     std::vector<int> p;
     p.reserve(A.shape(0));
