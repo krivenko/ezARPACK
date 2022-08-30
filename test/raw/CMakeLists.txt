@@ -8,7 +8,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-foreach(t symmetric asymmetric complex)
+foreach(t ${OPERATOR_KINDS})
   set(s ${t}.cpp)
   set(t raw.solver_${t})
   add_raw_executable(${t} ${s})
@@ -18,7 +18,7 @@ endforeach()
 
 # MPI tests
 if(MPI_FOUND)
-  foreach(t symmetric asymmetric complex)
+  foreach(t ${OPERATOR_KINDS_MPI})
     set(s mpi/${t}.cpp)
     set(t raw.solver_${t}.mpi)
     add_raw_executable(${t} ${s})

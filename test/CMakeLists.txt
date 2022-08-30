@@ -55,6 +55,22 @@ if(MPI_FOUND)
   endmacro(add_mpi_test name)
 endif(MPI_FOUND)
 
+# arpack_solver test variants corresponding to different OpKind
+set(OPERATOR_KINDS symmetric asymmetric complex)
+# mpi::arpack_solver test variants corresponding to different OpKind
+set(OPERATOR_KINDS_MPI symmetric asymmetric)
+
+# General complex matrix eigensolvers of PARPACK are known to be unstable in
+# ARPACK-NG versions prior to 3.8.0. For this reason, we conditionally disable
+# the MPI 'complex' unit tests.
+#
+# C.f. https://github.com/opencollab/arpack-ng/pull/245
+if(${arpack-ng_VERSION} VERSION_GREATER_EQUAL 3.8.0)
+  set(OPERATOR_KINDS_MPI ${OPERATOR_KINDS_MPI} complex)
+else(${arpack-ng_VERSION} VERSION_GREATER_EQUAL 3.8.0)
+  message(STATUS "ARPACK-NG is too old, disabling complex PARPACK tests")
+endif(${arpack-ng_VERSION} VERSION_GREATER_EQUAL 3.8.0)
+
 # Tests of raw memory storage backend
 add_subdirectory(raw)
 

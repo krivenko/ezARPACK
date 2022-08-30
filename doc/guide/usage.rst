@@ -15,6 +15,13 @@ two ways to use ezARPACK. Either way, you would need
   `OpenMPI <https://www.open-mpi.org/>`_ or `MPICH <https://www.mpich.org/>`_,
   if you plan to use the :ref:`Parallel ARPACK solvers <mpi>`.
 
+.. warning::
+  The Parallel ARPACK eigensolvers for general complex matrices are
+  `known to be unstable <https://github.com/opencollab/arpack-ng/pull/245>`_
+  and can yield wrong results in ARPACK-NG versions prior to 3.8.0.
+  Be sure to link your code to ARPACK-NG 3.8.0 or newer if you use the
+  :ref:`complex <complex>` variant of :cpp:type:`ezarpack::mpi::arpack_solver`.
+
 Makefiles/no build system
 -------------------------
 
