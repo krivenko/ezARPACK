@@ -14,7 +14,10 @@
 
 #include <vector>
 
+#include <catch2/catch.hpp>
+
 #include "ezarpack/mpi/mpi_util.hpp"
+#include "ezarpack/mpi/solver_base.hpp"
 
 // A common base for utility classes working with vectors distributed among
 // MPI ranks.
@@ -46,3 +49,35 @@ public:
     return sizes;
   }
 };
+
+// Set initial residual vector
+template<ezarpack::operator_kind OpKind, typename Backend>
+void set_init_residual_vector(
+    ezarpack::mpi::arpack_solver<OpKind, Backend>& ar) {
+  int const N = ar.dim();
+  int const block_start = ar.local_block_start();
+  int const block_size = ar.local_block_size();
+  for(int i = 0; i < block_size; ++i)
+    ar.residual_vector()[i] = double(i + block_start) / N;
+}
+
+// Test constructor of mpi::arpack_solver
+template<typename SolverType> void test_mpi_arpack_solver_ctor() {
+  std::vector<std::vector<unsigned int>> block_sizes = {
+      {100}, {50, 50}, {34, 33, 33}, {25, 25, 25, 25}};
+  std::vector<std::vector<unsigned int>> block_starts = {
+      {0}, {0, 50}, {0, 34, 67}, {0, 25, 50, 75}};
+
+  auto comm_size = ezarpack::mpi::size(MPI_COMM_WORLD);
+  auto comm_rank = ezarpack::mpi::rank(MPI_COMM_WORLD);
+
+  if(comm_size <= 4) {
+    SolverType ar1(100, MPI_COMM_WORLD);
+    CHECK(ar1.local_block_size() == block_sizes[comm_size - 1][comm_rank]);
+    CHECK(ar1.local_block_start() == block_starts[comm_size - 1][comm_rank]);
+
+    SolverType ar2(block_sizes[comm_size - 1], MPI_COMM_WORLD);
+    CHECK(ar2.local_block_size() == block_sizes[comm_size - 1][comm_rank]);
+    CHECK(ar2.local_block_start() == block_starts[comm_size - 1][comm_rank]);
+  }
+}

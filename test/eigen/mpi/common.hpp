@@ -14,7 +14,7 @@
 
 #include "ezarpack/mpi/arpack_solver.hpp"
 
-#include "../../mpi_util.hpp"
+#include "../../common_mpi.hpp"
 #include "../common.hpp"
 
 // Compute matrix-vector product u = M v, where blocks of vectors v and u are
@@ -63,6 +63,10 @@ public:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+
+// To make ADL for the following functions work
+namespace ezarpack {
+namespace mpi {
 
 // Check that 'ar' contains the correct solution of a standard eigenproblem
 template<operator_kind MKind, typename M>
@@ -188,3 +192,6 @@ void check_basis_vectors(mpi::arpack_solver<MKind, eigen_storage> const& ar,
     }
   }
 }
+
+} // namespace mpi
+} // namespace ezarpack

@@ -23,8 +23,8 @@ TEST_CASE("Complex matrix is inverted", "[invert_asymmetric]") {
   const int offdiag_offset = 3;
   const dcomplex offdiag_coeff(0.5, 0.5);
 
-  auto A = make_sparse_matrix<Complex>(N, diag_coeff_shift, diag_coeff_amp,
-                                       offdiag_offset, offdiag_coeff);
+  auto A = make_sparse_matrix<ezarpack::Complex>(
+      N, diag_coeff_shift, diag_coeff_amp, offdiag_offset, offdiag_coeff);
 
   auto invA = make_buffer<dcomplex>(N * N);
   invert(A.get(), invA.get(), N);
@@ -39,11 +39,11 @@ TEST_CASE("Complex matrix is inverted", "[invert_asymmetric]") {
   auto prod = make_buffer<dcomplex>(N * N);
 
   // A * A^{-1}
-  mm_product(A.get(), invA.get(), prod.get(), N);
+  mm_prod(A.get(), invA.get(), prod.get(), N);
   CHECK_THAT(prod.get(), IsCloseTo(id.get(), N * N));
 
   // A^{-1} * A
-  mm_product(invA.get(), A.get(), prod.get(), N);
+  mm_prod(invA.get(), A.get(), prod.get(), N);
   CHECK_THAT(prod.get(), IsCloseTo(id.get(), N * N));
 }
 
@@ -53,8 +53,7 @@ TEST_CASE("Complex matrix is inverted", "[invert_asymmetric]") {
 
 TEST_CASE("Complex eigenproblem is solved", "[solver_complex]") {
 
-  using solver_t = arpack_solver<Complex, raw_storage>;
-  using params_t = solver_t::params_t;
+  using solver_t = arpack_solver<ezarpack::Complex, raw_storage>;
 
   const int N = 100;
   const dcomplex diag_coeff_shift = -0.55;
@@ -63,69 +62,36 @@ TEST_CASE("Complex eigenproblem is solved", "[solver_complex]") {
   const dcomplex offdiag_coeff(0.5, 0.5);
   const int nev = 10;
 
-  auto spectrum_parts = {
-      params_t::LargestMagnitude, params_t::SmallestMagnitude,
-      params_t::LargestReal,      params_t::SmallestReal,
-      params_t::LargestImag,      params_t::SmallestImag};
-
   // Hermitian matrix A
-  auto A = make_sparse_matrix<Complex>(N, diag_coeff_shift, diag_coeff_amp,
-                                       offdiag_offset, offdiag_coeff);
+  auto A = make_sparse_matrix<ezarpack::Complex>(
+      N, diag_coeff_shift, diag_coeff_amp, offdiag_offset, offdiag_coeff);
   // Inner product matrix
-  auto M = make_inner_prod_matrix<Complex>(N);
+  auto M = make_inner_prod_matrix<ezarpack::Complex>(N);
 
-  auto set_init_residual_vector = [](solver_t& ar) {
-    for(int i = 0; i < N; ++i)
-      ar.residual_vector()[i] = double(i) / N;
-  };
+  // Testing helper
+  auto testing = make_testing_helper<solver_t>(A, M, N, nev);
 
-  using vector_view_t = solver_t::vector_view_t;
-  using vector_const_view_t = solver_t::vector_const_view_t;
+  using vv_t = solver_t::vector_view_t;
+  using vcv_t = solver_t::vector_const_view_t;
 
   SECTION("Standard eigenproblem") {
-    auto Aop = [&](vector_const_view_t in, vector_view_t out) {
-      mv_product(A.get(), in, out, N);
-    };
+    auto Aop = [&](vcv_t in, vv_t out) { mv_prod(A.get(), in, out, N); };
 
     solver_t ar(N);
-    REQUIRE(ar.dim() == N);
-
-    for(auto e : spectrum_parts) {
-      params_t params(nev, e, params_t::Ritz);
-      params.random_residual_vector = false;
-      set_init_residual_vector(ar);
-      ar(Aop, params);
-      CHECK(ar.nconv() >= nev);
-      check_eigenvectors(ar, A.get(), nev);
-      check_basis_vectors(ar, nev);
-    }
+    testing.standard_eigenproblems(ar, Aop);
   }
 
   SECTION("Generalized eigenproblem: invert mode") {
     auto invM = make_buffer<dcomplex>(N * N);
     invert(M.get(), invM.get(), N);
-    auto op_matrix = make_buffer<dcomplex>(N * N);
-    mm_product(invM.get(), A.get(), op_matrix.get(), N);
+    auto op_mat = make_buffer<dcomplex>(N * N);
+    mm_prod(invM.get(), A.get(), op_mat.get(), N);
 
-    auto op = [&](vector_const_view_t in, vector_view_t out) {
-      mv_product(op_matrix.get(), in, out, N);
-    };
-    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-      mv_product(M.get(), in, out, N);
-    };
+    auto op = [&](vcv_t in, vv_t out) { mv_prod(op_mat.get(), in, out, N); };
+    auto Bop = [&](vcv_t in, vv_t out) { mv_prod(M.get(), in, out, N); };
 
     solver_t ar(N);
-    REQUIRE(ar.dim() == N);
-
-    for(auto e : spectrum_parts) {
-      params_t params(nev, e, params_t::Ritz);
-      params.random_residual_vector = false;
-      set_init_residual_vector(ar);
-      ar(op, Bop, solver_t::Inverse, params);
-      CHECK(ar.nconv() >= nev);
-      check_eigenvectors(ar, A.get(), M.get(), nev);
-      check_basis_vectors(ar, M.get(), nev);
-    }
+    testing.generalized_eigenproblems(ar, solver_t::Inverse, op, Bop);
   }
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode") {
@@ -139,50 +105,27 @@ TEST_CASE("Complex eigenproblem is solved", "[solver_complex]") {
     }
     auto invAmM = make_buffer<dcomplex>(N * N);
     invert(AmM.get(), invAmM.get(), N);
-    auto op_matrix = make_buffer<dcomplex>(N * N);
-    mm_product(invAmM.get(), M.get(), op_matrix.get(), N);
+    auto op_mat = make_buffer<dcomplex>(N * N);
+    mm_prod(invAmM.get(), M.get(), op_mat.get(), N);
 
-    auto op = [&](vector_const_view_t in, vector_view_t out) {
-      mv_product(op_matrix.get(), in, out, N);
-    };
-    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-      mv_product(M.get(), in, out, N);
-    };
+    auto op = [&](vcv_t in, vv_t out) { mv_prod(op_mat.get(), in, out, N); };
+    auto Bop = [&](vcv_t in, vv_t out) { mv_prod(M.get(), in, out, N); };
 
     solver_t ar(N);
-    REQUIRE(ar.dim() == N);
-
-    for(auto e : spectrum_parts) {
-      params_t params(nev, e, params_t::Ritz);
-      params.sigma = sigma;
-      params.random_residual_vector = false;
-      set_init_residual_vector(ar);
-      ar(op, Bop, solver_t::ShiftAndInvert, params);
-      CHECK(ar.nconv() >= nev);
-      check_eigenvectors(ar, A.get(), M.get(), nev);
-      check_basis_vectors(ar, M.get(), nev);
-    }
+    testing.generalized_eigenproblems(ar, solver_t::ShiftAndInvert, op, Bop,
+                                      sigma);
   }
 
   SECTION("Indirect access to workspace vectors") {
     solver_t ar(N);
-    REQUIRE(ar.dim() == N);
 
-    auto Aop = [&](vector_const_view_t, vector_view_t) {
+    auto Aop = [&](vcv_t, vv_t) {
       auto in = ar.workspace_vector(ar.in_vector_n());
       auto out = ar.workspace_vector(ar.out_vector_n());
-      mv_product(A.get(), in, out, N);
+      mv_prod(A.get(), in, out, N);
     };
 
-    for(auto e : spectrum_parts) {
-      params_t params(nev, e, params_t::Ritz);
-      params.random_residual_vector = false;
-      set_init_residual_vector(ar);
-      ar(Aop, params);
-      CHECK(ar.nconv() >= nev);
-      check_eigenvectors(ar, A.get(), nev);
-      check_basis_vectors(ar, nev);
-    }
+    testing.standard_eigenproblems(ar, Aop);
 
     CHECK_THROWS(ar.workspace_vector(-1));
     CHECK_THROWS(ar.workspace_vector(3));
@@ -190,66 +133,23 @@ TEST_CASE("Complex eigenproblem is solved", "[solver_complex]") {
 
   SECTION("Various compute_vectors") {
     solver_t ar(N);
-    REQUIRE(ar.dim() == N);
 
     SECTION("Standard eigenproblem") {
-      auto Aop = [&](vector_const_view_t in, vector_view_t out) {
-        mv_product(A.get(), in, out, N);
-      };
+      auto Aop = [&](vcv_t in, vv_t out) { mv_prod(A.get(), in, out, N); };
 
-      params_t params(nev, params_t::LargestMagnitude, params_t::None);
-      params.random_residual_vector = false;
-
-      set_init_residual_vector(ar);
-      ar(Aop, params);
-      CHECK_THROWS_AS(ar.schur_vectors(), std::runtime_error);
-      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
-
-      params.compute_vectors = params_t::Schur;
-      set_init_residual_vector(ar);
-      ar(Aop, params);
-      check_basis_vectors(ar, nev);
-      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
-
-      params.compute_vectors = params_t::Ritz;
-      set_init_residual_vector(ar);
-      ar(Aop, params);
-      check_basis_vectors(ar, nev);
-      check_eigenvectors(ar, A.get(), nev);
+      testing.standard_compute_vectors(ar, Aop);
     }
 
     SECTION("Generalized eigenproblem: invert mode") {
       auto invM = make_buffer<dcomplex>(N * N);
       invert(M.get(), invM.get(), N);
-      auto op_matrix = make_buffer<dcomplex>(N * N);
-      mm_product(invM.get(), A.get(), op_matrix.get(), N);
+      auto op_mat = make_buffer<dcomplex>(N * N);
+      mm_prod(invM.get(), A.get(), op_mat.get(), N);
 
-      auto op = [&](vector_const_view_t in, vector_view_t out) {
-        mv_product(op_matrix.get(), in, out, N);
-      };
-      auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-        mv_product(M.get(), in, out, N);
-      };
+      auto op = [&](vcv_t in, vv_t out) { mv_prod(op_mat.get(), in, out, N); };
+      auto Bop = [&](vcv_t in, vv_t out) { mv_prod(M.get(), in, out, N); };
 
-      params_t params(nev, params_t::LargestMagnitude, params_t::None);
-      params.random_residual_vector = false;
-
-      set_init_residual_vector(ar);
-      ar(op, Bop, solver_t::Inverse, params);
-      CHECK_THROWS_AS(ar.schur_vectors(), std::runtime_error);
-      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
-
-      params.compute_vectors = params_t::Schur;
-      set_init_residual_vector(ar);
-      ar(op, Bop, solver_t::Inverse, params);
-      check_basis_vectors(ar, M.get(), nev);
-      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
-
-      params.compute_vectors = params_t::Ritz;
-      set_init_residual_vector(ar);
-      ar(op, Bop, solver_t::Inverse, params);
-      check_basis_vectors(ar, M.get(), nev);
-      check_eigenvectors(ar, A.get(), M.get(), nev);
+      testing.generalized_compute_vectors(ar, op, Bop);
     }
   }
 }

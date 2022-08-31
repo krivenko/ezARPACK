@@ -14,7 +14,7 @@
 
 #include "ezarpack/mpi/arpack_solver.hpp"
 
-#include "../../mpi_util.hpp"
+#include "../../common_mpi.hpp"
 #include "../common.hpp"
 
 // Compute matrix-vector product u = M v, where blocks of vectors v and u are
@@ -72,15 +72,17 @@ public:
 
 ////////////////////////////////////////////////////////////////////////////////
 
+// To make ADL for the following functions work
+namespace ezarpack {
+namespace mpi {
+
 // Check that 'ar' contains the correct solution of a standard eigenproblem
-template<
-    operator_kind MKind,
-    typename M,
-    typename T =
-        typename std::conditional<MKind == Symmetric, double, dcomplex>::type>
+template<operator_kind MKind, typename M>
 void check_eigenvectors(mpi::arpack_solver<MKind, raw_storage> const& ar,
-                        M const* m,
-                        int nev) {
+                        M&& m) {
+  using scalar_t =
+      typename std::conditional<MKind == Symmetric, double, dcomplex>::type;
+
   auto eigenvalues = ar.eigenvalues();
   auto eigenvectors = ar.eigenvectors();
 
@@ -88,12 +90,13 @@ void check_eigenvectors(mpi::arpack_solver<MKind, raw_storage> const& ar,
   mpi_mat_vec<ComplexEigenVecs> prod(ar.dim(), MPI_COMM_WORLD);
 
   auto block_size = ar.local_block_size();
+  int nev = ar.nconv();
 
-  auto lhs = make_buffer<T>(block_size);
-  auto rhs = make_buffer<T>(block_size);
+  auto lhs = make_buffer<scalar_t>(block_size);
+  auto rhs = make_buffer<scalar_t>(block_size);
   for(int i = 0; i < nev; ++i) {
     // LHS
-    prod(m, get_ptr(eigenvectors) + i * block_size, lhs.get());
+    prod(get_ptr(m), get_ptr(eigenvectors) + i * block_size, lhs.get());
     // RHS
     scale(get_ptr(eigenvectors) + i * block_size, eigenvalues[i], rhs.get(),
           block_size);
@@ -103,15 +106,13 @@ void check_eigenvectors(mpi::arpack_solver<MKind, raw_storage> const& ar,
 }
 
 // Check that 'ar' contains the correct solution of a generalized eigenproblem
-template<
-    operator_kind MKind,
-    typename M,
-    typename T =
-        typename std::conditional<MKind == Symmetric, double, dcomplex>::type>
+template<operator_kind MKind, typename M>
 void check_eigenvectors(mpi::arpack_solver<MKind, raw_storage> const& ar,
-                        M const* a,
-                        M const* m,
-                        int nev) {
+                        M&& a,
+                        M&& m) {
+  using scalar_t =
+      typename std::conditional<MKind == Symmetric, double, dcomplex>::type;
+
   auto eigenvalues = ar.eigenvalues();
   auto eigenvectors = ar.eigenvectors();
 
@@ -119,14 +120,15 @@ void check_eigenvectors(mpi::arpack_solver<MKind, raw_storage> const& ar,
   mpi_mat_vec<ComplexEigenVecs> prod(ar.dim(), MPI_COMM_WORLD);
 
   auto block_size = ar.local_block_size();
+  int nev = ar.nconv();
 
-  auto lhs = make_buffer<T>(block_size);
-  auto rhs = make_buffer<T>(block_size);
+  auto lhs = make_buffer<scalar_t>(block_size);
+  auto rhs = make_buffer<scalar_t>(block_size);
   for(int i = 0; i < nev; ++i) {
     // LHS
-    prod(a, get_ptr(eigenvectors) + i * block_size, lhs.get());
+    prod(get_ptr(a), get_ptr(eigenvectors) + i * block_size, lhs.get());
     // RHS
-    prod(m, get_ptr(eigenvectors) + i * block_size, rhs.get());
+    prod(get_ptr(m), get_ptr(eigenvectors) + i * block_size, rhs.get());
     scale(rhs.get(), eigenvalues[i], rhs.get(), block_size);
 
     CHECK_THAT(lhs.get(), IsCloseTo(rhs.get(), block_size));
@@ -138,9 +140,8 @@ void check_eigenvectors(mpi::arpack_solver<MKind, raw_storage> const& ar,
 template<typename M>
 void check_eigenvectors_shift_and_invert(
     mpi::arpack_solver<Asymmetric, raw_storage> const& ar,
-    M const* a,
-    M const* m,
-    int nev) {
+    M&& a,
+    M&& m) {
   using solver_t = mpi::arpack_solver<Asymmetric, raw_storage>;
   using vector_view_t = solver_t::vector_view_t;
   using vector_const_view_t = solver_t::vector_const_view_t;
@@ -148,9 +149,10 @@ void check_eigenvectors_shift_and_invert(
   mpi_mat_vec<false> prod(ar.dim(), MPI_COMM_WORLD);
 
   auto block_size = ar.local_block_size();
+  int nev = ar.nconv();
 
   auto Aop = [&](vector_const_view_t in, vector_view_t out) {
-    prod(a, in, out);
+    prod(get_ptr(a), in, out);
   };
   auto eigenvalues = ar.eigenvalues(Aop);
   auto eigenvectors = ar.eigenvectors();
@@ -161,9 +163,9 @@ void check_eigenvectors_shift_and_invert(
   auto rhs = make_buffer<dcomplex>(block_size);
   for(int i = 0; i < nev; ++i) {
     // LHS
-    prod_complex(a, get_ptr(eigenvectors) + i * block_size, lhs.get());
+    prod_complex(get_ptr(a), get_ptr(eigenvectors) + i * block_size, lhs.get());
     // RHS
-    prod_complex(m, get_ptr(eigenvectors) + i * block_size, rhs.get());
+    prod_complex(get_ptr(m), get_ptr(eigenvectors) + i * block_size, rhs.get());
     scale(rhs.get(), eigenvalues[i], rhs.get(), block_size);
 
     CHECK_THAT(lhs.get(), IsCloseTo(rhs.get(), block_size));
@@ -186,14 +188,15 @@ auto get_basis_vectors(mpi::arpack_solver<MKind, raw_storage> const& ar)
 
 // Check orthogonality of basis vectors (standard eigenproblem)
 template<operator_kind MKind>
-void check_basis_vectors(mpi::arpack_solver<MKind, raw_storage> const& ar,
-                         int nev) {
+void check_basis_vectors(mpi::arpack_solver<MKind, raw_storage> const& ar) {
   auto vecs = get_basis_vectors(ar);
 
   constexpr bool const ComplexBasisVecs = MKind == ezarpack::Complex;
   mpi_dot<ComplexBasisVecs> dot(ar.dim(), MPI_COMM_WORLD);
 
   auto block_size = ar.local_block_size();
+  int nev = ar.nconv();
+
   for(int i = 0; i < nev; ++i) {
     auto iptr = get_ptr(vecs) + i * block_size;
     for(int j = 0; j < nev; ++j) {
@@ -205,8 +208,7 @@ void check_basis_vectors(mpi::arpack_solver<MKind, raw_storage> const& ar,
 // Check orthogonality of basis vectors (generalized eigenproblem)
 template<operator_kind MKind, typename M>
 void check_basis_vectors(mpi::arpack_solver<MKind, raw_storage> const& ar,
-                         M const* b,
-                         int nev) {
+                         M&& b) {
   auto vecs = get_basis_vectors(ar);
 
   constexpr bool const ComplexBasisVecs = MKind == ezarpack::Complex;
@@ -214,13 +216,18 @@ void check_basis_vectors(mpi::arpack_solver<MKind, raw_storage> const& ar,
   mpi_dot<ComplexBasisVecs> dot(ar.dim(), MPI_COMM_WORLD);
 
   auto block_size = ar.local_block_size();
+  int nev = ar.nconv();
+
   auto bx = make_buffer<scalar_t<MKind>>(block_size);
   for(int i = 0; i < nev; ++i) {
     auto iptr = get_ptr(vecs) + i * block_size;
     for(int j = 0; j < nev; ++j) {
       auto jptr = get_ptr(vecs) + j * block_size;
-      prod(b, jptr, bx.get());
+      prod(get_ptr(b), jptr, bx.get());
       CHECK(std::abs(dot(iptr, bx.get()) - double(i == j)) < 1e-10);
     }
   }
 }
+
+} // namespace mpi
+} // namespace ezarpack

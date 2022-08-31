@@ -18,12 +18,11 @@
 #include <type_traits>
 #include <vector>
 
-#include <catch2/catch.hpp>
-
 #include "ezarpack/arpack_solver.hpp"
 #include "ezarpack/storages/blaze.hpp"
 
 #include "../common.hpp"
+#include "../tests.hpp"
 
 using namespace ezarpack;
 using namespace blaze;
@@ -98,6 +97,8 @@ IsCloseTo(T&& ref, double tol = 1e-10) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+
+namespace ezarpack { // To make ADL for the following functions work
 
 // Check that 'ar' contains the correct solution of a standard eigenproblem
 template<operator_kind MKind, typename M>
@@ -182,3 +183,5 @@ void check_basis_vectors(arpack_solver<MKind, blaze_storage> const& ar,
     }
   }
 }
+
+} // namespace ezarpack

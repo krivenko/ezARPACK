@@ -19,12 +19,11 @@
 #include <utility>
 #include <vector>
 
-#include <catch2/catch.hpp>
-
 #include "ezarpack/arpack_solver.hpp"
 #include "ezarpack/storages/raw.hpp"
 
 #include "../common.hpp"
+#include "../tests.hpp"
 
 using namespace ezarpack;
 
@@ -77,7 +76,7 @@ std::unique_ptr<T[]> make_inner_prod_matrix(int N) {
 
 // Matrix-vector product m * v
 template<typename M, typename V, typename O>
-void mv_product(M const* m, V const* v, O* out, int N) {
+void mv_prod(M const* m, V const* v, O* out, int N) {
   for(int i = 0; i < N; ++i) {
     out[i] = .0;
     for(int j = 0; j < N; ++j) {
@@ -88,7 +87,7 @@ void mv_product(M const* m, V const* v, O* out, int N) {
 
 // Matrix-matrix product m1 * m2
 template<typename M1, typename M2, typename O>
-void mm_product(M1 const* m1, M2 const* m2, O* out, int N) {
+void mm_prod(M1 const* m1, M2 const* m2, O* out, int N) {
   for(int i = 0; i < N; ++i) {
     for(int j = 0; j < N; ++j) {
       out[i + j * N] = .0;
@@ -216,53 +215,52 @@ template<typename T> T const* get_ptr(std::unique_ptr<T[]> const& x) {
   return x.get();
 }
 
+namespace ezarpack { // To make ADL for the following functions work
+
 // Check that 'ar' contains the correct solution of a standard eigenproblem
-template<
-    operator_kind MKind,
-    typename M,
-    typename T =
-        typename std::conditional<MKind == Symmetric, double, dcomplex>::type>
-void check_eigenvectors(arpack_solver<MKind, raw_storage> const& ar,
-                        M const* m,
-                        int nev) {
+template<operator_kind MKind, typename M>
+void check_eigenvectors(arpack_solver<MKind, raw_storage> const& ar, M&& m) {
+  using scalar_t =
+      typename std::conditional<MKind == Symmetric, double, dcomplex>::type;
+
   auto eigenvalues = ar.eigenvalues();
   auto eigenvectors = ar.eigenvectors();
 
   int const N = ar.dim();
+  int const nev = ar.nconv();
   for(int i = 0; i < nev; ++i) {
     // RHS
-    auto rhs = make_buffer<T>(N);
+    auto rhs = make_buffer<scalar_t>(N);
     scale(get_ptr(eigenvectors) + i * N, eigenvalues[i], rhs.get(), N);
     // LHS
-    auto lhs = make_buffer<T>(N);
-    mv_product(m, get_ptr(eigenvectors) + i * N, lhs.get(), N);
+    auto lhs = make_buffer<scalar_t>(N);
+    mv_prod(get_ptr(m), get_ptr(eigenvectors) + i * N, lhs.get(), N);
 
     CHECK_THAT(rhs.get(), IsCloseTo(lhs.get(), N));
   }
 }
 
 // Check that 'ar' contains the correct solution of a generalized eigenproblem
-template<
-    operator_kind MKind,
-    typename M,
-    typename T =
-        typename std::conditional<MKind == Symmetric, double, dcomplex>::type>
+template<operator_kind MKind, typename M>
 void check_eigenvectors(arpack_solver<MKind, raw_storage> const& ar,
-                        M const* a,
-                        M const* m,
-                        int nev) {
+                        M&& a,
+                        M&& m) {
+  using scalar_t =
+      typename std::conditional<MKind == Symmetric, double, dcomplex>::type;
+
   auto eigenvalues = ar.eigenvalues();
   auto eigenvectors = ar.eigenvectors();
 
   int const N = ar.dim();
+  int const nev = ar.nconv();
   for(int i = 0; i < nev; ++i) {
     // RHS
-    auto rhs = make_buffer<T>(N);
-    mv_product(m, get_ptr(eigenvectors) + i * N, rhs.get(), N);
+    auto rhs = make_buffer<scalar_t>(N);
+    mv_prod(get_ptr(m), get_ptr(eigenvectors) + i * N, rhs.get(), N);
     scale(rhs.get(), eigenvalues[i], rhs.get(), N);
     // LHS
-    auto lhs = make_buffer<T>(N);
-    mv_product(a, get_ptr(eigenvectors) + i * N, lhs.get(), N);
+    auto lhs = make_buffer<scalar_t>(N);
+    mv_prod(get_ptr(a), get_ptr(eigenvectors) + i * N, lhs.get(), N);
 
     CHECK_THAT(rhs.get(), IsCloseTo(lhs.get(), N));
   }
@@ -273,28 +271,27 @@ void check_eigenvectors(arpack_solver<MKind, raw_storage> const& ar,
 template<typename M>
 void check_eigenvectors_shift_and_invert(
     arpack_solver<Asymmetric, raw_storage> const& ar,
-    M const* a,
-    M const* m,
-    int nev) {
+    M&& a,
+    M&& m) {
   using solver_t = arpack_solver<Asymmetric, raw_storage>;
-  using vector_view_t = solver_t::vector_view_t;
-  using vector_const_view_t = solver_t::vector_const_view_t;
+  using vv_t = solver_t::vector_view_t;
+  using vcv_t = solver_t::vector_const_view_t;
 
   int const N = ar.dim();
-  auto Aop = [&](vector_const_view_t in, vector_view_t out) {
-    mv_product(a, in, out, N);
-  };
+  auto Aop = [&](vcv_t in, vv_t out) { mv_prod(get_ptr(a), in, out, N); };
+
   auto eigenvalues = ar.eigenvalues(Aop);
   auto eigenvectors = ar.eigenvectors();
 
+  int const nev = ar.nconv();
   for(int i = 0; i < nev; ++i) {
     // RHS
     auto rhs = make_buffer<dcomplex>(N);
-    mv_product(m, get_ptr(eigenvectors) + i * N, rhs.get(), N);
+    mv_prod(get_ptr(m), get_ptr(eigenvectors) + i * N, rhs.get(), N);
     scale(rhs.get(), eigenvalues[i], rhs.get(), N);
     // LHS
     auto lhs = make_buffer<dcomplex>(N);
-    mv_product(a, get_ptr(eigenvectors) + i * N, lhs.get(), N);
+    mv_prod(get_ptr(a), get_ptr(eigenvectors) + i * N, lhs.get(), N);
 
     CHECK_THAT(rhs.get(), IsCloseTo(lhs.get(), N));
   }
@@ -316,10 +313,11 @@ auto get_basis_vectors(arpack_solver<MKind, raw_storage> const& ar)
 
 // Check orthogonality of basis vectors (standard eigenproblem)
 template<operator_kind MKind>
-void check_basis_vectors(arpack_solver<MKind, raw_storage> const& ar, int nev) {
+void check_basis_vectors(arpack_solver<MKind, raw_storage> const& ar) {
   auto vecs = get_basis_vectors(ar);
 
   int const N = ar.dim();
+  int const nev = ar.nconv();
   for(int i = 0; i < nev; ++i) {
     auto iptr = get_ptr(vecs) + i * N;
     for(int j = 0; j < nev; ++j) {
@@ -333,18 +331,17 @@ void check_basis_vectors(arpack_solver<MKind, raw_storage> const& ar, int nev) {
 }
 // Check orthogonality of basis vectors (generalized eigenproblem)
 template<operator_kind MKind, typename M>
-void check_basis_vectors(arpack_solver<MKind, raw_storage> const& ar,
-                         M const* b,
-                         int nev) {
+void check_basis_vectors(arpack_solver<MKind, raw_storage> const& ar, M&& b) {
   auto vecs = get_basis_vectors(ar);
 
   int const N = ar.dim();
+  int const nev = ar.nconv();
   auto bx = make_buffer<scalar_t<MKind>>(N);
   for(int i = 0; i < nev; ++i) {
     auto iptr = get_ptr(vecs) + i * N;
     for(int j = 0; j < nev; ++j) {
       auto jptr = get_ptr(vecs) + j * N;
-      mv_product(b, jptr, bx.get(), N);
+      mv_prod(get_ptr(b), jptr, bx.get(), N);
       scalar_t<MKind> prod = {};
       for(int k = 0; k < N; ++k)
         prod += conj(*(iptr + k)) * *(bx.get() + k);
@@ -352,3 +349,5 @@ void check_basis_vectors(arpack_solver<MKind, raw_storage> const& ar,
     }
   }
 }
+
+} // namespace ezarpack

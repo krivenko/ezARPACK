@@ -15,7 +15,7 @@
 
 #include "ezarpack/mpi/arpack_solver.hpp"
 
-#include "../../mpi_util.hpp"
+#include "../../common_mpi.hpp"
 #include "../common.hpp"
 
 using namespace ezarpack;
@@ -69,6 +69,10 @@ public:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+
+// To make ADL for the following functions work
+namespace ezarpack {
+namespace mpi {
 
 // Check that 'ar' contains the correct solution of a standard eigenproblem
 template<operator_kind MKind, typename M>
@@ -198,3 +202,6 @@ void check_basis_vectors(
     }
   }
 }
+
+} // namespace mpi
+} // namespace ezarpack

@@ -18,8 +18,6 @@
 #include <type_traits>
 #include <vector>
 
-#include <catch2/catch.hpp>
-
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/numeric/ublas/lu.hpp>
 
@@ -27,6 +25,7 @@
 #include "ezarpack/storages/ublas.hpp"
 
 #include "../common.hpp"
+#include "../tests.hpp"
 
 using namespace ezarpack;
 using namespace boost::numeric::ublas;
@@ -78,6 +77,8 @@ auto inverse(M m) -> matrix<T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+
+namespace ezarpack { // To make ADL for the following functions work
 
 // Catch2 Matcher class that checks proximity of two TRIQS vectors
 template<typename Scalar>
@@ -195,3 +196,5 @@ void check_basis_vectors(arpack_solver<MKind, ublas_storage> const& ar,
     }
   }
 }
+
+} // namespace ezarpack

@@ -19,8 +19,7 @@
 
 TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
 
-  using solver_t = arpack_solver<Asymmetric, ublas_storage>;
-  using params_t = solver_t::params_t;
+  using solver_t = arpack_solver<ezarpack::Asymmetric, ublas_storage>;
 
   const int N = 100;
   const double diag_coeff_shift = -0.55;
@@ -29,141 +28,71 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
   const double offdiag_coeff = -1.05;
   const int nev = 10;
 
-  auto spectrum_parts = {
-      params_t::LargestMagnitude, params_t::SmallestMagnitude,
-      params_t::LargestReal,      params_t::SmallestReal,
-      params_t::LargestImag,      params_t::SmallestImag};
-
   // Asymmetric matrix A
-  auto A = make_sparse_matrix<Asymmetric>(N, diag_coeff_shift, diag_coeff_amp,
-                                          offdiag_offset, offdiag_coeff);
+  auto A = make_sparse_matrix<ezarpack::Asymmetric>(
+      N, diag_coeff_shift, diag_coeff_amp, offdiag_offset, offdiag_coeff);
   // Inner product matrix
-  auto M = make_inner_prod_matrix<Asymmetric>(N);
+  auto M = make_inner_prod_matrix<ezarpack::Asymmetric>(N);
 
-  auto set_init_residual_vector = [](solver_t& ar) {
-    for(int i = 0; i < N; ++i)
-      ar.residual_vector()[i] = double(i) / N;
-  };
+  // Testing helper
+  auto testing = make_testing_helper<solver_t>(A, M, N, nev);
 
-  using vector_view_t = solver_t::vector_view_t;
-  using vector_const_view_t = solver_t::vector_const_view_t;
+  using vv_t = solver_t::vector_view_t;
+  using vcv_t = solver_t::vector_const_view_t;
 
   SECTION("Standard eigenproblem") {
-    auto Aop = [&](vector_const_view_t in, vector_view_t out) {
-      out = prod(A, in);
-    };
+    auto Aop = [&](vcv_t in, vv_t out) { out = prod(A, in); };
 
     solver_t ar(A.size1());
-    REQUIRE(ar.dim() == A.size1());
-
-    for(auto e : spectrum_parts) {
-      params_t params(nev, e, params_t::Ritz);
-      params.random_residual_vector = false;
-      set_init_residual_vector(ar);
-      ar(Aop, params);
-      CHECK(ar.nconv() >= nev);
-      check_eigenvectors(ar, A);
-      check_basis_vectors(ar);
-    }
+    testing.standard_eigenproblems(ar, Aop);
   }
 
   SECTION("Generalized eigenproblem: invert mode") {
-    decltype(A) op_matrix = prod(inverse(M), A);
+    decltype(A) op_mat = prod(inverse(M), A);
 
-    auto op = [&](vector_const_view_t in, vector_view_t out) {
-      out = prod(op_matrix, in);
-    };
-    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-      out = prod(M, in);
-    };
+    auto op = [&](vcv_t in, vv_t out) { out = prod(op_mat, in); };
+    auto Bop = [&](vcv_t in, vv_t out) { out = prod(M, in); };
 
     solver_t ar(A.size1());
-    REQUIRE(ar.dim() == A.size1());
-
-    for(auto e : spectrum_parts) {
-      params_t params(nev, e, params_t::Ritz);
-      params.random_residual_vector = false;
-      set_init_residual_vector(ar);
-      ar(op, Bop, solver_t::Inverse, params);
-      CHECK(ar.nconv() >= nev);
-      check_eigenvectors(ar, A, M);
-      check_basis_vectors(ar, M);
-    }
+    testing.generalized_eigenproblems(ar, solver_t::Inverse, op, Bop);
   }
 
   using cmat_type = matrix<dcomplex, column_major>;
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode (real part)") {
     dcomplex sigma(1.0, -0.1);
-    decltype(A) op_matrix = real(prod(inverse(A - sigma * cmat_type(M)), M));
+    decltype(A) op_mat = real(prod(inverse(A - sigma * cmat_type(M)), M));
 
-    auto op = [&](vector_const_view_t in, vector_view_t out) {
-      out = prod(op_matrix, in);
-    };
-    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-      out = prod(M, in);
-    };
+    auto op = [&](vcv_t in, vv_t out) { out = prod(op_mat, in); };
+    auto Bop = [&](vcv_t in, vv_t out) { out = prod(M, in); };
 
     solver_t ar(A.size1());
-    REQUIRE(ar.dim() == A.size1());
-
-    for(auto e : spectrum_parts) {
-      params_t params(nev, e, params_t::Ritz);
-      params.random_residual_vector = false;
-      params.sigma = sigma;
-      set_init_residual_vector(ar);
-      ar(op, Bop, solver_t::ShiftAndInvertReal, params);
-      CHECK(ar.nconv() >= nev);
-      check_eigenvectors_shift_and_invert(ar, A, M);
-      check_basis_vectors(ar, M);
-    }
+    testing.generalized_eigenproblems(ar, solver_t::ShiftAndInvertReal, op, Bop,
+                                      sigma);
   }
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode (imaginary part)") {
-    dcomplex sigma(-0.1, 1.0);
-    decltype(A) op_matrix = imag(prod(inverse(A - sigma * cmat_type(M)), M));
+    dcomplex sigma(1.0, -0.1);
+    decltype(A) op_mat = imag(prod(inverse(A - sigma * cmat_type(M)), M));
 
-    auto op = [&](vector_const_view_t in, vector_view_t out) {
-      out = prod(op_matrix, in);
-    };
-    auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-      out = prod(M, in);
-    };
+    auto op = [&](vcv_t in, vv_t out) { out = prod(op_mat, in); };
+    auto Bop = [&](vcv_t in, vv_t out) { out = prod(M, in); };
 
     solver_t ar(A.size1());
-    REQUIRE(ar.dim() == A.size1());
-
-    for(auto e : spectrum_parts) {
-      params_t params(nev, e, params_t::Ritz);
-      params.random_residual_vector = false;
-      params.sigma = sigma;
-      set_init_residual_vector(ar);
-      ar(op, Bop, solver_t::ShiftAndInvertImag, params);
-      CHECK(ar.nconv() >= nev);
-      check_eigenvectors_shift_and_invert(ar, A, M);
-      check_basis_vectors(ar, M);
-    }
+    testing.generalized_eigenproblems(ar, solver_t::ShiftAndInvertImag, op, Bop,
+                                      sigma);
   }
 
   SECTION("Indirect access to workspace vectors") {
     solver_t ar(A.size1());
-    REQUIRE(ar.dim() == A.size1());
 
-    auto Aop = [&](vector_const_view_t, vector_view_t) {
+    auto Aop = [&](vcv_t, vv_t) {
       auto in = ar.workspace_vector(ar.in_vector_n());
       auto out = ar.workspace_vector(ar.out_vector_n());
       out = prod(A, in);
     };
 
-    for(auto e : spectrum_parts) {
-      params_t params(nev, e, params_t::Ritz);
-      params.random_residual_vector = false;
-      set_init_residual_vector(ar);
-      ar(Aop, params);
-      CHECK(ar.nconv() >= nev);
-      check_eigenvectors(ar, A);
-      check_basis_vectors(ar);
-    }
+    testing.standard_eigenproblems(ar, Aop);
 
     CHECK_THROWS(ar.workspace_vector(-1));
     CHECK_THROWS(ar.workspace_vector(3));
@@ -171,131 +100,45 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
 
   SECTION("Various compute_vectors") {
     solver_t ar(A.size1());
-    REQUIRE(ar.dim() == A.size1());
 
     SECTION("Standard eigenproblem") {
-      auto Aop = [&](vector_const_view_t in, vector_view_t out) {
-        out = prod(A, in);
-      };
+      auto Aop = [&](vcv_t in, vv_t out) { out = prod(A, in); };
 
-      params_t params(nev, params_t::LargestMagnitude, params_t::None);
-      params.random_residual_vector = false;
-
-      set_init_residual_vector(ar);
-      ar(Aop, params);
-      CHECK_THROWS_AS(ar.schur_vectors(), std::runtime_error);
-      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
-
-      params.compute_vectors = params_t::Schur;
-      set_init_residual_vector(ar);
-      ar(Aop, params);
-      check_basis_vectors(ar);
-      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
-
-      params.compute_vectors = params_t::Ritz;
-      set_init_residual_vector(ar);
-      ar(Aop, params);
-      check_basis_vectors(ar);
-      check_eigenvectors(ar, A);
+      testing.standard_compute_vectors(ar, Aop);
     }
 
     SECTION("Generalized eigenproblem: invert mode") {
-      decltype(A) op_matrix = prod(inverse(M), A);
+      decltype(A) op_mat = prod(inverse(M), A);
 
-      auto op = [&](vector_const_view_t in, vector_view_t out) {
-        out = prod(op_matrix, in);
-      };
-      auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-        out = prod(M, in);
-      };
+      auto op = [&](vcv_t in, vv_t out) { out = prod(op_mat, in); };
+      auto Bop = [&](vcv_t in, vv_t out) { out = prod(M, in); };
 
-      params_t params(nev, params_t::LargestMagnitude, params_t::None);
-      params.random_residual_vector = false;
-
-      set_init_residual_vector(ar);
-      ar(op, Bop, solver_t::Inverse, params);
-      CHECK_THROWS_AS(ar.schur_vectors(), std::runtime_error);
-      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
-
-      params.compute_vectors = params_t::Schur;
-      set_init_residual_vector(ar);
-      ar(op, Bop, solver_t::Inverse, params);
-      check_basis_vectors(ar, M);
-      CHECK_THROWS_AS(ar.eigenvectors(), std::runtime_error);
-
-      params.compute_vectors = params_t::Ritz;
-      set_init_residual_vector(ar);
-      ar(op, Bop, solver_t::Inverse, params);
-      check_basis_vectors(ar, M);
-      check_eigenvectors(ar, A, M);
+      testing.generalized_compute_vectors(ar, op, Bop);
     }
   }
 
   SECTION("Custom implementation of the Exact Shift Strategy") {
-    std::vector<int> p;
-    p.reserve(A.size1());
-    auto shifts_f = [&](solver_t::real_vector_const_view_t ritz_values_re,
-                        solver_t::real_vector_const_view_t ritz_values_im,
-                        solver_t::real_vector_const_view_t ritz_bounds,
-                        solver_t::real_vector_view_t shifts_re,
-                        solver_t::real_vector_view_t shifts_im) {
-      int np = shifts_re.size();
-      if(np == 0) return;
-
-      p.resize(np);
-      std::iota(p.begin(), p.end(), 0);
-      // p will contain the permutation that puts ritz_bounds in
-      // the descending order of magnitude
-      std::sort(p.begin(), p.end(),
-                [&](int i, int j) { return ritz_bounds(i) > ritz_bounds(j); });
-      // Apply permutation p to ritz_values_* and use the result to fill shifts
-      for(int i = 0; i < np; ++i) {
-        shifts_re(i) = ritz_values_re(p[i]);
-        shifts_im(i) = ritz_values_im(p[i]);
-      }
-    };
+    using rvcv_t = solver_t::real_vector_const_view_t;
+    using rvv_t = solver_t::real_vector_view_t;
+    auto size_f = [](rvv_t shifts) -> int { return shifts.size(); };
+    exact_shift_strategy<ezarpack::Asymmetric, rvcv_t, rvv_t> shifts_f(size_f);
 
     SECTION("Standard eigenproblem") {
-      auto Aop = [&](vector_const_view_t in, vector_view_t out) {
-        out = prod(A, in);
-      };
+      auto Aop = [&](vcv_t in, vv_t out) { out = prod(A, in); };
 
       solver_t ar(A.size1());
-      REQUIRE(ar.dim() == A.size1());
-
-      params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
-      params.random_residual_vector = false;
-      params.tolerance = 1e-10;
-      set_init_residual_vector(ar);
-      ar(Aop, params, shifts_f);
-      CHECK(ar.nconv() >= nev);
-      check_eigenvectors(ar, A);
-      check_basis_vectors(ar);
+      testing.standard_custom_exact_shifts(ar, Aop, shifts_f);
     }
 
     SECTION("Generalized eigenproblem: Shift-and-Invert mode (real part)") {
       dcomplex sigma(1.0, -0.1);
-      decltype(A) op_matrix = real(prod(inverse(A - sigma * cmat_type(M)), M));
+      decltype(A) op_mat = real(prod(inverse(A - sigma * cmat_type(M)), M));
 
-      auto op = [&](vector_const_view_t in, vector_view_t out) {
-        out = prod(op_matrix, in);
-      };
-      auto Bop = [&](vector_const_view_t in, vector_view_t out) {
-        out = prod(M, in);
-      };
+      auto op = [&](vcv_t in, vv_t out) { out = prod(op_mat, in); };
+      auto Bop = [&](vcv_t in, vv_t out) { out = prod(M, in); };
 
       solver_t ar(A.size1());
-      REQUIRE(ar.dim() == A.size1());
-
-      params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
-      params.random_residual_vector = false;
-      params.tolerance = 1e-10;
-      params.sigma = sigma;
-      set_init_residual_vector(ar);
-      ar(op, Bop, solver_t::ShiftAndInvertReal, params, shifts_f);
-      CHECK(ar.nconv() >= nev);
-      check_eigenvectors_shift_and_invert(ar, A, M);
-      check_basis_vectors(ar, M);
+      testing.generalized_custom_exact_shifts(ar, op, Bop, shifts_f, sigma);
     }
   }
 }
