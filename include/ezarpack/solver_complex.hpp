@@ -234,7 +234,7 @@ private:
       storage::resize(z, N, nev + 1);
       ldz = storage::get_col_spacing(z) >= 0 ? storage::get_col_spacing(z) : N;
     } else {
-      storage::resize(z, 0, nev + 1);
+      storage::resize(z, 1, 1);
       ldz = 1;
     }
 

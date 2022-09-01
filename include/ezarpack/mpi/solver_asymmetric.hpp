@@ -307,7 +307,7 @@ private:
       storage::resize(z, block_size * (nev + 1));
       ldz = block_size;
     } else {
-      storage::resize(z, 0);
+      storage::resize(z, 1);
       ldz = 1;
     }
 

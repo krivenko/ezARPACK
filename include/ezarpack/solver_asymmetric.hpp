@@ -241,7 +241,7 @@ private:
       storage::resize(z, N * (nev + 1));
       ldz = N;
     } else {
-      storage::resize(z, 0);
+      storage::resize(z, 1);
       ldz = 1;
     }
 
