@@ -326,7 +326,6 @@ public:
 
     params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
     params.random_residual_vector = false;
-    params.tolerance = 1e-10;
     set_init_residual_vector(ar);
     ar(Aop, params, shifts_f);
     CHECK(ar.nconv() >= nev);
@@ -346,7 +345,6 @@ public:
 
     params_t params(nev, params_t::LargestMagnitude, params_t::Ritz);
     params.random_residual_vector = false;
-    params.tolerance = 1e-10;
     params.sigma = sigma;
     set_init_residual_vector(ar);
     ar(op, Bop, solver_t::ShiftAndInvertReal, params, shifts_f);

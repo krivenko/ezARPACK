@@ -33,20 +33,19 @@ using namespace boost::numeric::ublas;
 // Make a test sparse matrix
 template<operator_kind MKind, typename T = scalar_t<MKind>>
 matrix<T> make_sparse_matrix(int N,
-                             T diag_coeff_shift,
-                             T diag_coeff_amp,
+                             T diag_coeff_mean,
                              int offdiag_offset,
-                             T offdiag_coeff) {
-  auto refl_offdiag_coeff = reflect_coeff<MKind>(offdiag_coeff);
+                             T offdiag_coeff_mean,
+                             T offdiag_coeff_diff) {
   matrix<T> M(N, N);
   for(int i = 0; i < N; ++i) {
     for(int j = 0; j < N; ++j) {
       if(i == j)
-        M(i, j) = diag_coeff_amp * T(i % 2) + diag_coeff_shift;
+        M(i, j) = diag_coeff_mean;
       else if(j - i == offdiag_offset)
-        M(i, j) = offdiag_coeff;
+        M(i, j) = offdiag_coeff_mean + offdiag_coeff_diff;
       else if(i - j == offdiag_offset)
-        M(i, j) = refl_offdiag_coeff;
+        M(i, j) = offdiag_coeff_mean - offdiag_coeff_diff;
       else
         M(i, j) = T(0);
     }
@@ -60,7 +59,7 @@ matrix<T> make_inner_prod_matrix(int N) {
   matrix<T> M(N, N);
   for(int i = 0; i < N; ++i) {
     for(int j = 0; j < N; ++j) {
-      M(i, j) = (i == j) ? 1.5 : (std::abs(i - j) == 1 ? 0.25 : 0);
+      M(i, j) = (i == j) ? 1.0 : (std::abs(i - j) == 1 ? 0.1 : 0);
     }
   }
   return M;

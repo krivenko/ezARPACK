@@ -18,13 +18,15 @@
 ///////////////////
 TEST_CASE("Symmetric matrix is inverted", "[invert_symmetric]") {
   const int N = 100;
-  const double diag_coeff_shift = -0.55;
-  const double diag_coeff_amp = 1.0;
+  const double diag_coeff_mean = 1.0;
   const int offdiag_offset = 3;
-  const double offdiag_coeff = -1.05;
+  const double offdiag_coeff_mean = -0.1;
+  const double offdiag_coeff_diff = 0;
 
+  // Symmetric matrix A
   auto A = make_sparse_matrix<ezarpack::Symmetric>(
-      N, diag_coeff_shift, diag_coeff_amp, offdiag_offset, offdiag_coeff);
+      N, diag_coeff_mean, offdiag_offset, offdiag_coeff_mean,
+      offdiag_coeff_diff);
 
   auto invA = make_buffer<double>(N * N);
   invert(A.get(), invA.get(), N);
@@ -56,15 +58,18 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
   using solver_t = arpack_solver<ezarpack::Symmetric, raw_storage>;
 
   const int N = 100;
-  const double diag_coeff_shift = -0.55;
-  const double diag_coeff_amp = 1.0;
+  const double diag_coeff_mean = 1.0;
   const int offdiag_offset = 3;
-  const double offdiag_coeff = -1.05;
-  const int nev = 10;
+  const double offdiag_coeff_mean = -0.1;
+  const double offdiag_coeff_diff = 0;
+  const int nev = 8;
+
+  const double sigma = 0.102;
 
   // Symmetric matrix A
   auto A = make_sparse_matrix<ezarpack::Symmetric>(
-      N, diag_coeff_shift, diag_coeff_amp, offdiag_offset, offdiag_coeff);
+      N, diag_coeff_mean, offdiag_offset, offdiag_coeff_mean,
+      offdiag_coeff_diff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<ezarpack::Symmetric>(N);
 
@@ -97,7 +102,6 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
   }
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode") {
-    double sigma = 2.0;
 
     auto AmM = make_buffer<double>(N * N);
     for(int i = 0; i < N; ++i) {
@@ -119,7 +123,6 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
   }
 
   SECTION("Generalized eigenproblem: Buckling mode") {
-    double sigma = 3.3;
 
     auto MmA = make_buffer<double>(N * N);
     for(int i = 0; i < N; ++i) {
@@ -142,7 +145,6 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
   }
 
   SECTION("Generalized eigenproblem: Cayley transformed mode") {
-    double sigma = 2.0;
 
     auto AmM = make_buffer<double>(N * N);
     auto ApM = make_buffer<double>(N * N);

@@ -29,11 +29,6 @@ template<operator_kind MKind>
 using scalar_t =
     typename std::conditional<MKind == Complex, dcomplex, double>::type;
 
-template<operator_kind MKind> scalar_t<MKind> reflect_coeff(scalar_t<MKind> x);
-template<> double reflect_coeff<Symmetric>(double x) { return x; }
-template<> double reflect_coeff<Asymmetric>(double x) { return -x; }
-template<> dcomplex reflect_coeff<Complex>(dcomplex x) { return -x; }
-
 // Set initial residual vector
 template<operator_kind OpKind, typename Backend>
 void set_init_residual_vector(arpack_solver<OpKind, Backend>& ar) {

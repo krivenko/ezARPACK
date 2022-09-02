@@ -30,19 +30,18 @@ using namespace triqs::arrays;
 // Make a test sparse matrix
 template<operator_kind MKind, typename T = scalar_t<MKind>>
 matrix<T> make_sparse_matrix(int N,
-                             T diag_coeff_shift,
-                             T diag_coeff_amp,
+                             T diag_coeff_mean,
                              int offdiag_offset,
-                             T offdiag_coeff) {
-  auto refl_offdiag_coeff = reflect_coeff<MKind>(offdiag_coeff);
+                             T offdiag_coeff_mean,
+                             T offdiag_coeff_diff) {
   matrix<T> M(N, N);
   assign_foreach(M, [&](int i, int j) {
     if(i == j)
-      return diag_coeff_amp * T(i % 2) + diag_coeff_shift;
+      return diag_coeff_mean;
     else if(j - i == offdiag_offset)
-      return offdiag_coeff;
+      return offdiag_coeff_mean + offdiag_coeff_diff;
     else if(i - j == offdiag_offset)
-      return refl_offdiag_coeff;
+      return offdiag_coeff_mean - offdiag_coeff_diff;
     else
       return T(0);
   });
@@ -54,7 +53,7 @@ template<operator_kind MKind, typename T = scalar_t<MKind>>
 matrix<T> make_inner_prod_matrix(int N) {
   matrix<T> M(N, N);
   assign_foreach(M, [](int i, int j) {
-    return (i == j) ? 1.5 : (std::abs(i - j) == 1 ? 0.25 : 0);
+    return (i == j) ? 1.0 : (std::abs(i - j) == 1 ? 0.1 : 0);
   });
   return M;
 }

@@ -18,13 +18,15 @@
 ///////////////////
 TEST_CASE("Complex matrix is inverted", "[invert_asymmetric]") {
   const int N = 100;
-  const dcomplex diag_coeff_shift = -0.55;
-  const dcomplex diag_coeff_amp = 1.0;
+  const dcomplex diag_coeff_mean = 2.0;
   const int offdiag_offset = 3;
-  const dcomplex offdiag_coeff(0.5, 0.5);
+  const dcomplex offdiag_coeff_mean = 0;
+  const dcomplex offdiag_coeff_diff(-0.01, 0.1);
 
+  // Hermitian matrix A
   auto A = make_sparse_matrix<ezarpack::Complex>(
-      N, diag_coeff_shift, diag_coeff_amp, offdiag_offset, offdiag_coeff);
+      N, diag_coeff_mean, offdiag_offset, offdiag_coeff_mean,
+      offdiag_coeff_diff);
 
   auto invA = make_buffer<dcomplex>(N * N);
   invert(A.get(), invA.get(), N);
@@ -56,15 +58,18 @@ TEST_CASE("Complex eigenproblem is solved", "[solver_complex]") {
   using solver_t = mpi::arpack_solver<ezarpack::Complex, raw_storage>;
 
   const int N = 100;
-  const dcomplex diag_coeff_shift = -0.55;
-  const dcomplex diag_coeff_amp = 1.0;
+  const dcomplex diag_coeff_mean = 2.0;
   const int offdiag_offset = 3;
-  const dcomplex offdiag_coeff(0.5, 0.5);
-  const int nev = 10;
+  const dcomplex offdiag_coeff_mean = 0;
+  const dcomplex offdiag_coeff_diff(-0.01, 0.1);
+  const int nev = 8;
+
+  const dcomplex sigma(0.1, 0.1);
 
   // Hermitian matrix A
   auto A = make_sparse_matrix<ezarpack::Complex>(
-      N, diag_coeff_shift, diag_coeff_amp, offdiag_offset, offdiag_coeff);
+      N, diag_coeff_mean, offdiag_offset, offdiag_coeff_mean,
+      offdiag_coeff_diff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<ezarpack::Complex>(N);
 
@@ -100,7 +105,6 @@ TEST_CASE("Complex eigenproblem is solved", "[solver_complex]") {
   }
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode") {
-    dcomplex sigma(-1.0, 0.9);
 
     auto AmM = make_buffer<dcomplex>(N * N);
     for(int i = 0; i < N; ++i) {

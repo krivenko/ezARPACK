@@ -38,21 +38,20 @@ template<typename T> std::unique_ptr<T[]> make_buffer(int N) {
 // Make a test sparse matrix
 template<operator_kind MKind, typename T = scalar_t<MKind>>
 std::unique_ptr<T[]> make_sparse_matrix(int N,
-                                        T diag_coeff_shift,
-                                        T diag_coeff_amp,
+                                        T diag_coeff_mean,
                                         int offdiag_offset,
-                                        T offdiag_coeff) {
-  auto refl_offdiag_coeff = reflect_coeff<MKind>(offdiag_coeff);
+                                        T offdiag_coeff_mean,
+                                        T offdiag_coeff_diff) {
   auto M = make_buffer<T>(N * N);
   for(int i = 0; i < N; ++i) {
     for(int j = 0; j < N; ++j) {
       int n = i + j * N;
       if(i == j)
-        M[n] = diag_coeff_amp * T(i % 2) + diag_coeff_shift;
+        M[n] = diag_coeff_mean;
       else if(j - i == offdiag_offset)
-        M[n] = offdiag_coeff;
+        M[n] = offdiag_coeff_mean + offdiag_coeff_diff;
       else if(i - j == offdiag_offset)
-        M[n] = refl_offdiag_coeff;
+        M[n] = offdiag_coeff_mean - offdiag_coeff_diff;
       else
         M[n] = T(0);
     }
@@ -66,7 +65,7 @@ std::unique_ptr<T[]> make_inner_prod_matrix(int N) {
   auto M = make_buffer<T>(N * N);
   for(int i = 0; i < N; ++i) {
     for(int j = 0; j < N; ++j) {
-      M[i + j * N] = (i == j) ? 1.5 : (std::abs(i - j) == 1 ? 0.25 : 0);
+      M[i + j * N] = (i == j) ? 1.0 : (std::abs(i - j) == 1 ? 0.1 : 0);
     }
   }
   return M;

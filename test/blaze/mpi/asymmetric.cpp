@@ -22,15 +22,18 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
   using solver_t = mpi::arpack_solver<ezarpack::Asymmetric, blaze_storage>;
 
   const int N = 100;
-  const double diag_coeff_shift = -0.55;
-  const double diag_coeff_amp = 1.0;
+  const double diag_coeff_mean = 1.0;
   const int offdiag_offset = 3;
-  const double offdiag_coeff = -1.05;
-  const int nev = 10;
+  const double offdiag_coeff_mean = -1.0;
+  const double offdiag_coeff_diff = 0.1;
+  const int nev = 8;
+
+  const dcomplex sigma(0.5, 0.5);
 
   // Asymmetric matrix A
   auto A = make_sparse_matrix<ezarpack::Asymmetric>(
-      N, diag_coeff_shift, diag_coeff_amp, offdiag_offset, offdiag_coeff);
+      N, diag_coeff_mean, offdiag_offset, offdiag_coeff_mean,
+      offdiag_coeff_diff);
   // Inner product matrix
   auto M = make_inner_prod_matrix<ezarpack::Asymmetric>(N);
 
@@ -65,7 +68,6 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
   using cmat_type = DynamicMatrix<dcomplex, columnMajor>;
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode (real part)") {
-    dcomplex sigma(1.0, -0.1);
     decltype(A) op_mat =
         real(inv(cmat_type(A) - sigma * cmat_type(M)) * cmat_type(M));
 
@@ -78,7 +80,6 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
   }
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode (imaginary part)") {
-    dcomplex sigma(1.0, -0.1);
     decltype(A) op_mat =
         imag(inv(cmat_type(A) - sigma * cmat_type(M)) * cmat_type(M));
 
@@ -138,7 +139,6 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
     }
 
     SECTION("Generalized eigenproblem: Shift-and-Invert mode (real part)") {
-      dcomplex sigma(1.0, -0.1);
       decltype(A) op_mat =
           real(inv(cmat_type(A) - sigma * cmat_type(M)) * cmat_type(M));
 
