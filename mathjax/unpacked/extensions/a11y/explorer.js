@@ -1,822 +1,417 @@
-/*************************************************************
- *
- *  [Contrib]/a11y/explorer.js
- *
- *  Implements expression exploration via the SRE explorer.
- *
- *  ---------------------------------------------------------------------
- *
- *  Copyright (c) 2016-2018 The MathJax Consortium
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Hub.Register.StartupHook('Sre Ready', function() {
-  var FALSE, KEY;
-  var SETTINGS = MathJax.Hub.config.menuSettings;
-  var COOKIE = {};   // replaced when menu is available
-
-  MathJax.Hub.Register.StartupHook('MathEvents Ready', function() {
-    FALSE = MathJax.Extension.MathEvents.Event.False;
-    KEY = MathJax.Extension.MathEvents.Event.KEY;
-  });
-
-  var Assistive = MathJax.Extension.explorer = {
-    version: '1.4.0',
-    dependents: [],            // the extensions that depend on this one
-    //
-    // Default configurations.
-    //
-    defaults: {
-      walker: 'table',
-      highlight: 'none',
-      background: 'blue',
-      foreground: 'black',
-      speech: true,
-      generation: 'lazy',
-      subtitle: false,
-      ruleset: 'mathspeak-default'
-    },
-    eagerComplexity: 80,
-    prefix: 'Assistive-',
-    hook: null,
-    locHook: null,
-    oldrules: null,
-    addMenuOption: function(key, value) {
-      SETTINGS[Assistive.prefix + key] = value;
-    },
-
-    addDefaults: function() {
-      var defaults = MathJax.Hub.CombineConfig('explorer', Assistive.defaults);
-      var keys = Object.keys(defaults);
-      for (var i = 0, key; key = keys[i]; i++) {
-        if (typeof(SETTINGS[Assistive.prefix + key]) === 'undefined') {
-          Assistive.addMenuOption(key, defaults[key]);
-        }
-      }
-      Assistive.setSpeechOption();
-      Explorer.Reset();
-    },
-
-    setOption: function(key, value) {
-      if (SETTINGS[Assistive.prefix + key] === value) return;
-      Assistive.addMenuOption(key, value);
-      Explorer.Reset();
-    },
-
-    getOption: function(key) {
-      return SETTINGS[Assistive.prefix + key];
-    },
-
-    speechOption: function(msg) {
-      if (Assistive.oldrules === msg.value) return;
-      Assistive.setSpeechOption();
-      Explorer.Regenerate();
-    },
-
-    setSpeechOption: function() {
-      var ruleset = SETTINGS[Assistive.prefix + 'ruleset'];
-      var cstr = ruleset.split('-');
-      sre.System.getInstance().setupEngine({
-        locale: MathJax.Localization.locale,
-        domain: Assistive.Domain(cstr[0]),
-        style: cstr[1],
-        rules: Assistive.RuleSet(cstr[0])
-      });
-      Assistive.oldrules = ruleset;
-    },
-
-    Domain: function(domain) {
-      switch (domain) {
-        case 'chromevox':
-          return 'default';
-        case 'mathspeak':
-        default:
-          return 'mathspeak';
-      }
-    },
-
-    RuleSet: function(domain) {
-      switch (domain) {
-        case 'chromevox':
-          return ['AbstractionRules', 'SemanticTreeRules'];
-        case 'mathspeak':
-        default:
-          return ['AbstractionRules', 'AbstractionSpanish',
-                  'MathspeakRules', 'MathspeakSpanish'];
-      }
-    },
-
-    hook: null,
-    locHook: null,
-    Enable: function(update, menu) {
-      SETTINGS.explorer = true;
-      if (menu) COOKIE.explorer = true;
-      MathJax.Extension.collapsible.Enable(false, menu);
-      if (MathJax.Extension.AssistiveMML) {
-        MathJax.Extension.AssistiveMML.config.disabled = true;
-        SETTINGS.assistiveMML = false;
-        if (menu) COOKIE.assistiveMML = false;
-      }
-      this.DisableMenus(false);
-      if (!this.hook) {
-        this.hook = MathJax.Hub.Register.MessageHook(
-            'New Math', ['Register', this.Explorer]);
-      }
-      if (!this.locHook) {
-        this.locHook = MathJax.Hub.Register.MessageHook(
-          'Locale Reset', ['RemoveSpeech', this.Explorer]);
-      }
-      if (update) MathJax.Hub.Queue(['Reprocess', MathJax.Hub]);
-    },
-    Disable: function(update, menu) {
-      SETTINGS.explorer = false;
-      if (menu) COOKIE.explorer = false;
-      this.DisableMenus(true);
-      if (this.hook) {
-        MathJax.Hub.UnRegister.MessageHook(this.hook);
-        this.hook = null;
-      }
-      for (var i = this.dependents.length - 1; i >= 0; i--) {
-        var dependent = this.dependents[i];
-        if (dependent.Disable) dependent.Disable(false, menu);
-      }
-      //  Reprocess on update?  I don't think it is necessary
-      //    (now that we check for being enabled in the event handlers)
-    },
-    DisableMenus: function(state) {
-      if (MathJax.Menu) {
-        var menu = MathJax.Menu.menu.FindId('Accessibility', 'Explorer');
-        if (menu) {
-          menu = menu.submenu;
-          var items = menu.items;
-          for (var i = 2, item; item = items[i]; i++) item.disabled = state;
-          if (!state && menu.FindId('SpeechOutput') && !SETTINGS[Assistive.prefix + 'speech']) {
-            menu.FindId('Subtitles').disabled = true;
-          }
-        }
-      }
-    },
-    //
-    //  Register a dependent
-    //
-    Dependent: function(extension) {
-      this.dependents.push(extension);
-    }
-  };
-
-  var LiveRegion = MathJax.Object.Subclass({
-    div: null,
-    inner: null,
-    Init: function() {
-      this.div = LiveRegion.Create('assertive');
-      this.inner = MathJax.HTML.addElement(this.div, 'div');
-    },
-    //
-    // Adds the speech div.
-    //
-    Add: function() {
-      if (LiveRegion.added) return;
-      document.body.appendChild(this.div);
-      LiveRegion.added = true;
-    },
-    //
-    // Shows the live region as a subtitle of a node.
-    //
-    Show: function(node, highlighter) {
-      this.div.classList.add('MJX_LiveRegion_Show');
-      var rect = node.getBoundingClientRect();
-      var bot = rect.bottom + 10 + window.pageYOffset;
-      var left = rect.left + window.pageXOffset;
-      this.div.style.top = bot + 'px';
-      this.div.style.left = left + 'px';
-      var color = highlighter.colorString();
-      this.inner.style.backgroundColor = color.background;
-      this.inner.style.color = color.foreground;
-    },
-    //
-    // Takes the live region out of the page flow.
-    //
-    Hide: function(node) {
-      this.div.classList.remove('MJX_LiveRegion_Show');
-    },
-    //
-    // Clears the speech div.
-    //
-    Clear: function() {
-      this.Update('');
-      this.inner.style.top = '';
-      this.inner.style.backgroundColor = '';
-    },
-    //
-    // Speaks a string by poking it into the speech div.
-    //
-    Update: function(speech) {
-      if (Assistive.getOption('speech')) {
-        LiveRegion.Update(this.inner, speech);
-      }
-    }
-  }, {
-    ANNOUNCE: 'Navigatable Math in page. Explore with shift space and arrow' +
-        ' keys. Expand or collapse elements hitting enter.',
-    announced: false,
-    added: false,
-    styles: {'.MJX_LiveRegion':
-          {
-            position: 'absolute', top: '0', height: '1px', width: '1px',
-            padding: '1px', overflow: 'hidden'
-          },
-      '.MJX_LiveRegion_Show':
-          {
-            top: '0', position: 'absolute', width: 'auto', height: 'auto',
-            padding: '0px 0px', opacity: 1, 'z-index': '202',
-            left: 0, right: 0, 'margin': '0 auto',
-            'background-color': 'white', 'box-shadow': '0px 10px 20px #888',
-            border: '2px solid #CCCCCC'
-          }
-    },
-    //
-    // Creates a live region with a particular type.
-    //
-    Create: function(type) {
-      var element = MathJax.HTML.Element(
-          'div', {className: 'MJX_LiveRegion'});
-      element.setAttribute('aria-live', type);
-      return element;
-    },
-    //
-    // Updates a live region's text content.
-    //
-    Update: MathJax.Hub.Browser.isPC ?
-        function(div, speech) {
-          div.textContent = '';
-          setTimeout(function() {div.textContent = speech;}, 100);
-        } : function(div, speech) {
-          div.textContent = '';
-          div.textContent = speech;
-        },
-    //
-    // Speaks the announce string.
-    //
-    Announce: function() {
-      if (!Assistive.getOption('speech')) return;
-      LiveRegion.announced = true;
-      MathJax.Ajax.Styles(LiveRegion.styles);
-      var div = LiveRegion.Create('polite');
-      document.body.appendChild(div);
-      LiveRegion.Update(div, LiveRegion.ANNOUNCE);
-      setTimeout(function() {document.body.removeChild(div);}, 1000);
-    }
-  });
-  MathJax.Extension.explorer.LiveRegion = LiveRegion;
-
-  var A11Y_PATH = MathJax.Ajax.fileURL(MathJax.Ajax.config.path.a11y);
-  
-  var Explorer = MathJax.Extension.explorer.Explorer = {
-    liveRegion: LiveRegion(),
-    walker: null,
-    highlighter: null,
-    hoverer: null,
-    flamer: null,
-    speechDiv: null,
-    earconFile: A11Y_PATH + '/invalid_keypress' +
-        (['Firefox', 'Chrome', 'Opera'].indexOf(MathJax.Hub.Browser.name) !== -1 ?
-        '.ogg' : '.mp3'),
-    expanded: false,
-    focusoutEvent: MathJax.Hub.Browser.isFirefox ? 'blur' : 'focusout',
-    focusinEvent: 'focus',
-    ignoreFocusOut: false,
-    jaxCache: {},
-    messageID: null,
-    //
-    // Resets the explorer, rerunning methods not triggered by events.
-    //
-    Reset: function() {
-      Explorer.FlameEnriched();
-    },
-    //
-    // Registers new Maths and adds a key event if it is enriched.
-    //
-    Register: function(msg) {
-      if (!Assistive.hook) return;
-      var script = document.getElementById(msg[1]);
-      if (script && script.id) {
-        var jax = MathJax.Hub.getJaxFor(script.id);
-        if (jax && jax.enriched) {
-          Explorer.StateChange(script.id, jax);
-          Explorer.liveRegion.Add();
-          Explorer.AddEvent(script);
-        }
-      }
-    },
-    StateChange: function(id, jax) {
-      Explorer.GetHighlighter(.2);
-      var oldJax = Explorer.jaxCache[id];
-      if (oldJax && oldJax === jax.root) return;
-      if (oldJax) {
-        Explorer.highlighter.resetState(id + '-Frame');
-      }
-      Explorer.jaxCache[id] = jax.root;
-    },
-    //
-    // Adds Aria attributes.
-    //
-    AddAria: function(math) {
-      math.setAttribute('role', 'application');
-      math.setAttribute('aria-label', 'Math');
-    },
-    //
-    // Add hook to run at End Math to restart walking on an expansion element.
-    //
-    AddHook: function(jax) {
-      Explorer.RemoveHook();
-      Explorer.hook = MathJax.Hub.Register.MessageHook(
-          'End Math', function(message) {
-            var newid = message[1].id + '-Frame';
-            var math = document.getElementById(newid);
-            if (jax && newid === Explorer.expanded) {
-              Explorer.ActivateWalker(math, jax);
-              math.focus();
-              Explorer.expanded = false;
-            }
-          });
-    },
-    //
-    // Remove and unregister the explorer hook.
-    //
-    RemoveHook: function() {
-      if (Explorer.hook) {
-        MathJax.Hub.UnRegister.MessageHook(Explorer.hook);
-        Explorer.hook = null;
-      }
-    },
-    AddMessage: function() {
-      return MathJax.Message.Set('Generating Speech Output');
-    },
-    RemoveMessage: function(id) {
-      if (id) MathJax.Message.Clear(id);
-    },
-    //
-    // Adds a key event to an enriched jax.
-    //
-    AddEvent: function(script) {
-      var id = script.id + '-Frame';
-      var sibling = script.previousSibling;
-      if (!sibling) return;
-      var math = sibling.id !== id ? sibling.firstElementChild : sibling;
-      Explorer.AddAria(math);
-      Explorer.AddMouseEvents(math);
-      if (math.className === 'MathJax_MathML') {
-        math = math.firstElementChild;
-      }
-      if (!math) return;
-      math.onkeydown = Explorer.Keydown;
-      Explorer.Flame(math);
-      math.addEventListener(
-          Explorer.focusinEvent,
-          function(event) {
-            if (!Assistive.hook) return;
-            if (!LiveRegion.announced) LiveRegion.Announce();
-          });
-      math.addEventListener(
-          Explorer.focusoutEvent,
-          function(event) {
-            if (!Assistive.hook) return;
-            // A fix for Edge.
-            if (Explorer.ignoreFocusOut) {
-              Explorer.ignoreFocusOut = false;
-              if (Explorer.walker.moved === 'enter') {
-                event.target.focus();
-                return;
-              }
-            }
-            if (Explorer.walker) Explorer.DeactivateWalker();
-          });
-      //
-      if (Assistive.getOption('speech')) {
-        Explorer.AddSpeech(math);
-      }
-      //
-    },
-    //
-    // Add speech output.
-    //
-    AddSpeech: function(math) {
-      var id = math.id;
-      var jax = MathJax.Hub.getJaxFor(id);
-      var mathml = jax.root.toMathML();
-      if (!math.getAttribute('haslabel')) {
-        Explorer.AddMathLabel(mathml, id);
-      }
-      if (math.getAttribute('hasspeech')) return;
-      switch (MathJax.Hub.config.explorer.generation) {
-        case 'eager':
-          Explorer.AddSpeechEager(mathml, id);
-          break;
-        case 'mixed':
-          var complexity = math.querySelectorAll('[data-semantic-complexity]');
-          if (complexity.length >= Assistive.eagerComplexity) {
-            Explorer.AddSpeechEager(mathml, id);
-          }
-          break;
-        case 'lazy':
-        default:
-          break;
-      }
-    },
-    AddSpeechLazy: function(math) {
-      var generator = new sre.TreeSpeechGenerator();
-      generator.setRebuilt(Explorer.walker.rebuilt);
-      generator.getSpeech(Explorer.walker.rootNode, Explorer.walker.xml);
-      math.setAttribute('hasspeech', 'true');
-    },
-    //
-    //
-    // Adds speech strings to the node using a web worker.
-    //
-    AddSpeechEager: function(mathml, id) {
-      Explorer.MakeSpeechTask(
-          mathml, id, sre.TreeSpeechGenerator,
-          function(math, speech) {math.setAttribute('hasspeech', 'true');}, 5);
-    },
-    //
-    // Attaches the Math expression as an aria label.
-    //
-    AddMathLabel: function(mathml, id) {
-      Explorer.MakeSpeechTask(
-          mathml, id, sre.SummarySpeechGenerator,
-          function(math, speech) {
-            math.setAttribute('haslabel', 'true');
-            math.setAttribute('aria-label', speech);},
-          5);
-    },
-    //
-    // The actual speech task generator.
-    //
-    MakeSpeechTask: function(mathml, id, constructor, onSpeech, time) {
-      var messageID = Explorer.AddMessage();
-      setTimeout(function() {
-        var speechGenerator = new constructor();
-        var math = document.getElementById(id);
-        var dummy = new sre.DummyWalker(
-            math, speechGenerator, Explorer.highlighter, mathml);
-        var speech = dummy.speech();
-        if (speech) {
-          onSpeech(math, speech);
-        }
-        Explorer.RemoveMessage(messageID);
-      }, time);
-    },
-    //
-    // Event execution on keydown. Subsumes the same method of MathEvents.
-    //
-    Keydown: function(event) {
-      if (event.keyCode === KEY.ESCAPE) {
-        if (!Explorer.walker) return;
-        Explorer.RemoveHook();
-        Explorer.DeactivateWalker();
-        FALSE(event);
-        return;
-      }
-      // If walker is active we redirect there.
-      if (Explorer.walker && Explorer.walker.isActive()) {
-        if (typeof(Explorer.walker.modifier) !== 'undefined') {
-          Explorer.walker.modifier = event.shiftKey;
-        }
-        var move = Explorer.walker.move(event.keyCode);
-        if (move === null) return;
-        if (move) {
-          if (Explorer.walker.moved === 'expand') {
-            Explorer.expanded = Explorer.walker.node.id;
-            // This sometimes blurs in Edge and sometimes it does not.
-            if (MathJax.Hub.Browser.isEdge) {
-              Explorer.ignoreFocusOut = true;
-              Explorer.DeactivateWalker();
-              return;
-            }
-            // This does not blur in FF, IE.
-            if (MathJax.Hub.Browser.isFirefox || MathJax.Hub.Browser.isMSIE) {
-              Explorer.DeactivateWalker();
-              return;
-            }
-          }
-          Explorer.liveRegion.Update(Explorer.walker.speech());
-          Explorer.Highlight();
-        } else {
-          Explorer.PlayEarcon();
-        }
-        FALSE(event);
-        return;
-      }
-      var math = event.target;
-      if (event.keyCode === KEY.SPACE) {
-        if (event.shiftKey && Assistive.hook) {
-          var jax = MathJax.Hub.getJaxFor(math);
-          Explorer.ActivateWalker(math, jax);
-          Explorer.AddHook(jax);
-        } else {
-          MathJax.Extension.MathEvents.Event.ContextMenu(event, math);
-        }
-        FALSE(event);
-        return;
-      }
-    },
-    GetHighlighter: function(alpha) {
-      Explorer.highlighter = sre.HighlighterFactory.highlighter(
-          {color: Assistive.getOption('background'), alpha: alpha},
-          {color: Assistive.getOption('foreground'), alpha: 1},
-          {renderer: MathJax.Hub.outputJax['jax/mml'][0].id,
-            browser: MathJax.Hub.Browser.name}
-          );
-    },
-    //
-    // Adds mouse events to maction items in an enriched jax.
-    //
-    AddMouseEvents: function(node) {
-      sre.HighlighterFactory.addEvents(
-          node,
-          {'mouseover': Explorer.MouseOver,
-            'mouseout': Explorer.MouseOut},
-          {renderer: MathJax.Hub.outputJax['jax/mml'][0].id,
-            browser: MathJax.Hub.Browser.name}
-      );
-    },
-    MouseOver: function(event) {
-      if (Assistive.getOption('highlight') === 'none') return;
-      if (Assistive.getOption('highlight') === 'hover') {
-        var frame = event.currentTarget;
-        Explorer.GetHighlighter(.1);
-        Explorer.highlighter.highlight([frame]);
-        Explorer.hoverer = true;
-      }
-      FALSE(event);
-    },
-    MouseOut: function(event) {
-      if (Explorer.hoverer) {
-        Explorer.highlighter.unhighlight();
-        Explorer.hoverer = false;
-      }
-      return FALSE(event);
-    },
-    //
-    // Activates Flaming
-    //
-    Flame: function(node) {
-      if (Assistive.getOption('highlight') === 'flame') {
-        Explorer.GetHighlighter(.05);
-        Explorer.highlighter.highlightAll(node);
-        Explorer.flamer = true;
-        return;
-      }
-    },
-    UnFlame: function() {
-      if (Explorer.flamer) {
-        Explorer.highlighter.unhighlightAll();
-        Explorer.flamer = null;
-      }
-    },
-    FlameEnriched: function() {
-      Explorer.UnFlame();
-      for (var i = 0, all = MathJax.Hub.getAllJax(), jax; jax = all[i]; i++) {
-        Explorer.Flame(jax.SourceElement().previousSibling);
-      }
-    },
-    //
-    // Activates the walker.
-    //
-    Walkers: {
-      'syntactic': sre.SyntaxWalker,
-      'table': sre.TableWalker,
-      'semantic': sre.SemanticWalker,
-      'none': sre.DummyWalker
-    },
-    ActivateWalker: function(math, jax) {
-      var speechOn = Assistive.getOption('speech');
-      var constructor = Assistive.getOption('walker') ?
-            Explorer.Walkers[MathJax.Hub.config.explorer.walker] :
-            Explorer.Walkers['none'];
-      var speechGenerator = speechOn ? new sre.DirectSpeechGenerator() :
-          new sre.DummySpeechGenerator();
-      Explorer.GetHighlighter(.2);
-      Explorer.walker = new constructor(
-          math, speechGenerator, Explorer.highlighter, jax.root.toMathML());
-      if (speechOn && !math.getAttribute('hasspeech')) {
-        Explorer.AddSpeechLazy(math);
-      }
-      Explorer.walker.activate();
-      if (speechOn) {
-        if (Assistive.getOption('subtitle')) {
-          Explorer.liveRegion.Show(math, Explorer.highlighter);
-        }
-        Explorer.liveRegion.Update(Explorer.walker.speech());
-      }
-      Explorer.Highlight();
-      // A fix for Edge.
-      if (Explorer.ignoreFocusOut) {
-        setTimeout(function() {Explorer.ignoreFocusOut = false;}, 500);
-      }
-    },
-    //
-    // Deactivates the walker.
-    //
-    DeactivateWalker: function() {
-      Explorer.liveRegion.Clear();
-      Explorer.liveRegion.Hide();
-      Explorer.Unhighlight();
-      Explorer.currentHighlight = null;
-      Explorer.walker.deactivate();
-      Explorer.walker = null;
-    },
-    //
-    // Highlights the focused nodes.
-    //
-    Highlight: function() {
-      Explorer.Unhighlight();
-      Explorer.highlighter.highlight(Explorer.walker.getFocus().getNodes());
-    },
-    //
-    // Unhighlights the old nodes.
-    //
-    Unhighlight: function() {
-      Explorer.highlighter.unhighlight();
-    },
-    //
-    // Plays the earcon.
-    //
-    // Every time we make new Audio element, as some browsers do not allow to
-    // play audio elements more than once (e.g., Safari).
-    //
-    PlayEarcon: function() {
-      var audio = new Audio(Explorer.earconFile);
-      audio.play();
-    },
-    //
-    // Toggle speech output.
-    //
-    SpeechOutput: function() {
-      Explorer.Reset();
-      var speechItems = ['Subtitles'];
-      speechItems.forEach(
-          function(x) {
-            var item = MathJax.Menu.menu.FindId('Accessibility', 'Explorer', x);
-            if (item) {
-              item.disabled = !item.disabled;
-            }});
-      Explorer.Regenerate();
-    },
-    //
-    // Remove speech and resets SRE options.
-    //
-    RemoveSpeech: function() {
-      Assistive.setSpeechOption();
-      for (var i = 0, all = MathJax.Hub.getAllJax(), jax; jax = all[i]; i++) {
-        var math = document.getElementById(jax.inputID + '-Frame');
-        if (math) {
-          math.removeAttribute('hasspeech');
-          math.removeAttribute('haslabel');
-        }
-      }
-    },
-    //
-    // Regenerates speech.
-    //
-    Regenerate: function() {
-      for (var i = 0, all = MathJax.Hub.getAllJax(), jax; jax = all[i]; i++) {
-        var math = document.getElementById(jax.inputID + '-Frame');
-        if (math) {
-          math.removeAttribute('hasspeech');
-          Explorer.AddSpeech(math);
-        }
-      }
-    },
-    Startup: function() {
-      var Collapsible = MathJax.Extension.collapsible;
-      if (Collapsible) Collapsible.Dependent(Assistive);
-      Assistive.addDefaults();
-    }
-  };
-
-  MathJax.Hub.Register.StartupHook('End Extensions', function() {
-    Assistive[SETTINGS.explorer === false ? 'Disable' : 'Enable']();
-    MathJax.Hub.Startup.signal.Post('Explorer Ready');
-    MathJax.Hub.Register.StartupHook('MathMenu Ready', function() {
-      COOKIE = MathJax.Menu.cookie;
-      var Switch = function(menu) {
-        Assistive[SETTINGS.explorer ? 'Enable' : 'Disable'](true, true);
-        MathJax.Menu.saveCookie();
-      };
-      var ITEM = MathJax.Menu.ITEM,
-          MENU = MathJax.Menu.menu;
-      var reset = {action: Explorer.Reset};
-      var speech = {action: Assistive.speechOption};
-      var explorerMenu =
-          ITEM.SUBMENU(['Explorer', 'Explorer'],
-              ITEM.CHECKBOX(['Active', 'Active'], 'explorer', {action: Switch}),
-              ITEM.RULE(),
-              ITEM.CHECKBOX(['Walker', 'Walker'], 'Assistive-walker'),
-              ITEM.SUBMENU(['Highlight', 'Highlight'],
-                  ITEM.RADIO(['none', 'None'], 'Assistive-highlight', reset),
-                  ITEM.RADIO(['hover', 'Hover'], 'Assistive-highlight', reset),
-                  ITEM.RADIO(['flame', 'Flame'], 'Assistive-highlight', reset)
-              ),
-              ITEM.SUBMENU(['Background', 'Background'],
-                  ITEM.RADIO(['blue', 'Blue'], 'Assistive-background', reset),
-                  ITEM.RADIO(['red', 'Red'], 'Assistive-background', reset),
-                  ITEM.RADIO(['green', 'Green'], 'Assistive-background', reset),
-                  ITEM.RADIO(['yellow', 'Yellow'], 'Assistive-background', reset),
-                  ITEM.RADIO(['cyan', 'Cyan'], 'Assistive-background', reset),
-                  ITEM.RADIO(['magenta', 'Magenta'], 'Assistive-background', reset),
-                  ITEM.RADIO(['white', 'White'], 'Assistive-background', reset),
-                  ITEM.RADIO(['black', 'Black'], 'Assistive-background', reset)
-              ),
-              ITEM.SUBMENU(['Foreground', 'Foreground'],
-                  ITEM.RADIO(['black', 'Black'], 'Assistive-foreground', reset),
-                  ITEM.RADIO(['white', 'White'], 'Assistive-foreground', reset),
-                  ITEM.RADIO(['magenta', 'Magenta'], 'Assistive-foreground', reset),
-                  ITEM.RADIO(['cyan', 'Cyan'], 'Assistive-foreground', reset),
-                  ITEM.RADIO(['yellow', 'Yellow'], 'Assistive-foreground', reset),
-                  ITEM.RADIO(['green', 'Green'], 'Assistive-foreground', reset),
-                  ITEM.RADIO(['red', 'Red'], 'Assistive-foreground', reset),
-                  ITEM.RADIO(['blue', 'Blue'], 'Assistive-foreground', reset)
-              ),
-              ITEM.RULE(),
-              ITEM.CHECKBOX(['SpeechOutput', 'Speech Output'],
-                            'Assistive-speech', {action: Explorer.SpeechOutput}),
-              ITEM.CHECKBOX(['Subtitles', 'Subtitles'], 'Assistive-subtitle',
-                            {disabled: !SETTINGS['Assistive-speech']}),
-              ITEM.RULE(),
-              ITEM.SUBMENU(['Mathspeak', 'Mathspeak Rules'],
-                  ITEM.RADIO(['mathspeak-default', 'Verbose'],
-                             'Assistive-ruleset', speech),
-                  ITEM.RADIO(['mathspeak-brief', 'Brief'], 'Assistive-ruleset', speech),
-                  ITEM.RADIO(['mathspeak-sbrief', 'Superbrief'],
-                             'Assistive-ruleset', speech)
-              ),
-              ITEM.SUBMENU(['Chromevox', 'ChromeVox Rules'],
-                  ITEM.RADIO(['chromevox-default', 'Verbose'],
-                             'Assistive-ruleset', speech),
-                  ITEM.RADIO(['chromevox-short', 'Short'], 'Assistive-ruleset',
-                             speech),
-                  ITEM.RADIO(['chromevox-alternative', 'Alternative'],
-                             'Assistive-ruleset', speech)
-              )
-          );
-      var submenu = (MENU.FindId('Accessibility') || {}).submenu, index;
-      if (submenu) {
-        index = submenu.IndexOfId('Explorer');
-        if (index !== null) {
-          submenu.items[index] = explorerMenu;
-        } else {
-          index = submenu.IndexOfId('CollapsibleMath');
-          submenu.items.splice(index + 1, 0, explorerMenu);
-        }
-      } else {
-        index = MENU.IndexOfId('CollapsibleMath');
-        MENU.items.splice(index + 1, 0, explorerMenu);
-      }
-      if (!SETTINGS.explorer) Assistive.DisableMenus(true);
-    },20);  // Between collapsible and auto-collapse extensions
-  },20);
-
-});
-
-//
-//  Patch problem with SVG getJaxForMath when used from explorer
-//  (can be removed after the next release of MathJax).
-//
-MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
-  MathJax.Hub.Config({SVG: {addMMLclasses: true}});
-  var SVG = MathJax.OutputJax.SVG;
-  if (parseFloat(SVG.version) < 2.7) {
-    var JAXFROMMATH = SVG.getJaxFromMath;
-    SVG.Augment({
-      getJaxFromMath: function (math) {
-        if (math.parentNode.className.match(/MathJax_SVG_Display/)) math = math.parentNode;
-        return JAXFROMMATH.call(this,math);
-      }
+MathJax.Hub.Register.StartupHook("Sre Ready", function() {
+    var o, r, s = MathJax.Hub.config.menuSettings, l = {};
+    MathJax.Hub.Register.StartupHook("MathEvents Ready", function() {
+        o = MathJax.Extension.MathEvents.Event.False, r = MathJax.Extension.MathEvents.Event.KEY;
     });
-  }
-});
+    var h = MathJax.Extension.explorer = {
+        version: "1.6.0",
+        dependents: [],
+        defaults: {
+            walker: "table",
+            highlight: "none",
+            background: "blue",
+            foreground: "black",
+            speech: !0,
+            generation: "lazy",
+            subtitle: !1,
+            ruleset: "mathspeak-default"
+        },
+        eagerComplexity: 80,
+        prefix: "Assistive-",
+        hook: null,
+        locHook: null,
+        oldrules: null,
+        addMenuOption: function(e, t) {
+            s[h.prefix + e] = t;
+        },
+        addDefaults: function() {
+            for (var e, t = MathJax.Hub.CombineConfig("explorer", h.defaults), a = Object.keys(t), i = 0; e = a[i]; i++) void 0 === s[h.prefix + e] && h.addMenuOption(e, t[e]);
+            h.setSpeechOption(), u.Reset();
+        },
+        setOption: function(e, t) {
+            s[h.prefix + e] !== t && (h.addMenuOption(e, t), u.Reset());
+        },
+        getOption: function(e) {
+            return s[h.prefix + e];
+        },
+        speechOption: function(e) {
+            h.oldrules !== e.value && (h.setSpeechOption(), u.Regenerate());
+        },
+        setSpeechOption: function() {
+            var e = s[h.prefix + "ruleset"], t = e.split("-");
+            sre.System.getInstance().setupEngine({
+                locale: MathJax.Localization.locale,
+                domain: h.Domain(t[0]),
+                style: t[1]
+            }), h.oldrules = e;
+        },
+        Domain: function(e) {
+            switch (e) {
+              case "chromevox":
+                return "default";
 
-//
-//  Set up the a11y path,if it isn't already in place
-//
-if (!MathJax.Ajax.config.path.a11y) {
-  MathJax.Ajax.config.path.a11y = MathJax.Hub.config.root + "/extensions/a11y";
-}
+              case "clearspeak":
+                return "clearspeak";
 
-MathJax.Ajax.Require('[a11y]/collapsible.js');
-MathJax.Hub.Register.StartupHook('Collapsible Ready', function() {
-  MathJax.Extension.explorer.Explorer.Startup();
-  MathJax.Ajax.loadComplete('[a11y]/explorer.js');
+              case "mathspeak":
+              default:
+                return "mathspeak";
+            }
+        },
+        Enable: function(e, t) {
+            s.explorer = !0, t && (l.explorer = !0), MathJax.Extension.collapsible.Enable(!1, t), 
+            MathJax.Extension.AssistiveMML && (MathJax.Extension.AssistiveMML.config.disabled = !0, 
+            s.assistiveMML = !1, t && (l.assistiveMML = !1)), this.DisableMenus(!1), this.hook || (this.hook = MathJax.Hub.Register.MessageHook("New Math", [ "Register", this.Explorer ])), 
+            this.locHook || (this.locHook = MathJax.Hub.Register.MessageHook("Locale Reset", [ "RemoveSpeech", this.Explorer ])), 
+            e && MathJax.Hub.Queue([ "Reprocess", MathJax.Hub ]);
+        },
+        Disable: function(e, t) {
+            s.explorer = !1, t && (l.explorer = !1), this.DisableMenus(!0), this.hook && (MathJax.Hub.UnRegister.MessageHook(this.hook), 
+            this.hook = null);
+            for (var a = this.dependents.length - 1; 0 <= a; a--) {
+                var i = this.dependents[a];
+                i.Disable && i.Disable(!1, t);
+            }
+        },
+        DisableMenus: function(e) {
+            if (MathJax.Menu) {
+                var t = MathJax.Menu.menu.FindId("Accessibility", "Explorer");
+                if (t) {
+                    for (var a, i = (t = t.submenu).items, n = 2; a = i[n]; n++) a.disabled = e;
+                    e || !t.FindId("SpeechOutput") || s[h.prefix + "speech"] || (t.FindId("Subtitles").disabled = !0);
+                }
+            }
+        },
+        Dependent: function(e) {
+            this.dependents.push(e);
+        }
+    }, n = MathJax.Object.Subclass({
+        div: null,
+        inner: null,
+        Init: function() {
+            this.div = n.Create("assertive"), this.inner = MathJax.HTML.addElement(this.div, "div");
+        },
+        Add: function() {
+            n.added || (document.body.appendChild(this.div), n.added = !0);
+        },
+        Show: function(e, t) {
+            this.div.classList.add("MJX_LiveRegion_Show");
+            var a = e.getBoundingClientRect(), i = a.bottom + 10 + window.pageYOffset, n = a.left + window.pageXOffset;
+            this.div.style.top = i + "px", this.div.style.left = n + "px";
+            var o = t.colorString();
+            this.inner.style.backgroundColor = o.background, this.inner.style.color = o.foreground;
+        },
+        Hide: function(e) {
+            this.div.classList.remove("MJX_LiveRegion_Show");
+        },
+        Clear: function() {
+            this.Update(""), this.inner.style.top = "", this.inner.style.backgroundColor = "";
+        },
+        Update: function(e) {
+            h.getOption("speech") && n.Update(this.inner, e);
+        }
+    }, {
+        ANNOUNCE: "Navigatable Math in page. Explore with enter or shift space and arrow keys. Expand or collapse elements hitting enter.",
+        announced: !1,
+        added: !1,
+        styles: {
+            ".MJX_LiveRegion": {
+                position: "absolute",
+                top: "0",
+                height: "1px",
+                width: "1px",
+                padding: "1px",
+                overflow: "hidden"
+            },
+            ".MJX_LiveRegion_Show": {
+                top: "0",
+                position: "absolute",
+                width: "auto",
+                height: "auto",
+                padding: "0px 0px",
+                opacity: 1,
+                "z-index": "202",
+                left: 0,
+                right: 0,
+                margin: "0 auto",
+                "background-color": "white",
+                "box-shadow": "0px 10px 20px #888",
+                border: "2px solid #CCCCCC"
+            }
+        },
+        Create: function(e) {
+            var t = MathJax.HTML.Element("div", {
+                className: "MJX_LiveRegion"
+            });
+            return t.setAttribute("aria-live", e), t;
+        },
+        Update: MathJax.Hub.Browser.isPC ? function(e, t) {
+            e.textContent = "", setTimeout(function() {
+                e.textContent = t;
+            }, 100);
+        } : function(e, t) {
+            e.textContent = "", e.textContent = t;
+        },
+        Announce: function() {
+            var e;
+            h.getOption("speech") && (n.announced = !0, MathJax.Ajax.Styles(n.styles), e = n.Create("polite"), 
+            document.body.appendChild(e), n.Update(e, n.ANNOUNCE), setTimeout(function() {
+                document.body.removeChild(e);
+            }, 1e3));
+        }
+    });
+    MathJax.Extension.explorer.LiveRegion = n;
+    var e = MathJax.Ajax.fileURL(MathJax.Ajax.config.path.a11y), u = MathJax.Extension.explorer.Explorer = {
+        liveRegion: n(),
+        walker: null,
+        highlighter: null,
+        hoverer: null,
+        flamer: null,
+        speechDiv: null,
+        earconFile: e + "/invalid_keypress" + (-1 !== [ "Firefox", "Chrome", "Opera" ].indexOf(MathJax.Hub.Browser.name) ? ".ogg" : ".mp3"),
+        expanded: !1,
+        focusoutEvent: MathJax.Hub.Browser.isFirefox ? "blur" : "focusout",
+        focusinEvent: "focus",
+        ignoreFocusOut: !1,
+        jaxCache: {},
+        messageID: null,
+        Reset: function() {
+            u.FlameEnriched();
+        },
+        Register: function(e) {
+            var t, a;
+            !h.hook || (t = document.getElementById(e[1])) && t.id && ((a = MathJax.Hub.getJaxFor(t.id)) && a.enriched && (u.StateChange(t.id, a), 
+            u.liveRegion.Add(), u.AddEvent(t)));
+        },
+        StateChange: function(e, t) {
+            u.GetHighlighter(.2);
+            var a = u.jaxCache[e];
+            a && a === t.root || (a && sre.Walker.resetState(e + "-Frame"), u.jaxCache[e] = t.root);
+        },
+        AddAria: function(e) {
+            e.setAttribute("role", "application"), e.setAttribute("aria-label", "Math");
+        },
+        AddHook: function(i) {
+            u.RemoveHook(), u.hook = MathJax.Hub.Register.MessageHook("End Math", function(e) {
+                var t = e[1].id + "-Frame", a = document.getElementById(t);
+                i && t === u.expanded && (u.ActivateWalker(a, i), a.focus(), u.expanded = !1);
+            });
+        },
+        RemoveHook: function() {
+            u.hook && (MathJax.Hub.UnRegister.MessageHook(u.hook), u.hook = null);
+        },
+        AddMessage: function() {
+            return MathJax.Message.Set("Generating Speech Output");
+        },
+        RemoveMessage: function(e) {
+            e && MathJax.Message.Clear(e);
+        },
+        AddEvent: function(e) {
+            var t, a = e.id + "-Frame", i = e.previousSibling;
+            i && (t = i.id !== a ? i.firstElementChild : i, u.AddAria(t), u.AddMouseEvents(t), 
+            "MathJax_MathML" === t.className && (t = t.firstElementChild), t && (t.onkeydown = u.Keydown, 
+            u.Flame(t), t.addEventListener(u.focusinEvent, function(e) {
+                h.hook && (n.announced || n.Announce());
+            }), t.addEventListener(u.focusoutEvent, function(e) {
+                h.hook && (u.ignoreFocusOut && (u.ignoreFocusOut = !1, "enter" === u.walker.moved) ? e.target.focus() : u.walker && u.DeactivateWalker());
+            }), h.getOption("speech") && u.AddSpeech(t)));
+        },
+        AddSpeech: function(e) {
+            var t = e.id, a = MathJax.Hub.getJaxFor(t).root.toMathML();
+            if (e.getAttribute("haslabel") || u.AddMathLabel(a, t), !e.getAttribute("hasspeech")) switch (MathJax.Hub.config.explorer.generation) {
+              case "eager":
+                u.AddSpeechEager(a, t);
+                break;
+
+              case "mixed":
+                e.querySelectorAll("[data-semantic-complexity]").length >= h.eagerComplexity && u.AddSpeechEager(a, t);
+            }
+        },
+        AddSpeechLazy: function(e) {
+            var t = new sre.TreeSpeechGenerator();
+            t.setRebuilt(u.walker.getRebuilt()), t.getSpeech(u.walker.rootNode, u.walker.getXml()), 
+            e.setAttribute("hasspeech", "true");
+        },
+        AddSpeechEager: function(e, t) {
+            u.MakeSpeechTask(e, t, sre.TreeSpeechGenerator, function(e, t) {
+                e.setAttribute("hasspeech", "true");
+            }, 5);
+        },
+        AddMathLabel: function(e, t) {
+            u.MakeSpeechTask(e, t, sre.SummarySpeechGenerator, function(e, t) {
+                e.setAttribute("haslabel", "true"), e.setAttribute("aria-label", t);
+            }, 5);
+        },
+        MakeSpeechTask: function(i, n, o, r, e) {
+            var s = u.AddMessage();
+            setTimeout(function() {
+                var e = new o(), t = document.getElementById(n), a = new sre.DummyWalker(t, e, u.highlighter, i).speech();
+                a && r(t, a), u.RemoveMessage(s);
+            }, e);
+        },
+        Keydown: function(e) {
+            var t = e.keyCode;
+            if (t === r.ESCAPE) {
+                if (!u.walker) return;
+                return u.RemoveHook(), u.DeactivateWalker(), void o(e);
+            }
+            if (u.walker && u.walker.isActive()) {
+                t = t === r.RETURN ? r.DASH : t, void 0 !== u.walker.modifier && (u.walker.modifier = e.shiftKey);
+                var a = u.walker.move(t);
+                if (null === a) return;
+                if (a) {
+                    if ("expand" === u.walker.moved) {
+                        if (u.expanded = u.walker.node.id, MathJax.Hub.Browser.isEdge) return u.ignoreFocusOut = !0, 
+                        void u.DeactivateWalker();
+                        if (MathJax.Hub.Browser.isFirefox || MathJax.Hub.Browser.isMSIE) return void u.DeactivateWalker();
+                    }
+                    u.liveRegion.Update(u.walker.speech()), u.Highlight();
+                } else u.PlayEarcon();
+                o(e);
+            } else {
+                var i = e.target;
+                if (t === r.SPACE && !e.shiftKey) return MathJax.Extension.MathEvents.Event.ContextMenu(e, i), 
+                void o(e);
+                if (h.hook && (t === r.RETURN || t === r.SPACE && e.shiftKey)) {
+                    var n = MathJax.Hub.getJaxFor(i);
+                    return u.ActivateWalker(i, n), u.AddHook(n), void o(e);
+                }
+            }
+        },
+        GetHighlighter: function(e) {
+            u.highlighter = sre.HighlighterFactory.highlighter({
+                color: h.getOption("background"),
+                alpha: e
+            }, {
+                color: h.getOption("foreground"),
+                alpha: 1
+            }, {
+                renderer: MathJax.Hub.outputJax["jax/mml"][0].id,
+                browser: MathJax.Hub.Browser.name
+            });
+        },
+        AddMouseEvents: function(e) {
+            sre.HighlighterFactory.addEvents(e, {
+                mouseover: u.MouseOver,
+                mouseout: u.MouseOut
+            }, {
+                renderer: MathJax.Hub.outputJax["jax/mml"][0].id,
+                browser: MathJax.Hub.Browser.name
+            });
+        },
+        MouseOver: function(e) {
+            var t;
+            "none" !== h.getOption("highlight") && ("hover" === h.getOption("highlight") && (t = e.currentTarget, 
+            u.GetHighlighter(.1), u.highlighter.highlight([ t ]), u.hoverer = !0), o(e));
+        },
+        MouseOut: function(e) {
+            return u.hoverer && (u.highlighter.unhighlight(), u.hoverer = !1), o(e);
+        },
+        Flame: function(e) {
+            if ("flame" === h.getOption("highlight")) return u.GetHighlighter(.05), u.highlighter.highlightAll(e), 
+            void (u.flamer = !0);
+        },
+        UnFlame: function() {
+            u.flamer && (u.highlighter.unhighlightAll(), u.flamer = null);
+        },
+        FlameEnriched: function() {
+            u.UnFlame();
+            for (var e, t = 0, a = MathJax.Hub.getAllJax(); e = a[t]; t++) u.Flame(e.SourceElement().previousSibling);
+        },
+        Walkers: {
+            syntactic: sre.SyntaxWalker,
+            table: sre.TableWalker,
+            semantic: sre.SemanticWalker,
+            none: sre.DummyWalker
+        },
+        ActivateWalker: function(e, t) {
+            var a = h.getOption("speech"), i = h.getOption("walker") ? u.Walkers[MathJax.Hub.config.explorer.walker] : u.Walkers.none, n = a ? new sre.DirectSpeechGenerator() : new sre.DummySpeechGenerator(), o = sre.System.getInstance().engineSetup();
+            n.setOptions({
+                locale: o.locale,
+                domain: o.domain,
+                style: o.style,
+                modality: "speech"
+            }), u.GetHighlighter(.2), u.walker = new i(e, n, u.highlighter, t.root.toMathML()), 
+            a && !e.getAttribute("hasspeech") && u.AddSpeechLazy(e), u.walker.activate(), a && (h.getOption("subtitle") && u.liveRegion.Show(e, u.highlighter), 
+            u.liveRegion.Update(u.walker.speech())), u.Highlight(), u.ignoreFocusOut && setTimeout(function() {
+                u.ignoreFocusOut = !1;
+            }, 500);
+        },
+        DeactivateWalker: function() {
+            var e = sre.System.getInstance().engineSetup(), t = "clearspeak" === e.domain ? "default" : e.style;
+            h.setOption("ruleset", e.domain + "-" + t), u.liveRegion.Clear(), u.liveRegion.Hide(), 
+            u.Unhighlight(), u.currentHighlight = null, u.walker.deactivate(), u.walker = null;
+        },
+        Highlight: function() {
+            u.Unhighlight(), u.highlighter.highlight(u.walker.getFocus().getNodes());
+        },
+        Unhighlight: function() {
+            u.highlighter.unhighlight();
+        },
+        PlayEarcon: function() {
+            new Audio(u.earconFile).play();
+        },
+        SpeechOutput: function() {
+            u.Reset();
+            [ "Subtitles" ].forEach(function(e) {
+                var t = MathJax.Menu.menu.FindId("Accessibility", "Explorer", e);
+                t && (t.disabled = !t.disabled);
+            }), u.Regenerate();
+        },
+        RemoveSpeech: function() {
+            h.setSpeechOption();
+            for (var e, t = 0, a = MathJax.Hub.getAllJax(); e = a[t]; t++) {
+                var i = document.getElementById(e.inputID + "-Frame");
+                i && (i.removeAttribute("hasspeech"), i.removeAttribute("haslabel"));
+            }
+        },
+        Regenerate: function() {
+            for (var e, t = 0, a = MathJax.Hub.getAllJax(); e = a[t]; t++) {
+                var i = document.getElementById(e.inputID + "-Frame");
+                i && (i.removeAttribute("hasspeech"), u.AddSpeech(i));
+            }
+        },
+        Startup: function() {
+            var e = MathJax.Extension.collapsible;
+            e && e.Dependent(h), h.addDefaults();
+        }
+    };
+    MathJax.Hub.Register.StartupHook("End Extensions", function() {
+        h[!1 === s.explorer ? "Disable" : "Enable"](), MathJax.Hub.Startup.signal.Post("Explorer Ready"), 
+        MathJax.Hub.Register.StartupHook("MathMenu Ready", function() {
+            l = MathJax.Menu.cookie;
+            var e, t = MathJax.Menu.ITEM, a = MathJax.Menu.menu, i = {
+                action: u.Reset
+            }, n = {
+                action: h.speechOption
+            }, o = t.SUBMENU([ "Explorer", "Explorer" ], t.CHECKBOX([ "Active", "Active" ], "explorer", {
+                action: function(e) {
+                    h[s.explorer ? "Enable" : "Disable"](!0, !0), MathJax.Menu.saveCookie();
+                }
+            }), t.RULE(), t.CHECKBOX([ "Walker", "Walker" ], "Assistive-walker"), t.SUBMENU([ "Highlight", "Highlight" ], t.RADIO([ "none", "None" ], "Assistive-highlight", i), t.RADIO([ "hover", "Hover" ], "Assistive-highlight", i), t.RADIO([ "flame", "Flame" ], "Assistive-highlight", i)), t.SUBMENU([ "Background", "Background" ], t.RADIO([ "blue", "Blue" ], "Assistive-background", i), t.RADIO([ "red", "Red" ], "Assistive-background", i), t.RADIO([ "green", "Green" ], "Assistive-background", i), t.RADIO([ "yellow", "Yellow" ], "Assistive-background", i), t.RADIO([ "cyan", "Cyan" ], "Assistive-background", i), t.RADIO([ "magenta", "Magenta" ], "Assistive-background", i), t.RADIO([ "white", "White" ], "Assistive-background", i), t.RADIO([ "black", "Black" ], "Assistive-background", i)), t.SUBMENU([ "Foreground", "Foreground" ], t.RADIO([ "black", "Black" ], "Assistive-foreground", i), t.RADIO([ "white", "White" ], "Assistive-foreground", i), t.RADIO([ "magenta", "Magenta" ], "Assistive-foreground", i), t.RADIO([ "cyan", "Cyan" ], "Assistive-foreground", i), t.RADIO([ "yellow", "Yellow" ], "Assistive-foreground", i), t.RADIO([ "green", "Green" ], "Assistive-foreground", i), t.RADIO([ "red", "Red" ], "Assistive-foreground", i), t.RADIO([ "blue", "Blue" ], "Assistive-foreground", i)), t.RULE(), t.CHECKBOX([ "SpeechOutput", "Speech Output" ], "Assistive-speech", {
+                action: u.SpeechOutput
+            }), t.CHECKBOX([ "Subtitles", "Subtitles" ], "Assistive-subtitle", {
+                disabled: !s["Assistive-speech"]
+            }), t.RULE(), t.SUBMENU([ "Mathspeak", "Mathspeak Rules" ], t.RADIO([ "mathspeak-default", "Verbose" ], "Assistive-ruleset", n), t.RADIO([ "mathspeak-brief", "Brief" ], "Assistive-ruleset", n), t.RADIO([ "mathspeak-sbrief", "Superbrief" ], "Assistive-ruleset", n)), t.RADIO([ "clearspeak-default", "Clearspeak Rules" ], "Assistive-ruleset", n), t.SUBMENU([ "Chromevox", "ChromeVox Rules" ], t.RADIO([ "chromevox-default", "Verbose" ], "Assistive-ruleset", n), t.RADIO([ "chromevox-alternative", "Alternative" ], "Assistive-ruleset", n))), r = (a.FindId("Accessibility") || {}).submenu;
+            r ? null !== (e = r.IndexOfId("Explorer")) ? r.items[e] = o : (e = r.IndexOfId("CollapsibleMath"), 
+            r.items.splice(e + 1, 0, o)) : (e = a.IndexOfId("CollapsibleMath"), a.items.splice(e + 1, 0, o)), 
+            s.explorer || h.DisableMenus(!0);
+        }, 20);
+    }, 20);
+}), MathJax.Hub.Register.StartupHook("SVG Jax Ready", function() {
+    MathJax.Hub.Config({
+        SVG: {
+            addMMLclasses: !0
+        }
+    });
+    var t, e = MathJax.OutputJax.SVG;
+    parseFloat(e.version) < 2.7 && (t = e.getJaxFromMath, e.Augment({
+        getJaxFromMath: function(e) {
+            return e.parentNode.className.match(/MathJax_SVG_Display/) && (e = e.parentNode), 
+            t.call(this, e);
+        }
+    }));
+}), MathJax.Ajax.config.path.a11y || (MathJax.Ajax.config.path.a11y = MathJax.Hub.config.root + "/extensions/a11y"), 
+MathJax.Ajax.Require("[a11y]/collapsible.js"), MathJax.Hub.Register.StartupHook("Collapsible Ready", function() {
+    MathJax.Extension.explorer.Explorer.Startup(), MathJax.Ajax.loadComplete("[a11y]/explorer.js");
 });

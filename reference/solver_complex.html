@@ -4,9 +4,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>ezarpack/solver_complex.hpp - general complex eigenproblems &#8212; ezARPACK 0.10 documentation</title>
+    <title>ezarpack/solver_complex.hpp - general complex eigenproblems &#8212; ezARPACK 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -17,7 +17,7 @@
     <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Data storage backends" href="storages/index.html" />
+    <link rel="next" title="Specializations of the mpi::arpack_solver class template" href="mpi/solver.html" />
     <link rel="prev" title="ezarpack/solver_asymmetric.hpp - general real eigenproblems" href="solver_asymmetric.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -27,12 +27,12 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="storages/index.html" title="Data storage backends"
+          <a href="mpi/solver.html" title="Specializations of the mpi::arpack_solver class template"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="solver_asymmetric.html" title="ezarpack/solver_asymmetric.hpp - general real eigenproblems"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >API reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="solver.html" accesskey="U">Specializations of the <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_complex.hpp</span></code> - general complex eigenproblems</a></li> 
@@ -48,7 +48,7 @@
 <span id="refsolvercomplex"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_complex.hpp</span></code> - general complex eigenproblems<a class="headerlink" href="#ezarpack-solver-complex-hpp-general-complex-eigenproblems" title="Permalink to this heading">¶</a></h1>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN8ezarpack13arpack_solverI7Complex7BackendEE">
-<span id="_CPPv3I0EN8ezarpack13arpack_solverI7Complex7BackendEE"></span><span id="_CPPv2I0EN8ezarpack13arpack_solverI7Complex7BackendEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Backend</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">arpack_solver</span></span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="solver_base.html#_CPPv4N8ezarpack13operator_kind7ComplexE" title="ezarpack::Complex"><span class="n"><span class="pre">Complex</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN8ezarpack13arpack_solverI7Complex7BackendEE" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::Backend"><span class="n"><span class="pre">Backend</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN8ezarpack13arpack_solverI7Complex7BackendEE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0EN8ezarpack13arpack_solverI7Complex7BackendEE"></span><span id="_CPPv2I0EN8ezarpack13arpack_solverI7Complex7BackendEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Backend</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">arpack_solver</span></span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="common.html#_CPPv4N8ezarpack13operator_kind7ComplexE" title="ezarpack::Complex"><span class="n"><span class="pre">Complex</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN8ezarpack13arpack_solverI7Complex7BackendEE" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::Backend"><span class="n"><span class="pre">Backend</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN8ezarpack13arpack_solverI7Complex7BackendEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Main solver class wrapping the Implicitly Restarted Arnoldi Method (IRAM) for general complex eigenproblems. </p>
 <p>This specialization of <code class="docutils literal notranslate"><a class="reference internal" href="solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code> calls ARPACK-NG routines <code class="docutils literal notranslate"><span class="pre">znaupd()</span></code> and <code class="docutils literal notranslate"><span class="pre">zneupd()</span></code> to compute approximations to a few eigenpairs of a complex linear operator <span class="math notranslate nohighlight">\( \hat O \)</span> with respect to a semi-inner product defined by a Hermitian positive semi-definite matrix <span class="math notranslate nohighlight">\( \hat B \)</span>.</p>
 <div class="admonition note">
@@ -177,8 +177,8 @@
 </dd>
 <dt class="field-even">Throws<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">ezarpack</span><span class="p">::</span><a class="reference internal" href="solver_base.html#_CPPv4N8ezarpack16ncv_insufficientE" title="ezarpack::ncv_insufficient"><span class="n">ncv_insufficient</span></a></span></span> – No shifts could be applied during a cycle of the IRA iteration. </p></li>
-<li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">ezarpack</span><span class="p">::</span><a class="reference internal" href="solver_base.html#_CPPv4N8ezarpack15maxiter_reachedE" title="ezarpack::maxiter_reached"><span class="n">maxiter_reached</span></a></span></span> – Maximum number of IRA iterations has been reached. All possible eigenvalues of <span class="math notranslate nohighlight">\( \hat O \)</span> have been found. </p></li>
+<li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">ezarpack</span><span class="p">::</span><a class="reference internal" href="common.html#_CPPv4N8ezarpack16ncv_insufficientE" title="ezarpack::ncv_insufficient"><span class="n">ncv_insufficient</span></a></span></span> – No shifts could be applied during a cycle of the IRA iteration. </p></li>
+<li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">ezarpack</span><span class="p">::</span><a class="reference internal" href="common.html#_CPPv4N8ezarpack15maxiter_reachedE" title="ezarpack::maxiter_reached"><span class="n">maxiter_reached</span></a></span></span> – Maximum number of IRA iterations has been reached. All possible eigenvalues of <span class="math notranslate nohighlight">\( \hat O \)</span> have been found. </p></li>
 <li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">runtime_error</span></span></span> – Invalid input parameters and other errors reported by ARPACK-NG routines <code class="docutils literal notranslate"><span class="pre">znaupd()</span></code> and <code class="docutils literal notranslate"><span class="pre">zneupd()</span></code>. </p></li>
 </ul>
 </dd>
@@ -214,8 +214,8 @@
 </dd>
 <dt class="field-even">Throws<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">ezarpack</span><span class="p">::</span><a class="reference internal" href="solver_base.html#_CPPv4N8ezarpack16ncv_insufficientE" title="ezarpack::ncv_insufficient"><span class="n">ncv_insufficient</span></a></span></span> – No shifts could be applied during a cycle of the IRA iteration. </p></li>
-<li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">ezarpack</span><span class="p">::</span><a class="reference internal" href="solver_base.html#_CPPv4N8ezarpack15maxiter_reachedE" title="ezarpack::maxiter_reached"><span class="n">maxiter_reached</span></a></span></span> – Maximum number of IRA iterations has been reached. All possible eigenvalues of <span class="math notranslate nohighlight">\( \hat O \)</span> have been found. </p></li>
+<li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">ezarpack</span><span class="p">::</span><a class="reference internal" href="common.html#_CPPv4N8ezarpack16ncv_insufficientE" title="ezarpack::ncv_insufficient"><span class="n">ncv_insufficient</span></a></span></span> – No shifts could be applied during a cycle of the IRA iteration. </p></li>
+<li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">ezarpack</span><span class="p">::</span><a class="reference internal" href="common.html#_CPPv4N8ezarpack15maxiter_reachedE" title="ezarpack::maxiter_reached"><span class="n">maxiter_reached</span></a></span></span> – Maximum number of IRA iterations has been reached. All possible eigenvalues of <span class="math notranslate nohighlight">\( \hat O \)</span> have been found. </p></li>
 <li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">runtime_error</span></span></span> – Invalid input parameters and other errors reported by ARPACK-NG routines <code class="docutils literal notranslate"><span class="pre">znaupd()</span></code> and <code class="docutils literal notranslate"><span class="pre">zneupd()</span></code>. </p></li>
 </ul>
 </dd>
@@ -284,7 +284,7 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK8ezarpack13arpack_solverI7Complex7BackendE13schur_vectorsEv">
 <span id="_CPPv3NK8ezarpack13arpack_solverI7Complex7BackendE13schur_vectorsEv"></span><span id="_CPPv2NK8ezarpack13arpack_solverI7Complex7BackendE13schur_vectorsEv"></span><span id="ezarpack::arpack_solver:Complex.Backend:::schur_vectorsC"></span><span class="target" id="classezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1ae8f9dfb5a83862a03fa884709c1c2533"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE27complex_matrix_const_view_tE" title="ezarpack::arpack_solver&lt;Complex, Backend&gt;::complex_matrix_const_view_t"><span class="n"><span class="pre">complex_matrix_const_view_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">schur_vectors</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK8ezarpack13arpack_solverI7Complex7BackendE13schur_vectorsEv" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Returns a view of a matrix, whose <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1params__t_1a653f48f185ffc9e6012f3476935e9d24"><span class="std std-ref">params_t::ncv</span></a> columns are Schur basis vectors. </p>
+<dd><p>Returns a view of a matrix, whose <a class="reference internal" href="#classezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1a1ac06e8ada8b84ee293a40dbeb806614"><span class="std std-ref">nconv()</span></a> columns are Schur basis vectors. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Throws<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">runtime_error</span></span></span> – Schur vectors have not been computed in the last IRAM run. </p>
@@ -323,7 +323,7 @@
 <span id="_CPPv3N8ezarpack13arpack_solverI7Complex7BackendE14exact_shifts_fE"></span><span id="_CPPv2N8ezarpack13arpack_solverI7Complex7BackendE14exact_shifts_fE"></span><span id="ezarpack::arpack_solver:Complex.Backend:::exact_shifts_f"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1exact__shifts__f"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">exact_shifts_f</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE14exact_shifts_fE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>If this functor is used to provide shifts for implicit restart, then the default ARPACK-NG’s shift strategy (Exact Shift Strategy) will be employed. <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>Paragraph 4.4.1 of ARPACK Users’ Guide: Solution of Large Scale Eigenvalue Problems with Implicitly Restarted Arnoldi Methods (R. B. Lehoucq, D. C. Sorensen, C. Yang, SIAM, 1998), <a class="reference external" href="https://www.caam.rice.edu/software/ARPACK/UG/node50.html">https://www.caam.rice.edu/software/ARPACK/UG/node50.html</a>. </p>
+<p>Paragraph 4.4.1 of ARPACK Users’ Guide: Solution of Large Scale Eigenvalue Problems with Implicitly Restarted Arnoldi Methods (R. B. Lehoucq, D. C. Sorensen, C. Yang, SIAM, 1998), <a class="reference external" href="http://li.mit.edu/Archive/Activities/Archive/CourseWork/Ju_Li/MITCourses/18.335/Doc/ARPACK/Lehoucq97.pdf#page=64">http://li.mit.edu/Archive/Activities/Archive/CourseWork/Ju_Li/MITCourses/18.335/Doc/ARPACK/Lehoucq97.pdf#page=64</a> </p>
 </div>
 </p>
 <div class="breathe-sectiondef docutils container">
@@ -407,15 +407,15 @@
 </dd></dl>
 
 <dl class="cpp enumerator">
-<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t4RitzE">
-<span id="_CPPv3N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t4RitzE"></span><span id="_CPPv2N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t4RitzE"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1params__t_1afdc33d15d5057e53e86ac7b46aa6a7aaa083f3fd45ad87fd1f5ee0d767f7391ed"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Ritz</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t4RitzE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Compute Ritz vectors (eigenvectors). </p>
-</dd></dl>
-
-<dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t5SchurE">
 <span id="_CPPv3N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t5SchurE"></span><span id="_CPPv2N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t5SchurE"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1params__t_1afdc33d15d5057e53e86ac7b46aa6a7aaad97c2710feb0635f47fce2d5de3b5d31"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Schur</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t5SchurE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Compute Schur vectors (orthogonal basis vectors of the <a class="reference internal" href="#structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1params__t_1a233c5b652ee02ba413738651b27b4a77"><span class="std std-ref">n_eigenvalues</span></a> -dimensional subspace). </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t4RitzE">
+<span id="_CPPv3N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t4RitzE"></span><span id="_CPPv2N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t4RitzE"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1params__t_1afdc33d15d5057e53e86ac7b46aa6a7aaa083f3fd45ad87fd1f5ee0d767f7391ed"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Ritz</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t4RitzE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute Ritz vectors (eigenvectors) in addition to the orthogonal basis vectors (Schur vectors). </p>
 </dd></dl>
 
 </dd></dl>
@@ -464,7 +464,7 @@
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t5sigmaE">
-<span id="_CPPv3N8ezarpack13arpack_solverI7Complex7BackendE8params_t5sigmaE"></span><span id="_CPPv2N8ezarpack13arpack_solverI7Complex7BackendE8params_t5sigmaE"></span><span id="ezarpack::arpack_solver:Complex.Backend:::params_t::sigma__dcomplex"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1params__t_1abb84bbe148a8546ecccc55449c1e0c2c"></span><a class="reference internal" href="arpack.html#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex"><span class="n"><span class="pre">dcomplex</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sigma</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t5sigmaE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N8ezarpack13arpack_solverI7Complex7BackendE8params_t5sigmaE"></span><span id="_CPPv2N8ezarpack13arpack_solverI7Complex7BackendE8params_t5sigmaE"></span><span id="ezarpack::arpack_solver:Complex.Backend:::params_t::sigma__dcomplex"></span><span class="target" id="structezarpack_1_1arpack__solver_3_01Complex_00_01Backend_01_4_1_1params__t_1abb84bbe148a8546ecccc55449c1e0c2c"></span><a class="reference internal" href="common.html#_CPPv4N8ezarpack8dcomplexE" title="ezarpack::dcomplex"><span class="n"><span class="pre">dcomplex</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sigma</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t5sigmaE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Eigenvalue shift <span class="math notranslate nohighlight">\( \sigma \)</span> used if a spectral transformation is employed. </p>
 </dd></dl>
 
@@ -527,16 +527,27 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="solver_asymmetric.html"
-                          title="previous chapter"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_asymmetric.hpp</span></code> - general real eigenproblems</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="storages/index.html"
-                          title="next chapter">Data storage backends</a></p>
-  </div>
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/index.html">User guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="solver.html">Specializations of the <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_symmetric.hpp</span></code> - symmetric real eigenproblems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_asymmetric.hpp</span></code> - general real eigenproblems</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_complex.hpp</span></code> - general complex eigenproblems</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mpi/solver.html">Specializations of the <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> class template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storages/index.html">Data storage backends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aux.html">Auxiliary headers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../search.html">Search</a></li>
+</ul>
+
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -565,12 +576,12 @@
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="storages/index.html" title="Data storage backends"
+          <a href="mpi/solver.html" title="Specializations of the mpi::arpack_solver class template"
              >next</a> |</li>
         <li class="right" >
           <a href="solver_asymmetric.html" title="ezarpack/solver_asymmetric.hpp - general real eigenproblems"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >API reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="solver.html" >Specializations of the <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_complex.hpp</span></code> - general complex eigenproblems</a></li> 

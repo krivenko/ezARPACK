@@ -405,9 +405,9 @@ Typical steps needed to compute the eigenpairs are as follows.
 
    ``solver_t::operator()`` can throw two special exception types.
 
-   - :ref:`ezarpack::maxiter_reached <maxiter_reached>` - Maximum number of
+   - :cpp:type:`ezarpack::maxiter_reached` - Maximum number of
      implicitly restarted Lanczos iterations has been reached.
-   - :ref:`ezarpack::ncv_insufficient <ncv_insufficient>` - No shifts could be
+   - :cpp:type:`ezarpack::ncv_insufficient` - No shifts could be
      applied during a cycle of the Implicitly restarted Lanczos iteration.
      Consider increasing the number of Lanczos vectors generated at each
      iteration (:ref:`ncv <sym_ncv>` parameter).

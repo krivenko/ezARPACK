@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Parallel ARPACK versions of eigensolvers &#8212; ezARPACK 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="List of supported matrix/vector algebra libraries" href="backends.html" />
+    <link rel="prev" title="General complex eigenproblems" href="complex.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="backends.html" title="List of supported matrix/vector algebra libraries"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="complex.html" title="General complex eigenproblems"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">User guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Parallel ARPACK versions of eigensolvers</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="parallel-arpack-versions-of-eigensolvers">
+<span id="mpi"></span><h1>Parallel ARPACK versions of eigensolvers<a class="headerlink" href="#parallel-arpack-versions-of-eigensolvers" title="Permalink to this heading">¶</a></h1>
+<p>As size <span class="math notranslate nohighlight">\(N\)</span> of an eigenproblem grows, it becomes more and more beneficial
+to employ
+<a class="reference external" href="https://en.wikipedia.org/wiki/Message_Passing_Interface">MPI parallelism</a>
+offered by the
+<a class="reference external" href="https://doi.org/10.1007/3-540-62095-8_51">Parallel ARPACK (PARPACK)</a> wrappers
+<a class="reference internal" href="../reference/mpi/solver_base.html#_CPPv4I_13operator_kind0EN8ezarpack3mpi13arpack_solverE" title="ezarpack::mpi::arpack_solver"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">ezarpack::mpi::arpack_solver</span></code></a>. Despite being very similar to the
+serial versions API-wise, they have a major conceptual distinction.</p>
+<p>All <span class="math notranslate nohighlight">\(N\)</span>-dimensional vectors <a class="reference internal" href="../reference/mpi/solver_base.html#_CPPv4I_13operator_kind0EN8ezarpack3mpi13arpack_solverE" title="ezarpack::mpi::arpack_solver"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">ezarpack::mpi::arpack_solver</span></code></a>
+deals with are partitioned into contiguous blocks and stored in a distributed
+manner: Each MPI process physically stores only one block of each such vector.
+The distributed storage scheme applies to ARPACK’s workspace vectors, as well
+as to computed Ritz and Schur vectors. Below we list API differences of
+<a class="reference internal" href="../reference/mpi/solver_base.html#_CPPv4I_13operator_kind0EN8ezarpack3mpi13arpack_solverE" title="ezarpack::mpi::arpack_solver"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">ezarpack::mpi::arpack_solver</span></code></a> as compared to
+<a class="reference internal" href="../reference/solver_base.html#_CPPv4I_13operator_kind0EN8ezarpack13arpack_solverE" title="ezarpack::arpack_solver"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">ezarpack::arpack_solver</span></code></a>.</p>
+<ul class="simple">
+<li><p>Specializations of <a class="reference internal" href="../reference/mpi/solver_base.html#_CPPv4I_13operator_kind0EN8ezarpack3mpi13arpack_solverE" title="ezarpack::mpi::arpack_solver"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">ezarpack::mpi::arpack_solver</span></code></a> are defined
+in header files under the <code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/</span></code> subdirectory.</p></li>
+</ul>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Symmetric real eigenproblems</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ezarpack/mpi/solver_symmetric.hpp&gt;</span><span class="cp"></span>
+<span class="c1">// General real eigenproblems</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ezarpack/mpi/solver_asymmetric.hpp&gt;</span><span class="cp"></span>
+<span class="c1">// General complex eigenproblems</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ezarpack/mpi/solver_complex.hpp&gt;</span><span class="cp"></span>
+
+<span class="c1">// Include all specializations at once</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ezarpack/mpi/arpack_solver.hpp&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>Constructors take an MPI communicator.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13arpack_solver13arpack_solverEjRK8MPI_Comm">
+<span id="_CPPv3N13arpack_solver13arpack_solverEjRK8MPI_Comm"></span><span id="_CPPv2N13arpack_solver13arpack_solverEjRK8MPI_Comm"></span><span id="arpack_solver::arpack_solver__unsigned-i.MPI_CommCR"></span><span class="sig-prename descclassname"><a class="reference internal" href="#_CPPv4N13arpack_solver13arpack_solverEjRK8MPI_Comm" title="arpack_solver::arpack_solver"><span class="n"><span class="pre">arpack_solver</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">arpack_solver</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">N</span></span>, <span class="n"><span class="pre">MPI_Comm</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">comm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13arpack_solver13arpack_solverEjRK8MPI_Comm" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm">
+<span id="_CPPv3N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm"></span><span id="_CPPv2N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm"></span><span id="arpack_solver::arpack_solver__std::vector:unsigned-i:CR.MPI_CommCR"></span><span class="sig-prename descclassname"><a class="reference internal" href="#_CPPv4N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm" title="arpack_solver::arpack_solver"><span class="n"><span class="pre">arpack_solver</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">arpack_solver</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">block_sizes</span></span>, <span class="n"><span class="pre">MPI_Comm</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">comm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<p>The first constructor partitions <span class="math notranslate nohighlight">\(N\)</span>-dimensional vectors and distributes
+their blocks among all processes in <code class="docutils literal notranslate"><span class="pre">comm</span></code> in the most even way.
+In particular, if size of the communicator <span class="math notranslate nohighlight">\(P\)</span> divides <span class="math notranslate nohighlight">\(N\)</span>,
+then all blocks will have the same size <span class="math notranslate nohighlight">\(N/P\)</span>.</p>
+<p>The second constructor takes a list of <span class="math notranslate nohighlight">\(P\)</span> positive numbers
+– block sizes – with one element per each process in <code class="docutils literal notranslate"><span class="pre">comm</span></code>.
+It computes <span class="math notranslate nohighlight">\(N\)</span> as a total of the list.</p>
+</li>
+<li><p>Access to the MPI communicator used to construct a solver.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK13arpack_solver8mpi_commEv">
+<span id="_CPPv3NK13arpack_solver8mpi_commEv"></span><span id="_CPPv2NK13arpack_solver8mpi_commEv"></span><span id="arpack_solver::mpi_commC"></span><span class="n"><span class="pre">MPI_Comm</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">arpack_solver</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">mpi_comm</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK13arpack_solver8mpi_commEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</li>
+<li><p>Access to the index range of the block stored by the calling process.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK13arpack_solver17local_block_startEv">
+<span id="_CPPv3NK13arpack_solver17local_block_startEv"></span><span id="_CPPv2NK13arpack_solver17local_block_startEv"></span><span id="arpack_solver::local_block_startC"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">arpack_solver</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">local_block_start</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK13arpack_solver17local_block_startEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK13arpack_solver16local_block_sizeEv">
+<span id="_CPPv3NK13arpack_solver16local_block_sizeEv"></span><span id="_CPPv2NK13arpack_solver16local_block_sizeEv"></span><span id="arpack_solver::local_block_sizeC"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">arpack_solver</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">local_block_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK13arpack_solver16local_block_sizeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<p>Locally stored elements of a vector span the
+<code class="docutils literal notranslate"><span class="pre">[local_block_start();</span> <span class="pre">local_block_start()</span> <span class="pre">+</span> <span class="pre">local_block_size()[</span></code> index
+range within the <span class="math notranslate nohighlight">\(N\)</span>-dimensional space.</p>
+</li>
+<li><p>Overloads of <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">arpack_solver::operator()()</span></code> take callable objects
+that implement action of various sparse matrices on workspace vectors.
+In the parallel version of the solvers, vector views <code class="docutils literal notranslate"><span class="pre">in</span></code> and <code class="docutils literal notranslate"><span class="pre">out</span></code>
+passed to those callables expose only <strong>the locally stored blocks</strong> of the
+full <span class="math notranslate nohighlight">\(N\)</span>-dimensional vectors. Nonetheless, <strong>the callables are still
+expected to act in the full space.</strong> If there are non-zero matrix elements
+connecting blocks stored by different processes, it is user’s responsibility
+to organize data exchange between MPI processes so that <code class="docutils literal notranslate"><span class="pre">out</span></code> is properly
+updated on all ranks.</p></li>
+<li><p>Methods <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">arpack_solver::workspace_vector()</span></code>,
+<code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">arpack_solver::residual_vector()</span></code> and
+<code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">arpack_solver::Bx_vector()</span></code> return views of the corresponding
+locally stored blocks. Similarly, each column of the matrix views returned
+by <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">arpack_solver::eigenvectors()</span></code> and
+<code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">arpack_solver::schur_vectors()</span></code> has length <code class="docutils literal notranslate"><span class="pre">local_block_size()</span></code>
+and represents the locally stored block of a Ritz/Schur vector.</p>
+<p>Note, however, that <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">arpack_solver::eigenvalues()</span></code> returns
+the full list of converged eigenvalues on all MPI ranks.</p>
+</li>
+</ul>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation instructions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="usage.html">How to use ezARPACK in your project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choice.html">What algorithm variant is right for your problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symmetric.html">Symmetric real eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asymmetric.html">General real eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="complex.html">General complex eigenproblems</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Parallel ARPACK versions of eigensolvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backends.html">List of supported matrix/vector algebra libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implicit_restarting.html">Advanced: Customization of Lanczos/Arnoldi implicit restarting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="new_backend.html">Advanced: Adding a new storage backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">Usage examples: serial solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples_mpi.html">Usage examples: MPI-parallelized solvers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../search.html">Search</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/guide/mpi.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="backends.html" title="List of supported matrix/vector algebra libraries"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="complex.html" title="General complex eigenproblems"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >User guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Parallel ARPACK versions of eigensolvers</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016-2022, Igor Krivenko.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+    </div>
+  </body>
+</html>

@@ -1,206 +1,77 @@
-/*************************************************************
- *
- *  [Contrib]/a11y/semantic-enrich.js
- *  
- *  An extension that connects MathJax to the Speech-Rule-Engine
- *  to produce semantically enriched MathML.
- *
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2016-2018 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
 MathJax.Extension["semantic-enrich"] = {
-  version: "1.4.0",
-  config: MathJax.Hub.CombineConfig("semantic-enrich",{disabled: false}),
-  dependents: [],     // the extensions that depend on this one
-  running: false,
-  //
-  //  Names of attributes to force if set by mstyle
-  //  (so SRE doesn't have to look these up)
-  //
-  mstyleLookup: {
-    mi: ["mathvariant"],
-    mo: ["mathvariant","accent","largeop","form","fence","separator","movablelimits"],
-    mn: ["mathvariant"],
-    mtext: ["mathvariant"],
-    ms: ["mathvariant"],
-    mfrac: ["linethickness"],
-    mfenced: ["open","close","separators"],
-    menclose: ["notation"],
-    munder: ["accentunder"],
-    mover: ["accent"],
-    munderover: ["accent","accentunder"]
-  },
-  //
-  //  If we are not disabled,
-  //    Get the enriched MathML and parse it into the jax root.
-  //    Mark the jax as enriched.
-  //
-  Filter: function (jax,id,script) {
-    delete jax.enriched;
-    if (this.config.disabled) return;
-    try {
-      this.running = true;
-      var mml = sre.Enrich.semanticMathmlSync(jax.root.toMathML());
-      jax.root = MathJax.InputJax.MathML.Parse.prototype.MakeMML(mml);
-      jax.root.inputID = script.id;
-      jax.enriched = true;
-      this.running = false;
-    } catch (err) {
-      this.running = false;
-      throw err;
+    version: "1.6.0",
+    config: MathJax.Hub.CombineConfig("semantic-enrich", {
+        disabled: !1
+    }),
+    dependents: [],
+    running: !1,
+    mstyleLookup: {
+        mi: [ "mathvariant" ],
+        mo: [ "mathvariant", "accent", "largeop", "form", "fence", "separator", "movablelimits" ],
+        mn: [ "mathvariant" ],
+        mtext: [ "mathvariant" ],
+        ms: [ "mathvariant" ],
+        mfrac: [ "linethickness" ],
+        mfenced: [ "open", "close", "separators" ],
+        menclose: [ "notation" ],
+        munder: [ "accentunder" ],
+        mover: [ "accent" ],
+        munderover: [ "accent", "accentunder" ]
+    },
+    Filter: function(t, a, e) {
+        if (delete t.enriched, !this.config.disabled) try {
+            this.running = !0;
+            var n = sre.Enrich.semanticMathmlSync(t.root.toMathML());
+            t.root = MathJax.InputJax.MathML.Parse.prototype.MakeMML(n), t.root.inputID = e.id, 
+            t.enriched = !0, this.running = !1;
+        } catch (t) {
+            throw this.running = !1, t;
+        }
+    },
+    Enable: function(t, a) {
+        this.config.disabled = !1, t && MathJax.Hub.Queue([ "Reprocess", MathJax.Hub ]);
+    },
+    Disable: function(t, a) {
+        this.config.disabled = !0;
+        for (var e = this.dependents.length - 1; 0 <= e; e--) {
+            var n = this.dependents[e];
+            n.Disable && n.Disable(!1, a);
+        }
+        t && MathJax.Hub.Queue([ "Reprocess", MathJax.Hub ]);
+    },
+    Dependent: function(t) {
+        this.dependents.push(t);
     }
-  },
-  //
-  //  Functions to enable and disabled enrichment.
-  //
-  Enable: function (update,menu) {
-    this.config.disabled = false;
-    if (update) MathJax.Hub.Queue(["Reprocess",MathJax.Hub]);
-  },
-  Disable: function (update,menu) {
-    this.config.disabled = true;
-    for (var i = this.dependents.length-1; i >= 0; i--) {
-      var dependent = this.dependents[i];
-      if (dependent.Disable) dependent.Disable(false,menu);
-    }
-    if (update) MathJax.Hub.Queue(["Reprocess",MathJax.Hub]);
-  },
-  
-  //
-  //  Register a dependent
-  //
-  Dependent: function (extension) {
-    this.dependents.push(extension);
-  }
-};
-
-(function () {
-  //
-  //  Set up the a11y path,if it isn't already in place
-  //
-  var PATH = MathJax.Ajax.config.path;
-  if (!PATH.a11y) PATH.a11y = HUB.config.root + "/extensions/a11y";
-
-  //
-  //  Load SRE and use the signal to tell MathJax when it is loaded.
-  //  Since SRE waits for the mml element jax, load that too.
-  //
-  if (!PATH.SRE) PATH.SRE = MathJax.Ajax.fileURL(PATH.a11y);
-  MathJax.Ajax.Load("[SRE]/mathjax-sre.js");
-  MathJax.Hub.Register.StartupHook("Sre Ready",["loadComplete",MathJax.Ajax,"[SRE]/mathjax-sre.js"]);
-})();
-
-//
-//  Make a queue so that the MathML jax and SRE are both loaded before
-//  we install the filter and signal that we are ready.  The MathML config.js
-//  file must load before loading its jax.js file.
-//
-MathJax.Callback.Queue(
-  //
-  //  Load mml jax
-  //
-  ["Require",MathJax.Ajax,"[MathJax]/jax/element/mml/jax.js"],
-  //
-  //  Load MathML input jax (since we need Parse.MakeMML)
-  //
-  ["Require",MathJax.Ajax,"[MathJax]/jax/input/MathML/config.js"],
-  ["Require",MathJax.Ajax,"[MathJax]/jax/input/MathML/jax.js"],
-  //
-  //  Load toMathML extension (if it isn't already)
-  //
-  ["Require",MathJax.Ajax,"[MathJax]/extensions/toMathML.js"],
-  //
-  //  Wait for SRE (which waits for mml jax) before modifying mbase
-  //
-  MathJax.Hub.Register.StartupHook("Sre Ready",function () {
-    var MML = MathJax.ElementJax.mml,
-        ENRICH = MathJax.Extension["semantic-enrich"];
-
-    //
-    //  Override toMathML's attribute function to include additional
-    //  attributes inherited from mstyle (so SRE doesn't have to look them
-    //  up itself).  Eventually, this should be moved to toMathML.js directly.
-    //
-    MML.mbase.Augment({
-      toMathMLattributes: function () {
-        var defaults = (this.type === "mstyle" ? MML.math.prototype.defaults : this.defaults);
-        var names = (this.attrNames||MML.copyAttributeNames),
-            skip = MML.skipAttributes, copy = MML.copyAttributes,
-            lookup = (ENRICH.running ? ENRICH.mstyleLookup[this.type]||[] : []);
-        var attr = [], ATTR = (this.attr||{});
-
-        if (this.type === "math" && (!this.attr || !('xmlns' in this.attr)))
-          attr.push('xmlns="http://www.w3.org/1998/Math/MathML"');
-        if (!this.attrNames) {
-          for (var id in defaults) {if (!skip[id] && !copy[id] && defaults.hasOwnProperty(id)) {
-            if (this[id] != null && this[id] !== defaults[id]) {
-              if (this.Get(id,null,1) !== this[id]) this.toMathMLaddAttr(attr,id,this[id]);
-            }
-          }}
+}, function() {
+    var t = MathJax.Ajax.config.path;
+    t.a11y || (t.a11y = HUB.config.root + "/extensions/a11y"), t.SRE || (t.SRE = MathJax.Ajax.fileURL(t.a11y)), 
+    MathJax.Ajax.Load("[SRE]/mathjax-sre.js"), MathJax.Hub.Register.StartupHook("Sre Ready", [ "loadComplete", MathJax.Ajax, "[SRE]/mathjax-sre.js" ]);
+}(), MathJax.Callback.Queue([ "Require", MathJax.Ajax, "[MathJax]/jax/element/mml/jax.js" ], [ "Require", MathJax.Ajax, "[MathJax]/jax/input/MathML/config.js" ], [ "Require", MathJax.Ajax, "[MathJax]/jax/input/MathML/jax.js" ], [ "Require", MathJax.Ajax, "[MathJax]/extensions/toMathML.js" ], MathJax.Hub.Register.StartupHook("Sre Ready", function() {
+    var l = MathJax.ElementJax.mml, c = MathJax.Extension["semantic-enrich"];
+    l.mbase.Augment({
+        toMathMLattributes: function() {
+            var t = "mstyle" === this.type ? l.math.prototype.defaults : this.defaults, a = this.attrNames || l.copyAttributeNames, e = l.skipAttributes, n = l.copyAttributes, s = c.running && c.mstyleLookup[this.type] || [], i = [], h = this.attr || {};
+            if ("math" !== this.type || this.attr && "xmlns" in this.attr || i.push('xmlns="http://www.w3.org/1998/Math/MathML"'), 
+            !this.attrNames) for (var r in t) e[r] || n[r] || !t.hasOwnProperty(r) || null != this[r] && this[r] !== t[r] && this.Get(r, null, 1) !== this[r] && this.toMathMLaddAttr(i, r, this[r]);
+            for (var o = 0, u = a.length; o < u; o++) 1 === n[a[o]] && !t.hasOwnProperty(a[o]) || (value = h[a[o]], 
+            null == value && (value = this[a[o]]), null != value && this.toMathMLaddAttr(i, a[o], value));
+            for (o = 0, u = s.length; o < u; o++) r = s[o], t.hasOwnProperty(r) && !i["_" + r] && (value = this.Get(r, 1), 
+            null != value && this.toMathMLaddAttr(i, r, value));
+            return this.toMathMLclass(i), i.length ? " " + i.join(" ") : "";
+        },
+        toMathMLaddAttr: function(t, a, e) {
+            t.push(a + '="' + this.toMathMLquote(e) + '"'), t["_" + a] = 1;
         }
-        for (var i = 0, m = names.length; i < m; i++) {
-          if (copy[names[i]] === 1 && !defaults.hasOwnProperty(names[i])) continue;
-          value = ATTR[names[i]]; if (value == null) value = this[names[i]];
-          if (value != null) this.toMathMLaddAttr(attr,names[i],value);
-        }
-        for (i = 0, m = lookup.length; i < m; i++) {
-          id = lookup[i];
-          if (defaults.hasOwnProperty(id) && !attr["_"+id]) {
-            value = this.Get(id,1);
-            if (value != null) this.toMathMLaddAttr(attr,id,value);
-          }
-        }
-        this.toMathMLclass(attr);
-        if (attr.length) return " "+attr.join(" "); else return "";
-      },
-      toMathMLaddAttr: function (attr,id,value) {
-        attr.push(id+'="'+this.toMathMLquote(value)+'"');
-        attr["_"+id] = 1;
-      }
     });
-  
-    //
-    //  Adjust setTeXclass for <mo> so that added elements don't
-    //  cause unwanted space.
-    //
-    var TEXCLASS = MML.mo.prototype.setTeXclass;
-    MML.mo.Augment({
-      setTeXclass: function (prev) {
-        var values = this.getValues("form","lspace","rspace"); // sets useMMLspacing
-        if (this.useMMLspacing) {
-          this.texClass = MML.TEXCLASS.NONE;
-          return this;
+    var a = l.mo.prototype.setTeXclass;
+    l.mo.Augment({
+        setTeXclass: function(t) {
+            this.getValues("form", "lspace", "rspace");
+            return this.useMMLspacing ? (this.texClass = l.TEXCLASS.NONE, this) : this.attr && this.attr["data-semantic-added"] ? (this.texClass = this.prevClass = l.TEXCLASS.NONE, 
+            t) : a.apply(this, arguments);
         }
-        if (this.attr && this.attr["data-semantic-added"]) {
-          this.texClass = this.prevClass = MML.TEXCLASS.NONE;
-          return prev;
-        }
-        return TEXCLASS.apply(this,arguments);
-      }
     });
-  }),
-  function () {
-    //
-    //  Install enrichment filter, and signal that we are ready.
-    //
-    MathJax.Hub.postInputHooks.Add(["Filter",MathJax.Extension["semantic-enrich"]],50);
-    MathJax.Hub.Startup.signal.Post("Semantic Enrich Ready");
-    MathJax.Ajax.loadComplete("[a11y]/semantic-enrich.js");
-  }
-);
-
-
+}), function() {
+    MathJax.Hub.postInputHooks.Add([ "Filter", MathJax.Extension["semantic-enrich"] ], 50), 
+    MathJax.Hub.Startup.signal.Post("Semantic Enrich Ready"), MathJax.Ajax.loadComplete("[a11y]/semantic-enrich.js");
+});

@@ -4,9 +4,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Installation instructions &#8212; ezARPACK 0.10 documentation</title>
+    <title>Installation instructions &#8212; ezARPACK 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -31,7 +31,7 @@
         <li class="right" >
           <a href="index.html" title="ezARPACK"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ezARPACK 0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ezARPACK 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Installation instructions</a></li> 
       </ul>
     </div>  
@@ -59,7 +59,7 @@ directory <code class="docutils literal notranslate"><span class="pre">ezARPACK.
 you might want to install ezARPACK header files along with CMake configuration
 scripts. This will allow you to import ezARPACK targets, as well as to run unit
 tests and build example programs. The minimum required version of CMake is
-<strong>3.1.0</strong>.</p>
+<strong>3.13.0</strong>.</p>
 <p>The following sequence of shell commands will build unit tests and examples.</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ mkdir ezARPACK.build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ezARPACK.build
 $ cmake ../ezARPACK.src                                   <span class="se">\</span>
@@ -99,6 +99,11 @@ also depend on external matrix manipulation libraries and will be automatically
 disabled if a usable installation of a respective library cannot be found.
 The <code class="docutils literal notranslate"><span class="pre">*_ROOT</span></code> CMake options allow to manually specify installation locations of
 said libraries.</p>
+<p>Building the Parallel ARPACK portion of the unit tests and examples requires
+a working implementation of MPI-3.0 or newer. If CMake is unable to detect one
+automatically, refer to
+<a class="reference external" href="https://cmake.org/cmake/help/latest/module/FindMPI.html#variables-for-locating-mpi">this list of environment variables</a>
+that affect CMake’s search procedure.</p>
 <p>Documentation of ezARPACK can optionally be built and installed using the
 <code class="docutils literal notranslate"><span class="pre">Documentation</span></code> CMake flag (requires <a class="reference external" href="https://www.doxygen.nl/">Doxygen</a>,
 <a class="reference external" href="https://www.sphinx-doc.org">Sphinx</a>,
@@ -129,49 +134,54 @@ and examples.</p></td>
 <td><p>Enable/disable compilation of example
 programs.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Skip_arpack-ng=[ON|OFF]</span></code></p></td>
-<td><p>Skip detection of ARPACK-NG altogether.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ARPACK_NG_ROOT</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ARPACK_NG_ROOT</span></code></p></td>
 <td><p>Path to ARPACK-NG installation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Eigen3_ROOT</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Eigen3_ROOT</span></code></p></td>
 <td><p>Path to Eigen 3 installation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">blaze_ROOT</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">blaze_ROOT</span></code></p></td>
 <td><p>Path to Blaze installation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Armadillo_ROOT</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Armadillo_ROOT</span></code></p></td>
 <td><p>Path to Armadillo installation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">BOOST_ROOT</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BOOST_ROOT</span></code></p></td>
 <td><p>Path to Boost (uBLAS) installation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TRIQS_ROOT</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TRIQS_ROOT</span></code></p></td>
 <td><p>Path to TRIQS installation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nda_ROOT</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nda_ROOT</span></code></p></td>
 <td><p>Path to TRIQS/nda installation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xtensor_ROOT</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">xtensor_ROOT</span></code></p></td>
 <td><p>Path to xtensor installation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">xtensor-blas_ROOT</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xtensor-blas_ROOT</span></code></p></td>
 <td><p>Path to xtensor-blas installation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Documentation=[ON|OFF]</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Documentation=[ON|OFF]</span></code></p></td>
 <td><p>Enable/disable generation of ezARPACK’s
 Doxygen and Sphinx documentation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Doxygen_ROOT</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Doxygen_ROOT</span></code></p></td>
 <td><p>Path to Doxygen installation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Sphinx_ROOT</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Sphinx_ROOT</span></code></p></td>
 <td><p>Path to Sphinx installation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MathJax_ROOT</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MathJax_ROOT</span></code></p></td>
 <td><p>Path to MathJax installation (directory
 containing <code class="docutils literal notranslate"><span class="pre">MathJax.js</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ASAN=[ON|OFF]</span></code></p></td>
+<td><p><em>[Developer]</em> Build unit tests using
+the LLVM AddressSanitizer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">UBSAN=[ON|OFF]</span></code></p></td>
+<td><p><em>[Developer]</em> Build unit tests using
+the LLVM UndefinedBehaviorSanitizer.</p></td>
 </tr>
 </tbody>
 </table>
@@ -184,16 +194,16 @@ containing <code class="docutils literal notranslate"><span class="pre">MathJax.
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="index.html"
-                          title="previous chapter">ezARPACK</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="guide/index.html"
-                          title="next chapter">User guide</a></p>
-  </div>
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="search.html">Search</a></li>
+</ul>
+
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -227,7 +237,7 @@ containing <code class="docutils literal notranslate"><span class="pre">MathJax.
         <li class="right" >
           <a href="index.html" title="ezARPACK"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ezARPACK 0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ezARPACK 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Installation instructions</a></li> 
       </ul>
     </div>

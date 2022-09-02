@@ -11,7 +11,7 @@
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2009-2018 The MathJax Consortium
+ *  Copyright (c) 2009-2020 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -936,7 +936,7 @@
         displaylines:      ['Matrix',null,null,"center",null,".5em",'D'],
         cr:                 'Cr',
         '\\':               'CrLaTeX',
-        newline:            'Cr',
+        newline:           ['CrLaTeX',true],
         hline:             ['HLine','solid'],
         hdashline:         ['HLine','dashed'],
 //      noalign:            'HandleNoAlign',
@@ -1082,7 +1082,7 @@
       while (this.i < this.string.length) {
         c = this.string.charAt(this.i++); n = c.charCodeAt(0);
         if (n >= 0xD800 && n < 0xDC00) {c += this.string.charAt(this.i++)}
-        if (TEXDEF.special[c]) {this[TEXDEF.special[c]](c)}
+        if (TEXDEF.special.hasOwnProperty(c)) {this[TEXDEF.special[c]](c)}
         else if (TEXDEF.letter.test(c)) {this.Variable(c)}
         else if (TEXDEF.digit.test(c)) {this.Number(c)}
         else {this.Other(c)}
@@ -1109,17 +1109,19 @@
         if (!isArray(macro)) {macro = [macro]}
         var fn = macro[0]; if (!(fn instanceof Function)) {fn = this[fn]}
         fn.apply(this,[c+name].concat(macro.slice(1)));
-      } else if (TEXDEF.mathchar0mi[name])            {this.csMathchar0mi(name,TEXDEF.mathchar0mi[name])}
-        else if (TEXDEF.mathchar0mo[name])            {this.csMathchar0mo(name,TEXDEF.mathchar0mo[name])}
-        else if (TEXDEF.mathchar7[name])              {this.csMathchar7(name,TEXDEF.mathchar7[name])}
-        else if (TEXDEF.delimiter["\\"+name] != null) {this.csDelimiter(name,TEXDEF.delimiter["\\"+name])}
-        else                                          {this.csUndefined(c+name)}
+      } else if (TEXDEF.mathchar0mi.hasOwnProperty(name))    {this.csMathchar0mi(name,TEXDEF.mathchar0mi[name])}
+        else if (TEXDEF.mathchar0mo.hasOwnProperty(name))    {this.csMathchar0mo(name,TEXDEF.mathchar0mo[name])}
+        else if (TEXDEF.mathchar7.hasOwnProperty(name))      {this.csMathchar7(name,TEXDEF.mathchar7[name])}
+        else if (TEXDEF.delimiter.hasOwnProperty("\\"+name)) {this.csDelimiter(name,TEXDEF.delimiter["\\"+name])}
+        else                                                 {this.csUndefined(c+name)}
     },
     //
     //  Look up a macro in the macros list
     //  (overridden in begingroup extension)
     //
-    csFindMacro: function (name) {return TEXDEF.macros[name]},
+    csFindMacro: function (name) {
+      return (TEXDEF.macros.hasOwnProperty(name) ? TEXDEF.macros[name] : null);
+    },
     //
     //  Handle normal mathchar (as an mi)
     //
@@ -1295,7 +1297,7 @@
     Other: function (c) {
       var def, mo;
       if (this.stack.env.font) {def = {mathvariant: this.stack.env.font}}
-      if (TEXDEF.remap[c]) {
+      if (TEXDEF.remap.hasOwnProperty(c)) {
         c = TEXDEF.remap[c];
         if (isArray(c)) {def = c[1]; c = c[0]}
         mo = MML.mo(MML.entity('#x'+c)).With(def);
@@ -1326,7 +1328,7 @@
       var color = this.GetArgument(name);
       var old = this.stack.env.color; this.stack.env.color = color;
       var math = this.ParseArg(name);
-      if (old) {this.stack.env.color} else {delete this.stack.env.color}
+      if (old) {this.stack.env.color = old} else {delete this.stack.env.color}
       this.Push(MML.mstyle(math).With({mathcolor: color}));
     },
     
@@ -1361,7 +1363,6 @@
         form: MML.FORM.PREFIX,
         texClass: MML.TEXCLASS.OP
       });
-      mml.useMMLspacing &= ~mml.SPACE_ATTR.form;  // don't count this explicit form setting
       this.Push(this.mmlToken(mml));
     },
     Limits: function (name,limits) {
@@ -1528,13 +1529,13 @@
     },
     
     Phantom: function (name,v,h) {
-      var box = MML.mphantom(this.ParseArg(name));
+      var mml = this.ParseArg(name);
       if (v || h) {
-        box = MML.mpadded(box);
-        if (h) {box.height = box.depth = 0}
-        if (v) {box.width = 0}
+        mml = MML.mpadded(mml);
+        if (h) {mml.height = mml.depth = 0}
+        if (v) {mml.width = 0}
       }
-      this.Push(MML.TeXAtom(box));
+      this.Push(MML.TeXAtom(MML.mphantom(mml)));
     },
     
     Smash: function (name) {
@@ -1611,10 +1612,10 @@
       size *= TEXDEF.p_height;
       size = String(size).replace(/(\.\d\d\d).+/,'$1')+"em";
       var delim = this.GetDelimiter(name,true);
-      this.Push(MML.TeXAtom(MML.mo(delim).With({
+      this.Push(MML.mstyle(MML.TeXAtom(MML.mo(delim).With({
         minsize: size, maxsize: size,
         fence: true, stretchy: true, symmetric: true
-      })).With({texClass: mclass}));
+      })).With({texClass: mclass})).With({scriptlevel: 0}));
     },
     
     BuildRel: function (name) {
@@ -1773,9 +1774,9 @@
       this.Push(STACKITEM.cell().With({isCR: true, name: name}));
     },
     
-    CrLaTeX: function (name) {
+    CrLaTeX: function (name, nobrackets) {
       var n;
-      if (this.string.charAt(this.i) === "[") {
+      if (!nobrackets && this.string.charAt(this.i) === "[") {
         n = this.GetBrackets(name,"").replace(/ /g,"").replace(/,/,".");
         if (n && !this.matchDimen(n)) {
           TEX.Error(["BracketMustBeDimension",
@@ -1874,7 +1875,9 @@
       }
       this.Push(mml);
     },
-    envFindName: function (name) {return TEXDEF.environment[name]},
+    envFindName: function (name) {
+      return (TEXDEF.environment.hasOwnProperty(name) ? TEXDEF.environment[name] : null);
+    },
     
     Equation: function (begin,row) {return row},
     
@@ -1931,7 +1934,7 @@
      *  Convert delimiter to character
      */
     convertDelimiter: function (c) {
-      if (c) {c = TEXDEF.delimiter[c]}
+      if (c) {c = (TEXDEF.delimiter.hasOwnProperty(c) ? TEXDEF.delimiter[c] : null)}
       if (c == null) {return null}
       if (isArray(c)) {c = c[0]}
       if (c.length === 4) {c = String.fromCharCode(parseInt(c,16))}
@@ -2043,7 +2046,7 @@
           this.i--;
           c = this.GetArgument(name).replace(/^\s+/,'').replace(/\s+$/,'');
         }
-        if (TEXDEF.delimiter[c] != null) {return this.convertDelimiter(c)}
+        if (TEXDEF.delimiter.hasOwnProperty(c)) {return this.convertDelimiter(c)}
       }
       TEX.Error(["MissingOrUnrecognizedDelim",
                  "Missing or unrecognized delimiter for %1",name]);

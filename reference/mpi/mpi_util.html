@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>ezarpack/mpi/mpi_util.hpp - MPI utility functions &#8212; ezARPACK 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ezarpack/version.hpp - ezARPACK version information" href="../version.html" />
+    <link rel="prev" title="ezarpack/mpi/parpack.hpp - low level C++ interface to FORTRAN routines of PARPACK" href="parpack.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../version.html" title="ezarpack/version.hpp - ezARPACK version information"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="parpack.html" title="ezarpack/mpi/parpack.hpp - low level C++ interface to FORTRAN routines of PARPACK"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../aux.html" accesskey="U">Auxiliary headers</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/mpi_util.hpp</span></code> - MPI utility functions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ezarpack-mpi-mpi-util-hpp-mpi-utility-functions">
+<span id="refmpiutil"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/mpi_util.hpp</span></code> - MPI utility functions<a class="headerlink" href="#ezarpack-mpi-mpi-util-hpp-mpi-utility-functions" title="Permalink to this heading">¶</a></h1>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack3mpi4sizeERK8MPI_Comm">
+<span id="_CPPv3N8ezarpack3mpi4sizeERK8MPI_Comm"></span><span id="_CPPv2N8ezarpack3mpi4sizeERK8MPI_Comm"></span><span id="ezarpack::mpi::size__MPI_CommCR"></span><span class="target" id="mpi__util_8hpp_1a0f9ad662c689b29998f5c97f5431b665"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">ezarpack</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">mpi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">MPI_Comm</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">comm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3mpi4sizeERK8MPI_Comm" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get size of an MPI communicator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>comm</strong> – MPI communicator. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack3mpi4rankERK8MPI_Comm">
+<span id="_CPPv3N8ezarpack3mpi4rankERK8MPI_Comm"></span><span id="_CPPv2N8ezarpack3mpi4rankERK8MPI_Comm"></span><span id="ezarpack::mpi::rank__MPI_CommCR"></span><span class="target" id="mpi__util_8hpp_1af2504d4e3e2df7ff484064e8c1fc5ebf"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">ezarpack</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">mpi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">rank</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">MPI_Comm</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">comm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3mpi4rankERK8MPI_Comm" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get rank of the calling process within an MPI communicator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>comm</strong> – MPI communicator. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack3mpi24compute_local_block_sizeEiii">
+<span id="_CPPv3N8ezarpack3mpi24compute_local_block_sizeEiii"></span><span id="_CPPv2N8ezarpack3mpi24compute_local_block_sizeEiii"></span><span id="ezarpack::mpi::compute_local_block_size__i.i.i"></span><span class="target" id="mpi__util_8hpp_1a66d33554e20bb6fffd237b61479f931b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">ezarpack</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">mpi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">compute_local_block_size</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">N</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">comm_size</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">comm_rank</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3mpi24compute_local_block_sizeEiii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute the size of a vector block owned by an MPI process for the most even distribution of the vector among all processes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> – size of the full vector. </p></li>
+<li><p><strong>comm_size</strong> – Size of the MPI communicator. </p></li>
+<li><p><strong>comm_rank</strong> – Rank within the MPI communicator. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack3mpi25compute_local_block_startEiii">
+<span id="_CPPv3N8ezarpack3mpi25compute_local_block_startEiii"></span><span id="_CPPv2N8ezarpack3mpi25compute_local_block_startEiii"></span><span id="ezarpack::mpi::compute_local_block_start__i.i.i"></span><span class="target" id="mpi__util_8hpp_1ae0212478f86a37b6a683ab4ce29ba166"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">ezarpack</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">mpi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">compute_local_block_start</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">N</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">comm_size</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">comm_rank</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack3mpi25compute_local_block_startEiii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute the starting index of a vector block owned by an MPI process for the most even distribution of the vector among all processes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> – size of the full vector. </p></li>
+<li><p><strong>comm_size</strong> – Size of the MPI communicator. </p></li>
+<li><p><strong>comm_rank</strong> – Rank within the MPI communicator. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/index.html">User guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../solver.html">Specializations of the <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver.html">Specializations of the <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> class template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storages/index.html">Data storage backends</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../aux.html">Auxiliary headers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../common.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/common.hpp</span></code> - declarations of common types and exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../solver_base.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../arpack_solver.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack_solver.hpp</span></code> - include all <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> specializations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../arpack.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack.hpp</span></code> - low level C++ interface to FORTRAN routines of ARPACK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_base.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> class template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack_solver.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/arpack_solver.hpp</span></code> - include all <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> specializations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="parpack.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/parpack.hpp</span></code> - low level C++ interface to FORTRAN routines of PARPACK</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/mpi_util.hpp</span></code> - MPI utility functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../version.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/version.hpp</span></code> - ezARPACK version information</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../search.html">Search</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/reference/mpi/mpi_util.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../version.html" title="ezarpack/version.hpp - ezARPACK version information"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="parpack.html" title="ezarpack/mpi/parpack.hpp - low level C++ interface to FORTRAN routines of PARPACK"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../aux.html" >Auxiliary headers</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/mpi_util.hpp</span></code> - MPI utility functions</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016-2022, Igor Krivenko.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+    </div>
+  </body>
+</html>

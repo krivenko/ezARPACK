@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>ezarpack/mpi/solver_base.hpp - primary mpi::arpack_solver class template &#8212; ezARPACK 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ezarpack/mpi/arpack_solver.hpp - include all mpi::arpack_solver specializations" href="arpack_solver.html" />
+    <link rel="prev" title="ezarpack/arpack.hpp - low level C++ interface to FORTRAN routines of ARPACK" href="../arpack.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="arpack_solver.html" title="ezarpack/mpi/arpack_solver.hpp - include all mpi::arpack_solver specializations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../arpack.html" title="ezarpack/arpack.hpp - low level C++ interface to FORTRAN routines of ARPACK"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../aux.html" accesskey="U">Auxiliary headers</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> class template</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ezarpack-mpi-solver-base-hpp-primary-mpi-arpack-solver-class-template">
+<span id="refmpisolverbase"></span><h1><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> class template<a class="headerlink" href="#ezarpack-mpi-solver-base-hpp-primary-mpi-arpack-solver-class-template" title="Permalink to this heading">¶</a></h1>
+<p>Definition of class template <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> – ezARPACK’s main MPI
+solver class.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_13operator_kind0EN8ezarpack3mpi13arpack_solverE">
+<span id="_CPPv3I_13operator_kind0EN8ezarpack3mpi13arpack_solverE"></span><span id="_CPPv2I_13operator_kind0EN8ezarpack3mpi13arpack_solverE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../common.html#_CPPv4N8ezarpack13operator_kindE" title="ezarpack::operator_kind"><span class="n"><span class="pre">operator_kind</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpKind</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Backend</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classezarpack_1_1mpi_1_1arpack__solver"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">arpack_solver</span></span></span><a class="headerlink" href="#_CPPv4I_13operator_kind0EN8ezarpack3mpi13arpack_solverE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Main class template of ezARPACK’s API (MPI version). </p>
+<p>Instances of this class are used to solve all kinds of eigenproblems supported by ezARPACK in MPI parallelized mode. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>OpKind</strong> – Kind of eigenproblem to be solved. </p></li>
+<li><p><strong>Backend</strong> – Tag type specifying what <em>storage backend</em> (matrix/vector algebra library) must be used by <code class="docutils literal notranslate"><a class="reference internal" href="#classezarpack_1_1mpi_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code>. The storage backend determines types of internally stored data arrays and input/output view objects exposed by methods of the class. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/index.html">User guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../solver.html">Specializations of the <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver.html">Specializations of the <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> class template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storages/index.html">Data storage backends</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../aux.html">Auxiliary headers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../common.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/common.hpp</span></code> - declarations of common types and exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../solver_base.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../arpack_solver.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack_solver.hpp</span></code> - include all <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> specializations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../arpack.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack.hpp</span></code> - low level C++ interface to FORTRAN routines of ARPACK</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> class template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack_solver.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/arpack_solver.hpp</span></code> - include all <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> specializations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="parpack.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/parpack.hpp</span></code> - low level C++ interface to FORTRAN routines of PARPACK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi_util.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/mpi_util.hpp</span></code> - MPI utility functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../version.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/version.hpp</span></code> - ezARPACK version information</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../search.html">Search</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/reference/mpi/solver_base.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="arpack_solver.html" title="ezarpack/mpi/arpack_solver.hpp - include all mpi::arpack_solver specializations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../arpack.html" title="ezarpack/arpack.hpp - low level C++ interface to FORTRAN routines of ARPACK"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../aux.html" >Auxiliary headers</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> class template</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016-2022, Igor Krivenko.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+    </div>
+  </body>
+</html>

@@ -4,9 +4,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>What algorithm variant is right for your problem? &#8212; ezARPACK 0.10 documentation</title>
+    <title>What algorithm variant is right for your problem? &#8212; ezARPACK 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -32,7 +32,7 @@
         <li class="right" >
           <a href="usage.html" title="How to use ezARPACK in your project"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">User guide</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">What algorithm variant is right for your problem?</a></li> 
       </ul>
@@ -48,19 +48,19 @@
 <p>ARPACK-NG provides tools for solving a wide range of generalized eigenproblems</p>
 <div class="math notranslate nohighlight">
 \[\hat A \mathbf{x} = \lambda \hat M \mathbf{x}\]</div>
-<p>with large sparse matrices <span class="math notranslate nohighlight">\(\hat A\)</span> and <span class="math notranslate nohighlight">\(\hat M\)</span> (a standard
+<p>with large sparse square matrices <span class="math notranslate nohighlight">\(\hat A\)</span> and <span class="math notranslate nohighlight">\(\hat M\)</span> (a standard
 eigenproblem is one with <span class="math notranslate nohighlight">\(\hat M = \hat I\)</span>). At least one of
 <span class="math notranslate nohighlight">\(\hat A\)</span> and <span class="math notranslate nohighlight">\(\hat M\)</span> – called <span class="math notranslate nohighlight">\(\hat B\)</span> in the following –
 has to be Hermitian positive semi-definite so that it defines a weighted
 inner product <span class="math notranslate nohighlight">\(\langle \mathbf{x}, \mathbf{y} \rangle =
 \mathbf{x}^\dagger \hat B \mathbf{y}\)</span>.</p>
-<p>All supported classed of the eigenproblems can be transformed to the
+<p>All supported classed of the eigenproblems can be transformed into the
 canonical form</p>
 <div class="math notranslate nohighlight">
 \[\hat O \mathbf{x} = \mu \mathbf{x}.\]</div>
 <p>Depending on what properties matrices <span class="math notranslate nohighlight">\(\hat A\)</span> and <span class="math notranslate nohighlight">\(\hat M\)</span> posses
 – being real or complex, symmetric, positive-definite, etc – a different
-algorithm and computational mode should be chosen for the optimal performance
+algorithm and computational mode should be chosen for optimal performance
 and stability.</p>
 <p>ezARPACK wraps ARPACK-NG’s low-level subroutines in a form of three major
 solver classes.</p>
@@ -69,11 +69,19 @@ solver classes.</p>
 <li><p><a class="reference internal" href="asymmetric.html#asymmetric"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;</span></a>;</p></li>
 <li><p><a class="reference internal" href="complex.html#complex"><span class="std std-ref">ezarpack::arpack_solver&lt;Complex, Backend&gt;</span></a>.</p></li>
 </ul>
-<p>Here, they are listed in the order of generality of the eigenproblems they can
-solve – the symmetric variant is the most specialized and fastest one, whereas
-the complex version is for the most general problems. Furthermore, each of the
-variants supports a few computational modes. Picking the right combination of
-solver and computational mode can be an overwhelming task for a non-expert.</p>
+<p>There are also three <a class="reference internal" href="mpi.html#mpi"><span class="std std-ref">wrappers for the Parallel ARPACK / MPI subroutines</span></a> that offer interfaces nearly identical to those of their serial
+counterparts, and are meant for eigenproblems of a very big size.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../reference/mpi/solver_symmetric.html#refmpisolversymmetric"><span class="std std-ref">ezarpack::mpi::arpack_solver&lt;Symmetric, Backend&gt;</span></a>;</p></li>
+<li><p><a class="reference internal" href="../reference/mpi/solver_asymmetric.html#refmpisolverasymmetric"><span class="std std-ref">ezarpack::mpi::arpack_solver&lt;Asymmetric, Backend&gt;</span></a>;</p></li>
+<li><p><a class="reference internal" href="../reference/mpi/solver_complex.html#refmpisolvercomplex"><span class="std std-ref">ezarpack::mpi::arpack_solver&lt;Complex, Backend&gt;</span></a>.</p></li>
+</ul>
+<p>Here, the solvers are listed in the order of generality of the eigenproblems
+they can solve – the symmetric variant is the most specialized and fastest one,
+whereas the complex version is for the most general problems. Furthermore, each
+of the variants supports a few computational modes. Picking the right
+combination of solver and computational mode can be an overwhelming task for a
+non-expert.</p>
 <p>In the table below, we give a classification of all supported eigenproblems with
 recommendations on what solver variant/computational mode to choose.
 In many cases, there are multiple acceptable choices, and the ‘Notes’ column
@@ -360,7 +368,7 @@ deeper overview of ARPACK-NG’s capabilities you are referred to the definitive
 <div><p>ARPACK Users’ Guide: Solution of Large Scale Eigenvalue Problems
 with Implicitly Restarted Arnoldi Methods (R. B. Lehoucq, D. C. Sorensen,
 C. Yang, SIAM, 1998),
-<a class="reference external" href="https://www.caam.rice.edu/software/ARPACK/UG/">https://www.caam.rice.edu/software/ARPACK/UG/</a></p>
+<a class="reference external" href="https://epubs.siam.org/doi/book/10.1137/1.9780898719628">https://epubs.siam.org/doi/book/10.1137/1.9780898719628</a></p>
 </div></blockquote>
 </section>
 
@@ -371,16 +379,29 @@ C. Yang, SIAM, 1998),
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="usage.html"
-                          title="previous chapter">How to use ezARPACK in your project</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="symmetric.html"
-                          title="next chapter">Symmetric real eigenproblems</a></p>
-  </div>
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation instructions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="usage.html">How to use ezARPACK in your project</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">What algorithm variant is right for your problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symmetric.html">Symmetric real eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asymmetric.html">General real eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="complex.html">General complex eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpi.html">Parallel ARPACK versions of eigensolvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backends.html">List of supported matrix/vector algebra libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implicit_restarting.html">Advanced: Customization of Lanczos/Arnoldi implicit restarting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="new_backend.html">Advanced: Adding a new storage backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">Usage examples: serial solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples_mpi.html">Usage examples: MPI-parallelized solvers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../search.html">Search</a></li>
+</ul>
+
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -414,7 +435,7 @@ C. Yang, SIAM, 1998),
         <li class="right" >
           <a href="usage.html" title="How to use ezARPACK in your project"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >User guide</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">What algorithm variant is right for your problem?</a></li> 
       </ul>

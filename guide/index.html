@@ -4,9 +4,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>User guide &#8212; ezARPACK 0.10 documentation</title>
+    <title>User guide &#8212; ezARPACK 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -31,7 +31,7 @@
         <li class="right" >
           <a href="../installation.html" title="Installation instructions"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">User guide</a></li> 
       </ul>
     </div>  
@@ -54,6 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="symmetric.html">Symmetric real eigenproblems</a></li>
 <li class="toctree-l1"><a class="reference internal" href="asymmetric.html">General real eigenproblems</a></li>
 <li class="toctree-l1"><a class="reference internal" href="complex.html">General complex eigenproblems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mpi.html">Parallel ARPACK versions of eigensolvers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="backends.html">List of supported matrix/vector algebra libraries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="implicit_restarting.html">Advanced: Customization of Lanczos/Arnoldi implicit restarting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="new_backend.html">Advanced: Adding a new storage backend</a><ul>
@@ -63,7 +64,7 @@
 <li class="toctree-l2"><a class="reference internal" href="new_backend.html#optional-eigenvalue-eigenvector-post-processing-functions">Optional: Eigenvalue/eigenvector post-processing functions</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Usage examples</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Usage examples: serial solvers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#eigen-3">Eigen 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#blaze">Blaze</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#armadillo">Armadillo</a></li>
@@ -71,6 +72,16 @@
 <li class="toctree-l2"><a class="reference internal" href="examples.html#triqs-arrays">TRIQS arrays</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#triqs-nda">TRIQS/nda</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#xtensor">xtensor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples_mpi.html">Usage examples: MPI-parallelized solvers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples_mpi.html#eigen-3">Eigen 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples_mpi.html#blaze">Blaze</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples_mpi.html#armadillo">Armadillo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples_mpi.html#boost-ublas">Boost uBLAS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples_mpi.html#triqs-arrays">TRIQS arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples_mpi.html#triqs-nda">TRIQS/nda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples_mpi.html#xtensor">xtensor</a></li>
 </ul>
 </li>
 </ul>
@@ -84,16 +95,29 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="../installation.html"
-                          title="previous chapter">Installation instructions</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="usage.html"
-                          title="next chapter">How to use ezARPACK in your project</a></p>
-  </div>
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation instructions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html">How to use ezARPACK in your project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choice.html">What algorithm variant is right for your problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symmetric.html">Symmetric real eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asymmetric.html">General real eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="complex.html">General complex eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpi.html">Parallel ARPACK versions of eigensolvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backends.html">List of supported matrix/vector algebra libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implicit_restarting.html">Advanced: Customization of Lanczos/Arnoldi implicit restarting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="new_backend.html">Advanced: Adding a new storage backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">Usage examples: serial solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples_mpi.html">Usage examples: MPI-parallelized solvers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../search.html">Search</a></li>
+</ul>
+
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -127,7 +151,7 @@
         <li class="right" >
           <a href="../installation.html" title="Installation instructions"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">User guide</a></li> 
       </ul>
     </div>

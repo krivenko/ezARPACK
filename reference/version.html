@@ -4,9 +4,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>ezarpack/version.hpp - ezARPACK version information &#8212; ezARPACK 0.10 documentation</title>
+    <title>ezarpack/version.hpp - ezARPACK version information &#8212; ezARPACK 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -17,7 +17,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Changelog" href="../changelog.html" />
-    <link rel="prev" title="ezarpack/arpack.hpp - Low level C++ interface to FORTRAN routines of ARPACK" href="arpack.html" /> 
+    <link rel="prev" title="ezarpack/mpi/mpi_util.hpp - MPI utility functions" href="mpi/mpi_util.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -29,9 +29,9 @@
           <a href="../changelog.html" title="Changelog"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="arpack.html" title="ezarpack/arpack.hpp - Low level C++ interface to FORTRAN routines of ARPACK"
+          <a href="mpi/mpi_util.html" title="ezarpack/mpi/mpi_util.hpp - MPI utility functions"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >API reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="aux.html" accesskey="U">Auxiliary headers</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/version.hpp</span></code> - ezARPACK version information</a></li> 
@@ -64,16 +64,33 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="arpack.html"
-                          title="previous chapter"><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack.hpp</span></code> - Low level C++ interface to FORTRAN routines of ARPACK</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="../changelog.html"
-                          title="next chapter">Changelog</a></p>
-  </div>
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/index.html">User guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="solver.html">Specializations of the <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpi/solver.html">Specializations of the <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> class template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storages/index.html">Data storage backends</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="aux.html">Auxiliary headers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="common.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/common.hpp</span></code> - declarations of common types and exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_base.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack_solver.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack_solver.hpp</span></code> - include all <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> specializations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack.hpp</span></code> - low level C++ interface to FORTRAN routines of ARPACK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/solver_base.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> class template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/arpack_solver.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/arpack_solver.hpp</span></code> - include all <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> specializations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/parpack.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/parpack.hpp</span></code> - low level C++ interface to FORTRAN routines of PARPACK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/mpi_util.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/mpi_util.hpp</span></code> - MPI utility functions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">ezarpack/version.hpp</span></code> - ezARPACK version information</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../search.html">Search</a></li>
+</ul>
+
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -105,9 +122,9 @@
           <a href="../changelog.html" title="Changelog"
              >next</a> |</li>
         <li class="right" >
-          <a href="arpack.html" title="ezarpack/arpack.hpp - Low level C++ interface to FORTRAN routines of ARPACK"
+          <a href="mpi/mpi_util.html" title="ezarpack/mpi/mpi_util.hpp - MPI utility functions"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >API reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="aux.html" >Auxiliary headers</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/version.hpp</span></code> - ezARPACK version information</a></li> 

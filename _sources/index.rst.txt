@@ -13,8 +13,8 @@ generalized problems are supported, as well as all advanced spectral
 transformation modes from the original FORTRAN implementation.
 
 The main goal of this header-only library is providing easy access to the
-powerful ARPACK algorithms from modern C++ code. ezARPACK pursues this goal by
-implementing two crucial features.
+powerful ARPACK and Parallel ARPACK (PARPACK) algorithms from modern C++ code.
+ezARPACK pursues this goal by implementing two crucial features.
 
 - Following the ideology of ARPACK, ezARPACK does not force the user to
   stick with a predefined matrix storage format. Instead, user code is expected
@@ -36,10 +36,12 @@ implementing two crucial features.
   - `TRIQS/nda library >= 1.1.0 <https://github.com/triqs/nda/>`_
   - `xtensor >= 0.20.0 <https://github.com/xtensor-stack/xtensor>`_
 
-  Upon choosing the right backend via a template parameter of the main
-  ``arpack_solver`` class, programmer can use callable objects to act on the
-  vectors from their library of choice. The output eigenvalues and
-  eigenvectors are accessible to the calling code in a compatible format too.
+  Upon choosing the right backend via a template parameter of the solver class
+  :cpp:type:`ezarpack::arpack_solver`
+  (or :cpp:type:`ezarpack::mpi::arpack_solver`), programmer can use callable
+  objects to act on the vectors from their library of choice. The output
+  eigenvalues and eigenvectors are accessible to the calling code in
+  a compatible format too.
 
   Besides covering a range of popular matrix frameworks, ezARPACK
   allows for easy :ref:`addition of new backends <new_backend>` via

@@ -9,14 +9,14 @@ ARPACK-NG provides tools for solving a wide range of generalized eigenproblems
 
   \hat A \mathbf{x} = \lambda \hat M \mathbf{x}
 
-with large sparse matrices :math:`\hat A` and :math:`\hat M` (a standard
+with large sparse square matrices :math:`\hat A` and :math:`\hat M` (a standard
 eigenproblem is one with :math:`\hat M = \hat I`). At least one of
 :math:`\hat A` and :math:`\hat M` -- called :math:`\hat B` in the following --
 has to be Hermitian positive semi-definite so that it defines a weighted
 inner product :math:`\langle \mathbf{x}, \mathbf{y} \rangle =
 \mathbf{x}^\dagger \hat B \mathbf{y}`.
 
-All supported classed of the eigenproblems can be transformed to the
+All supported classed of the eigenproblems can be transformed into the
 canonical form
 
 .. math::
@@ -25,7 +25,7 @@ canonical form
 
 Depending on what properties matrices :math:`\hat A` and :math:`\hat M` posses
 -- being real or complex, symmetric, positive-definite, etc -- a different
-algorithm and computational mode should be chosen for the optimal performance
+algorithm and computational mode should be chosen for optimal performance
 and stability.
 
 ezARPACK wraps ARPACK-NG's low-level subroutines in a form of three major
@@ -35,11 +35,20 @@ solver classes.
 * :ref:`ezarpack::arpack_solver\<Asymmetric, Backend\> <asymmetric>`;
 * :ref:`ezarpack::arpack_solver\<Complex, Backend\> <complex>`.
 
-Here, they are listed in the order of generality of the eigenproblems they can
-solve -- the symmetric variant is the most specialized and fastest one, whereas
-the complex version is for the most general problems. Furthermore, each of the
-variants supports a few computational modes. Picking the right combination of
-solver and computational mode can be an overwhelming task for a non-expert.
+There are also three :ref:`wrappers for the Parallel ARPACK / MPI subroutines
+<mpi>` that offer interfaces nearly identical to those of their serial
+counterparts, and are meant for eigenproblems of a very big size.
+
+* :ref:`ezarpack::mpi::arpack_solver\<Symmetric, Backend\> <refmpisolversymmetric>`;
+* :ref:`ezarpack::mpi::arpack_solver\<Asymmetric, Backend\> <refmpisolverasymmetric>`;
+* :ref:`ezarpack::mpi::arpack_solver\<Complex, Backend\> <refmpisolvercomplex>`.
+
+Here, the solvers are listed in the order of generality of the eigenproblems
+they can solve -- the symmetric variant is the most specialized and fastest one,
+whereas the complex version is for the most general problems. Furthermore, each
+of the variants supports a few computational modes. Picking the right
+combination of solver and computational mode can be an overwhelming task for a
+non-expert.
 
 In the table below, we give a classification of all supported eigenproblems with
 recommendations on what solver variant/computational mode to choose.
@@ -328,5 +337,5 @@ deeper overview of ARPACK-NG's capabilities you are referred to the definitive
   ARPACK Users' Guide: Solution of Large Scale Eigenvalue Problems
   with Implicitly Restarted Arnoldi Methods (R. B. Lehoucq, D. C. Sorensen,
   C. Yang, SIAM, 1998),
-  https://www.caam.rice.edu/software/ARPACK/UG/
+  https://epubs.siam.org/doi/book/10.1137/1.9780898719628
 

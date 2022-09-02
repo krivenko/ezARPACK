@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>ezarpack/common.hpp - declarations of common types and exceptions &#8212; ezARPACK 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ezarpack/solver_base.hpp - primary arpack_solver class template" href="solver_base.html" />
+    <link rel="prev" title="Auxiliary headers" href="aux.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="solver_base.html" title="ezarpack/solver_base.hpp - primary arpack_solver class template"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="aux.html" title="Auxiliary headers"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="aux.html" accesskey="U">Auxiliary headers</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/common.hpp</span></code> - declarations of common types and exceptions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ezarpack-common-hpp-declarations-of-common-types-and-exceptions">
+<h1><code class="docutils literal notranslate"><span class="pre">ezarpack/common.hpp</span></code> - declarations of common types and exceptions<a class="headerlink" href="#ezarpack-common-hpp-declarations-of-common-types-and-exceptions" title="Permalink to this heading">¶</a></h1>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack8dcomplexE">
+<span id="_CPPv3N8ezarpack8dcomplexE"></span><span id="_CPPv2N8ezarpack8dcomplexE"></span><span class="target" id="common_8hpp_1a1eee671c3a6a11d87a76664b11e321bb"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">ezarpack</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">dcomplex</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">complex</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N8ezarpack8dcomplexE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The double precision complex type used in ARPACK-NG calls. </p>
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack13operator_kindE">
+<span id="_CPPv3N8ezarpack13operator_kindE"></span><span id="_CPPv2N8ezarpack13operator_kindE"></span><span class="target" id="common_8hpp_1aa7129995e15fe88fad106cc4b8201401"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">ezarpack</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">operator_kind</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack13operator_kindE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Kind of square matrix (linear operator) to solve an eigenproblem for. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack13operator_kind9SymmetricE">
+<span id="_CPPv3N8ezarpack13operator_kind9SymmetricE"></span><span id="_CPPv2N8ezarpack13operator_kind9SymmetricE"></span><span class="target" id="common_8hpp_1aa7129995e15fe88fad106cc4b8201401ae1a19f1713e11a197dfd8c214e44116a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Symmetric</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack13operator_kind9SymmetricE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Symmetric real matrix. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack13operator_kind10AsymmetricE">
+<span id="_CPPv3N8ezarpack13operator_kind10AsymmetricE"></span><span id="_CPPv2N8ezarpack13operator_kind10AsymmetricE"></span><span class="target" id="common_8hpp_1aa7129995e15fe88fad106cc4b8201401a04bebb584cedf474fe8ff4ba012de30e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Asymmetric</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack13operator_kind10AsymmetricE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>General real matrix. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack13operator_kind7ComplexE">
+<span id="_CPPv3N8ezarpack13operator_kind7ComplexE"></span><span id="_CPPv2N8ezarpack13operator_kind7ComplexE"></span><span class="target" id="common_8hpp_1aa7129995e15fe88fad106cc4b8201401af41ddfa282ab1d8bcc07f18d0bcd8786"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Complex</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack13operator_kind7ComplexE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>General complex matrix. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack15maxiter_reachedE">
+<span id="_CPPv3N8ezarpack15maxiter_reachedE"></span><span id="_CPPv2N8ezarpack15maxiter_reachedE"></span><span id="ezarpack::maxiter_reached"></span><span class="target" id="structezarpack_1_1maxiter__reached"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxiter_reached</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">runtime_error</span></span><a class="headerlink" href="#_CPPv4N8ezarpack15maxiter_reachedE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Exception: Maximum number of Implicitly restarted Arnoldi iterations has been reached. </p>
+<p>This exception can be thrown by <code class="docutils literal notranslate"><span class="pre">operator()</span></code> of <code class="docutils literal notranslate"><a class="reference internal" href="solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code> specializations. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack15maxiter_reached15maxiter_reachedEi">
+<span id="_CPPv3N8ezarpack15maxiter_reached15maxiter_reachedEi"></span><span id="_CPPv2N8ezarpack15maxiter_reached15maxiter_reachedEi"></span><span id="ezarpack::maxiter_reached::maxiter_reached__i"></span><span class="target" id="structezarpack_1_1maxiter__reached_1adf5a0059a99aaee601a8b26732f2cf39"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxiter_reached</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxiter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack15maxiter_reached15maxiter_reachedEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>maxiter</strong> – Maximum number of IRLM/IRAM iterations allowed. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack15maxiter_reached7maxiterE">
+<span id="_CPPv3N8ezarpack15maxiter_reached7maxiterE"></span><span id="_CPPv2N8ezarpack15maxiter_reached7maxiterE"></span><span id="ezarpack::maxiter_reached::maxiter__i"></span><span class="target" id="structezarpack_1_1maxiter__reached_1a85d424fb45f82817c571cc69cf23143f"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxiter</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack15maxiter_reached7maxiterE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maximum number of IRLM/IRAM iterations allowed. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack16ncv_insufficientE">
+<span id="_CPPv3N8ezarpack16ncv_insufficientE"></span><span id="_CPPv2N8ezarpack16ncv_insufficientE"></span><span id="ezarpack::ncv_insufficient"></span><span class="target" id="structezarpack_1_1ncv__insufficient"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ncv_insufficient</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">runtime_error</span></span><a class="headerlink" href="#_CPPv4N8ezarpack16ncv_insufficientE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Exception: No shifts could be applied during a cycle of the Implicitly restarted Arnoldi iteration. Consider increasing the number of Lanczos/Arnoldi vectors generated at each iteration. </p>
+<p>This exception can be thrown by <code class="docutils literal notranslate"><span class="pre">operator()</span></code> of <code class="docutils literal notranslate"><a class="reference internal" href="solver_base.html#classezarpack_1_1arpack__solver"><span class="std std-ref"><span class="pre">arpack_solver</span></span></a></code> specializations. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack16ncv_insufficient16ncv_insufficientEi">
+<span id="_CPPv3N8ezarpack16ncv_insufficient16ncv_insufficientEi"></span><span id="_CPPv2N8ezarpack16ncv_insufficient16ncv_insufficientEi"></span><span id="ezarpack::ncv_insufficient::ncv_insufficient__i"></span><span class="target" id="structezarpack_1_1ncv__insufficient_1aec8cd9d8cc70955765a6421042d13a4c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ncv_insufficient</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ncv</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ezarpack16ncv_insufficient16ncv_insufficientEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ncv</strong> – Number of Lanczos/Arnoldi vectors to be generated. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8ezarpack16ncv_insufficient3ncvE">
+<span id="_CPPv3N8ezarpack16ncv_insufficient3ncvE"></span><span id="_CPPv2N8ezarpack16ncv_insufficient3ncvE"></span><span id="ezarpack::ncv_insufficient::ncv__i"></span><span class="target" id="structezarpack_1_1ncv__insufficient_1a5fdb149647b121135678b86284e74782"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ncv</span></span></span><a class="headerlink" href="#_CPPv4N8ezarpack16ncv_insufficient3ncvE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of Lanczos/Arnoldi vectors to be generated. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/index.html">User guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="solver.html">Specializations of the <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpi/solver.html">Specializations of the <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> class template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storages/index.html">Data storage backends</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="aux.html">Auxiliary headers</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">ezarpack/common.hpp</span></code> - declarations of common types and exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_base.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack_solver.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack_solver.hpp</span></code> - include all <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> specializations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack.hpp</span></code> - low level C++ interface to FORTRAN routines of ARPACK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/solver_base.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> class template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/arpack_solver.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/arpack_solver.hpp</span></code> - include all <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> specializations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/parpack.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/parpack.hpp</span></code> - low level C++ interface to FORTRAN routines of PARPACK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/mpi_util.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/mpi_util.hpp</span></code> - MPI utility functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="version.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/version.hpp</span></code> - ezARPACK version information</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../search.html">Search</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/common.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="solver_base.html" title="ezarpack/solver_base.hpp - primary arpack_solver class template"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="aux.html" title="Auxiliary headers"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >API reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="aux.html" >Auxiliary headers</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ezarpack/common.hpp</span></code> - declarations of common types and exceptions</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016-2022, Igor Krivenko.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+    </div>
+  </body>
+</html>

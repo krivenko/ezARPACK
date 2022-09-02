@@ -4,9 +4,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>How to use ezARPACK in your project &#8212; ezARPACK 0.10 documentation</title>
+    <title>How to use ezARPACK in your project &#8212; ezARPACK 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -31,7 +31,7 @@
         <li class="right" >
           <a href="index.html" title="User guide"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">User guide</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">How to use ezARPACK in your project</a></li> 
       </ul>
@@ -51,7 +51,18 @@ two ways to use ezARPACK. Either way, you would need</p>
 <li><p>a working <a class="reference external" href="https://github.com/opencollab/arpack-ng">ARPACK-NG installation</a> (version 3.6.0 or newer).</p></li>
 <li><p>One of supported <a class="reference internal" href="backends.html#backends"><span class="std std-ref">linear algebra libraries</span></a> (unless
 you are going to <a class="reference internal" href="new_backend.html#new-backend"><span class="std std-ref">add support for a new one</span></a>).</p></li>
+<li><p>A working implementation of MPI-3.0 or newer, such as
+<a class="reference external" href="https://www.open-mpi.org/">OpenMPI</a> or <a class="reference external" href="https://www.mpich.org/">MPICH</a>,
+if you plan to use the <a class="reference internal" href="mpi.html#mpi"><span class="std std-ref">Parallel ARPACK solvers</span></a>.</p></li>
 </ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The Parallel ARPACK eigensolvers for general complex matrices are
+<a class="reference external" href="https://github.com/opencollab/arpack-ng/pull/245">known to be unstable</a>
+and can yield wrong results in ARPACK-NG versions prior to 3.8.0.
+Be sure to link your code to ARPACK-NG 3.8.0 or newer if you use the
+<a class="reference internal" href="complex.html#complex"><span class="std std-ref">complex</span></a> variant of <a class="reference internal" href="../reference/mpi/solver_base.html#_CPPv4I_13operator_kind0EN8ezarpack3mpi13arpack_solverE" title="ezarpack::mpi::arpack_solver"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">ezarpack::mpi::arpack_solver</span></code></a>.</p>
+</div>
 <section id="makefiles-no-build-system">
 <h2>Makefiles/no build system<a class="headerlink" href="#makefiles-no-build-system" title="Permalink to this heading">¶</a></h2>
 <p>Assume that <code class="docutils literal notranslate"><span class="pre">&lt;EZARPACK_ROOT&gt;</span></code> is either a directory with unpacked
@@ -63,11 +74,12 @@ directory. A compiler command line for your program can be as simple as</p>
 </div>
 <p>(similar for <code class="docutils literal notranslate"><span class="pre">clang++</span></code> and other compilers). More <code class="docutils literal notranslate"><span class="pre">-I</span></code> flags might be needed
 if the linear algebra framework you choose is not visible to the compiler by
-default.</p>
+default. Similarly, adding <code class="docutils literal notranslate"><span class="pre">-L&lt;MPI_ROOT&gt;/lib</span> <span class="pre">-lmpi</span></code> may be necessary if you
+are using an MPI implementation installed in a non-system location.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When linking to the static version of ARPACK-NG library
-(<code class="docutils literal notranslate"><span class="pre">libarpack.a</span></code>), you might also need to explicitly link your code to
+(<code class="docutils literal notranslate"><span class="pre">libarpack.a</span></code>), you might also need to explicitly link your executable to
 a BLAS/LAPACK implementation. A common symptom of this problem is
 undefined references to <code class="docutils literal notranslate"><span class="pre">dgemv_</span></code> and other LAPACK subroutines.</p>
 </div>
@@ -76,37 +88,50 @@ undefined references to <code class="docutils literal notranslate"><span class="
 <h2>CMake<a class="headerlink" href="#cmake" title="Permalink to this heading">¶</a></h2>
 <p>Here is a minimal example of a root <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> script for your
 project.</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.1.0</span> <span class="s">FATAL_ERROR</span><span class="p">)</span>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.13.0</span><span class="w"> </span><span class="s">FATAL_ERROR</span><span class="p">)</span>
 
-<span class="nb">project</span><span class="p">(</span><span class="s">myproject</span> <span class="s">LANGUAGES</span> <span class="s">CXX</span><span class="p">)</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">myproject</span><span class="w"> </span><span class="s">LANGUAGES</span><span class="w"> </span><span class="s">CXX</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">11</span><span class="p">)</span>
 
 <span class="c"># EZARPACK_ROOT is the installation prefix of ezARPACK</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">ezARPACK_DIR</span> <span class="o">${</span><span class="nv">EZARPACK_ROOT</span><span class="o">}</span><span class="s">/lib/cmake</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">ezARPACK_DIR</span><span class="w"> </span><span class="o">${</span><span class="nv">EZARPACK_ROOT</span><span class="o">}</span><span class="s">/lib/cmake</span><span class="p">)</span>
 
 <span class="c"># Import ezARPACK target</span>
-<span class="c">#</span>
-<span class="c"># Setting EZARPACK_LINK_TO_ARPACK_NG to ON will trigger detection of</span>
-<span class="c"># ARPACK-NG and linking of the &#39;ezarpack&#39; target to the ARPACK-NG library.</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">EZARPACK_LINK_TO_ARPACK_NG</span> <span class="s">ON</span><span class="p">)</span>
-<span class="nb">find_package</span><span class="p">(</span><span class="s">ezARPACK</span> <span class="s">0.9</span> <span class="s">CONFIG</span> <span class="s">REQUIRED</span><span class="p">)</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">ezARPACK</span><span class="w"> </span><span class="s">1.0</span><span class="w"> </span><span class="s">CONFIG</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
 
 <span class="c"># Import Eigen (Blaze, Armadillo, etc) targets</span>
-<span class="nb">find_package</span><span class="p">(</span><span class="s">Eigen3</span> <span class="s">CONFIG</span><span class="p">)</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">Eigen3</span><span class="w"> </span><span class="s">CONFIG</span><span class="p">)</span>
 
 <span class="c"># Build an executable called &#39;myprog&#39;</span>
-<span class="nb">add_executable</span><span class="p">(</span><span class="s">myprog</span> <span class="s">myprog.cpp</span><span class="p">)</span>
-<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span> <span class="s">PRIVATE</span> <span class="s">ezarpack</span> <span class="s">Eigen3::Eigen</span><span class="p">)</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="s">myprog.cpp</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">ezarpack</span><span class="w"> </span><span class="s">Eigen3::Eigen</span><span class="p">)</span>
+
+<span class="c"># ARPACK_NG_ROOT is the installation prefix of ARPACK-NG</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">arpack-ng_DIR</span><span class="w"> </span><span class="o">${</span><span class="nv">ARPACK_NG_ROOT</span><span class="o">}</span><span class="s">/lib/cmake</span><span class="p">)</span>
+
+<span class="c"># Find ARPACK-NG</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">arpack-ng</span><span class="w"> </span><span class="s">3.6.0</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+
+<span class="c"># Link the executable to ARPACK-NG</span>
+<span class="nb">if</span><span class="p">(</span><span class="s">TARGET</span><span class="w"> </span><span class="s">ARPACK::ARPACK</span><span class="p">)</span><span class="w"> </span><span class="c"># ARPACK-NG 3.8.0 and newer</span>
+<span class="w">  </span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="s">ARPACK::ARPACK</span><span class="p">)</span>
+<span class="nb">else</span><span class="p">()</span><span class="w"> </span><span class="c"># ARPACK-NG prior to version 3.8.0</span>
+<span class="w">  </span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="o">${</span><span class="nv">arpack_ng_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Alternatively, you can link <code class="docutils literal notranslate"><span class="pre">myprog</span></code> to ARPACK-NG manually.</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># ARPACK_NG_ROOT is the installation prefix of ARPACK-NG</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">arpack-ng_DIR</span> <span class="o">${</span><span class="nv">ARPACK_NG_ROOT</span><span class="o">}</span><span class="s">/lib/cmake</span><span class="p">)</span>
+<p>In order to make the <a class="reference internal" href="mpi.html#mpi"><span class="std std-ref">Parallel ARPACK solvers</span></a> work, <code class="docutils literal notranslate"><span class="pre">myprog</span></code>
+must be additionally linked to MPI and PARPACK (only for ARPACK-NG&gt;=3.8.0) .</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Find MPI-3.0 or newer</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">MPI</span><span class="w"> </span><span class="s">3.0</span><span class="p">)</span>
 
-<span class="c"># Import ARPACK-NG targets</span>
-<span class="nb">find_package</span><span class="p">(</span><span class="s">arpack-ng</span> <span class="s">3.6.0</span> <span class="s">REQUIRED</span><span class="p">)</span>
+<span class="c"># Add MPI include directories and link to MPI libraries</span>
+<span class="nb">target_include_directories</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="o">${</span><span class="nv">MPI_CXX_INCLUDE_PATH</span><span class="o">}</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="o">${</span><span class="nv">MPI_CXX_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
 
-<span class="c"># Link to ARPACK-NG</span>
-<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span> <span class="o">${</span><span class="nv">arpack_ng_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
+<span class="nb">if</span><span class="p">(</span><span class="s">TARGET</span><span class="w"> </span><span class="s">PARPACK::PARPACK</span><span class="p">)</span><span class="w"> </span><span class="c"># ARPACK-NG 3.8.0 and newer</span>
+<span class="w">  </span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="s">PARPACK::PARPACK</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
@@ -119,27 +144,33 @@ project.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">How to use ezARPACK in your project</a><ul>
-<li><a class="reference internal" href="#makefiles-no-build-system">Makefiles/no build system</a></li>
-<li><a class="reference internal" href="#cmake">CMake</a></li>
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation instructions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">How to use ezARPACK in your project</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#makefiles-no-build-system">Makefiles/no build system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cmake">CMake</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="choice.html">What algorithm variant is right for your problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symmetric.html">Symmetric real eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asymmetric.html">General real eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="complex.html">General complex eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpi.html">Parallel ARPACK versions of eigensolvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backends.html">List of supported matrix/vector algebra libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implicit_restarting.html">Advanced: Customization of Lanczos/Arnoldi implicit restarting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="new_backend.html">Advanced: Adding a new storage backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">Usage examples: serial solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples_mpi.html">Usage examples: MPI-parallelized solvers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../search.html">Search</a></li>
 </ul>
 
-  </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="index.html"
-                          title="previous chapter">User guide</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="choice.html"
-                          title="next chapter">What algorithm variant is right for your problem?</a></p>
-  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -173,7 +204,7 @@ project.</p>
         <li class="right" >
           <a href="index.html" title="User guide"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ezARPACK 1.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >User guide</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">How to use ezARPACK in your project</a></li> 
       </ul>

@@ -1,7 +1,7 @@
 .. _examples:
 
-Usage examples
-==============
+Usage examples: serial solvers
+==============================
 
 These examples show how to find a few smallest eigenvalues of a real symmetric
 matrix and their respective eigenvectors. The matrix is a banded one with
