@@ -64,7 +64,6 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
   }
 
   SECTION("Generalized eigenproblem: Shift-and-Invert mode") {
-    double sigma = 2.0;
     decltype(A) op_mat = inv(A - sigma * M) * M;
 
     auto op = [&](vv_t in, vv_t out) { out = op_mat * in; };
@@ -76,7 +75,6 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
   }
 
   SECTION("Generalized eigenproblem: Buckling mode") {
-    double sigma = 3.3;
     decltype(A) op_mat = inv(M - sigma * A) * M;
 
     auto op = [&](vv_t in, vv_t out) { out = op_mat * in; };
@@ -89,7 +87,6 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
   }
 
   SECTION("Generalized eigenproblem: Cayley transformed mode") {
-    double sigma = 2.0;
     decltype(A) op_mat = inv(A - sigma * M) * (A + sigma * M);
 
     auto op = [&](vv_t in, vv_t out) { out = op_mat * in; };
@@ -150,7 +147,6 @@ TEST_CASE("Symmetric eigenproblem is solved", "[solver_symmetric]") {
     }
 
     SECTION("Generalized eigenproblem: Shift-and-Invert mode") {
-      double sigma = 2.0;
       decltype(A) op_mat = inv(A - sigma * M) * M;
 
       auto op = [&](vv_t in, vv_t out) { out = op_mat * in; };
