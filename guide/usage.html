@@ -47,7 +47,7 @@
 <p>Depending on what build system your C++ project is based on, there are
 two ways to use ezARPACK. Either way, you would need</p>
 <ul class="simple">
-<li><p>A reasonably recent compiler supporting C++11 or newer;</p></li>
+<li><p>A compiler supporting C++11 or newer;</p></li>
 <li><p>a working <a class="reference external" href="https://github.com/opencollab/arpack-ng">ARPACK-NG installation</a> (version 3.6.0 or newer).</p></li>
 <li><p>One of supported <a class="reference internal" href="backends.html#backends"><span class="std std-ref">linear algebra libraries</span></a> (unless
 you are going to <a class="reference internal" href="new_backend.html#new-backend"><span class="std std-ref">add support for a new one</span></a>).</p></li>
@@ -70,12 +70,17 @@ ezARPACK sources or its <a class="reference internal" href="../installation.html
 directory. A compiler command line for your program can be as simple as</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++ -O3 -I&lt;EZARPACK_ROOT&gt;/include -L&lt;ARPACK_NG_ROOT&gt;/lib -larpack <span class="se">\</span>
     -o myprog myprog.cpp
+
+<span class="c1"># For executables using the Parallel ARPACK (MPI) solvers</span>
+g++ -O3 -I&lt;EZARPACK_ROOT&gt;/include -L&lt;ARPACK_NG_ROOT&gt;/lib -lmpi <span class="se">\</span>
+    -larpack -lparpack -o myprog_mpi myprog_mpi.cpp
 </pre></div>
 </div>
-<p>(similar for <code class="docutils literal notranslate"><span class="pre">clang++</span></code> and other compilers). More <code class="docutils literal notranslate"><span class="pre">-I</span></code> flags might be needed
+<p>(similar for <code class="docutils literal notranslate"><span class="pre">clang++</span></code> and other compilers). More <code class="docutils literal notranslate"><span class="pre">-I</span></code> flags may be needed
 if the linear algebra framework you choose is not visible to the compiler by
-default. Similarly, adding <code class="docutils literal notranslate"><span class="pre">-L&lt;MPI_ROOT&gt;/lib</span> <span class="pre">-lmpi</span></code> may be necessary if you
-are using an MPI implementation installed in a non-system location.</p>
+default. Similarly, adding <code class="docutils literal notranslate"><span class="pre">-I&lt;MPI_ROOT&gt;/include</span> <span class="pre">-L&lt;MPI_ROOT&gt;/lib</span></code> may be
+necessary if you are using an MPI implementation installed in a non-system
+location.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When linking to the static version of ARPACK-NG library
@@ -91,47 +96,59 @@ project.</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.13.0</span><span class="w"> </span><span class="s">FATAL_ERROR</span><span class="p">)</span>
 
 <span class="nb">project</span><span class="p">(</span><span class="s">myproject</span><span class="w"> </span><span class="s">LANGUAGES</span><span class="w"> </span><span class="s">CXX</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">11</span><span class="p">)</span>
 
-<span class="c"># EZARPACK_ROOT is the installation prefix of ezARPACK</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">ezARPACK_DIR</span><span class="w"> </span><span class="o">${</span><span class="nv">EZARPACK_ROOT</span><span class="o">}</span><span class="s">/lib/cmake</span><span class="p">)</span>
+<span class="c"># ezARPACK_ROOT is the installation prefix of ezARPACK.</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">ezARPACK_DIR</span><span class="w"> </span><span class="o">${</span><span class="nv">ezARPACK_ROOT</span><span class="o">}</span><span class="s">/lib/cmake</span><span class="p">)</span>
 
-<span class="c"># Import ezARPACK target</span>
+<span class="c"># Import ezARPACK target.</span>
 <span class="nb">find_package</span><span class="p">(</span><span class="s">ezARPACK</span><span class="w"> </span><span class="s">1.0</span><span class="w"> </span><span class="s">CONFIG</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
 
-<span class="c"># Import Eigen (Blaze, Armadillo, etc) targets</span>
-<span class="nb">find_package</span><span class="p">(</span><span class="s">Eigen3</span><span class="w"> </span><span class="s">CONFIG</span><span class="p">)</span>
+<span class="c"># Import Eigen (Blaze, Armadillo, etc) targets.</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">Eigen3</span><span class="w"> </span><span class="s">CONFIG</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
 
-<span class="c"># Build an executable called &#39;myprog&#39;</span>
+<span class="c"># Build an executable called `myprog`.</span>
 <span class="nb">add_executable</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="s">myprog.cpp</span><span class="p">)</span>
-<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">ezarpack</span><span class="w"> </span><span class="s">Eigen3::Eigen</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="s">ezarpack</span><span class="w"> </span><span class="s">Eigen3::Eigen</span><span class="p">)</span>
 
-<span class="c"># ARPACK_NG_ROOT is the installation prefix of ARPACK-NG</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">arpack-ng_DIR</span><span class="w"> </span><span class="o">${</span><span class="nv">ARPACK_NG_ROOT</span><span class="o">}</span><span class="s">/lib/cmake</span><span class="p">)</span>
+<span class="c"># Find a usable version of ARPACK-NG.</span>
+<span class="nb">find_arpackng</span><span class="p">(</span><span class="s">3.6.0</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
 
-<span class="c"># Find ARPACK-NG</span>
-<span class="nb">find_package</span><span class="p">(</span><span class="s">arpack-ng</span><span class="w"> </span><span class="s">3.6.0</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
-
-<span class="c"># Link the executable to ARPACK-NG</span>
-<span class="nb">if</span><span class="p">(</span><span class="s">TARGET</span><span class="w"> </span><span class="s">ARPACK::ARPACK</span><span class="p">)</span><span class="w"> </span><span class="c"># ARPACK-NG 3.8.0 and newer</span>
-<span class="w">  </span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="s">ARPACK::ARPACK</span><span class="p">)</span>
-<span class="nb">else</span><span class="p">()</span><span class="w"> </span><span class="c"># ARPACK-NG prior to version 3.8.0</span>
-<span class="w">  </span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="o">${</span><span class="nv">arpack_ng_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
-<span class="nb">endif</span><span class="p">()</span>
+<span class="c"># Link the executable to the ARPACK library.</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="o">${</span><span class="nv">ARPACK_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>In order to make the <a class="reference internal" href="mpi.html#mpi"><span class="std std-ref">Parallel ARPACK solvers</span></a> work, <code class="docutils literal notranslate"><span class="pre">myprog</span></code>
-must be additionally linked to MPI and PARPACK (only for ARPACK-NG&gt;=3.8.0) .</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Find MPI-3.0 or newer</span>
-<span class="nb">find_package</span><span class="p">(</span><span class="s">MPI</span><span class="w"> </span><span class="s">3.0</span><span class="p">)</span>
+<p>Linking your targets to ARPACK-NG libraries can be a bit of a hassle, as CMake
+interface of ARPACK-NG changed a few times since version 3.6.0. In particular,
+CMake scripts of the versions prior to 3.8.0 do not export any targets. Instead,
+they expose library information via a variable <code class="docutils literal notranslate"><span class="pre">arpack_ng_LIBRARIES</span></code>.
+In order to make linking more user-friendly, ezARPACK exports a macro called
+<code class="docutils literal notranslate"><span class="pre">find_arpackng()</span></code>. It finds an ARPACK-NG installation while taking care of
+said CMake interface differences. Upon successful detection of ARPACK-NG,
+<code class="docutils literal notranslate"><span class="pre">find_arpackng()</span></code> sets two variables that can be later passed to
+<code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code>,</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ARPACK_LIBRARIES</span></code> - list of ARPACK libraries and linker flags</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PARPACK_LIBRARIES</span></code> - list of Parallel ARPACK libraries and linker flags</p></li>
+</ul>
+</div></blockquote>
+<p>Setting CMake variable <code class="docutils literal notranslate"><span class="pre">ARPACK_NG_ROOT</span></code> will instruct <code class="docutils literal notranslate"><span class="pre">find_arpackng()</span></code>
+to look for ARPACK-NG at a specific installation prefix before proceeding
+to system locations.</p>
+<p>Making the <a class="reference internal" href="mpi.html#mpi"><span class="std std-ref">Parallel ARPACK solvers</span></a> work requires additional
+linking to MPI and PARPACK.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Parallel ARPACK (MPI)</span>
 
-<span class="c"># Add MPI include directories and link to MPI libraries</span>
-<span class="nb">target_include_directories</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="o">${</span><span class="nv">MPI_CXX_INCLUDE_PATH</span><span class="o">}</span><span class="p">)</span>
-<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="o">${</span><span class="nv">MPI_CXX_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
+<span class="c"># Build another executable `myprog_mpi`.</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">myprog_mpi</span><span class="w"> </span><span class="s">myprog_mpi.cpp</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog_mpi</span><span class="w"> </span><span class="s">ezarpack</span><span class="w"> </span><span class="s">Eigen3::Eigen</span><span class="p">)</span>
 
-<span class="nb">if</span><span class="p">(</span><span class="s">TARGET</span><span class="w"> </span><span class="s">PARPACK::PARPACK</span><span class="p">)</span><span class="w"> </span><span class="c"># ARPACK-NG 3.8.0 and newer</span>
-<span class="w">  </span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog</span><span class="w"> </span><span class="s">PARPACK::PARPACK</span><span class="p">)</span>
-<span class="nb">endif</span><span class="p">()</span>
+<span class="c"># Detect an MPI-3.0 implementation.</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">MPI</span><span class="w"> </span><span class="s">3.0</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+
+<span class="c"># Link the executable to the Parallel ARPACK library and to the MPI.</span>
+<span class="nb">target_include_directories</span><span class="p">(</span><span class="s">myprog_mpi</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="o">${</span><span class="nv">MPI_CXX_INCLUDE_PATH</span><span class="o">}</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myprog_mpi</span><span class="w"> </span><span class="o">${</span><span class="nv">PARPACK_LIBRARIES</span><span class="o">}</span><span class="w"> </span><span class="o">${</span><span class="nv">MPI_CXX_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
