@@ -107,28 +107,29 @@ cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
 
 project(myproject LANGUAGES CXX)
 
-# ARPACK_NG_ROOT and EZARPACK_ROOT are installation prefixes of
-# ARPACK-NG and ezARPACK respectively
-set(arpack-ng_DIR ${ARPACK_NG_ROOT}/lib/cmake)
-set(ezARPACK_DIR ${EZARPACK_ROOT}/lib/cmake)
+# ezARPACK_ROOT is the installation prefix of ezARPACK.
+set(ezARPACK_DIR ${ezARPACK_ROOT}/lib/cmake)
 
-# Import ARPACK-NG targets
-find_package(arpack-ng 3.6.0 REQUIRED)
-# Import ezARPACK targets
+# Import ezARPACK target.
 find_package(ezARPACK 1.0 CONFIG REQUIRED)
-# Import Eigen (Blaze, Armadillo, etc) targets
-find_package(Eigen3 CONFIG)
 
-# Build an executable called 'test'
-add_executable(test test.cpp)
+# Import Eigen (Blaze, Armadillo, etc) targets.
+find_package(Eigen3 CONFIG REQUIRED)
 
-# Make ezARPACK and Eigen headers visible to the compiler
-# and link to ARPACK-NG libraries.
-target_link_libraries(test PRIVATE
-                      ezarpack Eigen3::Eigen ${arpack_ng_LIBRARIES})
+# Build an executable called `myprog`.
+add_executable(myprog myprog.cpp)
+target_link_libraries(myprog ezarpack Eigen3::Eigen)
+
+# Find a usable version of ARPACK-NG.
+# Macro find_arpackng() can be instructed to use a specific ARPACK-NG
+# installation by setting the CMake variable `ARPACK_NG_ROOT`.
+find_arpackng(3.6.0 REQUIRED)
+
+# Link the executable to the ARPACK library.
+target_link_libraries(myprog ${ARPACK_LIBRARIES})
 ```
 
-Here is how `test.cpp` could look like.
+Here is how `myprog.cpp` could look like.
 ```c++
 #include <cmath>
 #include <iostream>
@@ -212,7 +213,7 @@ int main() {
     matrix_op(eigenvec.head(N), lhs.head(N)); // calculate A*v
     rhs = lambda(i) * eigenvec;               // and \lambda*v
 
-    std::cout << i << ": deviation = " << (rhs - lhs).squaredNorm() / (N * N)
+    std::cout << i << ": deviation = " << (rhs - lhs).norm() / N
               << std::endl;
   }
 
@@ -233,6 +234,21 @@ int main() {
 The same eigenproblem can be solved using an MPI-parallelized solver that wraps
 PARPACK routines. In this case one needs to additionally link the executable
 to MPI libraries.
+
+```cmake
+# Parallel ARPACK (MPI)
+
+# Build another executable `myprog_mpi`.
+add_executable(myprog_mpi myprog_mpi.cpp)
+target_link_libraries(myprog_mpi ezarpack Eigen3::Eigen)
+
+# Detect and MPI-3.0 implementation.
+find_package(MPI 3.0 REQUIRED)
+
+# Link the executable to the Parallel ARPACK library and to the MPI.
+target_include_directories(myprog_mpi PRIVATE ${MPI_CXX_INCLUDE_PATH})
+target_link_libraries(myprog_mpi ${PARPACK_LIBRARIES} ${MPI_CXX_LIBRARIES})
+```
 
 ```c++
 #include <cmath>

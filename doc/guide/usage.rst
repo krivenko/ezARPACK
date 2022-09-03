@@ -6,7 +6,7 @@ How to use ezARPACK in your project
 Depending on what build system your C++ project is based on, there are
 two ways to use ezARPACK. Either way, you would need
 
-* A reasonably recent compiler supporting C++11 or newer;
+* A compiler supporting C++11 or newer;
 * a working `ARPACK-NG installation
   <https://github.com/opencollab/arpack-ng>`_ (version 3.6.0 or newer).
 * One of supported :ref:`linear algebra libraries <backends>` (unless
@@ -34,10 +34,15 @@ directory. A compiler command line for your program can be as simple as
   g++ -O3 -I<EZARPACK_ROOT>/include -L<ARPACK_NG_ROOT>/lib -larpack \
       -o myprog myprog.cpp
 
-(similar for ``clang++`` and other compilers). More ``-I`` flags might be needed
+  # For executables using the Parallel ARPACK (MPI) solvers
+  g++ -O3 -I<EZARPACK_ROOT>/include -L<ARPACK_NG_ROOT>/lib -lmpi \
+      -larpack -lparpack -o myprog_mpi myprog_mpi.cpp
+
+(similar for ``clang++`` and other compilers). More ``-I`` flags may be needed
 if the linear algebra framework you choose is not visible to the compiler by
-default. Similarly, adding ``-L<MPI_ROOT>/lib -lmpi`` may be necessary if you
-are using an MPI implementation installed in a non-system location.
+default. Similarly, adding ``-I<MPI_ROOT>/include -L<MPI_ROOT>/lib`` may be
+necessary if you are using an MPI implementation installed in a non-system
+location.
 
 .. note::
 
@@ -57,46 +62,57 @@ project.
   cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
 
   project(myproject LANGUAGES CXX)
-  set(CMAKE_CXX_STANDARD 11)
 
-  # EZARPACK_ROOT is the installation prefix of ezARPACK
-  set(ezARPACK_DIR ${EZARPACK_ROOT}/lib/cmake)
+  # ezARPACK_ROOT is the installation prefix of ezARPACK.
+  set(ezARPACK_DIR ${ezARPACK_ROOT}/lib/cmake)
 
-  # Import ezARPACK target
+  # Import ezARPACK target.
   find_package(ezARPACK 1.0 CONFIG REQUIRED)
 
-  # Import Eigen (Blaze, Armadillo, etc) targets
-  find_package(Eigen3 CONFIG)
+  # Import Eigen (Blaze, Armadillo, etc) targets.
+  find_package(Eigen3 CONFIG REQUIRED)
 
-  # Build an executable called 'myprog'
+  # Build an executable called `myprog`.
   add_executable(myprog myprog.cpp)
-  target_link_libraries(myprog PRIVATE ezarpack Eigen3::Eigen)
+  target_link_libraries(myprog ezarpack Eigen3::Eigen)
 
-  # ARPACK_NG_ROOT is the installation prefix of ARPACK-NG
-  set(arpack-ng_DIR ${ARPACK_NG_ROOT}/lib/cmake)
+  # Find a usable version of ARPACK-NG.
+  find_arpackng(3.6.0 REQUIRED)
 
-  # Find ARPACK-NG
-  find_package(arpack-ng 3.6.0 REQUIRED)
+  # Link the executable to the ARPACK library.
+  target_link_libraries(myprog ${ARPACK_LIBRARIES})
 
-  # Link the executable to ARPACK-NG
-  if(TARGET ARPACK::ARPACK) # ARPACK-NG 3.8.0 and newer
-    target_link_libraries(myprog ARPACK::ARPACK)
-  else() # ARPACK-NG prior to version 3.8.0
-    target_link_libraries(myprog ${arpack_ng_LIBRARIES})
-  endif()
+Linking your targets to ARPACK-NG libraries can be a bit of a hassle, as CMake
+interface of ARPACK-NG changed a few times since version 3.6.0. In particular,
+CMake scripts of the versions prior to 3.8.0 do not export any targets. Instead,
+they expose library information via a variable ``arpack_ng_LIBRARIES``.
+In order to make linking more user-friendly, ezARPACK exports a macro called
+``find_arpackng()``. It finds an ARPACK-NG installation while taking care of
+said CMake interface differences. Upon successful detection of ARPACK-NG,
+``find_arpackng()`` sets two variables that can be later passed to
+``target_link_libraries()``,
 
-In order to make the :ref:`Parallel ARPACK solvers <mpi>` work, ``myprog``
-must be additionally linked to MPI and PARPACK (only for ARPACK-NG>=3.8.0) .
+  - ``ARPACK_LIBRARIES`` - list of ARPACK libraries and linker flags
+  - ``PARPACK_LIBRARIES`` - list of Parallel ARPACK libraries and linker flags
+
+Setting CMake variable ``ARPACK_NG_ROOT`` will instruct ``find_arpackng()``
+to look for ARPACK-NG at a specific installation prefix before proceeding
+to system locations.
+
+Making the :ref:`Parallel ARPACK solvers <mpi>` work requires additional
+linking to MPI and PARPACK.
 
 .. code:: cmake
 
-  # Find MPI-3.0 or newer
-  find_package(MPI 3.0)
+  # Parallel ARPACK (MPI)
 
-  # Add MPI include directories and link to MPI libraries
-  target_include_directories(myprog ${MPI_CXX_INCLUDE_PATH})
-  target_link_libraries(myprog ${MPI_CXX_LIBRARIES})
+  # Build another executable `myprog_mpi`.
+  add_executable(myprog_mpi myprog_mpi.cpp)
+  target_link_libraries(myprog_mpi ezarpack Eigen3::Eigen)
 
-  if(TARGET PARPACK::PARPACK) # ARPACK-NG 3.8.0 and newer
-    target_link_libraries(myprog PARPACK::PARPACK)
-  endif()
+  # Detect an MPI-3.0 implementation.
+  find_package(MPI 3.0 REQUIRED)
+
+  # Link the executable to the Parallel ARPACK library and to the MPI.
+  target_include_directories(myprog_mpi PRIVATE ${MPI_CXX_INCLUDE_PATH})
+  target_link_libraries(myprog_mpi ${PARPACK_LIBRARIES} ${MPI_CXX_LIBRARIES})
