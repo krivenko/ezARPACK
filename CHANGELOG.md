@@ -2,7 +2,7 @@
 
 All notable changes to ezARPACK will be documented in this file.
 
-## [1.0] - Unreleased
+## [1.0] - 2022-09-04
 
 * Wrappers for Parallel ARPACK with MPI message passing layer have been added.
   New wrapper classes `arpack_worker` are defined in a nested namespace
@@ -16,6 +16,9 @@ All notable changes to ezARPACK will be documented in this file.
   `storage_traits<Backend>::get_col_spacing()`.
 * Drop support for the CMake option `EZARPACK_LINK_TO_ARPACK_NG`:
   `find_package(ezARPACK)` will never try to detect ARPACK-NG.
+* Export a new CMake macro `find_arpackng()`. It finds a working installation of
+  ARPACK-NG while dealing with version-to-version differences of ARPACK-NG's
+  CMake interface.
 
 ## [0.10] - 2022-02-08
 
