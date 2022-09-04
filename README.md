@@ -5,8 +5,8 @@ ezARPACK
 https://github.com/krivenko/ezARPACK/actions/workflows/CI.yml)
 [![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-red)](
 https://krivenko.github.io/ezARPACK)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3930203.svg)](
-https://doi.org/10.5281/zenodo.3930203)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7047515.svg)](
+https://doi.org/10.5281/zenodo.7047515)
 
 ezARPACK is a C++11 wrapper around ARPACK-NG [1] that can be used in conjunction
 with a number of C++ vector/matrix algebra libraries. It allows for solving
@@ -399,17 +399,17 @@ If you find this library useful for your research, you can help me by citing it
 using the following BibTeX entry.
 
 ```
-@software{ezARPACK,
+@software{igor_krivenko_2022_7047515,
   author       = {Igor Krivenko},
   title        = {{ezARPACK - a C++ ARPACK-NG wrapper compatible with
                    multiple matrix/vector algebra libraries: Release
-                   0.9}},
-  month        = jul,
-  year         = 2020,
+                   1.0}},
+  month        = sep,
+  year         = 2022,
   publisher    = {Zenodo},
-  version      = {0.9},
-  doi          = {10.5281/zenodo.3930203},
-  url          = {https://doi.org/10.5281/zenodo.3930203}
+  version      = {1.0},
+  doi          = {10.5281/zenodo.7047515},
+  url          = {https://doi.org/10.5281/zenodo.7047515}
 }
 ```
 
