@@ -45,29 +45,21 @@ if(arpack-ng_FOUND)
     else(arpack_ng_LIBRARIES)
 
       set(ARPACK_LIBRARIES ARPACK::ARPACK ${LAPACK_LIBRARIES})
-      # Property INTERFACE_LINK_DIRECTORIES is set only by ARPACK-NG >= 3.9
-      # 3.8.0 sets variable ${libdir} instead.
-      get_target_property(ARPACK_LINK_DIRECTORIES
-                          ARPACK::ARPACK
-                          INTERFACE_LINK_DIRECTORIES)
-      if(NOT ARPACK_LINK_DIRECTORIES)
+      # ARPACK-NG 3.8.0 sets variable ${libdir}
+      if(${arpack-ng_VERSION} VERSION_EQUAL 3.8.0)
         set_target_properties(ARPACK::ARPACK PROPERTIES
                               INTERFACE_LINK_DIRECTORIES ${libdir})
-      endif(NOT ARPACK_LINK_DIRECTORIES)
+      endif(${arpack-ng_VERSION} VERSION_EQUAL 3.8.0)
 
       if(MPI_FOUND AND (TARGET PARPACK::PARPACK))
         set(PARPACK_LIBRARIES ARPACK::ARPACK PARPACK::PARPACK
             ${LAPACK_LIBRARIES})
 
-        # Property INTERFACE_LINK_DIRECTORIES is set only by ARPACK-NG >= 3.9
-        # 3.8.0 sets variable ${libdir} instead.
-        get_target_property(PARPACK_LINK_DIRECTORIES
-                            PARPACK::PARPACK
-                            INTERFACE_LINK_DIRECTORIES)
-        if(NOT PARPACK_LINK_DIRECTORIES)
+        # ARPACK-NG 3.8.0 sets variable ${libdir}
+        if(${arpack-ng_VERSION} VERSION_EQUAL 3.8.0)
           set_target_properties(PARPACK::PARPACK PROPERTIES
                                 INTERFACE_LINK_DIRECTORIES ${libdir})
-        endif(NOT PARPACK_LINK_DIRECTORIES)
+        endif(${arpack-ng_VERSION} VERSION_EQUAL 3.8.0)
 
       endif(MPI_FOUND AND (TARGET PARPACK::PARPACK))
 
