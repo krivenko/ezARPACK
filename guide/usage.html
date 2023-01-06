@@ -69,12 +69,12 @@ Be sure to link your code to ARPACK-NG 3.8.0 or newer if you use the
 <p>Assume that <code class="docutils literal notranslate"><span class="pre">&lt;EZARPACK_ROOT&gt;</span></code> is either a directory with unpacked
 ezARPACK sources or its <a class="reference internal" href="../installation.html#installation"><span class="std std-ref">installation</span></a>
 directory. A compiler command line for your program can be as simple as</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++ -O3 -I&lt;EZARPACK_ROOT&gt;/include -L&lt;ARPACK_NG_ROOT&gt;/lib -larpack <span class="se">\</span>
-    -o myprog myprog.cpp
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++<span class="w"> </span>-O3<span class="w"> </span>-I&lt;EZARPACK_ROOT&gt;/include<span class="w"> </span>-L&lt;ARPACK_NG_ROOT&gt;/lib<span class="w"> </span>-larpack<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-o<span class="w"> </span>myprog<span class="w"> </span>myprog.cpp
 
 <span class="c1"># For executables using the Parallel ARPACK (MPI) solvers</span>
-g++ -O3 -I&lt;EZARPACK_ROOT&gt;/include -L&lt;ARPACK_NG_ROOT&gt;/lib -lmpi <span class="se">\</span>
-    -larpack -lparpack -o myprog_mpi myprog_mpi.cpp
+g++<span class="w"> </span>-O3<span class="w"> </span>-I&lt;EZARPACK_ROOT&gt;/include<span class="w"> </span>-L&lt;ARPACK_NG_ROOT&gt;/lib<span class="w"> </span>-lmpi<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-larpack<span class="w"> </span>-lparpack<span class="w"> </span>-o<span class="w"> </span>myprog_mpi<span class="w"> </span>myprog_mpi.cpp
 </pre></div>
 </div>
 <p>(similar for <code class="docutils literal notranslate"><span class="pre">clang++</span></code> and other compilers). More <code class="docutils literal notranslate"><span class="pre">-I</span></code> flags may be needed

@@ -70,21 +70,21 @@ It must have one of the following signatures.</p>
 <ul class="simple">
 <li><p>For <a class="reference internal" href="../reference/solver_symmetric.html#refsolversymmetric"><span class="std std-ref">ezarpack::arpack_solver&lt;Symmetric, Backend&gt;</span></a>:</p></li>
 </ul>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">solver_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ezarpack</span><span class="o">::</span><span class="n">arpack_solver</span><span class="o">&lt;</span><span class="n">Symmetric</span><span class="p">,</span><span class="w"> </span><span class="n">Backend</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">solver_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ezarpack</span><span class="o">::</span><span class="n">arpack_solver</span><span class="o">&lt;</span><span class="n">Symmetric</span><span class="p">,</span><span class="w"> </span><span class="n">Backend</span><span class="o">&gt;</span><span class="p">;</span>
 
 <span class="c1">// ritz_values - View of a real vector with current m Ritz values.</span>
 <span class="c1">// ritz_bounds - View of a real vector with current m Ritz estimates.</span>
 <span class="c1">// shifts - Real vector view to receive the computed shifts.</span>
-<span class="n">shifts_f</span><span class="p">(</span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_const_view_t</span><span class="w"> </span><span class="n">ritz_values</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_const_view_t</span><span class="w"> </span><span class="n">ritz_bounds</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_view_t</span><span class="w"> </span><span class="n">shifts</span><span class="p">);</span><span class="w"></span>
+<span class="n">shifts_f</span><span class="p">(</span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_const_view_t</span><span class="w"> </span><span class="n">ritz_values</span><span class="p">,</span>
+<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_const_view_t</span><span class="w"> </span><span class="n">ritz_bounds</span><span class="p">,</span>
+<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_view_t</span><span class="w"> </span><span class="n">shifts</span><span class="p">);</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>For
 <a class="reference internal" href="../reference/solver_asymmetric.html#refsolverasymmetric"><span class="std std-ref">ezarpack::arpack_solver&lt;Asymmetric, Backend&gt;</span></a>:</p></li>
 </ul>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">solver_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ezarpack</span><span class="o">::</span><span class="n">arpack_solver</span><span class="o">&lt;</span><span class="n">Asymmetric</span><span class="p">,</span><span class="w"> </span><span class="n">Backend</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">solver_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ezarpack</span><span class="o">::</span><span class="n">arpack_solver</span><span class="o">&lt;</span><span class="n">Asymmetric</span><span class="p">,</span><span class="w"> </span><span class="n">Backend</span><span class="o">&gt;</span><span class="p">;</span>
 
 <span class="c1">// ritz_values_re - View of a vector with real parts of current m Ritz values.</span>
 <span class="c1">// ritz_values_im - View of a vector with imaginary parts of</span>
@@ -93,24 +93,24 @@ It must have one of the following signatures.</p>
 <span class="c1">// shifts_re - Real vector view to receive real parts of the computed shifts.</span>
 <span class="c1">// shifts_im - Real vector view to receive imaginary parts of the computed</span>
 <span class="c1">// shifts.</span>
-<span class="n">shifts_f</span><span class="p">(</span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_const_view_t</span><span class="w"> </span><span class="n">ritz_values_re</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_const_view_t</span><span class="w"> </span><span class="n">ritz_values_im</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_const_view_t</span><span class="w"> </span><span class="n">ritz_bounds</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_view_t</span><span class="w"> </span><span class="n">shifts_re</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_view_t</span><span class="w"> </span><span class="n">shifts_im</span><span class="p">);</span><span class="w"></span>
+<span class="n">shifts_f</span><span class="p">(</span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_const_view_t</span><span class="w"> </span><span class="n">ritz_values_re</span><span class="p">,</span>
+<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_const_view_t</span><span class="w"> </span><span class="n">ritz_values_im</span><span class="p">,</span>
+<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_const_view_t</span><span class="w"> </span><span class="n">ritz_bounds</span><span class="p">,</span>
+<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_view_t</span><span class="w"> </span><span class="n">shifts_re</span><span class="p">,</span>
+<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">real_vector_view_t</span><span class="w"> </span><span class="n">shifts_im</span><span class="p">);</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>For <a class="reference internal" href="../reference/solver_complex.html#refsolvercomplex"><span class="std std-ref">ezarpack::arpack_solver&lt;Complex, Backend&gt;</span></a>:</p></li>
 </ul>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">solver_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ezarpack</span><span class="o">::</span><span class="n">arpack_solver</span><span class="o">&lt;</span><span class="n">Complex</span><span class="p">,</span><span class="w"> </span><span class="n">Backend</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">solver_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ezarpack</span><span class="o">::</span><span class="n">arpack_solver</span><span class="o">&lt;</span><span class="n">Complex</span><span class="p">,</span><span class="w"> </span><span class="n">Backend</span><span class="o">&gt;</span><span class="p">;</span>
 
 <span class="c1">// ritz_values - View of a complex vector with current m Ritz values.</span>
 <span class="c1">// ritz_bounds - View of a complex vector with current m Ritz estimates.</span>
 <span class="c1">// shifts - Complex vector view to receive the computed shifts.</span>
-<span class="n">shifts_f</span><span class="p">(</span><span class="n">solver_t</span><span class="o">::</span><span class="n">complex_vector_const_view_t</span><span class="w"> </span><span class="n">ritz_values</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">complex_vector_const_view_t</span><span class="w"> </span><span class="n">ritz_bounds</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">complex_vector_view_t</span><span class="w"> </span><span class="n">shifts</span><span class="p">);</span><span class="w"></span>
+<span class="n">shifts_f</span><span class="p">(</span><span class="n">solver_t</span><span class="o">::</span><span class="n">complex_vector_const_view_t</span><span class="w"> </span><span class="n">ritz_values</span><span class="p">,</span>
+<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">complex_vector_const_view_t</span><span class="w"> </span><span class="n">ritz_bounds</span><span class="p">,</span>
+<span class="w">         </span><span class="n">solver_t</span><span class="o">::</span><span class="n">complex_vector_view_t</span><span class="w"> </span><span class="n">shifts</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>

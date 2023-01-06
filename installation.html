@@ -50,7 +50,7 @@ clone of its <a class="reference external" href="https://github.com/krivenko/ezA
 Assuming that <a class="reference external" href="https://git-scm.com/">git</a> package is installed and visible via
 the <code class="docutils literal notranslate"><span class="pre">PATH</span></code> environment variable, the following shell command will create a
 directory <code class="docutils literal notranslate"><span class="pre">ezARPACK.src</span></code> containing the latest ezARPACK source files.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/krivenko/ezARPACK.git ezARPACK.src
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/krivenko/ezARPACK.git<span class="w"> </span>ezARPACK.src
 </pre></div>
 </div>
 <p>You can then use ezARPACK in your own code by passing
@@ -62,21 +62,21 @@ scripts. This will allow you to import ezARPACK targets, as well as to run unit
 tests and build example programs. The minimum required version of CMake is
 <strong>3.13.0</strong>.</p>
 <p>The following sequence of shell commands will build unit tests and examples.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ mkdir ezARPACK.build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ezARPACK.build
-$ cmake ../ezARPACK.src                                   <span class="se">\</span>
-$ -DCMAKE_INSTALL_PREFIX<span class="o">=</span>&lt;ezARPACK_installation_prefix&gt;   <span class="se">\</span>
-  -DARPACK_NG_ROOT<span class="o">=</span>&lt;ARPACK-NG_installation_prefix&gt;        <span class="se">\</span>
-  -DEigen3_ROOT<span class="o">=</span>&lt;Eigen3_installation_prefix&gt;              <span class="se">\</span>
-  -Dblaze_ROOT<span class="o">=</span>&lt;Blaze_installation_prefix&gt;                <span class="se">\</span>
-  -DArmadillo_ROOT<span class="o">=</span>&lt;Armadillo_installation_prefix&gt;        <span class="se">\</span>
-  -DBOOST_ROOT<span class="o">=</span>&lt;Boost_installation_prefix&gt;                <span class="se">\</span>
-  -DTRIQS_ROOT<span class="o">=</span>&lt;TRIQS_installation_prefix&gt;                <span class="se">\</span>
-  -Dnda_ROOT<span class="o">=</span>&lt;nda_installation_prefix&gt;                    <span class="se">\</span>
-  -Dxtensor_ROOT<span class="o">=</span>&lt;xtensor_installation_prefix&gt;            <span class="se">\</span>
-  -Dxtensor-blas_ROOT<span class="o">=</span>&lt;xtensor-blas_installation_prefix&gt;  <span class="se">\</span>
-  -DExamples<span class="o">=</span>ON                                           <span class="se">\</span>
-  -DTests<span class="o">=</span>ON
-$ make
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>ezARPACK.build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>ezARPACK.build
+$<span class="w"> </span>cmake<span class="w"> </span>../ezARPACK.src<span class="w">                                   </span><span class="se">\</span>
+$<span class="w"> </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>&lt;ezARPACK_installation_prefix&gt;<span class="w">   </span><span class="se">\</span>
+<span class="w">  </span>-DARPACK_NG_ROOT<span class="o">=</span>&lt;ARPACK-NG_installation_prefix&gt;<span class="w">        </span><span class="se">\</span>
+<span class="w">  </span>-DEigen3_ROOT<span class="o">=</span>&lt;Eigen3_installation_prefix&gt;<span class="w">              </span><span class="se">\</span>
+<span class="w">  </span>-Dblaze_ROOT<span class="o">=</span>&lt;Blaze_installation_prefix&gt;<span class="w">                </span><span class="se">\</span>
+<span class="w">  </span>-DArmadillo_ROOT<span class="o">=</span>&lt;Armadillo_installation_prefix&gt;<span class="w">        </span><span class="se">\</span>
+<span class="w">  </span>-DBOOST_ROOT<span class="o">=</span>&lt;Boost_installation_prefix&gt;<span class="w">                </span><span class="se">\</span>
+<span class="w">  </span>-DTRIQS_ROOT<span class="o">=</span>&lt;TRIQS_installation_prefix&gt;<span class="w">                </span><span class="se">\</span>
+<span class="w">  </span>-Dnda_ROOT<span class="o">=</span>&lt;nda_installation_prefix&gt;<span class="w">                    </span><span class="se">\</span>
+<span class="w">  </span>-Dxtensor_ROOT<span class="o">=</span>&lt;xtensor_installation_prefix&gt;<span class="w">            </span><span class="se">\</span>
+<span class="w">  </span>-Dxtensor-blas_ROOT<span class="o">=</span>&lt;xtensor-blas_installation_prefix&gt;<span class="w">  </span><span class="se">\</span>
+<span class="w">  </span>-DExamples<span class="o">=</span>ON<span class="w">                                           </span><span class="se">\</span>
+<span class="w">  </span>-DTests<span class="o">=</span>ON
+$<span class="w"> </span>make
 </pre></div>
 </div>
 <p>Compilation of the tests can be disabled with CMake flag <code class="docutils literal notranslate"><span class="pre">-DTests=OFF</span></code>
@@ -84,14 +84,14 @@ $ make
 with <code class="docutils literal notranslate"><span class="pre">-DExamples=OFF</span></code>.</p>
 <p>It is generally recommended to run the unit tests before installing the library
 to detect potential problems early on.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ make <span class="nb">test</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>make<span class="w"> </span><span class="nb">test</span>
 </pre></div>
 </div>
 <p>Failed tests (having anything different from <code class="docutils literal notranslate"><span class="pre">Passed</span></code> in the test result
 column) signal host-specific compilation/linking problems or bugs in the library
 itself. The following command completes installation of library’s files into
 <code class="docutils literal notranslate"><span class="pre">&lt;ezARPACK_installation_prefix&gt;</span></code>.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ make install
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>make<span class="w"> </span>install
 </pre></div>
 </div>
 <p>All unit tests and examples require
