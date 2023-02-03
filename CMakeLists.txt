@@ -23,7 +23,6 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 
 # CMake options
-option(Skip_arpack-ng "Skip detection of ARPACK-NG" OFF)
 option(Tests "Build unit tests" ON)
 option(Examples "Build examples" ON)
 option(Documentation "Build documentation" OFF)
