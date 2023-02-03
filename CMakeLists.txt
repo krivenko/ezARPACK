@@ -87,6 +87,7 @@ configure_package_config_file(
 install(EXPORT ezARPACKTargets DESTINATION lib/cmake)
 install(FILES "${PROJECT_BINARY_DIR}/ezARPACKConfigVersion.cmake"
               "${PROJECT_BINARY_DIR}/ezARPACKConfig.cmake"
+              "${PROJECT_SOURCE_DIR}/cmake/ezARPACKMacros.cmake"
         DESTINATION lib/cmake)
 
 # Build documentation
