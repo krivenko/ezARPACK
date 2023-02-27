@@ -31,12 +31,12 @@ directory. A compiler command line for your program can be as simple as
 
 .. code:: shell
 
-  g++ -O3 -I<EZARPACK_ROOT>/include -L<ARPACK_NG_ROOT>/lib -larpack \
-      -o myprog myprog.cpp
+  g++ -O3 -o myprog myprog.cpp \
+      -I<EZARPACK_ROOT>/include -L<ARPACK_NG_ROOT>/lib -larpack
 
   # For executables using the Parallel ARPACK (MPI) solvers
-  g++ -O3 -I<EZARPACK_ROOT>/include -L<ARPACK_NG_ROOT>/lib -lmpi \
-      -larpack -lparpack -o myprog_mpi myprog_mpi.cpp
+  mpic++ -O3 -o myprog_mpi myprog_mpi.cpp -I<EZARPACK_ROOT>/include \
+         -L<ARPACK_NG_ROOT>/lib -larpack -lparpack
 
 (similar for ``clang++`` and other compilers). More ``-I`` flags may be needed
 if the linear algebra framework you choose is not visible to the compiler by
