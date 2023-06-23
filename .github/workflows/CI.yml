@@ -192,7 +192,7 @@ jobs:
       if: github.ref == 'refs/heads/master' &&
           startsWith(matrix.compiler.cxx, 'clang') &&
           matrix.arpackng == 'master'
-      uses: JamesIves/github-pages-deploy-action@4.1.0
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: gh-pages
         token: ${{ secrets.GITHUB_TOKEN }}
