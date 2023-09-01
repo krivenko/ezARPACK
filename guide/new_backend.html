@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Advanced: Adding a new storage backend &#8212; ezARPACK 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=0885a68f" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=359c27e9"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=d1f3936d" />
+    <script src="../_static/documentation_options.js?v=f2a433a1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -41,7 +41,7 @@
           <div class="body" role="main">
             
   <section id="advanced-adding-a-new-storage-backend">
-<span id="new-backend"></span><h1>Advanced: Adding a new storage backend<a class="headerlink" href="#advanced-adding-a-new-storage-backend" title="Permalink to this heading">¶</a></h1>
+<span id="new-backend"></span><h1>Advanced: Adding a new storage backend<a class="headerlink" href="#advanced-adding-a-new-storage-backend" title="Link to this heading">¶</a></h1>
 <p>ezARPACK offers support for a few numerical linear algebra frameworks
 <a class="reference internal" href="backends.html#backends"><span class="std std-ref">out of the box</span></a>. Thanks to the decoupled design of ezARPACK’s
 solver classes, it is fairly easy to extend the support to other matrix/vector
@@ -79,7 +79,7 @@ we give step-by-step instructions on how to write such a header.</p>
 <p>For a complete example of a storage backend implementation, see
 <code class="docutils literal notranslate"><span class="pre">&lt;ezarpack/storages/eigen.hpp&gt;</span></code> (<a class="reference internal" href="../reference/storages/eigen.html#refeigen"><span class="std std-ref">Eigen 3</span></a> backend).</p>
 <section id="basic-header-structure">
-<h2>Basic header structure<a class="headerlink" href="#basic-header-structure" title="Permalink to this heading">¶</a></h2>
+<h2>Basic header structure<a class="headerlink" href="#basic-header-structure" title="Link to this heading">¶</a></h2>
 <p>Our storage backend header must include <code class="docutils literal notranslate"><span class="pre">&lt;complex&gt;</span></code>,
 <code class="docutils literal notranslate"><span class="pre">&lt;ezarpack/storages/base.hpp&gt;</span></code> and all relevant headers of <code class="docutils literal notranslate"><span class="pre">mylib</span></code>.
 Normally, it is a good idea to also use some include guard macros of
@@ -121,7 +121,7 @@ member functions to handle <code class="docutils literal notranslate"><span clas
 members of the <code class="docutils literal notranslate"><span class="pre">storage_traits</span></code> specialization.</p>
 </section>
 <section id="member-type-definitions-of-the-traits-structure">
-<h2>Member type definitions of the traits structure<a class="headerlink" href="#member-type-definitions-of-the-traits-structure" title="Permalink to this heading">¶</a></h2>
+<h2>Member type definitions of the traits structure<a class="headerlink" href="#member-type-definitions-of-the-traits-structure" title="Link to this heading">¶</a></h2>
 <p>The member type definitions of <code class="docutils literal notranslate"><span class="pre">storage_traits</span></code> form two groups. The first one
 is for the container (vector/matrix) types.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// One-dimensional wrapper around a contiguous array of &#39;double&#39;</span>
@@ -175,7 +175,7 @@ error-prone user code.</p>
 </div>
 </section>
 <section id="static-member-functions-of-the-traits-structure">
-<h2>Static member functions of the traits structure<a class="headerlink" href="#static-member-functions-of-the-traits-structure" title="Permalink to this heading">¶</a></h2>
+<h2>Static member functions of the traits structure<a class="headerlink" href="#static-member-functions-of-the-traits-structure" title="Link to this heading">¶</a></h2>
 <p>The following member functions are mandatory for any specialization of
 <code class="docutils literal notranslate"><span class="pre">storage_traits</span></code>.</p>
 <ul>
@@ -328,7 +328,7 @@ templates instead.</p>
 described in the next section.</p>
 </section>
 <section id="optional-eigenvalue-eigenvector-post-processing-functions">
-<h2>Optional: Eigenvalue/eigenvector post-processing functions<a class="headerlink" href="#optional-eigenvalue-eigenvector-post-processing-functions" title="Permalink to this heading">¶</a></h2>
+<h2>Optional: Eigenvalue/eigenvector post-processing functions<a class="headerlink" href="#optional-eigenvalue-eigenvector-post-processing-functions" title="Link to this heading">¶</a></h2>
 <p>Because of specifics of the internal data storage format and numerical
 algorithm, extracting eigenvalues and eigenvectors after a completed
 <a class="reference internal" href="../reference/solver_asymmetric.html#refsolverasymmetric"><span class="std std-ref">arpack_solver&lt;Asymmetric,mylib_storage&gt;</span></a> run needs
@@ -489,7 +489,7 @@ ARPACK-NG guarantees that <span class="math notranslate nohighlight">\(\mathbf{x
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2016-2023, Igor Krivenko.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
     </div>
   </body>
 </html>

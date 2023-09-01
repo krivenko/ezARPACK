@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Specializations of the arpack_solver class template &#8212; ezARPACK 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=0885a68f" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=359c27e9"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=d1f3936d" />
+    <script src="../_static/documentation_options.js?v=f2a433a1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="ezarpack/solver_symmetric.hpp - symmetric real eigenproblems" href="solver_symmetric.html" />
@@ -40,12 +40,224 @@
           <div class="body" role="main">
             
   <section id="specializations-of-the-arpack-solver-class-template">
-<h1>Specializations of the <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template<a class="headerlink" href="#specializations-of-the-arpack-solver-class-template" title="Permalink to this heading">¶</a></h1>
+<h1>Specializations of the <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template<a class="headerlink" href="#specializations-of-the-arpack-solver-class-template" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="solver_symmetric.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_symmetric.hpp</span></code> - symmetric real eigenproblems</a></li>
-<li class="toctree-l1"><a class="reference internal" href="solver_asymmetric.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_asymmetric.hpp</span></code> - general real eigenproblems</a></li>
-<li class="toctree-l1"><a class="reference internal" href="solver_complex.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_complex.hpp</span></code> - general complex eigenproblems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solver_symmetric.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_symmetric.hpp</span></code> - symmetric real eigenproblems</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="solver_symmetric.html#_CPPv4I0EN8ezarpack13arpack_solverI9Symmetric7BackendEE"><code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE13real_vector_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::real_vector_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE13real_matrix_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::real_matrix_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE12int_vector_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::int_vector_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE18real_vector_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::real_vector_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE24real_vector_const_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::real_vector_const_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE24real_matrix_const_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::real_matrix_const_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE19vector_const_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::vector_const_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE13vector_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::vector_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4ModeE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Mode</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode7InverseE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Mode::Inverse</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode14ShiftAndInvertE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Mode::ShiftAndInvert</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode8BucklingE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Mode::Buckling</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE4Mode6CayleyE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Mode::Cayley</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE13arpack_solverEj"><code class="docutils literal notranslate"><span class="pre">arpack_solver::arpack_solver()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4I00EN8ezarpack13arpack_solverI9Symmetric7BackendEclEvRR1ARK8params_t7ShiftsF"><code class="docutils literal notranslate"><span class="pre">arpack_solver::operator()()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4I000EN8ezarpack13arpack_solverI9Symmetric7BackendEclEvRR2OPRR1B4ModeRK8params_t7ShiftsF"><code class="docutils literal notranslate"><span class="pre">arpack_solver::operator()()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE3dimEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::dim()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE11in_vector_nEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::in_vector_n()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE12out_vector_nEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::out_vector_n()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE16workspace_vectorEi"><code class="docutils literal notranslate"><span class="pre">arpack_solver::workspace_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE5nconvEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::nconv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE11eigenvaluesEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::eigenvalues()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE12eigenvectorsEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::eigenvectors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE15residual_vectorEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::residual_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE12Bx_availableEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Bx_available()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE9Bx_vectorEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Bx_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4NK8ezarpack13arpack_solverI9Symmetric7BackendE5statsEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE14exact_shifts_fE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::exact_shifts_f</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE14exact_shifts_fclE24real_vector_const_view_t24real_vector_const_view_t18real_vector_view_t"><code class="docutils literal notranslate"><span class="pre">arpack_solver::exact_shifts_f::operator()()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t7LargestE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::Largest</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t8SmallestE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::Smallest</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t16LargestMagnitudeE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::LargestMagnitude</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t17SmallestMagnitudeE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::SmallestMagnitude</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20eigenvalues_select_t8BothEndsE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::BothEnds</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t8params_tEj20eigenvalues_select_tb"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::params_t()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t13n_eigenvaluesE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::n_eigenvalues</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t18eigenvalues_selectE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t3ncvE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::ncv</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t20compute_eigenvectorsE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::compute_eigenvectors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t22random_residual_vectorE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::random_residual_vector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t5sigmaE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::sigma</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t9toleranceE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::tolerance</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE8params_t8max_iterE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::max_iter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t6n_iterE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t::n_iter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t17n_op_x_operationsE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t::n_op_x_operations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t16n_b_x_operationsE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t::n_b_x_operations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_symmetric.html#_CPPv4N8ezarpack13arpack_solverI9Symmetric7BackendE7stats_t14n_reorth_stepsE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t::n_reorth_steps</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="solver_asymmetric.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_asymmetric.hpp</span></code> - general real eigenproblems</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="solver_asymmetric.html#_CPPv4I0EN8ezarpack13arpack_solverI10Asymmetric7BackendEE"><code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE13real_vector_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::real_vector_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE13real_matrix_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::real_matrix_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE16complex_vector_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::complex_vector_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE16complex_matrix_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::complex_matrix_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE12int_vector_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::int_vector_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE18real_vector_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::real_vector_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE24real_vector_const_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::real_vector_const_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE24real_matrix_const_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::real_matrix_const_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE19vector_const_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::vector_const_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE13vector_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::vector_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE4ModeE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Mode</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE4Mode7InverseE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Mode::Inverse</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE4Mode18ShiftAndInvertRealE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Mode::ShiftAndInvertReal</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE4Mode18ShiftAndInvertImagE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Mode::ShiftAndInvertImag</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE13arpack_solverEj"><code class="docutils literal notranslate"><span class="pre">arpack_solver::arpack_solver()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4I00EN8ezarpack13arpack_solverI10Asymmetric7BackendEclEvRR1ARK8params_t7ShiftsF"><code class="docutils literal notranslate"><span class="pre">arpack_solver::operator()()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4I000EN8ezarpack13arpack_solverI10Asymmetric7BackendEclEvRR2OPRR1B4ModeRK8params_t7ShiftsF"><code class="docutils literal notranslate"><span class="pre">arpack_solver::operator()()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4NK8ezarpack13arpack_solverI10Asymmetric7BackendE3dimEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::dim()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4NK8ezarpack13arpack_solverI10Asymmetric7BackendE11in_vector_nEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::in_vector_n()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4NK8ezarpack13arpack_solverI10Asymmetric7BackendE12out_vector_nEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::out_vector_n()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE16workspace_vectorEi"><code class="docutils literal notranslate"><span class="pre">arpack_solver::workspace_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4NK8ezarpack13arpack_solverI10Asymmetric7BackendE5nconvEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::nconv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4NK8ezarpack13arpack_solverI10Asymmetric7BackendE11eigenvaluesEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::eigenvalues()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4I0ENK8ezarpack13arpack_solverI10Asymmetric7BackendE11eigenvaluesE16complex_vector_tRR1A"><code class="docutils literal notranslate"><span class="pre">arpack_solver::eigenvalues()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4NK8ezarpack13arpack_solverI10Asymmetric7BackendE12eigenvectorsEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::eigenvectors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4NK8ezarpack13arpack_solverI10Asymmetric7BackendE13schur_vectorsEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::schur_vectors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE15residual_vectorEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::residual_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4NK8ezarpack13arpack_solverI10Asymmetric7BackendE12Bx_availableEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Bx_available()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4NK8ezarpack13arpack_solverI10Asymmetric7BackendE9Bx_vectorEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Bx_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4NK8ezarpack13arpack_solverI10Asymmetric7BackendE5statsEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE14exact_shifts_fE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::exact_shifts_f</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE14exact_shifts_fclE24real_vector_const_view_t24real_vector_const_view_t24real_vector_const_view_t18real_vector_view_t18real_vector_view_t"><code class="docutils literal notranslate"><span class="pre">arpack_solver::exact_shifts_f::operator()()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t20eigenvalues_select_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t20eigenvalues_select_t16LargestMagnitudeE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::LargestMagnitude</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t20eigenvalues_select_t17SmallestMagnitudeE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::SmallestMagnitude</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t20eigenvalues_select_t11LargestRealE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::LargestReal</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t20eigenvalues_select_t12SmallestRealE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::SmallestReal</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t20eigenvalues_select_t11LargestImagE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::LargestImag</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t20eigenvalues_select_t12SmallestImagE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::SmallestImag</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t17compute_vectors_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::compute_vectors_t</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t17compute_vectors_t4NoneE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::compute_vectors_t::None</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t17compute_vectors_t5SchurE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::compute_vectors_t::Schur</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t17compute_vectors_t4RitzE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::compute_vectors_t::Ritz</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t8params_tEj20eigenvalues_select_t17compute_vectors_t"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::params_t()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t13n_eigenvaluesE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::n_eigenvalues</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t18eigenvalues_selectE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t3ncvE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::ncv</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t15compute_vectorsE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::compute_vectors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t22random_residual_vectorE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::random_residual_vector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t5sigmaE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::sigma</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t9toleranceE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::tolerance</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE8params_t8max_iterE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::max_iter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE7stats_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE7stats_t6n_iterE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t::n_iter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE7stats_t17n_op_x_operationsE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t::n_op_x_operations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE7stats_t16n_b_x_operationsE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t::n_b_x_operations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_asymmetric.html#_CPPv4N8ezarpack13arpack_solverI10Asymmetric7BackendE7stats_t14n_reorth_stepsE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t::n_reorth_steps</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="solver_complex.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_complex.hpp</span></code> - general complex eigenproblems</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="solver_complex.html#_CPPv4I0EN8ezarpack13arpack_solverI7Complex7BackendEE"><code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE13real_vector_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::real_vector_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE16complex_vector_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::complex_vector_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE16complex_matrix_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::complex_matrix_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE12int_vector_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::int_vector_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE21complex_vector_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::complex_vector_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE27complex_vector_const_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::complex_vector_const_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE27complex_matrix_const_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::complex_matrix_const_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE19vector_const_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::vector_const_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE13vector_view_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::vector_view_t</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE4ModeE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Mode</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE4Mode7InverseE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Mode::Inverse</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE4Mode14ShiftAndInvertE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Mode::ShiftAndInvert</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE13arpack_solverEj"><code class="docutils literal notranslate"><span class="pre">arpack_solver::arpack_solver()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4I00EN8ezarpack13arpack_solverI7Complex7BackendEclEvRR1ARK8params_t7ShiftsF"><code class="docutils literal notranslate"><span class="pre">arpack_solver::operator()()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4I000EN8ezarpack13arpack_solverI7Complex7BackendEclEvRR2OPRR1B4ModeRK8params_t7ShiftsF"><code class="docutils literal notranslate"><span class="pre">arpack_solver::operator()()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4NK8ezarpack13arpack_solverI7Complex7BackendE3dimEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::dim()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4NK8ezarpack13arpack_solverI7Complex7BackendE11in_vector_nEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::in_vector_n()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4NK8ezarpack13arpack_solverI7Complex7BackendE12out_vector_nEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::out_vector_n()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE16workspace_vectorEi"><code class="docutils literal notranslate"><span class="pre">arpack_solver::workspace_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4NK8ezarpack13arpack_solverI7Complex7BackendE5nconvEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::nconv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4NK8ezarpack13arpack_solverI7Complex7BackendE11eigenvaluesEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::eigenvalues()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4NK8ezarpack13arpack_solverI7Complex7BackendE12eigenvectorsEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::eigenvectors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4NK8ezarpack13arpack_solverI7Complex7BackendE13schur_vectorsEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::schur_vectors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE15residual_vectorEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::residual_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4NK8ezarpack13arpack_solverI7Complex7BackendE12Bx_availableEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Bx_available()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4NK8ezarpack13arpack_solverI7Complex7BackendE9Bx_vectorEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::Bx_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4NK8ezarpack13arpack_solverI7Complex7BackendE5statsEv"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE14exact_shifts_fE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::exact_shifts_f</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE14exact_shifts_fclE27complex_vector_const_view_t27complex_vector_const_view_t21complex_vector_view_t"><code class="docutils literal notranslate"><span class="pre">arpack_solver::exact_shifts_f::operator()()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t20eigenvalues_select_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t20eigenvalues_select_t16LargestMagnitudeE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::LargestMagnitude</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t20eigenvalues_select_t17SmallestMagnitudeE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::SmallestMagnitude</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t20eigenvalues_select_t11LargestRealE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::LargestReal</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t20eigenvalues_select_t12SmallestRealE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::SmallestReal</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t20eigenvalues_select_t11LargestImagE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::LargestImag</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t20eigenvalues_select_t12SmallestImagE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select_t::SmallestImag</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::compute_vectors_t</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t4NoneE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::compute_vectors_t::None</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t5SchurE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::compute_vectors_t::Schur</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t17compute_vectors_t4RitzE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::compute_vectors_t::Ritz</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t8params_tEj20eigenvalues_select_t17compute_vectors_t"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::params_t()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t13n_eigenvaluesE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::n_eigenvalues</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t18eigenvalues_selectE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::eigenvalues_select</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t3ncvE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::ncv</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t15compute_vectorsE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::compute_vectors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t22random_residual_vectorE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::random_residual_vector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t5sigmaE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::sigma</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t9toleranceE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::tolerance</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE8params_t8max_iterE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::params_t::max_iter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE7stats_tE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE7stats_t6n_iterE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t::n_iter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE7stats_t17n_op_x_operationsE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t::n_op_x_operations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE7stats_t16n_b_x_operationsE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t::n_b_x_operations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="solver_complex.html#_CPPv4N8ezarpack13arpack_solverI7Complex7BackendE7stats_t14n_reorth_stepsE"><code class="docutils literal notranslate"><span class="pre">arpack_solver::stats_t::n_reorth_steps</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
@@ -118,7 +330,7 @@
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2016-2023, Igor Krivenko.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
     </div>
   </body>
 </html>

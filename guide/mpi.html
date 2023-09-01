@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Parallel ARPACK versions of eigensolvers &#8212; ezARPACK 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=0885a68f" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=359c27e9"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=d1f3936d" />
+    <script src="../_static/documentation_options.js?v=f2a433a1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="/ezARPACK/mathjax/MathJax.js?config=default"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -41,7 +41,7 @@
           <div class="body" role="main">
             
   <section id="parallel-arpack-versions-of-eigensolvers">
-<span id="mpi"></span><h1>Parallel ARPACK versions of eigensolvers<a class="headerlink" href="#parallel-arpack-versions-of-eigensolvers" title="Permalink to this heading">¶</a></h1>
+<span id="mpi"></span><h1>Parallel ARPACK versions of eigensolvers<a class="headerlink" href="#parallel-arpack-versions-of-eigensolvers" title="Link to this heading">¶</a></h1>
 <p>As size <span class="math notranslate nohighlight">\(N\)</span> of an eigenproblem grows, it becomes more and more beneficial
 to employ
 <a class="reference external" href="https://en.wikipedia.org/wiki/Message_Passing_Interface">MPI parallelism</a>
@@ -75,12 +75,12 @@ in header files under the <code class="docutils literal notranslate"><span class
 <li><p>Constructors take an MPI communicator.</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N13arpack_solver13arpack_solverEjRK8MPI_Comm">
-<span id="_CPPv3N13arpack_solver13arpack_solverEjRK8MPI_Comm"></span><span id="_CPPv2N13arpack_solver13arpack_solverEjRK8MPI_Comm"></span><span id="arpack_solver::arpack_solver__unsigned-i.MPI_CommCR"></span><span class="sig-prename descclassname"><a class="reference internal" href="#_CPPv4N13arpack_solver13arpack_solverEjRK8MPI_Comm" title="arpack_solver::arpack_solver"><span class="n"><span class="pre">arpack_solver</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">arpack_solver</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">N</span></span>, <span class="n"><span class="pre">MPI_Comm</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">comm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13arpack_solver13arpack_solverEjRK8MPI_Comm" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N13arpack_solver13arpack_solverEjRK8MPI_Comm"></span><span id="_CPPv2N13arpack_solver13arpack_solverEjRK8MPI_Comm"></span><span id="arpack_solver::arpack_solver__unsigned-i.MPI_CommCR"></span><span class="sig-prename descclassname"><a class="reference internal" href="#_CPPv4N13arpack_solver13arpack_solverEjRK8MPI_Comm" title="arpack_solver::arpack_solver"><span class="n"><span class="pre">arpack_solver</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">arpack_solver</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">N</span></span>, <span class="n"><span class="pre">MPI_Comm</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">comm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13arpack_solver13arpack_solverEjRK8MPI_Comm" title="Link to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm">
-<span id="_CPPv3N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm"></span><span id="_CPPv2N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm"></span><span id="arpack_solver::arpack_solver__std::vector:unsigned-i:CR.MPI_CommCR"></span><span class="sig-prename descclassname"><a class="reference internal" href="#_CPPv4N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm" title="arpack_solver::arpack_solver"><span class="n"><span class="pre">arpack_solver</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">arpack_solver</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">block_sizes</span></span>, <span class="n"><span class="pre">MPI_Comm</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">comm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm"></span><span id="_CPPv2N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm"></span><span id="arpack_solver::arpack_solver__std::vector:unsigned-i:CR.MPI_CommCR"></span><span class="sig-prename descclassname"><a class="reference internal" href="#_CPPv4N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm" title="arpack_solver::arpack_solver"><span class="n"><span class="pre">arpack_solver</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">arpack_solver</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">block_sizes</span></span>, <span class="n"><span class="pre">MPI_Comm</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">comm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm" title="Link to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <p>The first constructor partitions <span class="math notranslate nohighlight">\(N\)</span>-dimensional vectors and distributes
@@ -94,19 +94,19 @@ It computes <span class="math notranslate nohighlight">\(N\)</span> as a total o
 <li><p>Access to the MPI communicator used to construct a solver.</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK13arpack_solver8mpi_commEv">
-<span id="_CPPv3NK13arpack_solver8mpi_commEv"></span><span id="_CPPv2NK13arpack_solver8mpi_commEv"></span><span id="arpack_solver::mpi_commC"></span><span class="n"><span class="pre">MPI_Comm</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">arpack_solver</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">mpi_comm</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK13arpack_solver8mpi_commEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK13arpack_solver8mpi_commEv"></span><span id="_CPPv2NK13arpack_solver8mpi_commEv"></span><span id="arpack_solver::mpi_commC"></span><span class="n"><span class="pre">MPI_Comm</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">arpack_solver</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">mpi_comm</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK13arpack_solver8mpi_commEv" title="Link to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </li>
 <li><p>Access to the index range of the block stored by the calling process.</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK13arpack_solver17local_block_startEv">
-<span id="_CPPv3NK13arpack_solver17local_block_startEv"></span><span id="_CPPv2NK13arpack_solver17local_block_startEv"></span><span id="arpack_solver::local_block_startC"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">arpack_solver</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">local_block_start</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK13arpack_solver17local_block_startEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK13arpack_solver17local_block_startEv"></span><span id="_CPPv2NK13arpack_solver17local_block_startEv"></span><span id="arpack_solver::local_block_startC"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">arpack_solver</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">local_block_start</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK13arpack_solver17local_block_startEv" title="Link to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK13arpack_solver16local_block_sizeEv">
-<span id="_CPPv3NK13arpack_solver16local_block_sizeEv"></span><span id="_CPPv2NK13arpack_solver16local_block_sizeEv"></span><span id="arpack_solver::local_block_sizeC"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">arpack_solver</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">local_block_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK13arpack_solver16local_block_sizeEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK13arpack_solver16local_block_sizeEv"></span><span id="_CPPv2NK13arpack_solver16local_block_sizeEv"></span><span id="arpack_solver::local_block_sizeC"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">arpack_solver</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">local_block_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK13arpack_solver16local_block_sizeEv" title="Link to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <p>Locally stored elements of a vector span the
@@ -151,7 +151,14 @@ the full list of converged eigenvalues on all MPI ranks.</p>
 <li class="toctree-l2"><a class="reference internal" href="symmetric.html">Symmetric real eigenproblems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="asymmetric.html">General real eigenproblems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="complex.html">General complex eigenproblems</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Parallel ARPACK versions of eigensolvers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Parallel ARPACK versions of eigensolvers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N13arpack_solver13arpack_solverEjRK8MPI_Comm"><code class="docutils literal notranslate"><span class="pre">arpack_solver()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N13arpack_solver13arpack_solverERKNSt6vectorIjEERK8MPI_Comm"><code class="docutils literal notranslate"><span class="pre">arpack_solver()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4NK13arpack_solver8mpi_commEv"><code class="docutils literal notranslate"><span class="pre">mpi_comm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4NK13arpack_solver17local_block_startEv"><code class="docutils literal notranslate"><span class="pre">local_block_start()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4NK13arpack_solver16local_block_sizeEv"><code class="docutils literal notranslate"><span class="pre">local_block_size()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="backends.html">List of supported matrix/vector algebra libraries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="implicit_restarting.html">Advanced: Customization of Lanczos/Arnoldi implicit restarting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="new_backend.html">Advanced: Adding a new storage backend</a></li>
@@ -205,7 +212,7 @@ the full list of converged eigenvalues on all MPI ranks.</p>
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2016-2023, Igor Krivenko.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
     </div>
   </body>
 </html>
