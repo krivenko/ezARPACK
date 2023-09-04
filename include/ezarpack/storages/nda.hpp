@@ -15,8 +15,8 @@
 #include <cmath>
 #include <complex>
 
-#include <nda/blas/dot.hpp>
 #include <nda/nda.hpp>
+#include <nda/blas/dot.hpp>
 
 #include "base.hpp"
 
