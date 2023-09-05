@@ -101,8 +101,7 @@ if(Boost_FOUND)
 endif(Boost_FOUND)
 
 # Find TRIQS
-find_package(Cpp2Py CONFIG)
-find_package(TRIQS CONFIG)
+find_package(TRIQS 2.0...<3.1 CONFIG)
 if(TRIQS_FOUND)
   macro(add_triqs_executable name source)
     add_executable(${name} ${source})
