@@ -42,7 +42,8 @@ to complete usage examples.
     - ``<ezarpack/storages/ublas.hpp>``
     - :ref:`example_ublas`
 
-  * - `TRIQS arrays >= 2.0 <https://triqs.github.io/triqs/latest/>`_
+  * - `TRIQS arrays (TRIQS 2.0--3.0.x) \
+      <https://triqs.github.io/triqs/3.0.x/>`_
     - ``ezarpack::triqs_storage``
     - ``<ezarpack/storages/triqs.hpp>``
     - :ref:`example_triqs`
