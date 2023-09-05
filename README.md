@@ -58,7 +58,7 @@ ezARPACK is usable without installation, just add
 `-I/<path_to_ezARPACK_sources>/include` to the compiler command line and
 `-L/<ARPACK-NG_installation_prefix>/lib -larpack` to the linker command line.
 
-You will need CMake version 3.13.0 or newer [9] to build examples/unit tests and
+You will need CMake version 3.19.0 or newer [9] to build examples/unit tests and
 to install ezARPACK so that it can be used from other CMake projects.
 
 Assuming that ezARPACK is to be installed in `<ezARPACK_installation_prefix>`,
@@ -103,7 +103,7 @@ Once ezARPACK is installed, you can use it in your CMake project. Here is
 a minimal example of an application `CMakeLists.txt` file.
 
 ```cmake
-cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.19.0 FATAL_ERROR)
 
 project(myproject LANGUAGES CXX)
 
