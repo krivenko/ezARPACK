@@ -33,6 +33,7 @@ jobs:
         g++-11
         gfortran-11
         clang-14
+        libomp-14-dev
         libopenblas-dev
         libboost-dev
         libeigen3-dev
@@ -81,7 +82,7 @@ jobs:
         make install
         popd
 
-    - name: Build and install TRIQS
+    - name: Build and install TRIQS 3.0.x
       env:
         CC: ${{ matrix.compiler.cc }}
         CXX: ${{ matrix.compiler.cxx }}
@@ -102,7 +103,7 @@ jobs:
         CC: ${{ matrix.compiler.cc }}
         CXX: ${{ matrix.compiler.cxx }}
       run: |
-        git clone https://github.com/TRIQS/nda.git nda --branch 1.1.x
+        git clone https://github.com/TRIQS/nda.git nda --branch 1.2.x
         mkdir nda.build && pushd nda.build
         cmake ../nda                                                           \
           -DCMAKE_BUILD_TYPE=Release                                           \
