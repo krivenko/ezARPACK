@@ -28,7 +28,7 @@ libraries (storage backends):
 * Blaze >= 3 [3];
 * Armadillo [4];
 * Boost uBLAS >= 1.58 [5];
-* TRIQS arrays >= 2.0 [6];
+* TRIQS arrays (part of the TRIQS libraries 2.0--3.0.x) [6];
 * TRIQS/nda library >= 1.1.0 [7];
 * xtensor >= 0.20.0 [8];
 * Raw memory buffers *(for unit testing, not recommended for general use)*.

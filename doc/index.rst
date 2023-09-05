@@ -32,7 +32,8 @@ ezARPACK pursues this goal by implementing two crucial features.
   - `Armadillo <http://arma.sourceforge.net>`_
   - `Boost uBLAS >= 1.58 \
     <https://www.boost.org/doc/libs/1_58_0/libs/numeric/ublas/doc>`_
-  - `TRIQS arrays >= 2.0 <https://triqs.github.io/triqs/latest/>`_
+  - `TRIQS arrays (part of the TRIQS libraries 2.0--3.0.x) \
+    <https://triqs.github.io/triqs/3.0.x/>`_
   - `TRIQS/nda library >= 1.1.0 <https://github.com/triqs/nda/>`_
   - `xtensor >= 0.20.0 <https://github.com/xtensor-stack/xtensor>`_
 
