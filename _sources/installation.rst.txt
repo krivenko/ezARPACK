@@ -22,7 +22,7 @@ If your project uses `CMake <https://cmake.org/download/>`_ as its build system,
 you might want to install ezARPACK header files along with CMake configuration
 scripts. This will allow you to import ezARPACK targets, as well as to run unit
 tests and build example programs. The minimum required version of CMake is
-**3.13.0**.
+**3.19.0**.
 
 The following sequence of shell commands will build unit tests and examples.
 
