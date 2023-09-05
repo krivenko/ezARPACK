@@ -100,7 +100,7 @@ void check_eigenvectors(arpack_solver<MKind, nda_storage> const& ar,
   auto lambda = ar.eigenvalues();
   auto vecs = ar.eigenvectors();
   for(int i : range(lambda.size())) {
-    auto vec = vecs(range(), i);
+    auto vec = vecs(range::all, i);
     CHECK_THAT(A * vec, IsCloseTo(lambda(i) * vec));
   }
 }
@@ -113,7 +113,7 @@ void check_eigenvectors(arpack_solver<MKind, nda_storage> const& ar,
   auto lambda = ar.eigenvalues();
   auto vecs = ar.eigenvectors();
   for(int i : range(lambda.size())) {
-    auto vec = vecs(range(), i);
+    auto vec = vecs(range::all, i);
     CHECK_THAT(A * vec, IsCloseTo(lambda(i) * M * vec));
   }
 }
@@ -132,7 +132,7 @@ void check_eigenvectors_shift_and_invert(
   auto lambda = ar.eigenvalues(Aop);
   auto vecs = ar.eigenvectors();
   for(int i = 0; i < int(lambda.size()); ++i) {
-    auto vec = vecs(range(), i);
+    auto vec = vecs(range::all, i);
     CHECK_THAT(A * vec, IsCloseTo(lambda(i) * M * vec, 1e-9));
   }
 }
@@ -154,9 +154,9 @@ template<operator_kind MKind>
 void check_basis_vectors(arpack_solver<MKind, nda_storage> const& ar) {
   auto vecs = get_basis_vectors(ar);
   for(int i : range(second_dim(vecs))) {
-    auto vi = vecs(range(), i);
+    auto vi = vecs(range::all, i);
     for(int j : range(second_dim(vecs))) {
-      auto vj = vecs(range(), j);
+      auto vj = vecs(range::all, j);
       CHECK(std::abs(blas::dotc(vi, vj) - double(i == j)) < 1e-10);
     }
   }
@@ -167,9 +167,9 @@ void check_basis_vectors(arpack_solver<MKind, nda_storage> const& ar,
                          MT const& B) {
   auto vecs = get_basis_vectors(ar);
   for(int i : range(second_dim(vecs))) {
-    auto vi = vecs(range(), i);
+    auto vi = vecs(range::all, i);
     for(int j : range(second_dim(vecs))) {
-      auto vj = vecs(range(), j);
+      auto vj = vecs(range::all, j);
       CHECK(std::abs(blas::dotc(vi, B * vj) - double(i == j)) < 1e-10);
     }
   }

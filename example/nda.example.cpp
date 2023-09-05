@@ -86,7 +86,7 @@ int main() {
   vector<double> lhs(N), rhs(N);
 
   for(int i = 0; i < N_ev; ++i) { // For each eigenpair ...
-    auto const eigenvec = v(range(), i);
+    auto const eigenvec = v(range::all, i);
     matrix_op(eigenvec, lhs()); // calculate A*v
     rhs = lambda(i) * eigenvec; // and \lambda*v
 

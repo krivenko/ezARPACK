@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
   vector<double> lhs(block_size), rhs(block_size);
 
   for(int i = 0; i < N_ev; ++i) { // For each eigenpair ...
-    auto const eigenvec = v(range(), i);
+    auto const eigenvec = v(range::all, i);
     matrix_op(eigenvec, lhs()); // calculate the local block of A*v
     rhs = lambda(i) * eigenvec; // and the local block of \lambda*v
 

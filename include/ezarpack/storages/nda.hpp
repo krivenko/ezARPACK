@@ -15,8 +15,10 @@
 #include <cmath>
 #include <complex>
 
+// clang-format off
 #include <nda/nda.hpp>
 #include <nda/blas/dot.hpp>
+// clang-format on
 
 #include "base.hpp"
 
@@ -263,7 +265,7 @@ public:
   template<typename T>
   inline static matrix_const_view<T>
   make_matrix_const_view(matrix<T> const& m, int rows, int cols) {
-    return m(range(), range(cols));
+    return m(range::all, range(cols));
   }
 
   /// @}
@@ -360,7 +362,7 @@ public:
                           int N,
                           int nconv) {
     complex_matrix_type res(N, nconv);
-    auto _ = range();
+    auto _ = range::all;
     dcomplex I(0, 1);
     for(int i = 0; i < nconv; ++i) {
       if(di(i) == 0) {

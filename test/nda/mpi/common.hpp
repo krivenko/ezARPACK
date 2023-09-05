@@ -35,8 +35,8 @@ public:
 
   template<typename MT, typename VT, typename REST>
   void operator()(MT const& M, VT const& v, REST& res) const {
-    M_v_block = M(range(), range(local_block_start,
-                                 local_block_start + local_block_size)) *
+    M_v_block = M(range::all, range(local_block_start,
+                                    local_block_start + local_block_size)) *
                 v;
 
     MPI_Datatype datatype = Complex ? MPI_CXX_DOUBLE_COMPLEX : MPI_DOUBLE;
@@ -88,7 +88,7 @@ void check_eigenvectors(
   using scalar_t = std::remove_cvref_t<typename decltype(vecs)::value_type>;
   vector<scalar_t> lhs(ar.local_block_size());
   for(int i : range(lambda.size())) {
-    auto vec = vecs(range(), i);
+    auto vec = vecs(range::all, i);
     prod(A, vec, lhs);
     CHECK_THAT(lhs, IsCloseTo(lambda(i) * vec));
   }
@@ -110,7 +110,7 @@ void check_eigenvectors(
   vector<scalar_t> lhs(ar.local_block_size());
   vector<scalar_t> rhs(ar.local_block_size());
   for(int i : range(lambda.size())) {
-    auto vec = vecs(range(), i);
+    auto vec = vecs(range::all, i);
     prod(A, vec, lhs);
     prod(M, vec, rhs);
     rhs *= lambda(i);
@@ -142,7 +142,7 @@ void check_eigenvectors_shift_and_invert(
   vector<dcomplex> lhs(ar.local_block_size());
   vector<dcomplex> rhs(ar.local_block_size());
   for(int i = 0; i < int(lambda.size()); ++i) {
-    auto vec = vecs(range(), i);
+    auto vec = vecs(range::all, i);
     prod_complex(A, vec, lhs);
     prod_complex(M, vec, rhs);
     rhs *= lambda(i);
@@ -176,9 +176,9 @@ void check_basis_vectors(
   mpi_dot<ComplexBasisVecs> dot(MPI_COMM_WORLD);
 
   for(int i : range(second_dim(vecs))) {
-    auto vi = vecs(range(), i);
+    auto vi = vecs(range::all, i);
     for(int j : range(second_dim(vecs))) {
-      auto vj = vecs(range(), j);
+      auto vj = vecs(range::all, j);
       CHECK(std::abs(dot(vi, vj) - double(i == j)) < 1e-10);
     }
   }
@@ -197,9 +197,9 @@ void check_basis_vectors(
   using scalar_t = std::remove_cvref_t<typename decltype(vecs)::value_type>;
   vector<scalar_t> Bvj(ar.local_block_size());
   for(int i : range(second_dim(vecs))) {
-    auto vi = vecs(range(), i);
+    auto vi = vecs(range::all, i);
     for(int j : range(second_dim(vecs))) {
-      auto vj = vecs(range(), j);
+      auto vj = vecs(range::all, j);
       prod(B, vj, Bvj);
       CHECK(std::abs(dot(vi, Bvj) - double(i == j)) < 1e-10);
     }
