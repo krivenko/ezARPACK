@@ -151,8 +151,7 @@ jobs:
           CMAKE_CXX_FLAGS="-Wno-ignored-attributes"
           DOCS_CMAKE_ARGS="-DDocumentation=OFF"
         fi
-        source $HOME/triqs.installed/share/triqsvars.sh
-        source $HOME/nda.installed/share/nda/ndavars.sh
+
         mkdir ezARPACK.build && pushd ezARPACK.build
         cmake ..                                                               \
           -DCMAKE_BUILD_TYPE=Release                                           \
