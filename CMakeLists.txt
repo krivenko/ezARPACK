@@ -9,7 +9,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 # Start configuration
-cmake_minimum_required(VERSION 3.19.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
 
 # Project name and version
 set(EZARPACK_VERSION 1.0)
