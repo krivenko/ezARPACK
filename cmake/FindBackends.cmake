@@ -111,8 +111,9 @@ if(TRIQS_FOUND)
       triqs_set_rpath_for_target(${name})
     endmacro()
   else()
-    set(TRIQS_FOUND false)
-    message(WARNING "TRIQS ${TRIQS_VERSION} (>3.0) now uses nda arrays. Skipping building TRIQS backend.")
+    unset(TRIQS_FOUND)
+    message(WARNING "TRIQS ${TRIQS_VERSION} (>3.0.x) now uses nda arrays. "
+                    "Skipping building TRIQS unit tests and examples.")
   endif()
 endif(TRIQS_FOUND)
 
