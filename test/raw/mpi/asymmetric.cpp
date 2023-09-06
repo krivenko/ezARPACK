@@ -88,7 +88,8 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
     auto Aop = [&](vcv_t in, vv_t out) { mat_vec(A.get(), in, out); };
 
     solver_t ar(N, MPI_COMM_WORLD);
-    testing.standard_eigenproblems(ar, Aop);
+    const int ncv = 30;
+    testing.standard_eigenproblems(ar, Aop, ncv);
   }
 
   SECTION("Generalized eigenproblem: invert mode") {
@@ -167,7 +168,8 @@ TEST_CASE("Asymmetric eigenproblem is solved", "[solver_asymmetric]") {
       mat_vec(A.get(), in, out);
     };
 
-    testing.standard_eigenproblems(ar, Aop);
+    const int ncv = 30;
+    testing.standard_eigenproblems(ar, Aop, ncv);
 
     CHECK_THROWS(ar.workspace_vector(-1));
     CHECK_THROWS(ar.workspace_vector(3));
