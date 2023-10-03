@@ -40,6 +40,14 @@ set(BREATHE_PROJECT ${DOXYGEN_OUTPUT_DIR}/xml)
 
 file(GLOB_RECURSE ALL_RST ${CMAKE_CURRENT_SOURCE_DIR}/*.rst)
 
+if(EXISTS "${MATHJAX_DIR}/MathJax.js")        # MathJax 2
+  set(MATHJAX_FILE_PATH "${MATHJAX_DIR}/MathJax.js?config=default")
+elseif(EXISTS "${MATHJAX_DIR}/tex-chtml.js")  # MathJax 3
+  set(MATHJAX_FILE_PATH "${MATHJAX_DIR}/tex-chtml.js")
+else()
+  message(FATAL_ERROR "Could not find a MathJax component file")
+endif()
+
 # Generate Sphinx config
 configure_file(conf.py.in conf.py @ONLY)
 

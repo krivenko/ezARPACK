@@ -11,7 +11,9 @@
 if(NOT MATHJAX_DIR)
   find_path(MATHJAX_DIR
     NAMES MathJax.js
+          tex-chtml.js
     PATHS "/usr/share/javascript/mathjax"
+          "/usr/share/mathjax"
     DOC "Path to MathJax.js script"
   )
 
