@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        compiler: [{cc: gcc-11, cxx: g++-11}, {cc: clang-14, cxx: clang++-14}]
+        compiler: [{cc: gcc-11, cxx: g++-11}, {cc: clang-15, cxx: clang++-15}]
         arpackng: [3.6.0, 3.7.0, 3.8.0, master]
 
     runs-on: ubuntu-22.04
@@ -32,8 +32,8 @@ jobs:
         sudo apt-get install
         g++-11
         gfortran-11
-        clang-14
-        libomp-14-dev
+        clang-15
+        libomp-15-dev
         libopenblas-dev
         libboost-dev
         libeigen3-dev
@@ -99,9 +99,6 @@ jobs:
         popd
 
     - name: Build and install nda
-      env:
-        CC: ${{ matrix.compiler.cc }}
-        CXX: ${{ matrix.compiler.cxx }}
       run: |
         git clone https://github.com/TRIQS/nda.git nda --branch 1.2.x
         mkdir nda.build && pushd nda.build
