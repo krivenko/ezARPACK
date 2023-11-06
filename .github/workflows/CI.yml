@@ -88,6 +88,7 @@ jobs:
         CXX: ${{ matrix.compiler.cxx }}
       run: |
         git clone https://github.com/TRIQS/triqs.git triqs --branch 3.0.x
+        rm triqs/c++/triqs/mc_tools/random_generator.cpp
         mkdir triqs.build && pushd triqs.build
         cmake ../triqs                                                         \
           -DCMAKE_BUILD_TYPE=Release                                           \
