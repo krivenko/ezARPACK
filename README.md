@@ -39,7 +39,7 @@ defining a new specialization of the `storage_traits` structure.
 Since version 1.0, ezARPACK wraps Parallel ARPACK (PARPACK) routines with MPI
 message passing layer in addition to the serial routines.
 
-Copyright (C) 2016-2023 Igor Krivenko <igor.s.krivenko @ gmail.com>
+Copyright (C) 2016-2024 Igor Krivenko <igor.s.krivenko @ gmail.com>
 
 Dependencies
 ------------
