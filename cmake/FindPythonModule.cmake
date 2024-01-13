@@ -9,7 +9,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 macro(FindPythonModule Name ImportName)
-  execute_process(COMMAND ${PYTHON_EXECUTABLE}
+  execute_process(COMMAND ${Python3_EXECUTABLE}
                   "-c" "import ${ImportName}; print(${ImportName}.__version__)"
                   ERROR_QUIET
                   OUTPUT_STRIP_TRAILING_WHITESPACE

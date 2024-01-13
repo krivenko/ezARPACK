@@ -11,4 +11,4 @@
 include(cmake/FindPythonModule.cmake)
 FindPythonModule(Sphinx sphinx)
 
-set(SPHINX_COMMAND "${PYTHON_EXECUTABLE}" "-m" "sphinx")
+set(SPHINX_COMMAND "${Python3_EXECUTABLE}" "-m" "sphinx")

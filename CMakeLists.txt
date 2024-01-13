@@ -97,7 +97,7 @@ if(Documentation)
   # Detect Doxygen, Sphinx, Breathe and MathJax
   list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
   find_package(Doxygen REQUIRED)
-  find_package(PythonInterp 3 REQUIRED)
+  find_package(Python3 REQUIRED COMPONENTS Interpreter)
   find_package(Sphinx 2.0.0 REQUIRED)
   find_package(Breathe 4.13.0 REQUIRED)
   find_package(MySTParser REQUIRED)
