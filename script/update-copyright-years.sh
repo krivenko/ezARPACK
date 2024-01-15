@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env sh
 
 #
 # Update copyright years in files
@@ -15,16 +15,16 @@ do
 done
 
 # Write the new year string
-YEARS_REGEX="2016-[0-9][0-9][0-9][0-9]"
-YEARS_UPDATED="2016-$(date +%Y)"
+YEARS_REGEX="([0-9]{4})-[0-9]{4}"
+YEARS_UPDATED="\\1-$(date +%Y)"
 
-COPYRIGHT_REGEX="Copyright (C) ${YEARS_REGEX} Igor Krivenko"
-COPYRIGHT_UPDATED="Copyright (C) ${YEARS_UPDATED} Igor Krivenko"
+COPYRIGHT_REGEX="Copyright \(C\) ${YEARS_REGEX}"
+COPYRIGHT_UPDATED="Copyright \(C\) ${YEARS_UPDATED}"
 for FILE in $FILES
 do
-    $SED -i "s/${COPYRIGHT_REGEX}/${COPYRIGHT_UPDATED}/g" $FILE
+    $SED -i -E "s/${COPYRIGHT_REGEX}/${COPYRIGHT_UPDATED}/g" $FILE
 done
 
 # doc/conf.py.in requires special treatment
-sed -i "s/${YEARS_REGEX}, Igor Krivenko/${YEARS_UPDATED}, Igor Krivenko/g" \
+sed -i -E "s/${YEARS_REGEX}, Igor Krivenko/${YEARS_UPDATED}, Igor Krivenko/g" \
        "doc/conf.py.in"
