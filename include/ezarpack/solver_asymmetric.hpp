@@ -265,7 +265,7 @@ public:
   /// Solution of Large Scale Eigenvalue Problems
   /// with Implicitly Restarted Arnoldi Methods (R. B. Lehoucq, D. C. Sorensen,
   /// C. Yang, SIAM, 1998),
-  /// @arpack_manual_url#page=64
+  /// @arpack_manual_restarting_url
   struct exact_shifts_f {
     /// Trivial call operator. The actual shifts will be internally computed by
     /// ARPACK-NG.
