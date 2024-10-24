@@ -23,19 +23,22 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 
 # CMake options
-option(Tests "Build unit tests" ON)
-option(Examples "Build examples" ON)
 option(Documentation "Build documentation" OFF)
+option(EnableMPI "Build with MPI support (PARPACK)" ON)
+option(Examples "Build examples" ON)
+option(Tests "Build unit tests" ON)
 
 # Are we building any executables?
 if(Tests OR Examples)
 
   # Detect an MPI implementation for MPI-tests and/or examples
-  find_package(MPI 3.0)
-  if(MPI_FOUND)
-    message(STATUS "MPI_CXX_INCLUDE_PATH: ${MPI_CXX_INCLUDE_PATH}")
-    message(STATUS "MPI_CXX_LIBRARIES: ${MPI_CXX_LIBRARIES}")
-  endif(MPI_FOUND)
+  if (EnableMPI)
+    find_package(MPI 3.0)
+    if(MPI_FOUND)
+      message(STATUS "MPI_CXX_INCLUDE_PATH: ${MPI_CXX_INCLUDE_PATH}")
+      message(STATUS "MPI_CXX_LIBRARIES: ${MPI_CXX_LIBRARIES}")
+    endif(MPI_FOUND)
+  endif(EnableMPI)
 
   # Detect ARPACK-NG
   include(cmake/FindARPACKNG.cmake)
