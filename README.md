@@ -78,6 +78,7 @@ $ -DCMAKE_INSTALL_PREFIX=<ezARPACK_installation_prefix>   \
   -Dnda_ROOT=<nda_installation_prefix>                    \
   -Dxtensor_ROOT=<xtensor_installation_prefix>            \
   -Dxtensor-blas_ROOT=<xtensor-blas_installation_prefix>  \
+  -DEnableMPI=ON                                          \
   -DExamples=ON                                           \
   -DTests=ON
 $ make
@@ -89,6 +90,9 @@ Compilation of the tests can be disabled with CMake flag `-DTests=OFF`
 *(not recommended)*.
 
 Examples are compiled by default, disable them with `-DExamples=OFF`.
+
+Detection of an MPI implementation and compilation of the MPI-enabled unit tests
+and examples can be skipped by setting `-DEnableMPI=OFF`.
 
 CMake options specific to individual storage backends (`Eigen3_ROOT`,
 `blaze_ROOT`, `Armadillo_ROOT`, `BOOST_ROOT`, `TRIQS_ROOT`, `nda_ROOT`
@@ -242,7 +246,7 @@ to MPI libraries.
 add_executable(myprog_mpi myprog_mpi.cpp)
 target_link_libraries(myprog_mpi ezarpack Eigen3::Eigen)
 
-# Detect and MPI-3.0 implementation.
+# Detect an MPI-3.0 implementation.
 find_package(MPI 3.0 REQUIRED)
 
 # Link the executable to the Parallel ARPACK library and to the MPI.
