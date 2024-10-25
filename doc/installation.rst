@@ -40,6 +40,7 @@ The following sequence of shell commands will build unit tests and examples.
       -Dnda_ROOT=<nda_installation_prefix>                    \
       -Dxtensor_ROOT=<xtensor_installation_prefix>            \
       -Dxtensor-blas_ROOT=<xtensor-blas_installation_prefix>  \
+      -DEnableMPI=ON                                          \
       -DExamples=ON                                           \
       -DTests=ON
     $ make
@@ -76,7 +77,9 @@ a working implementation of MPI-3.0 or newer. If CMake is unable to detect one
 automatically, refer to
 `this list of environment variables
 <https://cmake.org/cmake/help/latest/module/FindMPI.html#variables-for-locating-mpi>`_
-that affect CMake's search procedure.
+that affect CMake's search procedure. It is possible to skip MPI detection and
+compilation of PARPACK unit tests and examples altogether by setting
+``-DEnableMPI=OFF``.
 
 Documentation of ezARPACK can optionally be built and installed using the
 ``Documentation`` CMake flag (requires `Doxygen <https://www.doxygen.nl/>`_,
@@ -101,6 +104,10 @@ meaning.
 +-----------------------------+------------------------------------------------+
 | ``Examples=[ON|OFF]``       | Enable/disable compilation of example          |
 |                             | programs.                                      |
++-----------------------------+------------------------------------------------+
+| ``EnableMPI=[ON|OFF]``      | Enable/disable detection of an MPI             |
+|                             | implementation for PARPACK unit tests and      |
+|                             | examples.                                      |
 +-----------------------------+------------------------------------------------+
 | ``ARPACK_NG_ROOT``          | Path to ARPACK-NG installation.                |
 +-----------------------------+------------------------------------------------+
