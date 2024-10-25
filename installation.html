@@ -70,6 +70,7 @@ $<span class="w"> </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>&lt;ezARP
 <span class="w">  </span>-Dnda_ROOT<span class="o">=</span>&lt;nda_installation_prefix&gt;<span class="w">                    </span><span class="se">\</span>
 <span class="w">  </span>-Dxtensor_ROOT<span class="o">=</span>&lt;xtensor_installation_prefix&gt;<span class="w">            </span><span class="se">\</span>
 <span class="w">  </span>-Dxtensor-blas_ROOT<span class="o">=</span>&lt;xtensor-blas_installation_prefix&gt;<span class="w">  </span><span class="se">\</span>
+<span class="w">  </span>-DEnableMPI<span class="o">=</span>ON<span class="w">                                          </span><span class="se">\</span>
 <span class="w">  </span>-DExamples<span class="o">=</span>ON<span class="w">                                           </span><span class="se">\</span>
 <span class="w">  </span>-DTests<span class="o">=</span>ON
 $<span class="w"> </span>make
@@ -100,7 +101,9 @@ said libraries.</p>
 a working implementation of MPI-3.0 or newer. If CMake is unable to detect one
 automatically, refer to
 <a class="reference external" href="https://cmake.org/cmake/help/latest/module/FindMPI.html#variables-for-locating-mpi">this list of environment variables</a>
-that affect CMake’s search procedure.</p>
+that affect CMake’s search procedure. It is possible to skip MPI detection and
+compilation of PARPACK unit tests and examples altogether by setting
+<code class="docutils literal notranslate"><span class="pre">-DEnableMPI=OFF</span></code>.</p>
 <p>Documentation of ezARPACK can optionally be built and installed using the
 <code class="docutils literal notranslate"><span class="pre">Documentation</span></code> CMake flag (requires <a class="reference external" href="https://www.doxygen.nl/">Doxygen</a>,
 <a class="reference external" href="https://www.sphinx-doc.org">Sphinx</a>,
@@ -131,52 +134,57 @@ and examples.</p></td>
 <td><p>Enable/disable compilation of example
 programs.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ARPACK_NG_ROOT</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">EnableMPI=[ON|OFF]</span></code></p></td>
+<td><p>Enable/disable detection of an MPI
+implementation for PARPACK unit tests and
+examples.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ARPACK_NG_ROOT</span></code></p></td>
 <td><p>Path to ARPACK-NG installation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Eigen3_ROOT</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Eigen3_ROOT</span></code></p></td>
 <td><p>Path to Eigen 3 installation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">blaze_ROOT</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">blaze_ROOT</span></code></p></td>
 <td><p>Path to Blaze installation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Armadillo_ROOT</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Armadillo_ROOT</span></code></p></td>
 <td><p>Path to Armadillo installation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BOOST_ROOT</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">BOOST_ROOT</span></code></p></td>
 <td><p>Path to Boost (uBLAS) installation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TRIQS_ROOT</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TRIQS_ROOT</span></code></p></td>
 <td><p>Path to TRIQS installation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nda_ROOT</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nda_ROOT</span></code></p></td>
 <td><p>Path to TRIQS/nda installation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">xtensor_ROOT</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xtensor_ROOT</span></code></p></td>
 <td><p>Path to xtensor installation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xtensor-blas_ROOT</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">xtensor-blas_ROOT</span></code></p></td>
 <td><p>Path to xtensor-blas installation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Documentation=[ON|OFF]</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Documentation=[ON|OFF]</span></code></p></td>
 <td><p>Enable/disable generation of ezARPACK’s
 Doxygen and Sphinx documentation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Doxygen_ROOT</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Doxygen_ROOT</span></code></p></td>
 <td><p>Path to Doxygen installation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Sphinx_ROOT</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Sphinx_ROOT</span></code></p></td>
 <td><p>Path to Sphinx installation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MathJax_ROOT</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MathJax_ROOT</span></code></p></td>
 <td><p>Path to MathJax installation (directory
 containing <code class="docutils literal notranslate"><span class="pre">MathJax.js</span></code>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ASAN=[ON|OFF]</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ASAN=[ON|OFF]</span></code></p></td>
 <td><p><em>[Developer]</em> Build unit tests using
 the LLVM AddressSanitizer.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">UBSAN=[ON|OFF]</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">UBSAN=[ON|OFF]</span></code></p></td>
 <td><p><em>[Developer]</em> Build unit tests using
 the LLVM UndefinedBehaviorSanitizer.</p></td>
 </tr>
