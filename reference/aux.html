@@ -44,15 +44,81 @@
 <h1>Auxiliary headers<a class="headerlink" href="#auxiliary-headers" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="common.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/common.hpp</span></code> - declarations of common types and exceptions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="solver_base.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/common.hpp</span></code> - declarations of common types and exceptions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="common.html#_CPPv4N8ezarpack8dcomplexE"><code class="docutils literal notranslate"><span class="pre">dcomplex</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="common.html#_CPPv4N8ezarpack13operator_kindE"><code class="docutils literal notranslate"><span class="pre">operator_kind</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="common.html#_CPPv4N8ezarpack13operator_kind9SymmetricE"><code class="docutils literal notranslate"><span class="pre">Symmetric</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#_CPPv4N8ezarpack13operator_kind10AsymmetricE"><code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#_CPPv4N8ezarpack13operator_kind7ComplexE"><code class="docutils literal notranslate"><span class="pre">Complex</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="common.html#_CPPv4N8ezarpack15maxiter_reachedE"><code class="docutils literal notranslate"><span class="pre">ezarpack::maxiter_reached</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="common.html#_CPPv4N8ezarpack15maxiter_reached15maxiter_reachedEi"><code class="docutils literal notranslate"><span class="pre">maxiter_reached()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#_CPPv4N8ezarpack15maxiter_reached7maxiterE"><code class="docutils literal notranslate"><span class="pre">maxiter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="common.html#_CPPv4N8ezarpack16ncv_insufficientE"><code class="docutils literal notranslate"><span class="pre">ezarpack::ncv_insufficient</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="common.html#_CPPv4N8ezarpack16ncv_insufficient16ncv_insufficientEi"><code class="docutils literal notranslate"><span class="pre">ncv_insufficient()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#_CPPv4N8ezarpack16ncv_insufficient3ncvE"><code class="docutils literal notranslate"><span class="pre">ncv</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="solver_base.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> class template</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="solver_base.html#_CPPv4I_13operator_kind0EN8ezarpack13arpack_solverE"><code class="docutils literal notranslate"><span class="pre">ezarpack::arpack_solver</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="arpack_solver.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack_solver.hpp</span></code> - include all <code class="docutils literal notranslate"><span class="pre">arpack_solver</span></code> specializations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="arpack.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack.hpp</span></code> - low level C++ interface to FORTRAN routines of ARPACK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mpi/solver_base.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> class template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arpack.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/arpack.hpp</span></code> - low level C++ interface to FORTRAN routines of ARPACK</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="arpack.html#_CPPv4N8ezarpack3f77E"><code class="docutils literal notranslate"><span class="pre">ezarpack::f77</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="arpack.html#_CPPv4N8ezarpack3f777dsaupd_ERiPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"><code class="docutils literal notranslate"><span class="pre">dsaupd_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack.html#_CPPv4N8ezarpack3f777dnaupd_ERiPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"><code class="docutils literal notranslate"><span class="pre">dnaupd_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack.html#_CPPv4N8ezarpack3f777znaupd_ERiPKcRKiPKcRKiRKdP8dcomplexRKiP8dcomplexRKiA_iA_iP8dcomplexP8dcomplexRKiA_dRi"><code class="docutils literal notranslate"><span class="pre">znaupd_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack.html#_CPPv4N8ezarpack3f777dseupd_ERKiPKcA_KiA_dA_dRKiRKdPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"><code class="docutils literal notranslate"><span class="pre">dseupd_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack.html#_CPPv4N8ezarpack3f777dneupd_ERKiPKcA_KiA_dA_dA_dRKiRKdRKdA_dPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"><code class="docutils literal notranslate"><span class="pre">dneupd_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack.html#_CPPv4N8ezarpack3f777zneupd_ERKiPKcA_KiP8dcomplexP8dcomplexRKiRK8dcomplexP8dcomplexPKcRKiPKcRKiRKdP8dcomplexRKiP8dcomplexRKiA_iA_iP8dcomplexP8dcomplexRKiA_dRi"><code class="docutils literal notranslate"><span class="pre">zneupd_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack.html#_CPPv4I_bEN8ezarpack3f774aupdEvR8rci_flagPKciPKcidPdiPdiPiPiPdPdiRi"><code class="docutils literal notranslate"><span class="pre">aupd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack.html#_CPPv4N8ezarpack3f774aupdER8rci_flagPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi"><code class="docutils literal notranslate"><span class="pre">aupd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack.html#_CPPv4N8ezarpack3f774eupdEiPKcPKiPdPdidPKciPKcidPdiPdiPiPiPdPdiRi"><code class="docutils literal notranslate"><span class="pre">eupd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack.html#_CPPv4N8ezarpack3f774eupdEiPKcPKiPdPdPdiddPdPKciPKcidPdiPdiPiPiPdPdiRi"><code class="docutils literal notranslate"><span class="pre">eupd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="arpack.html#_CPPv4N8ezarpack3f774eupdEiPKcPKiP8dcomplexP8dcomplexi8dcomplexP8dcomplexPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi"><code class="docutils literal notranslate"><span class="pre">eupd()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mpi/solver_base.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/solver_base.hpp</span></code> - primary <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> class template</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mpi/solver_base.html#_CPPv4I_13operator_kind0EN8ezarpack3mpi13arpack_solverE"><code class="docutils literal notranslate"><span class="pre">ezarpack::mpi::arpack_solver</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="mpi/arpack_solver.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/arpack_solver.hpp</span></code> - include all <code class="docutils literal notranslate"><span class="pre">mpi::arpack_solver</span></code> specializations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mpi/parpack.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/parpack.hpp</span></code> - low level C++ interface to FORTRAN routines of PARPACK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mpi/mpi_util.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/mpi_util.hpp</span></code> - MPI utility functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="version.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/version.hpp</span></code> - ezARPACK version information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mpi/parpack.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/parpack.hpp</span></code> - low level C++ interface to FORTRAN routines of PARPACK</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mpi/parpack.html#_CPPv4N8ezarpack3mpi3f77E"><code class="docutils literal notranslate"><span class="pre">ezarpack::mpi::f77</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mpi/parpack.html#_CPPv4N8ezarpack3mpi3f778pdsaupd_ERK8MPI_FintRiPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"><code class="docutils literal notranslate"><span class="pre">pdsaupd_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/parpack.html#_CPPv4N8ezarpack3mpi3f778pdnaupd_ERK8MPI_FintRiPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"><code class="docutils literal notranslate"><span class="pre">pdnaupd_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/parpack.html#_CPPv4N8ezarpack3mpi3f778pznaupd_ERK8MPI_FintRiPKcRKiPKcRKiRKdP8dcomplexRKiP8dcomplexRKiA_iA_iP8dcomplexP8dcomplexRKiA_dRi"><code class="docutils literal notranslate"><span class="pre">pznaupd_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/parpack.html#_CPPv4N8ezarpack3mpi3f778pdseupd_ERK8MPI_FintRKiPKcA_KiA_dA_dRKiRKdPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"><code class="docutils literal notranslate"><span class="pre">pdseupd_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/parpack.html#_CPPv4N8ezarpack3mpi3f778pdneupd_ERK8MPI_FintRKiPKcA_KiA_dA_dA_dRKiRKdRKdA_dPKcRKiPKcRKiRKdA_dRKiA_dRKiA_iA_iA_dA_dRKiRi"><code class="docutils literal notranslate"><span class="pre">pdneupd_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/parpack.html#_CPPv4N8ezarpack3mpi3f778pzneupd_ERK8MPI_FintRKiPKcA_KiP8dcomplexP8dcomplexRKiRK8dcomplexP8dcomplexPKcRKiPKcRKiRKdP8dcomplexRKiP8dcomplexRKiA_iA_iP8dcomplexP8dcomplexRKiA_dRi"><code class="docutils literal notranslate"><span class="pre">pzneupd_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/parpack.html#_CPPv4I_bEN8ezarpack3mpi3f775paupdEvRK8MPI_CommR8rci_flagPKciPKcidPdiPdiPiPiPdPdiRi"><code class="docutils literal notranslate"><span class="pre">paupd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/parpack.html#_CPPv4N8ezarpack3mpi3f775paupdERK8MPI_CommR8rci_flagPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi"><code class="docutils literal notranslate"><span class="pre">paupd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/parpack.html#_CPPv4N8ezarpack3mpi3f775peupdERK8MPI_CommiPKcPKiPdPdidPKciPKcidPdiPdiPiPiPdPdiRi"><code class="docutils literal notranslate"><span class="pre">peupd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/parpack.html#_CPPv4N8ezarpack3mpi3f775peupdERK8MPI_CommiPKcPKiPdPdPdiddPdPKciPKcidPdiPdiPiPiPdPdiRi"><code class="docutils literal notranslate"><span class="pre">peupd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpi/parpack.html#_CPPv4N8ezarpack3mpi3f775peupdERK8MPI_CommiPKcPKiP8dcomplexP8dcomplexi8dcomplexP8dcomplexPKciPKcidP8dcomplexiP8dcomplexiPiPiP8dcomplexP8dcomplexiPdRi"><code class="docutils literal notranslate"><span class="pre">peupd()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mpi/mpi_util.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/mpi/mpi_util.hpp</span></code> - MPI utility functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mpi/mpi_util.html#_CPPv4N8ezarpack3mpi4sizeERK8MPI_Comm"><code class="docutils literal notranslate"><span class="pre">size()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpi/mpi_util.html#_CPPv4N8ezarpack3mpi4rankERK8MPI_Comm"><code class="docutils literal notranslate"><span class="pre">rank()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpi/mpi_util.html#_CPPv4N8ezarpack3mpi24compute_local_block_sizeEiii"><code class="docutils literal notranslate"><span class="pre">compute_local_block_size()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpi/mpi_util.html#_CPPv4N8ezarpack3mpi25compute_local_block_startEiii"><code class="docutils literal notranslate"><span class="pre">compute_local_block_start()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="version.html"><code class="docutils literal notranslate"><span class="pre">ezarpack/version.hpp</span></code> - ezARPACK version information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="version.html#c.EZARPACK_VERSION"><code class="docutils literal notranslate"><span class="pre">EZARPACK_VERSION</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
