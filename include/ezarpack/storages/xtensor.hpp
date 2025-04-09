@@ -16,9 +16,15 @@
 #include <utility>
 
 #include <xtensor-blas/xlinalg.hpp>
+#ifdef XTENSOR_HEADERS_IN_SUBDIRS
+#include <xtensor/misc/xcomplex.hpp>
+#include <xtensor/containers/xtensor.hpp>
+#include <xtensor/views/xview.hpp>
+#else
 #include <xtensor/xcomplex.hpp>
 #include <xtensor/xtensor.hpp>
 #include <xtensor/xview.hpp>
+#endif
 
 #include "base.hpp"
 

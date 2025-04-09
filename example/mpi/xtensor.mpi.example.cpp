@@ -23,8 +23,8 @@
 #include <ezarpack/storages/xtensor.hpp>
 #include <ezarpack/version.hpp>
 
-#include <xtensor/xio.hpp>
-#include <xtensor/xnorm.hpp>
+#include <xtensor/io/xio.hpp>
+#include <xtensor/reducers/xnorm.hpp>
 
 using namespace ezarpack;
 using namespace xt;

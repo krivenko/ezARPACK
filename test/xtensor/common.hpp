@@ -22,9 +22,9 @@
 #include "ezarpack/storages/xtensor.hpp"
 
 #include <xtensor-blas/xlinalg.hpp>
-#include <xtensor/xeval.hpp>
-#include <xtensor/xio.hpp>
-#include <xtensor/xnorm.hpp>
+#include <xtensor/core/xeval.hpp>
+#include <xtensor/io/xio.hpp>
+#include <xtensor/reducers/xnorm.hpp>
 
 #include "../common.hpp"
 #include "../tests.hpp"
