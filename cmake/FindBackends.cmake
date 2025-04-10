@@ -80,8 +80,22 @@ if(NOT Armadillo_FOUND)
   endif(ARMADILLO_LIBRARY)
 endif(NOT Armadillo_FOUND)
 if(Armadillo_FOUND)
-  message(STATUS "Found Armadillo")
+  message(STATUS "Found Armadillo ${ARMADILLO_VERSION_STRING}")
 
+  try_compile(Armadillo_USE_LAPACK
+              ${CMAKE_BINARY_DIR}
+              SOURCES ${CMAKE_SOURCE_DIR}/cmake/check_arma_use_lapack.cpp
+              LINK_LIBRARIES armadillo
+              CXX_STANDARD 11
+  )
+  if(NOT Armadillo_USE_LAPACK)
+    message(
+      STATUS "  Armadillo has been built without LAPACK support, cannot be used"
+    )
+    set(Armadillo_FOUND FALSE)
+  endif(NOT Armadillo_USE_LAPACK)
+endif(Armadillo_FOUND)
+if(Armadillo_FOUND)
   macro(add_armadillo_executable name source)
     add_executable(${name} ${source})
     target_link_libraries(${name} PRIVATE ezarpack armadillo)
