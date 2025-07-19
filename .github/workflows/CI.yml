@@ -16,13 +16,20 @@ jobs:
 
     strategy:
       matrix:
-        compiler: [{cc: gcc-11, cxx: g++-11}, {cc: clang-15, cxx: clang++-15}]
+        compiler: [{cc: gcc-12, cxx: g++-12}, {cc: clang-16, cxx: clang++-16}]
         arpackng: [3.6.0, 3.7.0, 3.8.0, master]
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
+    env:
+      CC: ${{ matrix.compiler.cc }}
+      CXX: ${{ matrix.compiler.cxx }}
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Force use of libc++ in Clang builds
+      if: startsWith(matrix.compiler.cxx, 'clang')
+      run: echo CMAKE_CXX_FLAGS="-stdlib=libc++" >> $GITHUB_ENV
 
     - name: Update apt-get cache
       run: sudo apt-get update
@@ -30,15 +37,13 @@ jobs:
     - name: Install Ubuntu dependencies
       run: >
         sudo apt-get install
-        g++-11
-        gfortran-11
-        clang-15
-        libomp-15-dev
+        libc++-16-dev
+        libc++abi-16-dev
+        libomp-16-dev
         libopenblas-dev
         libboost-dev
         libeigen3-dev
         libarmadillo-dev
-        libgmp-dev
         openmpi-bin
         openmpi-common
         openmpi-doc
@@ -58,7 +63,8 @@ jobs:
 
     - name: Build and install ARPACK-NG
       env:
-        # To fix compilation of versions 3.6.0 and 3.7.0 with gfortran 11
+        FC: gfortran-12
+        # To fix compilation of versions 3.6.0 and 3.7.0 with gfortran
         FFLAGS: -fallow-argument-mismatch
       run: |
         git clone --branch ${{ matrix.arpackng }}                              \
@@ -78,14 +84,12 @@ jobs:
         git clone https://bitbucket.org/blaze-lib/blaze.git blaze
         pushd blaze
         cmake . -DCMAKE_INSTALL_PREFIX=$HOME/blaze.installed                   \
-                -DBLAZE_SHARED_MEMORY_PARALLELIZATION=OFF
+                -DBLAZE_SHARED_MEMORY_PARALLELIZATION=OFF                      \
+                -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
         make install
         popd
 
     - name: Build and install TRIQS 3.0.x
-      env:
-        CC: ${{ matrix.compiler.cc }}
-        CXX: ${{ matrix.compiler.cxx }}
       run: |
         git clone https://github.com/TRIQS/triqs.git triqs --branch 3.0.x
         rm triqs/c++/triqs/mc_tools/random_generator.cpp
@@ -93,6 +97,7 @@ jobs:
         cmake ../triqs                                                         \
           -DCMAKE_BUILD_TYPE=Release                                           \
           -DCMAKE_INSTALL_PREFIX=$HOME/triqs.installed                         \
+          -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}                                 \
           -DPythonSupport=OFF                                                  \
           -DBuild_Documentation=OFF                                            \
           -DBuild_Tests=OFF
@@ -101,11 +106,12 @@ jobs:
 
     - name: Build and install nda
       run: |
-        git clone https://github.com/TRIQS/nda.git nda --branch 1.2.x
+        git clone https://github.com/TRIQS/nda.git nda --branch 1.3.x
         mkdir nda.build && pushd nda.build
         cmake ../nda                                                           \
           -DCMAKE_BUILD_TYPE=Release                                           \
           -DCMAKE_INSTALL_PREFIX=$HOME/nda.installed                           \
+          -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}                                 \
           -DBUILD_SHARED_LIBS=ON                                               \
           -DPythonSupport=OFF                                                  \
           -DBuild_Documentation=OFF                                            \
@@ -117,13 +123,15 @@ jobs:
       run: |
         git clone https://github.com/xtensor-stack/xtl.git xtl
         pushd xtl
-        cmake . -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed
+        cmake . -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed                 \
+                -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
         make install
         popd
         git clone https://github.com/xtensor-stack/xtensor.git xtensor
         mkdir xtensor.build && pushd xtensor.build
         cmake ../xtensor                                                       \
           -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed                       \
+          -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}                                 \
           -Dxtl_DIR=$HOME/xtensor.installed
         make install
         popd
@@ -131,22 +139,20 @@ jobs:
         mkdir xtensor-blas.build && pushd xtensor-blas.build
         cmake ../xtensor-blas                                                  \
           -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed                       \
+          -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}                                 \
           -Dxtensor_DIR=$HOME/xtensor.installed
         make install
         popd
 
     - name: Build ezARPACK
       env:
-        CC: ${{ matrix.compiler.cc }}
-        CXX: ${{ matrix.compiler.cxx }}
         ARPACKNG_VERSION: ${{ matrix.arpackng }}
       run: |
+        CMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -Wno-ignored-attributes"
         if [[ "${CXX}" == clang* && "${ARPACKNG_VERSION}" == master ]]; then
-          CMAKE_CXX_FLAGS="-Wno-ignored-attributes"
           DOCS_CMAKE_ARGS="-DDocumentation=ON \
                            -DMathJax_ROOT=/usr/share/javascript/mathjax"
         else
-          CMAKE_CXX_FLAGS="-Wno-ignored-attributes"
           DOCS_CMAKE_ARGS="-DDocumentation=OFF"
         fi
 
