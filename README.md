@@ -47,7 +47,7 @@ Dependencies
 ezARPACK is a header-only library that has no external dependencies.
 
 However, one will need a working installation of ARPACK-NG 3.6.0 or newer [1]
-in order to compile examples and unit tests. Futhermore, specific examples and
+in order to compile examples and unit tests. Furthermore, specific examples and
 tests will only be built if the respective matrix algebra library is detected by
 CMake (does not apply to the raw memory storage backend).
 
