@@ -2,6 +2,30 @@
 
 All notable changes to ezARPACK will be documented in this file.
 
+## [1.1] - Unreleased
+
+* Compilation of MPI tests and examples is made opt-out via a CMake option
+  `EnableMPI` (enabled by default). Thanks to @vincentmr for the contribution.
+* Fixed a build failure caused by
+  [opencollab/arpack-ng#377](https://github.com/opencollab/arpack-ng/pull/377).
+* Applied compatibility fixes necessary for xtensor>=0.26.
+* Check that Armadillo has been built with LAPACK support, skip the
+  corresponding unit tests and examples otherwise.
+* Do not build TRIQS unit tests and examples when a newer TRIQS version (>=3.1)
+  is found (contribution from @thenoursehorse,
+  [#7](https://github.com/krivenko/ezARPACK/pull/7)).
+* Removed unused CMake option `Skip_arpack-ng`.
+* Fixed flaky asymmetric MPI tests
+  (issue [#8](https://github.com/krivenko/ezARPACK/issues/8)).
+* Fixed deprecation warnings about default constructor of `nda::range()`.
+* Set CMake policy `CMP0167` to `OLD` to silence warnings about
+  `FindBoost.cmake`.
+* Switched from the deprecated `FindPythonInterp.cmake` to `FindPython3.cmake`.
+* Minor documentation fixes and improvements. In particular, compatibility with
+  Sphinx>=7.2 has been improved.
+* Both MathJax 2 and MathJax 3 are now supported for documentation compilation.
+* Added a directory with developer tools (`tools`).
+  
 ## [1.0] - 2022-09-04
 
 * Wrappers for Parallel ARPACK with MPI message passing layer have been added.
