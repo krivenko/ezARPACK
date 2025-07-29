@@ -3,6 +3,24 @@
 Installation instructions
 =========================
 
+.. _installation_conda:
+
+Anaconda
+--------
+
+The easiest way to obtain the most recent released version of ezARPACK is via
+[`conda`](https://www.anaconda.com/) package manager. The packages are provided
+through the 'krivenko' Anaconda.org channel.
+
+.. code-block:: shell
+
+    $ conda install -c krivenko ezarpack
+
+.. _installation_github:
+
+Installation from GitHub repository
+-----------------------------------
+
 ezARPACK is a header-only C++ library, which means it is usable without
 installation. You can obtain the latest version of the library by making a local
 clone of its `GitHub repository <https://github.com/krivenko/ezARPACK>`_.

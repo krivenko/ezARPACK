@@ -1,0 +1,53 @@
+context:
+  name: ezarpack
+  version: 1.1
+  number: 0
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+about:
+  homepage: https://krivenko.github.io/ezARPACK/
+  license: MPL-2.0
+  license_file: LICENSE.txt
+  summary: >
+    A C++11 wrapper around ARPACK-NG compatible with Eigen3, Armadillo, Blaze,
+    xtensor and other matrix algebra libraries
+  description: >
+    ezARPACK is a C++11 wrapper around ARPACK-NG, a FORTRAN 77 library designed
+    to solve large scale sparse eigenproblems. It allows for solving
+    eigenproblems for symmetric, asymmetric and complex double precision
+    matrices with a minimal amount of boilerplate code. Both standard and
+    generalized problems are supported, as well as all advanced spectral
+    transformation modes from the original FORTRAN implementation.
+    The Parallel ARPACK (PARPACK) variants of algorithms are fully supported.
+
+  repository: https://github.com/krivenko/ezARPACK
+  documentation: https://krivenko.github.io/ezARPACK/
+
+source:
+  url: https://github.com/krivenko/ezARPACK/archive/${{ version }}.tar.gz
+  sha256:
+
+build:
+  number: ${{ number }}
+  string: ${{ number }}
+  noarch: generic
+  script: build.sh
+
+requirements:
+  build:
+    - ${{ compiler('cxx') }}
+    - git
+    - cmake
+    - make
+    - arpack
+    - eigen
+    - armadillo
+    - boost-cpp
+    - triqs
+    - xtensor
+    - xtensor-blas
+  run:
+    - arpack

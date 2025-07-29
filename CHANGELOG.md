@@ -4,6 +4,9 @@ All notable changes to ezARPACK will be documented in this file.
 
 ## [1.1] - Unreleased
 
+* Set up building of Conda packages for released versions.
+  The packages are now available in the ['krivenko' channel](
+  https://anaconda.org/krivenko/ezarpack).
 * Compilation of MPI tests and examples is made opt-out via a CMake option
   `EnableMPI` (enabled by default). Thanks to @vincentmr for the contribution.
 * Fixed a build failure caused by

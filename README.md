@@ -100,6 +100,13 @@ CMake options specific to individual storage backends (`Eigen3_ROOT`,
 are installed in the standard system locations. If some of the libraries are not
 found, CMake will skip the corresponding examples and unit tests.
 
+Another way to install the most recent released version of ezARPACK is via
+[`conda`](https://www.anaconda.com/) package manager.
+
+```
+$ conda install -c krivenko ezarpack
+```
+
 Usage
 -----
 
