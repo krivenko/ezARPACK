@@ -12,7 +12,7 @@
 cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
 
 # Project name and version
-set(EZARPACK_VERSION 1.0)
+set(EZARPACK_VERSION 1.1)
 project(ezARPACK VERSION ${EZARPACK_VERSION} LANGUAGES CXX)
 message(STATUS "Configuring ${PROJECT_NAME} version ${PROJECT_VERSION}")
 

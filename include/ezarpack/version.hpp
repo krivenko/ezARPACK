@@ -15,4 +15,4 @@
 #pragma once
 
 /// ezARPACK version string.
-#define EZARPACK_VERSION "1.0"
+#define EZARPACK_VERSION "1.1"
