@@ -104,6 +104,7 @@ if(Armadillo_FOUND)
 endif(Armadillo_FOUND)
 
 # Boost uBLAS
+cmake_policy(SET CMP0167 OLD)
 find_package(Boost 1.58)
 if(Boost_FOUND)
   macro(add_ublas_executable name source)
