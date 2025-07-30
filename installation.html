@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Installation instructions &#8212; ezARPACK 1.0 documentation</title>
+    <title>Installation instructions &#8212; ezARPACK 1.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css?v=96702107" />
-    <script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/documentation_options.js?v=56dcb7b8"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -28,7 +28,7 @@
         <li class="right" >
           <a href="index.html" title="ezARPACK"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ezARPACK 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ezARPACK 1.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Installation instructions</a></li> 
       </ul>
     </div>  
@@ -40,6 +40,17 @@
             
   <section id="installation-instructions">
 <span id="installation"></span><h1>Installation instructions<a class="headerlink" href="#installation-instructions" title="Link to this heading">¶</a></h1>
+<section id="anaconda">
+<span id="installation-conda"></span><h2>Anaconda<a class="headerlink" href="#anaconda" title="Link to this heading">¶</a></h2>
+<p>The easiest way to obtain the most recent released version of ezARPACK is via
+[<cite>conda</cite>](<a class="reference external" href="https://www.anaconda.com/">https://www.anaconda.com/</a>) package manager. The packages are provided
+through the ‘krivenko’ Anaconda.org channel.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>krivenko<span class="w"> </span>ezarpack
+</pre></div>
+</div>
+</section>
+<section id="installation-from-github-repository">
+<span id="installation-github"></span><h2>Installation from GitHub repository<a class="headerlink" href="#installation-from-github-repository" title="Link to this heading">¶</a></h2>
 <p>ezARPACK is a header-only C++ library, which means it is usable without
 installation. You can obtain the latest version of the library by making a local
 clone of its <a class="reference external" href="https://github.com/krivenko/ezARPACK">GitHub repository</a>.
@@ -191,6 +202,7 @@ the LLVM UndefinedBehaviorSanitizer.</p></td>
 </tbody>
 </table>
 </section>
+</section>
 
 
             <div class="clearer"></div>
@@ -201,7 +213,11 @@ the LLVM UndefinedBehaviorSanitizer.</p></td>
         <div class="sphinxsidebarwrapper">
 <h3><a href="index.html">Table of Contents</a></h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation instructions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation instructions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#anaconda">Anaconda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-from-github-repository">Installation from GitHub repository</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="guide/index.html">User guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/index.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
@@ -242,7 +258,7 @@ the LLVM UndefinedBehaviorSanitizer.</p></td>
         <li class="right" >
           <a href="index.html" title="ezARPACK"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ezARPACK 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ezARPACK 1.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Installation instructions</a></li> 
       </ul>
     </div>

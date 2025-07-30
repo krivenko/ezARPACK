@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Changelog &#8212; ezARPACK 1.0 documentation</title>
+    <title>Changelog &#8212; ezARPACK 1.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css?v=96702107" />
-    <script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/documentation_options.js?v=56dcb7b8"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -28,7 +28,7 @@
         <li class="right" >
           <a href="reference/version.html" title="ezarpack/version.hpp - ezARPACK version information"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ezARPACK 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ezARPACK 1.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Changelog</a></li> 
       </ul>
     </div>  
@@ -41,6 +41,34 @@
   <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">¶</a></h1>
 <p>All notable changes to ezARPACK will be documented in this file.</p>
+<section id="unreleased">
+<h2>[1.1] - Unreleased<a class="headerlink" href="#unreleased" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Set up building of Conda packages for released versions.
+The packages are now available in the <a class="reference external" href="https://anaconda.org/krivenko/ezarpack">‘krivenko’ channel</a>.</p></li>
+<li><p>Compilation of MPI tests and examples is made opt-out via a CMake option
+<code class="docutils literal notranslate"><span class="pre">EnableMPI</span></code> (enabled by default). Thanks to &#64;vincentmr for the contribution.</p></li>
+<li><p>Fixed a build failure caused by
+<a class="reference external" href="https://github.com/opencollab/arpack-ng/pull/377">opencollab/arpack-ng#377</a>.</p></li>
+<li><p>Applied compatibility fixes necessary for xtensor&gt;=0.26.</p></li>
+<li><p>Check that Armadillo has been built with LAPACK support, skip the
+corresponding unit tests and examples otherwise.</p></li>
+<li><p>Do not build TRIQS unit tests and examples when a newer TRIQS version (&gt;=3.1)
+is found (contribution from &#64;thenoursehorse,
+<a class="reference external" href="https://github.com/krivenko/ezARPACK/pull/7">#7</a>).</p></li>
+<li><p>Removed unused CMake option <code class="docutils literal notranslate"><span class="pre">Skip_arpack-ng</span></code>.</p></li>
+<li><p>Fixed flaky asymmetric MPI tests
+(issue <a class="reference external" href="https://github.com/krivenko/ezARPACK/issues/8">#8</a>).</p></li>
+<li><p>Fixed deprecation warnings about default constructor of <code class="docutils literal notranslate"><span class="pre">nda::range()</span></code>.</p></li>
+<li><p>Set CMake policy <code class="docutils literal notranslate"><span class="pre">CMP0167</span></code> to <code class="docutils literal notranslate"><span class="pre">OLD</span></code> to silence warnings about
+<code class="docutils literal notranslate"><span class="pre">FindBoost.cmake</span></code>.</p></li>
+<li><p>Switched from the deprecated <code class="docutils literal notranslate"><span class="pre">FindPythonInterp.cmake</span></code> to <code class="docutils literal notranslate"><span class="pre">FindPython3.cmake</span></code>.</p></li>
+<li><p>Minor documentation fixes and improvements. In particular, compatibility with
+Sphinx&gt;=7.2 has been improved.</p></li>
+<li><p>Both MathJax 2 and MathJax 3 are now supported for documentation compilation.</p></li>
+<li><p>Added a directory with developer tools (<code class="docutils literal notranslate"><span class="pre">tools</span></code>).</p></li>
+</ul>
+</section>
 <section id="id1">
 <h2>[1.0] - 2022-09-04<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
 <ul class="simple">
@@ -98,6 +126,7 @@ The number of converged Ritz values is now returned by method
 <li class="toctree-l1"><a class="reference internal" href="guide/index.html">User guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/index.html">API reference</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#unreleased">[1.1] - Unreleased</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id1">[1.0] - 2022-09-04</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id2">[0.10] - 2022-02-08</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id3">[0.9] - 2020-07-04</a></li>
@@ -140,7 +169,7 @@ The number of converged Ritz values is now returned by method
         <li class="right" >
           <a href="reference/version.html" title="ezarpack/version.hpp - ezARPACK version information"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ezARPACK 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ezARPACK 1.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Changelog</a></li> 
       </ul>
     </div>
