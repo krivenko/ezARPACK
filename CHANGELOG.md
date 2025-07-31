@@ -2,7 +2,7 @@
 
 All notable changes to ezARPACK will be documented in this file.
 
-## [1.1] - Unreleased
+## [1.1] - 2025-07-31
 
 * Set up building of Conda packages for released versions.
   The packages are now available in the ['krivenko' channel](
