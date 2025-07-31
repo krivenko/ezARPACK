@@ -2,6 +2,8 @@ Auxiliary headers
 =================
 
 .. toctree::
+    :maxdepth: 1
+
     common
     solver_base
     arpack_solver
