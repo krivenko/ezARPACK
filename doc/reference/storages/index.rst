@@ -6,6 +6,8 @@ For successful compilation, header files of the corresponding libraries must be
 visible to the compiler.
 
 .. toctree::
+    :maxdepth: 1
+
     base
     eigen
     blaze
