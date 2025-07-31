@@ -28,7 +28,7 @@ about:
 
 source:
   url: https://github.com/krivenko/ezARPACK/archive/${{ version }}.tar.gz
-  sha256:
+  sha256: 32fbcb1de52304f8df65ad9fef8f593b1c292a062cf47362f087ca3ac7335f97
 
 build:
   number: ${{ number }}
