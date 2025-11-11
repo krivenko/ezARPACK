@@ -9,8 +9,9 @@ Anaconda
 --------
 
 The easiest way to obtain the most recent released version of ezARPACK is via
-[`conda`](https://www.anaconda.com/) package manager. The packages are provided
-through the 'krivenko' Anaconda.org channel.
+`'conda' <https://www.anaconda.com/>`_ package manager. The packages are
+provided through the
+`'krivenko' Anaconda.org channel <https://anaconda.org/krivenko/ezarpack>`_.
 
 .. code-block:: shell
 
