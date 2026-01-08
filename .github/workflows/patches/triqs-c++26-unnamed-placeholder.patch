@@ -1,0 +1,13 @@
+diff --git a/c++/triqs/gfs/functions/functions2.hpp b/c++/triqs/gfs/functions/functions2.hpp
+index 66d40e73..6c3535a5 100644
+--- a/c++/triqs/gfs/functions/functions2.hpp
++++ b/c++/triqs/gfs/functions/functions2.hpp
+@@ -190,7 +190,7 @@ namespace triqs::gfs {
+   // auxiliary function : invert the data : one function for all matrix valued gf (save code).
+   template <typename A3> void _gf_invert_data_in_place(A3 &&a) {
+     auto dom = a(ellipsis(), 0, 0).indexmap().domain();
+-    auto f   = [&a, _ = itertools::range()](auto... x) { return a(x..., _, _); };
++    auto f   = [&a](auto... x) { return a(x..., itertools::range(), itertools::range()); };
+     for (auto ind : dom) {
+       auto v = make_matrix_view(triqs::tuple::apply(f, ind));
+       v      = triqs::arrays::inverse(v);

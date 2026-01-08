@@ -1,4 +1,4 @@
-name: CI
+name: Build, test and deploy
 
 on:
   push:
@@ -12,65 +12,68 @@ on:
     - cron:  '0 0 * * 5'
 
 jobs:
-  build:
 
+  #
+  # Ubuntu
+  #
+
+  ubuntu:
+    name: Ubuntu
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        compiler: [{cc: gcc-12, cxx: g++-12}, {cc: clang-16, cxx: clang++-16}]
-        arpackng: [3.6.0, 3.7.0, 3.8.0, master]
+        compiler:
+          - { name: "gcc", cc: "gcc-14", cxx: "g++-14" }
+          - { name: "clang", cc: "clang", cxx: "clang++" }
+        arpackng: [3.6.0, 3.7.0, 3.8.0, 3.9.0, master]
 
-    runs-on: ubuntu-24.04
     env:
       CC: ${{ matrix.compiler.cc }}
       CXX: ${{ matrix.compiler.cxx }}
 
     steps:
-    - uses: actions/checkout@v3
-
-    - name: Force use of libc++ in Clang builds
-      if: startsWith(matrix.compiler.cxx, 'clang')
-      run: echo CMAKE_CXX_FLAGS="-stdlib=libc++" >> $GITHUB_ENV
+    - uses: actions/checkout@v6
 
     - name: Update apt-get cache
       run: sudo apt-get update
 
-    - name: Install Ubuntu dependencies
+    - name: Install APT dependencies
       run: >
         sudo apt-get install
-        libc++-16-dev
-        libc++abi-16-dev
-        libomp-16-dev
+        libomp5
+        libomp-dev
+        libopenmpi-dev
+        openmpi-bin
+        openmpi-common
+        openmpi-doc
+        libblas-dev
+        liblapack-dev
         libopenblas-dev
         libboost-dev
         libeigen3-dev
         libarmadillo-dev
-        openmpi-bin
-        openmpi-common
-        openmpi-doc
-        libopenmpi-dev
-        libblas-dev
-        liblapack-dev
         libfftw3-dev
         hdf5-tools
         libhdf5-serial-dev
 
     - name: Install dependencies needed to build docs
-      if: startsWith(matrix.compiler.cxx, 'clang') &&
-          matrix.arpackng == 'master'
+      if: matrix.compiler.name == 'clang' && matrix.arpackng == 'master'
       run: |
         sudo apt-get install doxygen libjs-mathjax
-        pip3 install -U sphinx breathe myst-parser
+        pip install --upgrade pip
+        pip install --upgrade sphinx breathe myst-parser
 
     - name: Build and install ARPACK-NG
       env:
-        FC: gfortran-12
+        FC: gfortran-14
         # To fix compilation of versions 3.6.0 and 3.7.0 with gfortran
         FFLAGS: -fallow-argument-mismatch
       run: |
         git clone --branch ${{ matrix.arpackng }}                              \
                   https://github.com/opencollab/arpack-ng.git arpack-ng
         pushd arpack-ng
-        cmake . -DCMAKE_BUILD_TYPE=Release                                     \
+        cmake . -DCMAKE_POLICY_VERSION_MINIMUM=3.5                             \
+                -DCMAKE_BUILD_TYPE=Release                                     \
                 -DCMAKE_INSTALL_PREFIX=$HOME/arpack-ng.installed               \
                 -DBUILD_SHARED_LIBS=ON                                         \
                 -DMPI=ON
@@ -92,7 +95,14 @@ jobs:
     - name: Build and install TRIQS 3.0.x
       run: |
         git clone https://github.com/TRIQS/triqs.git triqs --branch 3.0.x
-        rm triqs/c++/triqs/mc_tools/random_generator.cpp
+
+        # Fix TRIQS library issues before building
+        pushd triqs
+        for f in ../.github/workflows/patches/*.patch; do
+          patch -p1 < ${f}
+        done
+        popd
+
         mkdir triqs.build && pushd triqs.build
         cmake ../triqs                                                         \
           -DCMAKE_BUILD_TYPE=Release                                           \
@@ -183,8 +193,7 @@ jobs:
         popd
 
     - name: Prepare documentation for deployment
-      if: startsWith(matrix.compiler.cxx, 'clang') &&
-          matrix.arpackng == 'master'
+      if: matrix.compiler.name == 'clang' && matrix.arpackng == 'master'
       run: |
         pushd ezARPACK.installed/share/doc/ezARPACK/sphinx
         find . -name "*.html" -type f -exec sed -i                             \
@@ -194,8 +203,7 @@ jobs:
 
     - name: Deploy documentation
       if: github.ref == 'refs/heads/master' &&
-          startsWith(matrix.compiler.cxx, 'clang') &&
-          matrix.arpackng == 'master'
+          matrix.compiler.name == 'clang' && matrix.arpackng == 'master'
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: gh-pages

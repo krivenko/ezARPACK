@@ -1,0 +1,12 @@
+diff --git a/c++/triqs/mc_tools/random_generator.hpp b/c++/triqs/mc_tools/random_generator.hpp
+index ae53bbdff..df0610f4d 100644
+--- a/c++/triqs/mc_tools/random_generator.hpp
++++ b/c++/triqs/mc_tools/random_generator.hpp
+@@ -25,6 +25,7 @@
+ #include <string>
+ #include <assert.h>
+ #include <type_traits>
++#include <cstdint>
+ 
+ namespace triqs {
+   namespace mc_tools {
