@@ -209,3 +209,183 @@ jobs:
         branch: gh-pages
         token: ${{ secrets.GITHUB_TOKEN }}
         folder: ezARPACK.installed/share/doc/ezARPACK/sphinx
+
+  #
+  # macOS
+  #
+
+  macos:
+    name: macOS
+    strategy:
+      matrix:
+        os:
+          - "macos-latest"
+          # macos-15-intel is probably the last supported macOS x86-64 runner
+          # https://github.com/actions/runner-images/issues/13074
+          - "macos-15-intel"
+        compiler:
+          - { name: "gcc", cc: "gcc-15", cxx: "g++-15" }
+          - { name: "clang", cc: "clang", cxx: "clang++" }
+        # Older versions of ARPACK-NG are too broken on macOS ...
+        arpackng: [3.9.0, master]
+    runs-on: ${{ matrix.os }}
+
+    env:
+      CC: ${{ matrix.compiler.cc }}
+      CXX: ${{ matrix.compiler.cxx }}
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Update Homebrew formulae
+      run: brew update
+
+    - name: Install Homebrew dependencies
+      run: |
+           brew install llvm libomp open-mpi \
+                        eigen@3 boost armadillo fftw hdf5 numpy scipy mpi4py
+
+    - name: Set PATH and LDFLAGS for Clang
+      if: matrix.compiler.name == 'clang'
+      run: |
+           PREFIX="$(brew --prefix llvm)"
+           echo "PATH=${PREFIX}/bin:${PATH}" >> $GITHUB_ENV
+           LDFLAGS="-L${PREFIX}/lib/c++ -L${PREFIX}/lib/unwind -lunwind"
+           echo "LDFLAGS=${LDFLAGS}" >> $GITHUB_ENV
+
+    - name: Install dependencies needed to build docs
+      if: matrix.compiler.name == 'clang' && matrix.arpackng == 'master'
+      run: |
+        brew install doxygen
+        pip install --user --upgrade pip
+        pip install --user --upgrade sphinx breathe myst-parser
+        git clone https://github.com/mathjax/MathJax.git "${HOME}/MathJax"
+
+    - name: Build and install ARPACK-NG
+      env:
+        FC: gfortran-15
+      run: |
+        git clone --branch ${{ matrix.arpackng }}                              \
+                  https://github.com/opencollab/arpack-ng.git arpack-ng
+
+        pushd arpack-ng
+        cmake . -DCMAKE_POLICY_VERSION_MINIMUM=3.5                             \
+                -DCMAKE_BUILD_TYPE=Release                                     \
+                -DCMAKE_INSTALL_PREFIX=$HOME/arpack-ng.installed               \
+                -DBUILD_SHARED_LIBS=ON                                         \
+                -DMPI=ON
+        make -j2
+        make install
+        popd
+
+    - name: Install Blaze
+      run: |
+        git clone https://bitbucket.org/blaze-lib/blaze.git blaze
+        pushd blaze
+        cmake . -DCMAKE_INSTALL_PREFIX=$HOME/blaze.installed                   \
+                -DBLAZE_SHARED_MEMORY_PARALLELIZATION=OFF                      \
+                -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+        make install
+        popd
+
+    - name: Build and install TRIQS 3.0.x
+      run: |
+        git clone https://github.com/TRIQS/triqs.git triqs --branch 3.0.x
+
+        # Fix TRIQS library issues before building
+        pushd triqs
+        for f in ../.github/workflows/patches/triqs-*.patch; do
+          patch -p1 < ${f}
+        done
+        popd
+
+        mkdir triqs.build && pushd triqs.build
+        cmake ../triqs                                                         \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5                                   \
+          -DCMAKE_BUILD_TYPE=Release                                           \
+          -DCMAKE_INSTALL_PREFIX=$HOME/triqs.installed                         \
+          -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}                                 \
+          -DPythonSupport=OFF                                                  \
+          -DBuild_Documentation=OFF                                            \
+          -DBuild_Tests=OFF
+        make -j2 install VERBOSE=1
+        popd
+
+    - name: Build and install nda
+      run: |
+        git clone https://github.com/TRIQS/nda.git nda --branch 1.3.x
+        mkdir nda.build && pushd nda.build
+        cmake ../nda                                                           \
+          -DCMAKE_BUILD_TYPE=Release                                           \
+          -DCMAKE_INSTALL_PREFIX=$HOME/nda.installed                           \
+          -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}                                 \
+          -DBUILD_SHARED_LIBS=ON                                               \
+          -DPythonSupport=OFF                                                  \
+          -DBuild_Documentation=OFF                                            \
+          -DBuild_Tests=OFF
+        make -j2 install VERBOSE=1
+        popd
+
+    - name: Install xtl, xtensor and xtensor-blas
+      run: |
+        git clone https://github.com/xtensor-stack/xtl.git xtl
+        pushd xtl
+        cmake . -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed                 \
+                -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+        make install
+        popd
+        git clone https://github.com/xtensor-stack/xtensor.git xtensor
+        mkdir xtensor.build && pushd xtensor.build
+        cmake ../xtensor                                                       \
+          -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed                       \
+          -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}                                 \
+          -Dxtl_DIR=$HOME/xtensor.installed
+        make install
+        popd
+        git clone https://github.com/xtensor-stack/xtensor-blas.git xtensor-blas
+        mkdir xtensor-blas.build && pushd xtensor-blas.build
+        cmake ../xtensor-blas                                                  \
+          -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed                       \
+          -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}                                 \
+          -Dxtensor_DIR=$HOME/xtensor.installed
+        make install
+        popd
+
+    - name: Build ezARPACK
+      env:
+        ARPACKNG_VERSION: ${{ matrix.arpackng }}
+      run: |
+        CMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -Wno-ignored-attributes"
+        if [[ "${CXX}" == clang* && "${ARPACKNG_VERSION}" == master ]]; then
+          DOCS_CMAKE_ARGS="-DDocumentation=ON -DMathJax_ROOT=${HOME}/MathJax"
+        else
+          DOCS_CMAKE_ARGS="-DDocumentation=OFF"
+        fi
+
+        mkdir ezARPACK.build && pushd ezARPACK.build
+        cmake ..                                                               \
+          -DCMAKE_BUILD_TYPE=Release                                           \
+          -DCMAKE_INSTALL_PREFIX=$HOME/ezARPACK.installed                      \
+          -DARPACK_NG_ROOT=$HOME/arpack-ng.installed                           \
+          -DEigen3_ROOT=$(brew --prefix eigen@3)                               \
+          -Dblaze_ROOT=$HOME/blaze.installed                                   \
+          -DTRIQS_ROOT=$HOME/triqs.installed                                   \
+          -Dnda_ROOT=$HOME/nda.installed                                       \
+          -Dxtensor_ROOT=$HOME/xtensor.installed                               \
+          -Dxtensor-blas_ROOT=$HOME/xtensor.installed                          \
+          -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}"                               \
+          ${DOCS_CMAKE_ARGS}
+        make -j2 VERBOSE=1
+        make install
+        popd
+
+    - name: Test ezARPACK
+      run: |
+        mkdir -p $HOME/.prte
+        echo -e "\nrmaps_default_mapping_policy = :oversubscribe" >> \
+          $HOME/.prte/mca-params.conf
+        source $HOME/triqs.installed/share/triqsvars.sh
+        source $HOME/nda.installed/share/nda/ndavars.sh
+        pushd ezARPACK.build
+        ctest --output-on-failure
+        popd
