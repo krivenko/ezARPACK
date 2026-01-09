@@ -21,7 +21,7 @@ mark_as_advanced(UBSAN)
 include_directories(${CMAKE_SOURCE_DIR}/test)
 
 # Set the DT_RPATH attribute instead of DT_RUNPATH on executables
-add_link_options(-Wl,--disable-new-dtags)
+add_link_options("LINKER:--disable-new-dtags")
 
 if(ASAN)
   if(NOT TARGET asan)
