@@ -80,20 +80,31 @@ if(NOT Armadillo_FOUND)
   endif(ARMADILLO_LIBRARY)
 endif(NOT Armadillo_FOUND)
 if(Armadillo_FOUND)
-  message(STATUS "Found Armadillo ${ARMADILLO_VERSION_STRING}")
 
-  try_compile(Armadillo_USE_LAPACK
+  try_run(Armadillo_CAN_RUN Armadillo_CAN_COMPILE
+          ${CMAKE_BINARY_DIR}
+          ${CMAKE_SOURCE_DIR}/cmake/check_arma_version.cpp
+          LINK_LIBRARIES armadillo
+          RUN_OUTPUT_VARIABLE Armadillo_VERSION_STRING)
+
+  if((NOT Armadillo_CAN_COMPILE) OR (NOT Armadillo_CAN_RUN))
+    message(STATUS "Armadillo does not appear to be usable")
+    set(Armadillo_FOUND FALSE)
+  else((NOT Armadillo_CAN_COMPILE) OR (NOT Armadillo_CAN_RUN))
+    message(STATUS "Found Armadillo ${Armadillo_VERSION_STRING}")
+
+    try_compile(Armadillo_USE_LAPACK
               ${CMAKE_BINARY_DIR}
               SOURCES ${CMAKE_SOURCE_DIR}/cmake/check_arma_use_lapack.cpp
               LINK_LIBRARIES armadillo
               CXX_STANDARD 11
-  )
-  if(NOT Armadillo_USE_LAPACK)
-    message(
-      STATUS "  Armadillo has been built without LAPACK support, cannot be used"
     )
+    if(NOT Armadillo_USE_LAPACK)
+      message(STATUS "  Armadillo has been built without LAPACK support, "
+                     "cannot be used")
     set(Armadillo_FOUND FALSE)
   endif(NOT Armadillo_USE_LAPACK)
+  endif((NOT Armadillo_CAN_COMPILE) OR (NOT Armadillo_CAN_RUN))
 endif(Armadillo_FOUND)
 if(Armadillo_FOUND)
   macro(add_armadillo_executable name source)
