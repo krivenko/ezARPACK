@@ -1,10 +1,11 @@
 ezARPACK
 ========
 
-[![Build status](https://github.com/krivenko/ezARPACK/actions/workflows/CI.yml/badge.svg)](
-https://github.com/krivenko/ezARPACK/actions/workflows/CI.yml)
 [![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-red)](
 https://krivenko.github.io/ezARPACK)
+[![Build, test and deploy](
+https://github.com/krivenko/ezARPACK/actions/workflows/build-test-deploy.yml/badge.svg)](
+https://github.com/krivenko/ezARPACK/actions/workflows/build-test-deploy.yml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7047515.svg)](
 https://doi.org/10.5281/zenodo.7047515)
 
