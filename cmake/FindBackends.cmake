@@ -93,11 +93,17 @@ if(Armadillo_FOUND)
   else((NOT Armadillo_CAN_COMPILE) OR (NOT Armadillo_CAN_RUN))
     message(STATUS "Found Armadillo ${Armadillo_VERSION_STRING}")
 
+    if(${Armadillo_VERSION_STRING} VERSION_LESS "15.0.0")
+      set(Armadillo_CXX_STANDARD 11)
+    else(${Armadillo_VERSION_STRING} VERSION_LESS "15.0.0")
+      set(Armadillo_CXX_STANDARD 14)
+    endif(${Armadillo_VERSION_STRING} VERSION_LESS "15.0.0")
+
     try_compile(Armadillo_USE_LAPACK
               ${CMAKE_BINARY_DIR}
               SOURCES ${CMAKE_SOURCE_DIR}/cmake/check_arma_use_lapack.cpp
               LINK_LIBRARIES armadillo
-              CXX_STANDARD 11
+              CXX_STANDARD ${Armadillo_CXX_STANDARD}
     )
     if(NOT Armadillo_USE_LAPACK)
       message(STATUS "  Armadillo has been built without LAPACK support, "
@@ -110,7 +116,7 @@ if(Armadillo_FOUND)
   macro(add_armadillo_executable name source)
     add_executable(${name} ${source})
     target_link_libraries(${name} PRIVATE ezarpack armadillo)
-    set_property(TARGET ${name} PROPERTY CXX_STANDARD 11)
+    set_property(TARGET ${name} PROPERTY CXX_STANDARD ${Armadillo_CXX_STANDARD})
   endmacro()
 endif(Armadillo_FOUND)
 
