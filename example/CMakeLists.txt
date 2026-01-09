@@ -11,7 +11,9 @@
 set(EXAMPLES)
 
 # Set the DT_RPATH attribute instead of DT_RUNPATH on executables
-add_link_options("LINKER:--disable-new-dtags")
+if(LINKER_HAS_DISABLE_NEW_TAGS)
+  add_link_options("LINKER:--disable-new-dtags")
+endif(LINKER_HAS_DISABLE_NEW_TAGS)
 
 # Raw memory example
 set(t "raw.example")

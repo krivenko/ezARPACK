@@ -9,7 +9,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 # Start configuration
-cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.18.0 FATAL_ERROR)
 
 # Project name and version
 set(EZARPACK_VERSION 1.1)
@@ -30,6 +30,11 @@ option(Tests "Build unit tests" ON)
 
 # Are we building any executables?
 if(Tests OR Examples)
+
+  # Detect if linker supports --disable-new-dtags
+  include(CheckLinkerFlag)
+  check_linker_flag(CXX "LINKER:--disable-new-dtags"
+                    LINKER_HAS_DISABLE_NEW_TAGS)
 
   # Detect an MPI implementation for MPI-tests and/or examples
   if (EnableMPI)
