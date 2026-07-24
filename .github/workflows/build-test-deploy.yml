@@ -88,6 +88,8 @@ jobs:
         pushd blaze
         cmake . -DCMAKE_INSTALL_PREFIX=$HOME/blaze.installed                   \
                 -DBLAZE_SHARED_MEMORY_PARALLELIZATION=OFF                      \
+                -DBLAZE_CACHE_SIZE_AUTO=OFF                                    \
+                -DBLAZE_CACHE_SIZE=8388608                                     \
                 -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
         make install
         popd
@@ -291,6 +293,8 @@ jobs:
         pushd blaze
         cmake . -DCMAKE_INSTALL_PREFIX=$HOME/blaze.installed                   \
                 -DBLAZE_SHARED_MEMORY_PARALLELIZATION=OFF                      \
+                -DBLAZE_CACHE_SIZE_AUTO=OFF                                    \
+                -DBLAZE_CACHE_SIZE=8388608                                     \
                 -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
         make install
         popd
