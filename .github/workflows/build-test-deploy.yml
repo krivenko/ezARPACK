@@ -133,11 +133,15 @@ jobs:
       run: |
         git clone https://github.com/xtensor-stack/xtl.git xtl
         pushd xtl
+        # Select the latest release tag
+        git checkout $(git describe --abbrev=0)
         cmake . -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed                 \
                 -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
         make install
         popd
         git clone https://github.com/xtensor-stack/xtensor.git xtensor
+        # Select the latest release tag
+        pushd xtensor && git checkout $(git describe --abbrev=0) && popd
         mkdir xtensor.build && pushd xtensor.build
         cmake ../xtensor                                                       \
           -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed                       \
@@ -146,6 +150,8 @@ jobs:
         make install
         popd
         git clone https://github.com/xtensor-stack/xtensor-blas.git xtensor-blas
+        # Select the latest release tag
+        pushd xtensor-blas && git checkout $(git describe --abbrev=0) && popd
         mkdir xtensor-blas.build && pushd xtensor-blas.build
         cmake ../xtensor-blas                                                  \
           -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed                       \
@@ -331,11 +337,15 @@ jobs:
       run: |
         git clone https://github.com/xtensor-stack/xtl.git xtl
         pushd xtl
+        # Select the latest release tag
+        git checkout $(git describe --abbrev=0)
         cmake . -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed                 \
                 -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
         make install
         popd
         git clone https://github.com/xtensor-stack/xtensor.git xtensor
+        # Select the latest release tag
+        pushd xtensor && git checkout $(git describe --abbrev=0) && popd
         mkdir xtensor.build && pushd xtensor.build
         cmake ../xtensor                                                       \
           -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed                       \
@@ -344,6 +354,8 @@ jobs:
         make install
         popd
         git clone https://github.com/xtensor-stack/xtensor-blas.git xtensor-blas
+        # Select the latest release tag
+        pushd xtensor-blas && git checkout $(git describe --abbrev=0) && popd
         mkdir xtensor-blas.build && pushd xtensor-blas.build
         cmake ../xtensor-blas                                                  \
           -DCMAKE_INSTALL_PREFIX=$HOME/xtensor.installed                       \
