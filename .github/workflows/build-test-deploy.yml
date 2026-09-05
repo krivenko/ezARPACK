@@ -20,7 +20,9 @@ jobs:
   ubuntu:
     name: Ubuntu
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     strategy:
+      fail-fast: false
       matrix:
         compiler:
           - { name: "gcc", cc: "gcc-14", cxx: "g++-14" }
@@ -230,7 +232,9 @@ jobs:
 
   macos:
     name: macOS
+    timeout-minutes: 60
     strategy:
+      fail-fast: false
       matrix:
         compiler:
           - { name: "gcc", cc: "gcc-15", cxx: "g++-15" }
