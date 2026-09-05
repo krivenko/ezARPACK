@@ -5,11 +5,17 @@ on:
     branches:
       - master
       - ci
+      - 'dev/**'
   pull_request:
     branches:
       - master
   schedule:
     - cron:  '0 0 * * 5'
+
+# Cancel existing runs when a new commit is pushed to the same branch.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
 
