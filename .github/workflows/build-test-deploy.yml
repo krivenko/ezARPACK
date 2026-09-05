@@ -226,17 +226,12 @@ jobs:
     name: macOS
     strategy:
       matrix:
-        os:
-          - "macos-latest"
-          # macos-15-intel is probably the last supported macOS x86-64 runner
-          # https://github.com/actions/runner-images/issues/13074
-          - "macos-15-intel"
         compiler:
           - { name: "gcc", cc: "gcc-15", cxx: "g++-15" }
           - { name: "clang", cc: "clang", cxx: "clang++" }
         # Older versions of ARPACK-NG are too broken on macOS ...
         arpackng: [3.9.0, master]
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
 
     env:
       CC: ${{ matrix.compiler.cc }}
