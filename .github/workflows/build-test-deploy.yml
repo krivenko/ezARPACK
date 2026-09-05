@@ -100,7 +100,7 @@ jobs:
 
         # Fix TRIQS library issues before building
         pushd triqs
-        for f in ../.github/workflows/patches/*.patch; do
+        for f in ../.github/workflows/patches/triqs-libs-*.patch; do
           patch -p1 < ${f}
         done
         popd
@@ -113,6 +113,12 @@ jobs:
           -DPythonSupport=OFF                                                  \
           -DBuild_Documentation=OFF                                            \
           -DBuild_Tests=OFF
+
+        # Fix TRIQS dependencies
+        for f in ../.github/workflows/patches/triqs-deps-*.patch; do
+          patch -p1 < ${f}
+        done
+
         make -j2 install VERBOSE=1
         popd
 
@@ -300,7 +306,7 @@ jobs:
 
         # Fix TRIQS library issues before building
         pushd triqs
-        for f in ../.github/workflows/patches/triqs-*.patch; do
+        for f in ../.github/workflows/patches/triqs-libs-*.patch; do
           patch -p1 < ${f}
         done
         popd
@@ -314,6 +320,12 @@ jobs:
           -DPythonSupport=OFF                                                  \
           -DBuild_Documentation=OFF                                            \
           -DBuild_Tests=OFF
+
+        # Fix TRIQS dependencies
+        for f in ../.github/workflows/patches/triqs-deps-*.patch; do
+          patch -p1 < ${f}
+        done
+
         make -j2 install VERBOSE=1
         popd
 

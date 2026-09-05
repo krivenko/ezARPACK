@@ -1,0 +1,31 @@
+diff --git a/deps/h5_src/c++/h5/macros.hpp b/deps/h5_src/c++/h5/macros.hpp
+index 3450035..207abaa 100644
+--- a/deps/h5_src/c++/h5/macros.hpp
++++ b/deps/h5_src/c++/h5/macros.hpp
+@@ -14,6 +14,7 @@
+ 
+ #pragma once
+ 
++#include <exception>
+ #include <iostream>
+ 
+ // Basic macros for the implementation
+@@ -37,15 +38,15 @@
+ #define H5_EXPECTS(X)                                                                                                                                \
+   if (!(X)) {                                                                                                                                        \
+     std::cerr << "Precondition " << H5_AS_STRING(X) << " violated at " << __FILE__ << ":" << __LINE__ << "\n";                                       \
+-    std::terminate();                                                                                                                                \
++    ::std::terminate();                                                                                                                                \
+   }
+ #define H5_ASSERT(X)                                                                                                                                 \
+   if (!(X)) {                                                                                                                                        \
+     std::cerr << "Assertion " << H5_AS_STRING(X) << " violated at " << __FILE__ << ":" << __LINE__ << "\n";                                          \
+-    std::terminate();                                                                                                                                \
++    ::std::terminate();                                                                                                                                \
+   }
+ #define H5_ENSURES(X)                                                                                                                                \
+   if (!(X)) {                                                                                                                                        \
+     std::cerr << "Postcondition " << H5_AS_STRING(X) << " violated at " << __FILE__ << ":" << __LINE__ << "\n";                                      \
+-    std::terminate();                                                                                                                                \
++    ::std::terminate();                                                                                                                                \
+   }
