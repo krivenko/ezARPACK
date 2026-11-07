@@ -277,8 +277,8 @@ jobs:
         HOMEBREW_NO_AUTO_UPDATE: 1
       run: |
         brew install doxygen
-        pip install --user --upgrade pip
-        pip install --user --upgrade sphinx breathe myst-parser
+        echo "$(python3 -m site --user-base)/bin" >> $GITHUB_PATH
+        pip3 install --user --break-system-packages sphinx breathe myst-parser
         git clone https://github.com/mathjax/MathJax.git "${HOME}/MathJax"
 
     - name: Build and install ARPACK-NG
