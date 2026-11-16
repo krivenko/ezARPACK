@@ -1,0 +1,21 @@
+diff --git a/deps/h5_src/c++/h5/object.hpp b/deps/h5_src/c++/h5/object.hpp
+index c01f548..b0b7cdf 100644
+--- a/deps/h5_src/c++/h5/object.hpp
++++ b/deps/h5_src/c++/h5/object.hpp
+@@ -14,6 +14,7 @@
+ 
+ #pragma once
+ #include <complex>
++#include <cstdint>
+ #include <vector>
+ #include <sstream>
+ #include "./macros.hpp"
+@@ -25,7 +26,7 @@ namespace h5 {
+   // Hence complex installation paths to hdf5 are only needed in the cpp file,
+   // not by the users of the library.
+   using hid_t   = int64_t;
+-  using hsize_t = unsigned long long;
++  using hsize_t = uint64_t;
+   using v_t     = std::vector<hsize_t>;
+ 
+   // A complex compound type consisting of two doubles
