@@ -27,6 +27,12 @@
 using namespace ezarpack;
 using namespace nda;
 
+#ifdef NDA1
+#define inverse nda::inverse
+#else
+#define inverse nda::linalg::inv
+#endif
+
 // Make a test sparse matrix
 template<operator_kind MKind, typename T = scalar_t<MKind>>
 matrix<T> make_sparse_matrix(int N,
