@@ -133,7 +133,7 @@ jobs:
 
     - name: Build and install nda
       run: |
-        git clone https://github.com/TRIQS/nda.git nda --branch 1.3.x
+        git clone https://github.com/TRIQS/nda.git nda --branch 2.0.x
         mkdir nda.build && pushd nda.build
         cmake ../nda                                                           \
           -DCMAKE_BUILD_TYPE=Release                                           \
@@ -343,7 +343,7 @@ jobs:
 
     - name: Build and install nda
       run: |
-        git clone https://github.com/TRIQS/nda.git nda --branch 1.3.x
+        git clone https://github.com/TRIQS/nda.git nda --branch 2.0.x
         mkdir nda.build && pushd nda.build
         cmake ../nda                                                           \
           -DCMAKE_BUILD_TYPE=Release                                           \
