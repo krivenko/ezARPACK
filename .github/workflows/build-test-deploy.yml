@@ -207,8 +207,9 @@ jobs:
 
     - name: Test ezARPACK
       run: |
-        sudo sh -c 'echo -e "\nrmaps_base_oversubscribe = 1" >>                \
-          /etc/openmpi/openmpi-mca-params.conf'
+        mkdir -p $HOME/.prte
+        echo -e "\nrmaps_default_mapping_policy = :oversubscribe" >> \
+          $HOME/.prte/mca-params.conf
         source $HOME/triqs.installed/share/triqsvars.sh
         source $HOME/nda.installed/share/nda/ndavars.sh
         pushd ezARPACK.build
